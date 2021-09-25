@@ -39,6 +39,14 @@
       "frameworks": {
         "uap10.0.15063": {
           "dependencies": {
+            "Microsoft.Graph": {
+              "target": "Package",
+              "version": "[1.15.0, )"
+            },
+            "Microsoft.Identity.Client": {
+              "target": "Package",
+              "version": "[4.36.1, )"
+            },
             "Microsoft.NETCore.UniversalWindowsPlatform": {
               "target": "Package",
               "version": "[6.2.12, )"

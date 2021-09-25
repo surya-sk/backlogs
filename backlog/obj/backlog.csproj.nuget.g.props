@@ -26,6 +26,7 @@
     <Import Project="C:\Program Files (x86)\Microsoft SDKs\UWPNuGetPackages\microsoft.netcore.universalwindowsplatform\6.2.12\build\Microsoft.NETCore.UniversalWindowsPlatform.props" Condition="Exists('C:\Program Files (x86)\Microsoft SDKs\UWPNuGetPackages\microsoft.netcore.universalwindowsplatform\6.2.12\build\Microsoft.NETCore.UniversalWindowsPlatform.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgNewtonsoft_Json Condition=" '$(PkgNewtonsoft_Json)' == '' ">C:\Users\surya\.nuget\packages\newtonsoft.json\9.0.1</PkgNewtonsoft_Json>
     <PkgMicrosoft_UI_Xaml Condition=" '$(PkgMicrosoft_UI_Xaml)' == '' ">C:\Users\surya\.nuget\packages\microsoft.ui.xaml\2.4.3</PkgMicrosoft_UI_Xaml>
     <PkgMicrosoft_Net_Native_SharedLibrary-x86 Condition=" '$(PkgMicrosoft_Net_Native_SharedLibrary-x86)' == '' ">C:\Program Files (x86)\Microsoft SDKs\UWPNuGetPackages\microsoft.net.native.sharedlibrary-x86\1.7.3</PkgMicrosoft_Net_Native_SharedLibrary-x86>
     <PkgMicrosoft_Net_Native_SharedLibrary-x64 Condition=" '$(PkgMicrosoft_Net_Native_SharedLibrary-x64)' == '' ">C:\Program Files (x86)\Microsoft SDKs\UWPNuGetPackages\microsoft.net.native.sharedlibrary-x64\1.7.3</PkgMicrosoft_Net_Native_SharedLibrary-x64>
