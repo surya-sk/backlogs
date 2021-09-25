@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "w6ZJfITP0F05ieM4GencVaaAyRzEmRe+kcdioVXNwe6S+YY9Fna2voy4pxgG1dwMRYO+2xggQdS6QoNyizTNog==",
+  "dgSpecHash": "f/An7l9eZpw4efrvfp+3rYDCh0qJrwbkgho8N0QI8/owE8TzfdVVHaCWx3Pvk/CbvZ0cwVfILg7/T1OBwWtMnA==",
   "success": true,
   "projectFilePath": "C:\\Users\\surya\\repo\\backlog\\backlog\\backlog.csproj",
   "expectedPackageFiles": [
@@ -17,6 +17,7 @@
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\microsoft.netcore.targets\\1.0.2\\microsoft.netcore.targets.1.0.2.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\microsoft.netcore.universalwindowsplatform\\6.2.12\\microsoft.netcore.universalwindowsplatform.6.2.12.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\microsoft.netcore.windows.apisets\\1.0.1\\microsoft.netcore.windows.apisets.1.0.1.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\microsoft.ui.xaml\\2.4.3\\microsoft.ui.xaml.2.4.3.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\microsoft.visualbasic\\10.0.1\\microsoft.visualbasic.10.0.1.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\microsoft.win32.primitives\\4.0.1\\microsoft.win32.primitives.4.0.1.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\runtime.any.system.collections\\4.0.11\\runtime.any.system.collections.4.0.11.nupkg.sha512",
