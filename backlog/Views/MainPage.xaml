@@ -29,6 +29,16 @@
                     </VisualState>
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Pivot x:Name="BacklogPivot">
+                
+            </Pivot>
+
         </Grid>
     </Frame>
 </Page>
