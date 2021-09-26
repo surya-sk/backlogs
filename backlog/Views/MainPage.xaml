@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:data="using:backlog.Models"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -24,7 +25,7 @@
                             <AdaptiveTrigger MinWindowWidth="0" />
                         </VisualState.StateTriggers>
                         <VisualState.Setters>
-                            <!--<Setter Target="ConceptView.Padding" Value="12,0,12,36" />-->
+                            <Setter Target="BacklogView.Padding" Value="12,0,12,36" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -35,10 +36,415 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Pivot x:Name="BacklogPivot">
-                
-            </Pivot>
+            <Pivot x:Name="Pivot">
+                <PivotItem Header="All">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Name="EmtpyListText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <GridView Name="BacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="BacklogView_ItemClick"
+                              SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="data:Backlog">
+                                    <UserControl>
+                                        <Grid x:Name="rootGrid"  Width="360" Height="90" Padding="8" 
+                                              BorderThickness="1">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="LayoutVisualStates">
+                                                    <VisualState x:Name="WideLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters />
+                                                    </VisualState>
+                                                    <VisualState x:Name="NarrowLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="0" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Target="rootGrid.Width" Value="Auto" />
+                                                            <Setter Target="rootGrid.Height" Value="Auto" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
 
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Width="70" >
+                                                <Image
+                                                x:Name="gridImage"
+                                                Width="45"
+                                                VerticalAlignment="Center"
+                                                AutomationProperties.Name="{x:Bind Name}"
+                                                Source="{x:Bind ImageURL}"
+                                                Stretch="Uniform" />
+                                            </Grid>
+
+                                            <RelativePanel Grid.Column="1" Grid.ColumnSpan="2" Margin="16,6,0,0">
+                                                <TextBlock
+                                                x:Name="TitleText"
+                                                Style="{StaticResource BaseTextBlockStyle}"
+                                                Text="{x:Bind Name}"
+                                                TextLineBounds="TrimToCapHeight"
+                                                TextWrapping="NoWrap" />
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="TitleText"
+                                                Text="{x:Bind Description}"
+                                                TextTrimming="CharacterEllipsis"/>
+                                            </RelativePanel>
+                                        </Grid>
+                                    </UserControl>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </StackPanel>
+                </PivotItem>
+
+                <PivotItem Header="Films">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Name="EmtpyFilmsText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <GridView Name="FilmBacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="FilmBacklogView_ItemClick"
+                              SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="data:Backlog">
+                                    <UserControl>
+                                        <Grid x:Name="rootGrid"  Width="360" Height="90" Padding="8" 
+                                              BorderThickness="1">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="LayoutVisualStates">
+                                                    <VisualState x:Name="WideLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters />
+                                                    </VisualState>
+                                                    <VisualState x:Name="NarrowLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="0" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Target="rootGrid.Width" Value="Auto" />
+                                                            <Setter Target="rootGrid.Height" Value="Auto" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Width="70" >
+                                                <Image
+                                                x:Name="gridImage"
+                                                Width="45"
+                                                VerticalAlignment="Center"
+                                                AutomationProperties.Name="{x:Bind Name}"
+                                                Source="{x:Bind ImageURL}"
+                                                Stretch="Uniform" />
+                                            </Grid>
+
+                                            <RelativePanel Grid.Column="1" Grid.ColumnSpan="2" Margin="16,6,0,0">
+                                                <TextBlock
+                                                x:Name="TitleText"
+                                                Style="{StaticResource BaseTextBlockStyle}"
+                                                Text="{x:Bind Name}"
+                                                TextLineBounds="TrimToCapHeight"
+                                                TextWrapping="NoWrap" />
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="TitleText"
+                                                Text="{x:Bind Description}"
+                                                TextTrimming="CharacterEllipsis"/>
+                                            </RelativePanel>
+                                        </Grid>
+                                    </UserControl>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </StackPanel>
+                </PivotItem>
+
+                <PivotItem Header="Music">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Name="EmtpyMusicText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <GridView Name="MusicBacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="MusicBacklogView_ItemClick"
+                              SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="data:Backlog">
+                                    <UserControl>
+                                        <Grid x:Name="rootGrid"  Width="360" Height="90" Padding="8" 
+                                              BorderThickness="1">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="LayoutVisualStates">
+                                                    <VisualState x:Name="WideLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters />
+                                                    </VisualState>
+                                                    <VisualState x:Name="NarrowLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="0" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Target="rootGrid.Width" Value="Auto" />
+                                                            <Setter Target="rootGrid.Height" Value="Auto" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Width="70" >
+                                                <Image
+                                                x:Name="gridImage"
+                                                Width="45"
+                                                VerticalAlignment="Center"
+                                                AutomationProperties.Name="{x:Bind Name}"
+                                                Source="{x:Bind ImageURL}"
+                                                Stretch="Uniform" />
+                                            </Grid>
+
+                                            <RelativePanel Grid.Column="1" Grid.ColumnSpan="2" Margin="16,6,0,0">
+                                                <TextBlock
+                                                x:Name="TitleText"
+                                                Style="{StaticResource BaseTextBlockStyle}"
+                                                Text="{x:Bind Name}"
+                                                TextLineBounds="TrimToCapHeight"
+                                                TextWrapping="NoWrap" />
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="TitleText"
+                                                Text="{x:Bind Description}"
+                                                TextTrimming="CharacterEllipsis"/>
+                                            </RelativePanel>
+                                        </Grid>
+                                    </UserControl>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </StackPanel>
+                </PivotItem>
+
+                <PivotItem Header="TV">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Name="EmtpyTVText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <GridView Name="TVBacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="TVBacklogView_ItemClick"
+                              SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="data:Backlog">
+                                    <UserControl>
+                                        <Grid x:Name="rootGrid"  Width="360" Height="90" Padding="8" 
+                                              BorderThickness="1">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="LayoutVisualStates">
+                                                    <VisualState x:Name="WideLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters />
+                                                    </VisualState>
+                                                    <VisualState x:Name="NarrowLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="0" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Target="rootGrid.Width" Value="Auto" />
+                                                            <Setter Target="rootGrid.Height" Value="Auto" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Width="70" >
+                                                <Image
+                                                x:Name="gridImage"
+                                                Width="45"
+                                                VerticalAlignment="Center"
+                                                AutomationProperties.Name="{x:Bind Name}"
+                                                Source="{x:Bind ImageURL}"
+                                                Stretch="Uniform" />
+                                            </Grid>
+
+                                            <RelativePanel Grid.Column="1" Grid.ColumnSpan="2" Margin="16,6,0,0">
+                                                <TextBlock
+                                                x:Name="TitleText"
+                                                Style="{StaticResource BaseTextBlockStyle}"
+                                                Text="{x:Bind Name}"
+                                                TextLineBounds="TrimToCapHeight"
+                                                TextWrapping="NoWrap" />
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="TitleText"
+                                                Text="{x:Bind Description}"
+                                                TextTrimming="CharacterEllipsis"/>
+                                            </RelativePanel>
+                                        </Grid>
+                                    </UserControl>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </StackPanel>
+                </PivotItem>
+
+                <PivotItem Header="Games">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Name="EmtpyGamesText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <GridView Name="GamesBacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="GamesBacklogView_ItemClick"
+                              SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="data:Backlog">
+                                    <UserControl>
+                                        <Grid x:Name="rootGrid"  Width="360" Height="90" Padding="8" 
+                                              BorderThickness="1">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="LayoutVisualStates">
+                                                    <VisualState x:Name="WideLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters />
+                                                    </VisualState>
+                                                    <VisualState x:Name="NarrowLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="0" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Target="rootGrid.Width" Value="Auto" />
+                                                            <Setter Target="rootGrid.Height" Value="Auto" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Width="70" >
+                                                <Image
+                                                x:Name="gridImage"
+                                                Width="45"
+                                                VerticalAlignment="Center"
+                                                AutomationProperties.Name="{x:Bind Name}"
+                                                Source="{x:Bind ImageURL}"
+                                                Stretch="Uniform" />
+                                            </Grid>
+
+                                            <RelativePanel Grid.Column="1" Grid.ColumnSpan="2" Margin="16,6,0,0">
+                                                <TextBlock
+                                                x:Name="TitleText"
+                                                Style="{StaticResource BaseTextBlockStyle}"
+                                                Text="{x:Bind Name}"
+                                                TextLineBounds="TrimToCapHeight"
+                                                TextWrapping="NoWrap" />
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="TitleText"
+                                                Text="{x:Bind Description}"
+                                                TextTrimming="CharacterEllipsis"/>
+                                            </RelativePanel>
+                                        </Grid>
+                                    </UserControl>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </StackPanel>
+                </PivotItem>
+
+                <PivotItem Header="Books">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Name="EmtpyBooksText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <GridView Name="BooksBacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="BooksBacklogView_ItemClick"
+                            SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="data:Backlog">
+                                    <UserControl>
+                                        <Grid x:Name="rootGrid"  Width="360" Height="90" Padding="8" 
+                                              BorderThickness="1">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="LayoutVisualStates">
+                                                    <VisualState x:Name="WideLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters />
+                                                    </VisualState>
+                                                    <VisualState x:Name="NarrowLayout">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="0" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Target="rootGrid.Width" Value="Auto" />
+                                                            <Setter Target="rootGrid.Height" Value="Auto" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Width="70" >
+                                                <Image
+                                                x:Name="gridImage"
+                                                Width="45"
+                                                VerticalAlignment="Center"
+                                                AutomationProperties.Name="{x:Bind Name}"
+                                                Source="{x:Bind ImageURL}"
+                                                Stretch="Uniform" />
+                                            </Grid>
+
+                                            <RelativePanel Grid.Column="1" Grid.ColumnSpan="2" Margin="16,6,0,0">
+                                                <TextBlock
+                                                x:Name="TitleText"
+                                                Style="{StaticResource BaseTextBlockStyle}"
+                                                Text="{x:Bind Name}"
+                                                TextLineBounds="TrimToCapHeight"
+                                                TextWrapping="NoWrap" />
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="TitleText"
+                                                Text="{x:Bind Description}"
+                                                TextTrimming="CharacterEllipsis"/>
+                                            </RelativePanel>
+                                        </Grid>
+                                    </UserControl>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </StackPanel>
+                </PivotItem>
+            </Pivot>
         </Grid>
     </Frame>
 </Page>

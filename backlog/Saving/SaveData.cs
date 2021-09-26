@@ -106,10 +106,10 @@ namespace backlog.Saving
         }
 
         /// <summary>
-        /// Write the concept list in JSON format
+        /// Write the backlog list in JSON format
         /// </summary>
         /// <returns></returns>
-        public async Task WriteProfileAsync()
+        public async Task WriteDataAsync()
         {
             string json = JsonConvert.SerializeObject(Backogs);
             StorageFile storageFile = await roamingFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
@@ -122,10 +122,10 @@ namespace backlog.Saving
         }
 
         /// <summary>
-        /// Read the concept list in JSON and deserialze it 
+        /// Read the backlog list in JSON and deserialze it 
         /// </summary>
         /// <returns></returns>
-        public async Task ReadProfileAsync()
+        public async Task ReadDataAsync()
         {
             try
             {
@@ -139,7 +139,7 @@ namespace backlog.Saving
             }
         }
 
-        public ObservableCollection<Backlog> GetConcepts()
+        public ObservableCollection<Backlog> GetBacklogs()
         {
             return Backogs;
         }
