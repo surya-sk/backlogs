@@ -19,6 +19,8 @@ using System.Collections.ObjectModel;
 using Windows.Storage;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -125,7 +127,7 @@ namespace backlog.Views
 
         private async void CreateBacklogDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            if (NameInput.Text == "" || TypeComoBox.SelectedIndex <= 0 || DatePicker.Date == null) 
+            if (NameInput.Text == "" || TypeComoBox.SelectedIndex < 0 || DatePicker.Date == null) 
             {
                 ErrorText.Text = "Fill out all the fields";
                 ErrorText.Visibility = Visibility.Visible;
@@ -133,9 +135,32 @@ namespace backlog.Views
             }
             else
             {
-                string result = await RestClient.GetResponse(NameInput.Text);
-                Debug.WriteLine(result);
+                EmtpyListText.Visibility = Visibility.Collapsed;
+                switch(TypeComoBox.SelectedItem.ToString())
+                {
+                    case "Film":
+                        await CreateFilmBacklog(NameInput.Text.Replace(" ", string.Empty));
+                        EmtpyFilmsText.Visibility = Visibility.Collapsed;
+                        break;
+                }
             }
+        }
+
+        private async Task CreateFilmBacklog(string title)
+        {
+            string response = await RestClient.GetFilmResponse(title);
+            FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
+            Film film = filmResult.results[0];
+            Backlog backlog = new Backlog
+            {
+                Name = film.title,
+                Type = "Film",
+                ReleaseDate = film.description,
+                ImageURL = film.image,
+                TargetDate = DatePicker.ToString()
+            };
+            backlogs.Add(backlog);
+            filmBacklogs.Add(backlog);
         }
     }
 }

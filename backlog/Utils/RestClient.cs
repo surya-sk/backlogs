@@ -11,12 +11,13 @@ namespace backlog.Utils
     public static class RestClient
     {
         static readonly HttpClient client = new HttpClient();
-        static readonly Uri baseURL = new Uri("https://en.wikipedia.org/api/rest_v1/page/summary/");
 
-        public static async Task<string> GetResponse(string query)
+        public static async Task<string> GetFilmResponse(string query)
         {
+            string key = "k_ek9sn0t8";
+            Uri imdbURL = new Uri($"https://imdb-api.com/en/API/SearchMovie/{key}/"); 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.BaseAddress = baseURL;
+            client.BaseAddress = imdbURL;
             HttpResponseMessage response = await client.GetAsync(query);
             if(response.IsSuccessStatusCode)
             {

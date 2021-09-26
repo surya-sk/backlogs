@@ -39,7 +39,7 @@
             <Pivot x:Name="Pivot">
                 <PivotItem Header="All">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock x:Name="EmtpyListText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                        <TextBlock x:Name="EmtpyListText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                         <GridView Name="BacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="BacklogView_ItemClick"
                               SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
@@ -94,7 +94,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Description}"
+                                                Text="{x:Bind ReleaseDate}"
                                                 TextTrimming="CharacterEllipsis"/>
                                             </RelativePanel>
                                         </Grid>
@@ -109,7 +109,7 @@
                     <StackPanel Orientation="Vertical">
                         <TextBlock x:Name="EmtpyFilmsText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <GridView Name="FilmBacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="FilmBacklogView_ItemClick"
+                        <GridView Name="FilmBacklogView" ItemsSource="{x:Bind filmBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="FilmBacklogView_ItemClick"
                               SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="data:Backlog">
@@ -162,7 +162,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Description}"
+                                                Text="{x:Bind ReleaseDate}"
                                                 TextTrimming="CharacterEllipsis"/>
                                             </RelativePanel>
                                         </Grid>
@@ -177,7 +177,7 @@
                     <StackPanel Orientation="Vertical">
                         <TextBlock x:Name="EmtpyMusicText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <GridView Name="MusicBacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="MusicBacklogView_ItemClick"
+                        <GridView Name="MusicBacklogView" ItemsSource="{x:Bind musicBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="MusicBacklogView_ItemClick"
                               SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="data:Backlog">
@@ -230,7 +230,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Description}"
+                                                Text="{x:Bind ReleaseDate}"
                                                 TextTrimming="CharacterEllipsis"/>
                                             </RelativePanel>
                                         </Grid>
@@ -245,7 +245,7 @@
                     <StackPanel Orientation="Vertical">
                         <TextBlock x:Name="EmtpyTVText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <GridView Name="TVBacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="TVBacklogView_ItemClick"
+                        <GridView Name="TVBacklogView" ItemsSource="{x:Bind tvBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="TVBacklogView_ItemClick"
                               SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="data:Backlog">
@@ -298,7 +298,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Description}"
+                                                Text="{x:Bind ReleaseDate}"
                                                 TextTrimming="CharacterEllipsis"/>
                                             </RelativePanel>
                                         </Grid>
@@ -313,7 +313,7 @@
                     <StackPanel Orientation="Vertical">
                         <TextBlock x:Name="EmtpyGamesText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <GridView Name="GamesBacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="GamesBacklogView_ItemClick"
+                        <GridView Name="GamesBacklogView" ItemsSource="{x:Bind gameBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="GamesBacklogView_ItemClick"
                               SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="data:Backlog">
@@ -366,7 +366,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Description}"
+                                                Text="{x:Bind ReleaseDate}"
                                                 TextTrimming="CharacterEllipsis"/>
                                             </RelativePanel>
                                         </Grid>
@@ -381,7 +381,7 @@
                     <StackPanel Orientation="Vertical">
                         <TextBlock x:Name="EmtpyBooksText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <GridView Name="BooksBacklogView" ItemsSource="{x:Bind backlogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="BooksBacklogView_ItemClick"
+                        <GridView Name="BooksBacklogView" ItemsSource="{x:Bind bookBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="BooksBacklogView_ItemClick"
                             SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="data:Backlog">
@@ -434,7 +434,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Description}"
+                                                Text="{x:Bind ReleaseDate}"
                                                 TextTrimming="CharacterEllipsis"/>
                                             </RelativePanel>
                                         </Grid>
