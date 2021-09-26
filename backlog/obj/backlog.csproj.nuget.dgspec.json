@@ -39,6 +39,10 @@
       "frameworks": {
         "uap10.0.15063": {
           "dependencies": {
+            "Microsoft.AspNet.WebApi.Client": {
+              "target": "Package",
+              "version": "[5.2.7, )"
+            },
             "Microsoft.Graph": {
               "target": "Package",
               "version": "[1.15.0, )"

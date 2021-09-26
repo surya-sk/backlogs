@@ -18,6 +18,7 @@ using backlog.Utils;
 using System.Collections.ObjectModel;
 using Windows.Storage;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -122,7 +123,7 @@ namespace backlog.Views
 
         }
 
-        private void CreateBacklogDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private async void CreateBacklogDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             if (NameInput.Text == "" || TypeComoBox.SelectedIndex <= 0 || DatePicker.Date == null) 
             {
@@ -132,7 +133,8 @@ namespace backlog.Views
             }
             else
             {
-                
+                string result = await RestClient.GetResponse(NameInput.Text);
+                Debug.WriteLine(result);
             }
         }
     }
