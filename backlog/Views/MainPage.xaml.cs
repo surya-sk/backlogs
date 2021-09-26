@@ -34,7 +34,6 @@ namespace backlog.Views
         private ObservableCollection<Backlog> gameBacklogs { get; set; }
         private ObservableCollection<Backlog> musicBacklogs { get; set; }
         private ObservableCollection<Backlog> bookBacklogs { get; set; }
-        private string type;
         StorageFolder roamingFolder = ApplicationData.Current.RoamingFolder;
         string fileName = "backlogs.txt";
         public MainPage()
@@ -100,6 +99,41 @@ namespace backlog.Views
         private void BooksBacklogView_ItemClick(object sender, ItemClickEventArgs e)
         {
 
+        }
+
+        private void SigninButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void CreateButton_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialogResult result = await CreateBacklogDialog.ShowAsync();
+            if(result == ContentDialogResult.Secondary)
+            {
+                NameInput.Text = string.Empty;
+                TypeComoBox.SelectedIndex = -1;
+                ErrorText.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void TypeComoBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CreateBacklogDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            if (NameInput.Text == "" || TypeComoBox.SelectedIndex <= 0 || DatePicker.Date == null) 
+            {
+                ErrorText.Text = "Fill out all the fields";
+                ErrorText.Visibility = Visibility.Visible;
+                args.Cancel = true;
+            }
+            else
+            {
+                
+            }
         }
     }
 }

@@ -445,6 +445,28 @@
                     </StackPanel>
                 </PivotItem>
             </Pivot>
+
+            <ContentDialog x:Name="CreateBacklogDialog"
+                           PrimaryButtonText="Create" PrimaryButtonClick="CreateBacklogDialog_PrimaryButtonClick"
+                           SecondaryButtonText="Cancel" Title="Create a backlog item">
+                <StackPanel Orientation="Vertical">
+                    <TextBox x:Name="NameInput" PlaceholderText="Enter the name" />
+                    <ComboBox x:Name="TypeComoBox" Header="Type" SelectionChanged="TypeComoBox_SelectionChanged" PlaceholderText="Choose type" Margin="0,20,0,0">
+                        <x:String>Film</x:String>
+                        <x:String>TV</x:String>
+                        <x:String>Music</x:String>
+                        <x:String>Game</x:String>
+                        <x:String>Book</x:String>
+                    </ComboBox>
+                    <CalendarDatePicker x:Name="DatePicker" Header="Target Date (when you want to check it out)" PlaceholderText="Pick a date" Margin="0,20,0,0" />
+                    <TextBlock x:Name="ErrorText" Foreground="Red" Margin="0,20,0,0" Visibility="Collapsed"/>
+                </StackPanel>
+            </ContentDialog>
+
+            <CommandBar Grid.Row="1">
+                <AppBarButton x:Name="CreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
+                <AppBarButton x:Name="SigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
+            </CommandBar>
         </Grid>
     </Frame>
 </Page>
