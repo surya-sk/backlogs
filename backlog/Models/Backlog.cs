@@ -9,6 +9,7 @@ namespace backlog.Models
 {
     public class Backlog : INotifyPropertyChanged
     {
+        public Guid id { get; set; }
         private string name;
         private string type;
         private string description;
@@ -16,9 +17,10 @@ namespace backlog.Models
         private string targetDate;
         private bool hasReleased;
         private string imageURL;
-        private string thirdPartyURL;
         private string trailerURL;
+        private string length; 
         private string searchURL;
+        private string director;
 
         public string Name
         {
@@ -90,13 +92,13 @@ namespace backlog.Models
             }
         }
 
-        public string ThirdPartyURL
+        public string Length
         {
-            get => thirdPartyURL;
+            get => length;
             set
             {
-                thirdPartyURL = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ThirdPartyURL)));
+                length = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Length)));
             }
         }
 
@@ -117,6 +119,16 @@ namespace backlog.Models
             {
                 searchURL = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchURL)));
+            }
+        }
+
+        public string Director
+        {
+            get => director;
+            set
+            {
+                director = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Director)));
             }
         }
 

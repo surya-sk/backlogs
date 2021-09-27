@@ -139,28 +139,45 @@ namespace backlog.Views
                 switch(TypeComoBox.SelectedItem.ToString())
                 {
                     case "Film":
-                        await CreateFilmBacklog(NameInput.Text.Replace(" ", string.Empty));
+                        await CreateFilmBacklog(NameInput.Text.Replace(" ", string.Empty), DatePicker.Date.ToString("D"));
                         EmtpyFilmsText.Visibility = Visibility.Collapsed;
                         break;
                 }
             }
         }
 
-        private async Task CreateFilmBacklog(string title)
+        private async Task CreateFilmBacklog(string title, string date)
         {
             string response = await RestClient.GetFilmResponse(title);
             FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
-            Film film = filmResult.results[0];
-            Backlog backlog = new Backlog
+            FilmResponse filmResponse = filmResult.results[0];
+            string filmData = await RestClient.GetFilmDataResponse(filmResponse.id);
+            Debug.WriteLine(filmData);
+            if (filmData != null)
             {
-                Name = film.title,
-                Type = "Film",
-                ReleaseDate = film.description,
-                ImageURL = film.image,
-                TargetDate = DatePicker.ToString()
-            };
-            backlogs.Add(backlog);
-            filmBacklogs.Add(backlog);
+                Debug.WriteLine(filmData);
+                Film film = JsonConvert.DeserializeObject<Film>(filmData);
+                Backlog backlog = new Backlog
+                {
+                    id = new Guid(),
+                    Name = film.fullTitle,
+                    Type = "Film",
+                    ReleaseDate = film.releaseDate,
+                    ImageURL = film.image,
+                    TargetDate = date,
+                    Description = film.plot,
+                    Length = film.runtimeStr,
+                    Director = film.directors,
+                };
+                backlogs.Add(backlog);
+                filmBacklogs.Add(backlog);
+            }
+        }
+
+        private async Task CreateSeriesBacklog(string titile, string date)
+        {
+            string response = await RestClient.GetSeriesResponse(titile);
+            TVResult tvResult = JsonConvert.DeserializeObject<TVResult>(response);
         }
     }
 }

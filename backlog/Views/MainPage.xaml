@@ -90,12 +90,16 @@
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
                                                 TextWrapping="NoWrap" />
-                                                <TextBlock
+                                                <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind ReleaseDate}"
-                                                TextTrimming="CharacterEllipsis"/>
+                                                Text="{x:Bind Director}"/>
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="DirectorText"
+                                                Text="{x:Bind TargetDate}"/>
                                             </RelativePanel>
                                         </Grid>
                                     </UserControl>
@@ -107,9 +111,9 @@
 
                 <PivotItem Header="Films">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock x:Name="EmtpyFilmsText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                        <TextBlock x:Name="EmtpyFilmsText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <GridView Name="FilmBacklogView" ItemsSource="{x:Bind filmBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="FilmBacklogView_ItemClick"
+                        <GridView Name="FilmsBacklogView" ItemsSource="{x:Bind filmBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="BacklogView_ItemClick"
                               SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="data:Backlog">
@@ -158,12 +162,16 @@
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
                                                 TextWrapping="NoWrap" />
-                                                <TextBlock
+                                                <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind ReleaseDate}"
-                                                TextTrimming="CharacterEllipsis"/>
+                                                Text="{x:Bind Director}"/>
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="DirectorText"
+                                                Text="{x:Bind TargetDate}"/>
                                             </RelativePanel>
                                         </Grid>
                                     </UserControl>
@@ -458,7 +466,7 @@
                         <x:String>Game</x:String>
                         <x:String>Book</x:String>
                     </ComboBox>
-                    <CalendarDatePicker x:Name="DatePicker" Header="Target Date (when you want to check it out)" PlaceholderText="Pick a date" Margin="0,20,0,0" />
+                    <DatePicker x:Name="DatePicker" Header="Target Date (when you want to check it out)"  Margin="0,20,0,0" />
                     <TextBlock x:Name="ErrorText" Foreground="Red" Margin="0,20,0,0" Visibility="Collapsed"/>
                 </StackPanel>
             </ContentDialog>
