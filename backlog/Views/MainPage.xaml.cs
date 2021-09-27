@@ -135,12 +135,18 @@ namespace backlog.Views
             }
             else
             {
+                string title = NameInput.Text.Replace(" ", string.Empty);
+                string date = DatePicker.Date.ToString("D");
                 EmtpyListText.Visibility = Visibility.Collapsed;
                 switch(TypeComoBox.SelectedItem.ToString())
                 {
                     case "Film":
-                        await CreateFilmBacklog(NameInput.Text.Replace(" ", string.Empty), DatePicker.Date.ToString("D"));
+                        await CreateFilmBacklog(title, date);
                         EmtpyFilmsText.Visibility = Visibility.Collapsed;
+                        break;
+                    case "TV":
+                        await CreateSeriesBacklog(title, date);
+                        EmtpyTVText.Visibility = Visibility.Collapsed;
                         break;
                 }
             }
@@ -152,10 +158,8 @@ namespace backlog.Views
             FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
             FilmResponse filmResponse = filmResult.results[0];
             string filmData = await RestClient.GetFilmDataResponse(filmResponse.id);
-            Debug.WriteLine(filmData);
             if (filmData != null)
             {
-                Debug.WriteLine(filmData);
                 Film film = JsonConvert.DeserializeObject<Film>(filmData);
                 Backlog backlog = new Backlog
                 {
@@ -177,7 +181,27 @@ namespace backlog.Views
         private async Task CreateSeriesBacklog(string titile, string date)
         {
             string response = await RestClient.GetSeriesResponse(titile);
-            TVResult tvResult = JsonConvert.DeserializeObject<TVResult>(response);
+            SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
+            SeriesResponse seriesResponse = seriesResult.results[0];
+            string seriesData = await RestClient.GetSeriesDataResponse(seriesResponse.id);
+            if(seriesData != null)
+            {
+                Series series = JsonConvert.DeserializeObject<Series>(seriesData);
+                Backlog backlog = new Backlog
+                {
+                    id = new Guid(),
+                    Name = series.fullTitle,
+                    Type = "TV",
+                    ReleaseDate = series.releaseDate,
+                    ImageURL = series.image,
+                    TargetDate = date,
+                    Description = series.plot,
+                    Length = series.runtimeStr,
+                    Director = series.directors
+                };
+                backlogs.Add(backlog);
+                tvBacklogs.Add(backlog);
+            }
         }
     }
 }

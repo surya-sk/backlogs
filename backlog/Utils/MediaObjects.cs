@@ -34,14 +34,14 @@ namespace backlog.Utils
         public string directors { get; set; }
     }
 
-    public class TVResult
+    public class SeriesResult
     {
         public string searchType { get; set; }
         public string expression { get; set; }
-        public Series[] results { get; set; }
+        public SeriesResponse[] results { get; set; }
     }
 
-    public class Series
+    public class SeriesResponse
     {
         public string id { get; set; }
         public string resultType { get; set; }
@@ -49,4 +49,17 @@ namespace backlog.Utils
         public string title { get; set; }
         public string description { get; set; }
     }
+
+    public class Series
+    {
+        public string id { get; set; }
+        public string originalTitle { get; set; }
+        public string image { get; set; }
+        public string fullTitle { get; set; }
+        public string plot { get; set; }
+        public string releaseDate { get; set; }
+        public string runtimeStr { get; set; }
+        public string directors { get; set; }
+    }
+
 }
