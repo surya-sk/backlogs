@@ -148,6 +148,10 @@ namespace backlog.Views
                         await CreateSeriesBacklog(title, date);
                         EmtpyTVText.Visibility = Visibility.Collapsed;
                         break;
+                    case "Game":
+                        await CreateGameBacklog(NameInput.Text, date);
+                        EmtpyGamesText.Visibility = Visibility.Collapsed;
+                        break;
                 }
             }
         }
@@ -203,5 +207,48 @@ namespace backlog.Views
                 tvBacklogs.Add(backlog);
             }
         }
+
+        private async Task CreateGameBacklog(string title, string date)
+        {
+            string response = await RestClient.GetGameResponse(title);
+            var result = JsonConvert.DeserializeObject<GameResponse[]>(response);
+            string id = result[0].id.ToString();
+            string gameResponse = await RestClient.GetGameResult(id);
+            var gameResult = JsonConvert.DeserializeObject<GameResult[]>(gameResponse);
+            int companyID = await RestClient.GetCompanyID(gameResult[0].involved_companies[0].ToString());
+            var gameCompanyResponse = await RestClient.GetGameCompanyResponse(companyID.ToString());
+            var gameCompany = JsonConvert.DeserializeObject<GameCompany[]>(gameCompanyResponse);
+            var gameCoverResponse = await RestClient.GetGameCover(gameResult[0].cover.ToString());
+            var gameCover = JsonConvert.DeserializeObject<GameCover[]>(gameCoverResponse);
+            string releaseDateResponse = await RestClient.GetGameReleaseResponse(gameResult[0].release_dates[0].ToString());
+            var releaseDateTimestamp = JsonConvert.DeserializeObject<GameReleaseDate[]>(releaseDateResponse);
+            var releaseDate = DateTimeOffset.FromUnixTimeSeconds(releaseDateTimestamp[0].date);
+            Game game = new Game
+            {
+                name = gameResult[0].name + " " + releaseDate.Year,
+                releaseDate = releaseDate.ToString("D"),
+                company = gameCompany[0].name,
+                image = "https:" + gameCover[0].url,
+                storyline = gameResult[0].storyline
+            };
+            if (game != null)
+            {
+                Backlog backlog = new Backlog
+                {
+                    id = new Guid(),
+                    Name = game.name,
+                    Type = "Game",
+                    ReleaseDate = game.releaseDate,
+                    ImageURL = game.image,
+                    TargetDate = date,
+                    Description = game.storyline,
+                    Length = "Unkown",
+                    Director = game.company
+                };
+                backlogs.Add(backlog);
+                gameBacklogs.Add(backlog);
+            }
+        }
+
     }
 }

@@ -62,4 +62,49 @@ namespace backlog.Utils
         public string directors { get; set; }
     }
 
+
+    public class GameResponse
+    {
+        public int id { get; set; }
+    }
+
+    public class GameResult
+    {
+        public int id { get; set; }
+        public int cover { get; set; }
+        public List<int> involved_companies { get; set; }
+        public string name { get; set; }
+        public List<int> release_dates { get; set; }
+        public string storyline { get; set; }
+    }
+
+    public class InvovledGameCompanies
+    {
+        public int company { get; set; }
+    }
+
+    public class GameCompany
+    {
+        public string name { get; set; }
+    }
+
+    public class GameCover
+    {
+        public string url { get; set; }
+    }
+
+    public class GameReleaseDate
+    {
+        public long date { get; set; }
+    }
+
+    public class Game
+    {
+        public string name { get; set; }
+        public string company { get; set; }
+        public string storyline { get; set; }
+        public string releaseDate { get; set; }
+        public string image { get; set; }
+    }
+
 }

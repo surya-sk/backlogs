@@ -319,9 +319,9 @@
 
                 <PivotItem Header="Games">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock x:Name="EmtpyGamesText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                        <TextBlock x:Name="EmtpyGamesText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <GridView Name="GamesBacklogView" ItemsSource="{x:Bind gameBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="GamesBacklogView_ItemClick"
+                        <GridView Name="GamesBacklogView" ItemsSource="{x:Bind gameBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="BacklogView_ItemClick"
                               SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="data:Backlog">
@@ -370,12 +370,16 @@
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
                                                 TextWrapping="NoWrap" />
-                                                <TextBlock
+                                                <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind ReleaseDate}"
-                                                TextTrimming="CharacterEllipsis"/>
+                                                Text="{x:Bind Director}"/>
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="DirectorText"
+                                                Text="{x:Bind TargetDate}"/>
                                             </RelativePanel>
                                         </Grid>
                                     </UserControl>
