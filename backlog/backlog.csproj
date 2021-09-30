@@ -124,6 +124,9 @@
     <Compile Include="Utils\BacklogType.cs" />
     <Compile Include="Utils\MediaObjects.cs" />
     <Compile Include="Utils\RestClient.cs" />
+    <Compile Include="Views\BacklogPage.xaml.cs">
+      <DependentUpon>BacklogPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -149,6 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\BacklogPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

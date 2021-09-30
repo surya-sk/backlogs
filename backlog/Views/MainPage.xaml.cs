@@ -76,32 +76,8 @@ namespace backlog.Views
 
         private void BacklogView_ItemClick(object sender, ItemClickEventArgs e)
         {
-
-        }
-
-        private void FilmBacklogView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
-        private void MusicBacklogView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
-        private void TVBacklogView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
-        private void GamesBacklogView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
-        private void BooksBacklogView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
+            var selectedBacklog = (Backlog)e.ClickedItem;
+            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id);
         }
 
         private void SigninButton_Click(object sender, RoutedEventArgs e)
@@ -180,6 +156,8 @@ namespace backlog.Views
                         EmtpyMusicText.Visibility = Visibility.Collapsed;
                         break;
                 }
+                SaveData.GetInstance().SaveSettings(backlogs);
+                await SaveData.GetInstance().WriteDataAsync();
                 CreationProgBar.Visibility = Visibility.Collapsed;
             }
         }

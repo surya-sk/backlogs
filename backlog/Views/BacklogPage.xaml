@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="backlog.Views.BacklogPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:backlog.Views"
+    xmlns:data="using:backlog.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ContentControl Content="{x:Bind backlog}">
+                <ContentControl.ContentTemplate>
+                    <DataTemplate x:DataType="data:Backlog">
+                        <UserControl>
+                            <Grid x:Name="rootGrid">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="LayoutVisualStates">
+                                        <VisualState x:Name="WideLayout">
+                                            <VisualState.StateTriggers>
+                                                <AdaptiveTrigger MinWindowWidth="800" />
+                                            </VisualState.StateTriggers>
+                                            <VisualState.Setters />
+                                        </VisualState>
+                                        <VisualState x:Name="NarrowLayout">
+                                            <VisualState.StateTriggers>
+                                                <AdaptiveTrigger MinWindowWidth="0" />
+                                            </VisualState.StateTriggers>
+                                            <VisualState.Setters>
+                                                <Setter Target="detailsGrid.(RelativePanel.Below)" Value="img" />
+                                                <Setter Target="detailsGrid.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                                                <Setter Target="detailsGrid.(RelativePanel.AlignRightWithPanel)" Value="True" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <RelativePanel>
+                                    <Image x:Name="img" Source="{x:Bind ImageURL}" Height="200" Width="200" HorizontalAlignment="Center" Margin="30"/>
+                                    <Grid x:Name="detailsGrid" RelativePanel.RightOf="img" Height="200" Margin="30">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{x:Bind Name}" FontSize="30" Margin="0,0,0,10"/>
+                                        <TextBlock x:Name="ArtistText" Text="{x:Bind Director}" FontSize="20" Margin="0,0,0,10" Grid.Row="1" />
+                                        <RelativePanel Margin="0,0,0,20" Grid.Row="2">
+                                            <TextBlock x:Name="lengthText" Text="{x:Bind Length}" Margin="0,0,0,10" />
+                                            <TextBlock x:Name="descText" Text="{x:Bind Description}" TextTrimming="WordEllipsis" MaxLines="2" TextWrapping="Wrap" FontSize="15" RelativePanel.Below="lengthText" 
+                                                       Margin="0,0,0,10" />
+                                            <TextBlock RelativePanel.Below="descText">
+                                                <Hyperlink Click="Hyperlink_Click">
+                                                    <Run Text="Read more" />
+                                                </Hyperlink>
+                                            </TextBlock>
+                                        </RelativePanel>
+                                    </Grid>
+                                </RelativePanel>
+                            </Grid>
+                        </UserControl>
+                    </DataTemplate>
+                </ContentControl.ContentTemplate>
+            </ContentControl>
+        </ScrollViewer>
+    </Grid>
+</Page>
