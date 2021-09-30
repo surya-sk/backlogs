@@ -172,5 +172,31 @@ namespace backlog.Utils
             }
             return null;
         }
+
+        public static async Task<string> GetBookResponse(string id)
+        {
+            Uri queryURL = new Uri($"https://www.googleapis.com/books/v1/volumes?q={id}&maxResults=1");
+            HttpResponseMessage response = await client.GetAsync(queryURL);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            return null;
+        }
+
+        public static async Task<string> GetMusicResponse(string query)
+        {
+            string apiKey = "94ffbb89403de22a94516302cbc0bfe2";
+            string[] queryArr = query.Split('-');
+            string artist = queryArr[0];
+            string album = queryArr[1];
+            Uri queryURL = new Uri($"http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key={apiKey}&format=json&artist={artist}&album={album}");
+            HttpResponseMessage response = await client.GetAsync(queryURL);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            return null;
+        }
     }
 }

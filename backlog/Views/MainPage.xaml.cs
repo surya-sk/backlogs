@@ -122,7 +122,25 @@ namespace backlog.Views
 
         private void TypeComoBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            string value = TypeComoBox.SelectedValue.ToString();
+            switch(value)
+            {
+                case "Film":
+                    NameInput.PlaceholderText = "Inception 2010 (optional)";
+                    break;
+                case "TV":
+                    NameInput.PlaceholderText = "Hannibal";
+                    break;
+                case "Music":
+                    NameInput.PlaceholderText = "Radiohead - Amnesiac";
+                    break;
+                case "Game":
+                    NameInput.PlaceholderText = "Assassins Creed 2";
+                    break;
+                case "Book":
+                    NameInput.PlaceholderText = "Never Let Me Go";
+                    break;
+            }
         }
 
         private async void CreateBacklogDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -135,6 +153,7 @@ namespace backlog.Views
             }
             else
             {
+                CreationProgBar.Visibility = Visibility.Visible;
                 string title = NameInput.Text.Replace(" ", string.Empty);
                 string date = DatePicker.Date.ToString("D");
                 EmtpyListText.Visibility = Visibility.Collapsed;
@@ -152,7 +171,16 @@ namespace backlog.Views
                         await CreateGameBacklog(NameInput.Text, date);
                         EmtpyGamesText.Visibility = Visibility.Collapsed;
                         break;
+                    case "Book":
+                        await CreateBookBacklog(NameInput.Text, date);
+                        EmtpyBooksText.Visibility = Visibility.Collapsed;
+                        break;
+                    case "Music":
+                        await CreateMusicBacklog(NameInput.Text, date);
+                        EmtpyMusicText.Visibility = Visibility.Collapsed;
+                        break;
                 }
+                CreationProgBar.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -179,6 +207,65 @@ namespace backlog.Views
                 };
                 backlogs.Add(backlog);
                 filmBacklogs.Add(backlog);
+            }
+        }
+
+        private async Task CreateMusicBacklog(string title, string date)
+        {
+            string response = await RestClient.GetMusicResponse(title);
+            var musicData = JsonConvert.DeserializeObject<MusicData>(response);
+            Music music = new Music
+            {
+                name = musicData.album.name,
+                artist = musicData.album.artist,
+                description = musicData.album.wiki == null ? "" : musicData.album.wiki.summary,
+                releaseDate = musicData.album.wiki == null ? "" : musicData.album.wiki.published,
+                image = musicData.album.image[2].Text
+            };
+            Backlog backlog = new Backlog
+            {
+                id = new Guid(),
+                Name = music.name,
+                Type = "Music",
+                ReleaseDate = music.releaseDate,
+                ImageURL = music.image,
+                TargetDate = date,
+                Description = music.description,
+                Director = music.artist
+            };
+            backlogs.Add(backlog);
+            musicBacklogs.Add(backlog);
+        }
+
+        private async Task CreateBookBacklog(string title, string date)
+        {
+            string response = await RestClient.GetBookResponse(title);
+            var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
+            Book book = new Book
+            {
+                name = bookData.items[0].volumeInfo.title,
+                author = string.Concat(bookData.items[0].volumeInfo.authors),
+                desciption = bookData.items[0].volumeInfo.description,
+                releaseDate = bookData.items[0].volumeInfo.publishedDate,
+                image = bookData.items[0].volumeInfo.imageLinks.thumbnail,
+                length = bookData.items[0].volumeInfo.pageCount.ToString()
+            };
+            if(book != null)
+            {
+                Backlog backlog = new Backlog
+                {
+                    id = new Guid(),
+                    Name = book.name,
+                    Type = "Book",
+                    ReleaseDate = book.releaseDate,
+                    ImageURL = book.image,
+                    TargetDate = date,
+                    Description = book.desciption,
+                    Director = book.author,
+                    Length = book.length
+                };
+                backlogs.Add(backlog);
+                bookBacklogs.Add(backlog);
             }
         }
 
@@ -249,6 +336,5 @@ namespace backlog.Views
                 gameBacklogs.Add(backlog);
             }
         }
-
     }
 }

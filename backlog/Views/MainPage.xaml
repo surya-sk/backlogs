@@ -183,9 +183,9 @@
 
                 <PivotItem Header="Music">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock x:Name="EmtpyMusicText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                        <TextBlock x:Name="EmtpyMusicText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <GridView Name="MusicBacklogView" ItemsSource="{x:Bind musicBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="MusicBacklogView_ItemClick"
+                        <GridView Name="MusicBacklogView" ItemsSource="{x:Bind musicBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="BacklogView_ItemClick"
                               SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="data:Backlog">
@@ -234,12 +234,16 @@
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
                                                 TextWrapping="NoWrap" />
-                                                <TextBlock
+                                                <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind ReleaseDate}"
-                                                TextTrimming="CharacterEllipsis"/>
+                                                Text="{x:Bind Director}"/>
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="DirectorText"
+                                                Text="{x:Bind TargetDate}"/>
                                             </RelativePanel>
                                         </Grid>
                                     </UserControl>
@@ -391,10 +395,10 @@
 
                 <PivotItem Header="Books">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock x:Name="EmtpyBooksText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                        <TextBlock x:Name="EmtpyBooksText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <GridView Name="BooksBacklogView" ItemsSource="{x:Bind bookBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="BooksBacklogView_ItemClick"
-                            SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
+                        <GridView Name="BooksBacklogView" ItemsSource="{x:Bind bookBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="BacklogView_ItemClick"
+                              SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="data:Backlog">
                                     <UserControl>
@@ -442,12 +446,16 @@
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
                                                 TextWrapping="NoWrap" />
-                                                <TextBlock
+                                                <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind ReleaseDate}"
-                                                TextTrimming="CharacterEllipsis"/>
+                                                Text="{x:Bind Director}"/>
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="DirectorText"
+                                                Text="{x:Bind TargetDate}"/>
                                             </RelativePanel>
                                         </Grid>
                                     </UserControl>
@@ -462,18 +470,22 @@
                            PrimaryButtonText="Create" PrimaryButtonClick="CreateBacklogDialog_PrimaryButtonClick"
                            SecondaryButtonText="Cancel" Title="Create a backlog item">
                 <StackPanel Orientation="Vertical">
-                    <TextBox x:Name="NameInput" PlaceholderText="Enter the name" />
-                    <ComboBox x:Name="TypeComoBox" Header="Type" SelectionChanged="TypeComoBox_SelectionChanged" PlaceholderText="Choose type" Margin="0,20,0,0">
+                    <ComboBox x:Name="TypeComoBox" Header="Type" SelectionChanged="TypeComoBox_SelectionChanged" PlaceholderText="Choose type">
                         <x:String>Film</x:String>
                         <x:String>TV</x:String>
                         <x:String>Music</x:String>
                         <x:String>Game</x:String>
                         <x:String>Book</x:String>
                     </ComboBox>
+                    <TextBox x:Name="NameInput" PlaceholderText="Enter the name" Margin="0,20,0,0" />
+                    <TextBlock Text="Please follow the format given in the box above. Do NOT use special characters such as -*, expect for when searching for an album" FontStyle="Italic" 
+                               Foreground="LightYellow" TextWrapping="Wrap" />
                     <DatePicker x:Name="DatePicker" Header="Target Date (when you want to check it out)"  Margin="0,20,0,0" />
                     <TextBlock x:Name="ErrorText" Foreground="Red" Margin="0,20,0,0" Visibility="Collapsed"/>
                 </StackPanel>
             </ContentDialog>
+
+            <muxc:ProgressBar x:Name="CreationProgBar" IsIndeterminate="True" Visibility="Collapsed" />
 
             <CommandBar Grid.Row="1">
                 <AppBarButton x:Name="CreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
