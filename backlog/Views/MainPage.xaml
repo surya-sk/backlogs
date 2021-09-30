@@ -255,7 +255,7 @@
 
                 <PivotItem Header="TV">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock x:Name="EmtpyTVText" Text="No backlogs detetced. Sign-in to sync concepts or create a new one to get started!" Visibility="Collapsed"
+                        <TextBlock x:Name="EmtpyTVText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                         <GridView Name="TVBacklogView" ItemsSource="{x:Bind tvBacklogs, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="BacklogView_ItemClick"
                               SelectionMode="None" Grid.Row="1"  Margin="0,20,0,0">
@@ -306,12 +306,16 @@
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
                                                 TextWrapping="NoWrap" />
-                                                <TextBlock
+                                                <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind ReleaseDate}"
-                                                TextTrimming="CharacterEllipsis"/>
+                                                Text="{x:Bind Director}"/>
+                                                <TextBlock
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="DirectorText"
+                                                Text="{x:Bind TargetDate}"/>
                                             </RelativePanel>
                                         </Grid>
                                     </UserControl>
