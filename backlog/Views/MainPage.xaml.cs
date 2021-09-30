@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -55,6 +56,8 @@ namespace backlog.Views
             musicBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Music.ToString()));
             bookBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Book.ToString()));
             ShowEmptyMessage();
+            var view = SystemNavigationManager.GetForCurrentView();
+            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }
 
         private void ShowEmptyMessage()
@@ -77,6 +80,7 @@ namespace backlog.Views
         private void BacklogView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedBacklog = (Backlog)e.ClickedItem;
+            Debug.WriteLine(selectedBacklog.id);
             Frame.Navigate(typeof(BacklogPage), selectedBacklog.id);
         }
 
@@ -173,7 +177,7 @@ namespace backlog.Views
                 Film film = JsonConvert.DeserializeObject<Film>(filmData);
                 Backlog backlog = new Backlog
                 {
-                    id = new Guid(),
+                    id = Guid.NewGuid(),
                     Name = film.fullTitle,
                     Type = "Film",
                     ReleaseDate = film.releaseDate,
@@ -202,7 +206,7 @@ namespace backlog.Views
             };
             Backlog backlog = new Backlog
             {
-                id = new Guid(),
+                id = Guid.NewGuid(),
                 Name = music.name,
                 Type = "Music",
                 ReleaseDate = music.releaseDate,
@@ -232,7 +236,7 @@ namespace backlog.Views
             {
                 Backlog backlog = new Backlog
                 {
-                    id = new Guid(),
+                    id = Guid.NewGuid(),
                     Name = book.name,
                     Type = "Book",
                     ReleaseDate = book.releaseDate,
@@ -258,7 +262,7 @@ namespace backlog.Views
                 Series series = JsonConvert.DeserializeObject<Series>(seriesData);
                 Backlog backlog = new Backlog
                 {
-                    id = new Guid(),
+                    id = Guid.NewGuid(),
                     Name = series.fullTitle,
                     Type = "TV",
                     ReleaseDate = series.releaseDate,
@@ -300,7 +304,7 @@ namespace backlog.Views
             {
                 Backlog backlog = new Backlog
                 {
-                    id = new Guid(),
+                    id = Guid.NewGuid(),
                     Name = game.name,
                     Type = "Game",
                     ReleaseDate = game.releaseDate,

@@ -16,6 +16,7 @@ using backlog.Models;
 using backlog.Saving;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -33,6 +34,24 @@ namespace backlog.Views
             this.InitializeComponent();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             backlogs = SaveData.GetInstance().GetBacklogs();
+            ShowBackButton();
+        }
+
+        private void ShowBackButton()
+        {
+            // make the back button visible
+            var view = SystemNavigationManager.GetForCurrentView();
+            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            view.BackRequested += View_BackRequested;
+        }
+
+        private void View_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
+            e.Handled = true;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
