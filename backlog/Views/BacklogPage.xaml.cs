@@ -17,6 +17,9 @@ using backlog.Saving;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.UI.Core;
+using Windows.Storage.Streams;
+using Windows.Graphics.Imaging;
+using ColorThiefDotNet;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -27,6 +30,7 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class BacklogPage : Page
     {
+
         private Backlog backlog;
         private ObservableCollection<Backlog> backlogs;
         private int backlogIndex;
@@ -39,7 +43,7 @@ namespace backlog.Views
             edited = false;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             Guid selectedId = (Guid)e.Parameter;
             foreach (Backlog b in backlogs)
@@ -50,7 +54,24 @@ namespace backlog.Views
                     backlogIndex = backlogs.IndexOf(b);
                 }
             }
+            var gridColour = await GetAverageColour(new Uri(backlog.ImageURL));
+            var color = Windows.UI.Color.FromArgb(gridColour.A, gridColour.R, gridColour.G, gridColour.B);
+            var fill = new SolidColorBrush(color);
+            mainGrid.Background = fill;
             base.OnNavigatedTo(e);
+        }
+
+        private async Task<Color> GetAverageColour(Uri uri)
+        {
+            RandomAccessStreamReference random = RandomAccessStreamReference.CreateFromUri(uri);
+            using (IRandomAccessStream stream = await random.OpenReadAsync())
+            {
+                //Create a decoder for the image
+                var decoder = await BitmapDecoder.CreateAsync(stream);
+                var colorThief = new ColorThief();
+                var color = await colorThief.GetColor(decoder);
+                return color.Color;
+            }
         }
 
         private async void Hyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
