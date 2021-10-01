@@ -20,6 +20,7 @@ using Windows.UI.Core;
 using Windows.Storage.Streams;
 using Windows.Graphics.Imaging;
 using ColorThiefDotNet;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 

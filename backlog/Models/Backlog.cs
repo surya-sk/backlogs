@@ -23,7 +23,9 @@ namespace backlog.Models
         public int progress;
         private int length; 
         private string searchURL;
+        private string units;
         private string director;
+        private bool showProgress;
 
         public string Name
         {
@@ -75,6 +77,16 @@ namespace backlog.Models
             }
         }
 
+        public string Units
+        {
+            get => units;
+            set
+            {
+                units = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Units)));
+            }
+        }
+
         public bool HasReleased
         {
             get => hasReleased;
@@ -82,6 +94,16 @@ namespace backlog.Models
             {
                 hasReleased = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasReleased)));
+            }
+        }
+
+        public bool ShowProgress
+        {
+            get => showProgress;
+            set
+            {
+                showProgress = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowProgress)));
             }
         }
 

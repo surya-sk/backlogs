@@ -80,7 +80,6 @@ namespace backlog.Views
         private void BacklogView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedBacklog = (Backlog)e.ClickedItem;
-            Debug.WriteLine(selectedBacklog.id);
             Frame.Navigate(typeof(BacklogPage), selectedBacklog.id);
         }
 
@@ -186,7 +185,9 @@ namespace backlog.Views
                     Description = film.plot,
                     Length = film.runtimeMins,
                     Director = film.directors,
-                    Progress = 0
+                    Progress = 0,
+                    Units = "Minutes",
+                    ShowProgress = true
                 };
                 backlogs.Add(backlog);
                 filmBacklogs.Add(backlog);
@@ -215,7 +216,9 @@ namespace backlog.Views
                 TargetDate = date,
                 Description = music.description,
                 Director = music.artist,
-                Progress = 0
+                Progress = 0,
+                Units = "Minutes",
+                ShowProgress = false
             };
             backlogs.Add(backlog);
             musicBacklogs.Add(backlog);
@@ -247,7 +250,9 @@ namespace backlog.Views
                     Description = book.desciption,
                     Director = book.author,
                     Length = book.length,
-                    Progress = 0
+                    Progress = 0,
+                    Units = "Pages",
+                    ShowProgress = true
                 };
                 backlogs.Add(backlog);
                 bookBacklogs.Add(backlog);
@@ -272,9 +277,11 @@ namespace backlog.Views
                     ImageURL = series.image,
                     TargetDate = date,
                     Description = series.plot,
-                    Length = series.runtimeMin,
-                    Director = series.directors,
-                    Progress = 0
+                    Length = series.TvSeriesInfo.Seasons.Count,
+                    Director = series.TvSeriesInfo.Creators,
+                    Progress = 0,
+                    Units = "Season",
+                    ShowProgress = true
                 };
                 backlogs.Add(backlog);
                 tvBacklogs.Add(backlog);
@@ -317,7 +324,8 @@ namespace backlog.Views
                     Description = game.storyline,
                     Length = 0,
                     Director = game.company,
-                     Progress = 0
+                    Progress = 0,
+                    ShowProgress = false
                 };
                 backlogs.Add(backlog);
                 gameBacklogs.Add(backlog);

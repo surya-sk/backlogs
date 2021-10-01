@@ -63,11 +63,16 @@ namespace backlog.Utils
         public string plot { get; set; }
         public string releaseDate { get; set; }
         public string runtimeStr { get; set; }
-
+        public TvSeriesInfo TvSeriesInfo { get; set; }
         public int runtimeMin { get; set; }
         public string directors { get; set; }
     }
 
+    public class TvSeriesInfo
+    {
+        public string Creators { set; get; }
+        public List<string> Seasons { get; set; }
+    }
 
     public class GameResponse
     {

@@ -4,11 +4,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:backlog.Views"
     xmlns:data="using:backlog.Models"
+    xmlns:utils="using:backlog.Utils"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <utils:BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Page.Resources>
 
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
@@ -77,13 +82,14 @@
                                     <TextBlock Text="{x:Bind TargetDate}" />
                                 </StackPanel>
 
-                                <StackPanel Grid.Row="2" Margin="30">
+                                <StackPanel Grid.Row="2" Margin="30" Visibility="{x:Bind ShowProgress, Converter={StaticResource BoolToVis}}">
                                     <TextBlock Text="Progress" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,10" />
                                     <TextBlock Text="Enter how much progress you've made" FontStyle="Oblique" Margin="0,0,0,10" />
                                     <StackPanel Orientation="Horizontal" Margin="10">
                                         <muxc:NumberBox Value="{x:Bind Progress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpinButtonPlacementMode="Inline" ValueChanged="NumberBox_ValueChanged"/>
                                         <TextBlock Text="of"  Margin="10,5,10,0" FontSize="15"/>
                                         <TextBlock Text="{x:Bind Length}" Margin="0,5,10,0" FontSize="15"/>
+                                        <TextBlock Text="{x:Bind Units}" Margin="0,5,10,0" FontSize="15" />
                                     </StackPanel>
                                     <muxc:ProgressBar Value="{x:Bind Progress}" Minimum="0" Maximum="{x:Bind Length}" IsIndeterminate="False" Margin="20"/>
                                 </StackPanel>
