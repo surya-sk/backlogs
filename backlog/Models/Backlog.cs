@@ -17,7 +17,7 @@ namespace backlog.Models
         private string description;
         private string releaseDate;
         private string targetDate;
-        private bool hasReleased;
+        private bool isComplete;
         private string imageURL;
         private string trailerURL;
         public int progress;
@@ -87,13 +87,13 @@ namespace backlog.Models
             }
         }
 
-        public bool HasReleased
+        public bool IsComplete
         {
-            get => hasReleased;
+            get => isComplete;
             set
             {
-                hasReleased = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasReleased)));
+                isComplete = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsComplete)));
             }
         }
 

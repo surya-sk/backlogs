@@ -131,5 +131,21 @@ namespace backlog.Views
             }
             Frame.Navigate(typeof(MainPage));
         }
+
+        private async void FinishButton_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog deleteDialog = new ContentDialog
+            {
+                Title = "Are you done?",
+                Content = "This will delete this Backlog permanently.",
+                PrimaryButtonText = "Yes",
+                CloseButtonText = "Not yet"
+            };
+            ContentDialogResult result = await deleteDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                await DeleteConfirmation_Click();
+            }
+        }
     }
 }

@@ -52,6 +52,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
@@ -93,6 +94,11 @@
                                     </StackPanel>
                                     <muxc:ProgressBar Value="{x:Bind Progress}" Minimum="0" Maximum="{x:Bind Length}" IsIndeterminate="False" Margin="20"/>
                                 </StackPanel>
+
+                                <StackPanel Grid.Row="3" Margin="30">
+                                    <TextBlock Text="Have you finished checking this out?" Margin="0,20,0,10"/>
+                                    <Button x:Name="FinishButton" Content="Mark As Complete" Background="Green" Click="FinishButton_Click" />
+                                </StackPanel>
                             </Grid>
                         </UserControl>
                     </DataTemplate>
@@ -102,7 +108,7 @@
 
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
 
-        <CommandBar Grid.Row="3">
+        <CommandBar Grid.Row="4">
             <AppBarButton x:Name="DoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
             <AppBarButton x:Name="DeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
         </CommandBar>
