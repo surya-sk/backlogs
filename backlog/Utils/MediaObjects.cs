@@ -34,6 +34,7 @@ namespace backlog.Utils
         public string plot { get; set; }
         public string releaseDate { get; set; }
         public string runtimeStr { get; set; }
+        public int runtimeMins { get; set; }
         public string directors { get; set; }
     }
 
@@ -62,6 +63,8 @@ namespace backlog.Utils
         public string plot { get; set; }
         public string releaseDate { get; set; }
         public string runtimeStr { get; set; }
+
+        public int runtimeMin { get; set; }
         public string directors { get; set; }
     }
 
@@ -165,7 +168,7 @@ namespace backlog.Utils
         public string releaseDate { get; set; }
         public string desciption { get; set; }
         public string image { get; set; }
-        public string length { get; set; }
+        public int length { get; set; }
     }
 
 

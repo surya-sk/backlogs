@@ -29,29 +29,14 @@ namespace backlog.Views
     {
         private Backlog backlog;
         private ObservableCollection<Backlog> backlogs;
+        private int backlogIndex;
+        private bool edited;
         public BacklogPage()
         {
             this.InitializeComponent();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             backlogs = SaveData.GetInstance().GetBacklogs();
-            ShowBackButton();
-        }
-
-        private void ShowBackButton()
-        {
-            // make the back button visible
-            var view = SystemNavigationManager.GetForCurrentView();
-            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            view.BackRequested += View_BackRequested;
-        }
-
-        private void View_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            if (Frame.CanGoBack)
-            {
-                this.Frame.GoBack();
-            }
-            e.Handled = true;
+            edited = false;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -62,6 +47,7 @@ namespace backlog.Views
                 if (selectedId == b.id)
                 {
                     backlog = b;
+                    backlogIndex = backlogs.IndexOf(b);
                 }
             }
             base.OnNavigatedTo(e);
@@ -76,6 +62,52 @@ namespace backlog.Views
                 CloseButtonText = "Close"
             };
             await contentDialog.ShowAsync();
+        }
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog deleteDialog = new ContentDialog
+            {
+                Title = "Delete backlog?",
+                Content = "Deletion is permanent. This backlog cannot be recovered, and will be gone forever.",
+                PrimaryButtonText = "Delete",
+                CloseButtonText = "Cancel"
+            };
+            ContentDialogResult result = await deleteDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                await DeleteConfirmation_Click();
+            }
+        }
+
+        /// <summary>
+        /// Delete a concept after confirmation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async Task DeleteConfirmation_Click()
+        {
+            ProgBar.Visibility = Visibility.Visible;
+            backlogs.Remove(backlog);
+            SaveData.GetInstance().SaveSettings(backlogs);
+            await SaveData.GetInstance().WriteDataAsync();
+            Frame.Navigate(typeof(MainPage));
+        }
+
+        private void NumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
+        {
+            edited = true;
+        }
+
+        private async void DoneButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProgBar.Visibility = Visibility.Visible;
+            if(edited)
+            {
+                backlogs[backlogIndex] = backlog;
+                SaveData.GetInstance().SaveSettings(backlogs);
+                await SaveData.GetInstance().WriteDataAsync();
+            }
+            Frame.Navigate(typeof(MainPage));
         }
     }
 }

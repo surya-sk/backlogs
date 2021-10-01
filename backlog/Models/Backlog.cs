@@ -18,7 +18,8 @@ namespace backlog.Models
         private bool hasReleased;
         private string imageURL;
         private string trailerURL;
-        private string length; 
+        public int progress;
+        private int length; 
         private string searchURL;
         private string director;
 
@@ -92,7 +93,17 @@ namespace backlog.Models
             }
         }
 
-        public string Length
+        public int Progress
+        {
+            get => progress;
+            set
+            {
+                progress = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
+            }
+        }
+
+        public int Length
         {
             get => length;
             set

@@ -6,10 +6,16 @@
     xmlns:data="using:backlog.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <ContentControl Content="{x:Bind backlog}">
                 <ContentControl.ContentTemplate>
@@ -39,6 +45,8 @@
 
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
@@ -53,8 +61,7 @@
                                         <TextBlock Text="{x:Bind Name}" FontSize="30" Margin="0,0,0,10"/>
                                         <TextBlock x:Name="ArtistText" Text="{x:Bind Director}" FontSize="20" Margin="0,0,0,10" Grid.Row="1" />
                                         <RelativePanel Margin="0,0,0,20" Grid.Row="2">
-                                            <TextBlock x:Name="lengthText" Text="{x:Bind Length}" Margin="0,0,0,10" />
-                                            <TextBlock x:Name="descText" Text="{x:Bind Description}" TextTrimming="WordEllipsis" MaxLines="2" TextWrapping="Wrap" FontSize="15" RelativePanel.Below="lengthText" 
+                                            <TextBlock x:Name="descText" Text="{x:Bind Description}" TextTrimming="WordEllipsis" MaxLines="4" TextWrapping="Wrap" FontSize="15"
                                                        Margin="0,0,0,10" />
                                             <TextBlock RelativePanel.Below="descText">
                                                 <Hyperlink Click="Hyperlink_Click">
@@ -64,11 +71,34 @@
                                         </RelativePanel>
                                     </Grid>
                                 </RelativePanel>
+
+                                <StackPanel Grid.Row="1" Margin="30">
+                                    <TextBlock Text="Target Date" FontStyle="Oblique" />
+                                    <TextBlock Text="{x:Bind TargetDate}" />
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="2" Margin="30">
+                                    <TextBlock Text="Progress" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,10" />
+                                    <TextBlock Text="Enter how much progress you've made" FontStyle="Oblique" Margin="0,0,0,10" />
+                                    <StackPanel Orientation="Horizontal" Margin="10">
+                                        <muxc:NumberBox Value="{x:Bind Progress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpinButtonPlacementMode="Inline" ValueChanged="NumberBox_ValueChanged"/>
+                                        <TextBlock Text="of"  Margin="10,5,10,0" FontSize="15"/>
+                                        <TextBlock Text="{x:Bind Length}" Margin="0,5,10,0" FontSize="15"/>
+                                    </StackPanel>
+                                    <muxc:ProgressBar Value="{x:Bind Progress}" Minimum="0" Maximum="{x:Bind Length}" IsIndeterminate="False" Margin="20"/>
+                                </StackPanel>
                             </Grid>
                         </UserControl>
                     </DataTemplate>
                 </ContentControl.ContentTemplate>
             </ContentControl>
         </ScrollViewer>
+
+        <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
+
+        <CommandBar Grid.Row="3">
+            <AppBarButton x:Name="DoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
+            <AppBarButton x:Name="DeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
+        </CommandBar>
     </Grid>
 </Page>

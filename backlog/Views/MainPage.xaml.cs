@@ -184,8 +184,9 @@ namespace backlog.Views
                     ImageURL = film.image,
                     TargetDate = date,
                     Description = film.plot,
-                    Length = film.runtimeStr,
+                    Length = film.runtimeMins,
                     Director = film.directors,
+                    Progress = 0
                 };
                 backlogs.Add(backlog);
                 filmBacklogs.Add(backlog);
@@ -213,7 +214,8 @@ namespace backlog.Views
                 ImageURL = music.image,
                 TargetDate = date,
                 Description = music.description,
-                Director = music.artist
+                Director = music.artist,
+                Progress = 0
             };
             backlogs.Add(backlog);
             musicBacklogs.Add(backlog);
@@ -230,7 +232,7 @@ namespace backlog.Views
                 desciption = bookData.items[0].volumeInfo.description,
                 releaseDate = bookData.items[0].volumeInfo.publishedDate,
                 image = bookData.items[0].volumeInfo.imageLinks.thumbnail,
-                length = bookData.items[0].volumeInfo.pageCount.ToString()
+                length = bookData.items[0].volumeInfo.pageCount
             };
             if(book != null)
             {
@@ -244,7 +246,8 @@ namespace backlog.Views
                     TargetDate = date,
                     Description = book.desciption,
                     Director = book.author,
-                    Length = book.length
+                    Length = book.length,
+                    Progress = 0
                 };
                 backlogs.Add(backlog);
                 bookBacklogs.Add(backlog);
@@ -269,8 +272,9 @@ namespace backlog.Views
                     ImageURL = series.image,
                     TargetDate = date,
                     Description = series.plot,
-                    Length = series.runtimeStr,
-                    Director = series.directors
+                    Length = series.runtimeMin,
+                    Director = series.directors,
+                    Progress = 0
                 };
                 backlogs.Add(backlog);
                 tvBacklogs.Add(backlog);
@@ -311,8 +315,9 @@ namespace backlog.Views
                     ImageURL = game.image,
                     TargetDate = date,
                     Description = game.storyline,
-                    Length = "Unkown",
-                    Director = game.company
+                    Length = 0,
+                    Director = game.company,
+                     Progress = 0
                 };
                 backlogs.Add(backlog);
                 gameBacklogs.Add(backlog);
