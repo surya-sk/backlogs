@@ -135,7 +135,7 @@ namespace backlog.Views
             {
                 CreationProgBar.Visibility = Visibility.Visible;
                 string title = NameInput.Text.Replace(" ", string.Empty);
-                string date = DatePicker.Date.ToString("D");
+                string date = DatePicker.Date.ToString("d");
                 EmtpyListText.Visibility = Visibility.Collapsed;
                 switch(TypeComoBox.SelectedItem.ToString())
                 {
@@ -298,7 +298,7 @@ namespace backlog.Views
             var releaseDate = DateTimeOffset.FromUnixTimeSeconds(releaseDateTimestamp[0].date);
             Game game = new Game
             {
-                name = gameResult[0].name + " " + releaseDate.Year,
+                name = gameResult[0].name + $" ({releaseDate.Year})",
                 releaseDate = releaseDate.ToString("D"),
                 company = gameCompany[0].name,
                 image = "https:" + gameCover[0].url,
