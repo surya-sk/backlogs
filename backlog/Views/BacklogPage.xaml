@@ -106,7 +106,7 @@
             </ContentControl>
         </ScrollViewer>
 
-        <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
+        <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" VerticalAlignment="Top" />
 
         <CommandBar Grid.Row="4">
             <AppBarButton x:Name="DoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />

@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Backlog.cs" />
+    <Compile Include="Saving\Concept.cs" />
     <Compile Include="Saving\SaveData.cs" />
     <Compile Include="Utils\BacklogType.cs" />
     <Compile Include="Utils\BooleanToVisibilityConverter.cs" />

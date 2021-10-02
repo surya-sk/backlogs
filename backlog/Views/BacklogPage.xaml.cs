@@ -21,6 +21,7 @@ using Windows.Storage.Streams;
 using Windows.Graphics.Imaging;
 using ColorThiefDotNet;
 using System.Diagnostics;
+using Windows.Storage;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -36,11 +37,13 @@ namespace backlog.Views
         private ObservableCollection<Backlog> backlogs;
         private int backlogIndex;
         private bool edited;
+        string signedIn;
         public BacklogPage()
         {
             this.InitializeComponent();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             backlogs = SaveData.GetInstance().GetBacklogs();
+            signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
             edited = false;
         }
 
@@ -111,7 +114,7 @@ namespace backlog.Views
             ProgBar.Visibility = Visibility.Visible;
             backlogs.Remove(backlog);
             SaveData.GetInstance().SaveSettings(backlogs);
-            await SaveData.GetInstance().WriteDataAsync();
+            await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
             Frame.Navigate(typeof(MainPage));
         }
 
@@ -127,7 +130,7 @@ namespace backlog.Views
             {
                 backlogs[backlogIndex] = backlog;
                 SaveData.GetInstance().SaveSettings(backlogs);
-                await SaveData.GetInstance().WriteDataAsync();
+                await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
             }
             Frame.Navigate(typeof(MainPage));
         }

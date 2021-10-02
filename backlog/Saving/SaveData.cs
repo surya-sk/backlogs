@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
@@ -109,11 +110,22 @@ namespace backlog.Saving
         /// Write the backlog list in JSON format
         /// </summary>
         /// <returns></returns>
-        public async Task WriteDataAsync()
+        public async Task WriteDataAsync(bool sync = false)
         {
             string json = JsonConvert.SerializeObject(Backogs);
             StorageFile storageFile = await roamingFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(storageFile, json);
+            if(sync)
+            {
+                if (graphServiceClient is null)
+                {
+                    return;
+                }
+                using (var stream = await storageFile.OpenStreamForWriteAsync())
+                {
+                    await graphServiceClient.Me.Drive.Root.ItemWithPath(fileName).Content.Request().PutAsync<DriveItem>(stream);
+                }
+            }
         }
 
         public void SaveSettings(ObservableCollection<Backlog> backlogs)
@@ -125,10 +137,19 @@ namespace backlog.Saving
         /// Read the backlog list in JSON and deserialze it 
         /// </summary>
         /// <returns></returns>
-        public async Task ReadDataAsync()
+        public async Task ReadDataAsync(bool sync = false)
         {
             try
             {
+                if(sync)
+                {
+                    string jsonDownload = await DownloadConceptsJsonAsync();
+                    if(jsonDownload != null)
+                    {
+                        StorageFile file = await roamingFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+                        await FileIO.WriteTextAsync(file, jsonDownload);
+                    }
+                }
                 StorageFile storageFile = await roamingFolder.GetFileAsync(fileName);
                 string json = await FileIO.ReadTextAsync(storageFile);
                 Backogs = JsonConvert.DeserializeObject<ObservableCollection<Backlog>>(json);
@@ -136,6 +157,27 @@ namespace backlog.Saving
             catch
             {
                 Backogs = new ObservableCollection<Backlog>();
+            }
+        }
+
+        /// <summary>
+        /// Download backlog json
+        /// </summary>
+        /// <returns></returns>
+        private async Task<string> DownloadConceptsJsonAsync()
+        {
+            var search = await graphServiceClient.Me.Drive.Root.Search(fileName).Request().GetAsync();
+            if (search.Count == 0)
+            {
+                return null;
+            }
+            using (Stream stream = await graphServiceClient.Me.Drive.Root.ItemWithPath(fileName).Content.Request().GetAsync())
+            {
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    string json = sr.ReadToEnd();
+                    return json;
+                }
             }
         }
 

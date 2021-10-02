@@ -22,6 +22,8 @@ using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Windows.UI.Core;
+using System.Net.NetworkInformation;
+using Microsoft.Graph;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -38,18 +40,22 @@ namespace backlog.Views
         private ObservableCollection<Backlog> gameBacklogs { get; set; }
         private ObservableCollection<Backlog> musicBacklogs { get; set; }
         private ObservableCollection<Backlog> bookBacklogs { get; set; }
-        StorageFolder roamingFolder = ApplicationData.Current.RoamingFolder;
-        string fileName = "backlogs.txt";
+        GraphServiceClient graphServiceClient;
+
+        bool isNetworkAvailable = false;
+       string signedIn;
         public MainPage()
         {
             this.InitializeComponent();
+            isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             InitBacklogs();
         }
 
         private void InitBacklogs()
         {
-            backlogs = SaveData.GetInstance().GetBacklogs();
+            var readBacklogs = SaveData.GetInstance().GetBacklogs();
+            backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.TargetDate));
             filmBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
             tvBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
             gameBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
@@ -58,6 +64,64 @@ namespace backlog.Views
             ShowEmptyMessage();
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
+        }
+
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            ProgBar.Visibility = Visibility.Visible;
+            signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
+            if (isNetworkAvailable && signedIn == "Yes")
+            {
+                graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
+                SigninButton.Visibility = Visibility.Collapsed;
+                ProfileButton.Visibility = Visibility.Visible;
+                await SaveData.GetInstance().ReadDataAsync(true);
+                PopulateBacklogs();
+            }
+            ProgBar.Visibility = Visibility.Collapsed;
+            base.OnNavigatedTo(e);
+        }
+
+        private void PopulateBacklogs()
+        {
+            ObservableCollection<Backlog> readBacklogs = SaveData.GetInstance().GetBacklogs();
+            var _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.TargetDate)); // sort by last created
+            var _filmBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
+            var _tvBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
+            var _gameBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
+            var _musicBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Music.ToString()));
+            var _bookBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Book.ToString()));
+            backlogs.Clear();
+            filmBacklogs.Clear();
+            tvBacklogs.Clear();
+            gameBacklogs.Clear();
+            musicBacklogs.Clear();
+            bookBacklogs.Clear();
+            EmtpyListText.Visibility = Visibility.Collapsed;
+            foreach (var b in _backlogs)
+            {
+                backlogs.Add(b);
+            }
+            foreach (var b in _bookBacklogs)
+            {
+                bookBacklogs.Add(b);
+            }
+            foreach (var b in _filmBacklogs)
+            {
+                filmBacklogs.Add(b);
+            }
+            foreach (var b in _gameBacklogs)
+            {
+                gameBacklogs.Add(b);
+            }
+            foreach (var b in _tvBacklogs)
+            {
+                tvBacklogs.Add(b);
+            }
+            foreach (var b in _musicBacklogs)
+            {
+                musicBacklogs.Add(b);
+            }
         }
 
         private void ShowEmptyMessage()
@@ -83,9 +147,28 @@ namespace backlog.Views
             Frame.Navigate(typeof(BacklogPage), selectedBacklog.id);
         }
 
-        private void SigninButton_Click(object sender, RoutedEventArgs e)
+        private async void SigninButton_Click(object sender, RoutedEventArgs e)
         {
-
+            signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
+            if (isNetworkAvailable)
+            {
+                if (signedIn != "Yes")
+                {
+                    graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
+                    ApplicationData.Current.LocalSettings.Values["SignedIn"] = "Yes";
+                    Frame.Navigate(typeof(MainPage));
+                }
+            }
+            else
+            {
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "No Internet",
+                    Content = "You need to be connected to sign-in",
+                    CloseButtonText = "Ok"
+                };
+                ContentDialogResult result = await contentDialog.ShowAsync();
+            }
         }
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
@@ -160,7 +243,7 @@ namespace backlog.Views
                         break;
                 }
                 SaveData.GetInstance().SaveSettings(backlogs);
-                await SaveData.GetInstance().WriteDataAsync();
+                await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
                 CreationProgBar.Visibility = Visibility.Collapsed;
             }
         }
@@ -330,6 +413,26 @@ namespace backlog.Views
                 backlogs.Add(backlog);
                 gameBacklogs.Add(backlog);
             }
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RateButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SupprtButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ShareButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
