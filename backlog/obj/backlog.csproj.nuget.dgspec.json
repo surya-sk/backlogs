@@ -59,10 +59,6 @@
               "target": "Package",
               "version": "[2.4.3, )"
             },
-            "SixLabors.ImageSharp": {
-              "target": "Package",
-              "version": "[1.0.4, )"
-            },
             "System.Memory": {
               "target": "Package",
               "version": "[4.5.4, )"

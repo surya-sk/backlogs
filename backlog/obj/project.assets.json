@@ -630,25 +630,6 @@
           }
         }
       },
-      "SixLabors.ImageSharp/1.0.4": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Buffers": "4.5.1",
-          "System.IO.Compression": "4.3.0",
-          "System.IO.UnmanagedMemoryStream": "4.3.0",
-          "System.Memory": "4.5.4",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Threading.Tasks.Parallel": "4.3.0",
-          "System.ValueTuple": "4.5.0"
-        },
-        "compile": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        }
-      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1112,18 +1093,16 @@
           "lib/netcore50/System.IO.IsolatedStorage.dll": {}
         }
       },
-      "System.IO.UnmanagedMemoryStream/4.3.0": {
+      "System.IO.UnmanagedMemoryStream/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Buffers": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.IO": "4.3.0",
-          "System.IO.FileSystem.Primitives": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.InteropServices": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.IO": "4.1.0",
+          "System.IO.FileSystem.Primitives": "4.0.1",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netstandard1.3/System.IO.UnmanagedMemoryStream.dll": {}
@@ -1476,7 +1455,7 @@
           }
         }
       },
-      "System.Numerics.Vectors/4.5.0": {
+      "System.Numerics.Vectors/4.1.1": {
         "type": "package",
         "compile": {
           "ref/netstandard1.0/System.Numerics.Vectors.dll": {}
@@ -2439,17 +2418,17 @@
           "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
         }
       },
-      "System.Threading.Tasks.Parallel/4.3.0": {
+      "System.Threading.Tasks.Parallel/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Collections.Concurrent": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.Diagnostics.Tracing": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.Collections.Concurrent": "4.0.12",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Diagnostics.Tracing": "4.1.0",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netcore50/System.Threading.Tasks.Parallel.dll": {}
@@ -2472,10 +2451,10 @@
           "lib/win81/_._": {}
         }
       },
-      "System.ValueTuple/4.5.0": {
+      "System.ValueTuple/4.3.0": {
         "type": "package",
         "compile": {
-          "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll": {}
+          "lib/netstandard1.0/System.ValueTuple.dll": {}
         },
         "runtime": {
           "lib/netstandard1.0/System.ValueTuple.dll": {}
@@ -3420,25 +3399,6 @@
           "runtimes/win8-arm/native/clrcompression.dll": {}
         }
       },
-      "SixLabors.ImageSharp/1.0.4": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Buffers": "4.5.1",
-          "System.IO.Compression": "4.3.0",
-          "System.IO.UnmanagedMemoryStream": "4.3.0",
-          "System.Memory": "4.5.4",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Threading.Tasks.Parallel": "4.3.0",
-          "System.ValueTuple": "4.5.0"
-        },
-        "compile": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        }
-      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -3870,18 +3830,16 @@
           "lib/netcore50/System.IO.IsolatedStorage.dll": {}
         }
       },
-      "System.IO.UnmanagedMemoryStream/4.3.0": {
+      "System.IO.UnmanagedMemoryStream/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Buffers": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.IO": "4.3.0",
-          "System.IO.FileSystem.Primitives": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.InteropServices": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.IO": "4.1.0",
+          "System.IO.FileSystem.Primitives": "4.0.1",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netstandard1.3/System.IO.UnmanagedMemoryStream.dll": {}
@@ -4180,7 +4138,7 @@
           "runtimes/win/lib/netcore50/System.Net.WebSockets.Client.dll": {}
         }
       },
-      "System.Numerics.Vectors/4.5.0": {
+      "System.Numerics.Vectors/4.1.1": {
         "type": "package",
         "compile": {
           "ref/netstandard1.0/System.Numerics.Vectors.dll": {}
@@ -5043,17 +5001,17 @@
           "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
         }
       },
-      "System.Threading.Tasks.Parallel/4.3.0": {
+      "System.Threading.Tasks.Parallel/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Collections.Concurrent": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.Diagnostics.Tracing": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.Collections.Concurrent": "4.0.12",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Diagnostics.Tracing": "4.1.0",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netcore50/System.Threading.Tasks.Parallel.dll": {}
@@ -5077,10 +5035,10 @@
           "lib/win81/_._": {}
         }
       },
-      "System.ValueTuple/4.5.0": {
+      "System.ValueTuple/4.3.0": {
         "type": "package",
         "compile": {
-          "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll": {}
+          "lib/netstandard1.0/System.ValueTuple.dll": {}
         },
         "runtime": {
           "lib/netstandard1.0/System.ValueTuple.dll": {}
@@ -6055,25 +6013,6 @@
           "runtimes/win8-arm-aot/native/_._": {}
         }
       },
-      "SixLabors.ImageSharp/1.0.4": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Buffers": "4.5.1",
-          "System.IO.Compression": "4.3.0",
-          "System.IO.UnmanagedMemoryStream": "4.3.0",
-          "System.Memory": "4.5.4",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Threading.Tasks.Parallel": "4.3.0",
-          "System.ValueTuple": "4.5.0"
-        },
-        "compile": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        }
-      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -6505,18 +6444,16 @@
           "lib/netcore50/System.IO.IsolatedStorage.dll": {}
         }
       },
-      "System.IO.UnmanagedMemoryStream/4.3.0": {
+      "System.IO.UnmanagedMemoryStream/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Buffers": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.IO": "4.3.0",
-          "System.IO.FileSystem.Primitives": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.InteropServices": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.IO": "4.1.0",
+          "System.IO.FileSystem.Primitives": "4.0.1",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netstandard1.3/System.IO.UnmanagedMemoryStream.dll": {}
@@ -6815,7 +6752,7 @@
           "runtimes/win/lib/netcore50/System.Net.WebSockets.Client.dll": {}
         }
       },
-      "System.Numerics.Vectors/4.5.0": {
+      "System.Numerics.Vectors/4.1.1": {
         "type": "package",
         "compile": {
           "ref/netstandard1.0/System.Numerics.Vectors.dll": {}
@@ -7678,17 +7615,17 @@
           "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
         }
       },
-      "System.Threading.Tasks.Parallel/4.3.0": {
+      "System.Threading.Tasks.Parallel/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Collections.Concurrent": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.Diagnostics.Tracing": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.Collections.Concurrent": "4.0.12",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Diagnostics.Tracing": "4.1.0",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netcore50/System.Threading.Tasks.Parallel.dll": {}
@@ -7712,10 +7649,10 @@
           "lib/win81/_._": {}
         }
       },
-      "System.ValueTuple/4.5.0": {
+      "System.ValueTuple/4.3.0": {
         "type": "package",
         "compile": {
-          "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll": {}
+          "lib/netstandard1.0/System.ValueTuple.dll": {}
         },
         "runtime": {
           "lib/netstandard1.0/System.ValueTuple.dll": {}
@@ -8677,25 +8614,6 @@
           "runtimes/aot/lib/netcore50/System.Private.Uri.dll": {}
         }
       },
-      "SixLabors.ImageSharp/1.0.4": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Buffers": "4.5.1",
-          "System.IO.Compression": "4.3.0",
-          "System.IO.UnmanagedMemoryStream": "4.3.0",
-          "System.Memory": "4.5.4",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Threading.Tasks.Parallel": "4.3.0",
-          "System.ValueTuple": "4.5.0"
-        },
-        "compile": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        }
-      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -9127,18 +9045,16 @@
           "lib/netcore50/System.IO.IsolatedStorage.dll": {}
         }
       },
-      "System.IO.UnmanagedMemoryStream/4.3.0": {
+      "System.IO.UnmanagedMemoryStream/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Buffers": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.IO": "4.3.0",
-          "System.IO.FileSystem.Primitives": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.InteropServices": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.IO": "4.1.0",
+          "System.IO.FileSystem.Primitives": "4.0.1",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netstandard1.3/System.IO.UnmanagedMemoryStream.dll": {}
@@ -9437,7 +9353,7 @@
           "runtimes/win/lib/netcore50/System.Net.WebSockets.Client.dll": {}
         }
       },
-      "System.Numerics.Vectors/4.5.0": {
+      "System.Numerics.Vectors/4.1.1": {
         "type": "package",
         "compile": {
           "ref/netstandard1.0/System.Numerics.Vectors.dll": {}
@@ -10300,17 +10216,17 @@
           "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
         }
       },
-      "System.Threading.Tasks.Parallel/4.3.0": {
+      "System.Threading.Tasks.Parallel/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Collections.Concurrent": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.Diagnostics.Tracing": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.Collections.Concurrent": "4.0.12",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Diagnostics.Tracing": "4.1.0",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netcore50/System.Threading.Tasks.Parallel.dll": {}
@@ -10334,10 +10250,10 @@
           "lib/win81/_._": {}
         }
       },
-      "System.ValueTuple/4.5.0": {
+      "System.ValueTuple/4.3.0": {
         "type": "package",
         "compile": {
-          "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll": {}
+          "lib/netstandard1.0/System.ValueTuple.dll": {}
         },
         "runtime": {
           "lib/netstandard1.0/System.ValueTuple.dll": {}
@@ -11285,25 +11201,6 @@
           "runtimes/win/lib/netcore50/System.Private.Uri.dll": {}
         }
       },
-      "SixLabors.ImageSharp/1.0.4": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Buffers": "4.5.1",
-          "System.IO.Compression": "4.3.0",
-          "System.IO.UnmanagedMemoryStream": "4.3.0",
-          "System.Memory": "4.5.4",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Threading.Tasks.Parallel": "4.3.0",
-          "System.ValueTuple": "4.5.0"
-        },
-        "compile": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        }
-      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -11735,18 +11632,16 @@
           "lib/netcore50/System.IO.IsolatedStorage.dll": {}
         }
       },
-      "System.IO.UnmanagedMemoryStream/4.3.0": {
+      "System.IO.UnmanagedMemoryStream/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Buffers": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.IO": "4.3.0",
-          "System.IO.FileSystem.Primitives": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.InteropServices": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.IO": "4.1.0",
+          "System.IO.FileSystem.Primitives": "4.0.1",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netstandard1.3/System.IO.UnmanagedMemoryStream.dll": {}
@@ -12045,7 +11940,7 @@
           "runtimes/win/lib/netcore50/System.Net.WebSockets.Client.dll": {}
         }
       },
-      "System.Numerics.Vectors/4.5.0": {
+      "System.Numerics.Vectors/4.1.1": {
         "type": "package",
         "compile": {
           "ref/netstandard1.0/System.Numerics.Vectors.dll": {}
@@ -12908,17 +12803,17 @@
           "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
         }
       },
-      "System.Threading.Tasks.Parallel/4.3.0": {
+      "System.Threading.Tasks.Parallel/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Collections.Concurrent": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.Diagnostics.Tracing": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.Collections.Concurrent": "4.0.12",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Diagnostics.Tracing": "4.1.0",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netcore50/System.Threading.Tasks.Parallel.dll": {}
@@ -12942,10 +12837,10 @@
           "lib/win81/_._": {}
         }
       },
-      "System.ValueTuple/4.5.0": {
+      "System.ValueTuple/4.3.0": {
         "type": "package",
         "compile": {
-          "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll": {}
+          "lib/netstandard1.0/System.ValueTuple.dll": {}
         },
         "runtime": {
           "lib/netstandard1.0/System.ValueTuple.dll": {}
@@ -13929,25 +13824,6 @@
           "runtimes/aot/lib/netcore50/System.Private.Uri.dll": {}
         }
       },
-      "SixLabors.ImageSharp/1.0.4": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Buffers": "4.5.1",
-          "System.IO.Compression": "4.3.0",
-          "System.IO.UnmanagedMemoryStream": "4.3.0",
-          "System.Memory": "4.5.4",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Threading.Tasks.Parallel": "4.3.0",
-          "System.ValueTuple": "4.5.0"
-        },
-        "compile": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        }
-      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -14379,18 +14255,16 @@
           "lib/netcore50/System.IO.IsolatedStorage.dll": {}
         }
       },
-      "System.IO.UnmanagedMemoryStream/4.3.0": {
+      "System.IO.UnmanagedMemoryStream/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Buffers": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.IO": "4.3.0",
-          "System.IO.FileSystem.Primitives": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.InteropServices": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.IO": "4.1.0",
+          "System.IO.FileSystem.Primitives": "4.0.1",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netstandard1.3/System.IO.UnmanagedMemoryStream.dll": {}
@@ -14689,7 +14563,7 @@
           "runtimes/win/lib/netcore50/System.Net.WebSockets.Client.dll": {}
         }
       },
-      "System.Numerics.Vectors/4.5.0": {
+      "System.Numerics.Vectors/4.1.1": {
         "type": "package",
         "compile": {
           "ref/netstandard1.0/System.Numerics.Vectors.dll": {}
@@ -15552,17 +15426,17 @@
           "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
         }
       },
-      "System.Threading.Tasks.Parallel/4.3.0": {
+      "System.Threading.Tasks.Parallel/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Collections.Concurrent": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.Diagnostics.Tracing": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.Collections.Concurrent": "4.0.12",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Diagnostics.Tracing": "4.1.0",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netcore50/System.Threading.Tasks.Parallel.dll": {}
@@ -15586,10 +15460,10 @@
           "lib/win81/_._": {}
         }
       },
-      "System.ValueTuple/4.5.0": {
+      "System.ValueTuple/4.3.0": {
         "type": "package",
         "compile": {
-          "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll": {}
+          "lib/netstandard1.0/System.ValueTuple.dll": {}
         },
         "runtime": {
           "lib/netstandard1.0/System.ValueTuple.dll": {}
@@ -16537,25 +16411,6 @@
           "runtimes/win/lib/netcore50/System.Private.Uri.dll": {}
         }
       },
-      "SixLabors.ImageSharp/1.0.4": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Buffers": "4.5.1",
-          "System.IO.Compression": "4.3.0",
-          "System.IO.UnmanagedMemoryStream": "4.3.0",
-          "System.Memory": "4.5.4",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Threading.Tasks.Parallel": "4.3.0",
-          "System.ValueTuple": "4.5.0"
-        },
-        "compile": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        }
-      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -16987,18 +16842,16 @@
           "lib/netcore50/System.IO.IsolatedStorage.dll": {}
         }
       },
-      "System.IO.UnmanagedMemoryStream/4.3.0": {
+      "System.IO.UnmanagedMemoryStream/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Buffers": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.IO": "4.3.0",
-          "System.IO.FileSystem.Primitives": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.InteropServices": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.IO": "4.1.0",
+          "System.IO.FileSystem.Primitives": "4.0.1",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netstandard1.3/System.IO.UnmanagedMemoryStream.dll": {}
@@ -17297,7 +17150,7 @@
           "runtimes/win/lib/netcore50/System.Net.WebSockets.Client.dll": {}
         }
       },
-      "System.Numerics.Vectors/4.5.0": {
+      "System.Numerics.Vectors/4.1.1": {
         "type": "package",
         "compile": {
           "ref/netstandard1.0/System.Numerics.Vectors.dll": {}
@@ -18160,17 +18013,17 @@
           "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
         }
       },
-      "System.Threading.Tasks.Parallel/4.3.0": {
+      "System.Threading.Tasks.Parallel/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Collections.Concurrent": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.Diagnostics.Tracing": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.Collections.Concurrent": "4.0.12",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Diagnostics.Tracing": "4.1.0",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netcore50/System.Threading.Tasks.Parallel.dll": {}
@@ -18194,10 +18047,10 @@
           "lib/win81/_._": {}
         }
       },
-      "System.ValueTuple/4.5.0": {
+      "System.ValueTuple/4.3.0": {
         "type": "package",
         "compile": {
-          "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll": {}
+          "lib/netstandard1.0/System.ValueTuple.dll": {}
         },
         "runtime": {
           "lib/netstandard1.0/System.ValueTuple.dll": {}
@@ -19181,25 +19034,6 @@
           "runtimes/aot/lib/netcore50/System.Private.Uri.dll": {}
         }
       },
-      "SixLabors.ImageSharp/1.0.4": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Buffers": "4.5.1",
-          "System.IO.Compression": "4.3.0",
-          "System.IO.UnmanagedMemoryStream": "4.3.0",
-          "System.Memory": "4.5.4",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Threading.Tasks.Parallel": "4.3.0",
-          "System.ValueTuple": "4.5.0"
-        },
-        "compile": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/SixLabors.ImageSharp.dll": {}
-        }
-      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -19631,18 +19465,16 @@
           "lib/netcore50/System.IO.IsolatedStorage.dll": {}
         }
       },
-      "System.IO.UnmanagedMemoryStream/4.3.0": {
+      "System.IO.UnmanagedMemoryStream/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Buffers": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.IO": "4.3.0",
-          "System.IO.FileSystem.Primitives": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.InteropServices": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.IO": "4.1.0",
+          "System.IO.FileSystem.Primitives": "4.0.1",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netstandard1.3/System.IO.UnmanagedMemoryStream.dll": {}
@@ -19941,7 +19773,7 @@
           "runtimes/win/lib/netcore50/System.Net.WebSockets.Client.dll": {}
         }
       },
-      "System.Numerics.Vectors/4.5.0": {
+      "System.Numerics.Vectors/4.1.1": {
         "type": "package",
         "compile": {
           "ref/netstandard1.0/System.Numerics.Vectors.dll": {}
@@ -20804,17 +20636,17 @@
           "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
         }
       },
-      "System.Threading.Tasks.Parallel/4.3.0": {
+      "System.Threading.Tasks.Parallel/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Collections.Concurrent": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.Diagnostics.Tracing": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0"
+          "System.Collections.Concurrent": "4.0.12",
+          "System.Diagnostics.Debug": "4.0.11",
+          "System.Diagnostics.Tracing": "4.1.0",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.Threading.Tasks": "4.0.11"
         },
         "compile": {
           "ref/netcore50/System.Threading.Tasks.Parallel.dll": {}
@@ -20838,10 +20670,10 @@
           "lib/win81/_._": {}
         }
       },
-      "System.ValueTuple/4.5.0": {
+      "System.ValueTuple/4.3.0": {
         "type": "package",
         "compile": {
-          "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll": {}
+          "lib/netstandard1.0/System.ValueTuple.dll": {}
         },
         "runtime": {
           "lib/netstandard1.0/System.ValueTuple.dll": {}
@@ -26569,30 +26401,6 @@
         "runtimes/win8-arm/native/clrcompression.dll"
       ]
     },
-    "SixLabors.ImageSharp/1.0.4": {
-      "sha512": "H2rPiEr2ddBOltOuqRYhpLBAsQXDAhbzMMhhuksnBG2oefup1MXMchALe7yYkKJksNbtxbZHKeM6dn/68I75qw==",
-      "type": "package",
-      "path": "sixlabors.imagesharp/1.0.4",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net472/SixLabors.ImageSharp.dll",
-        "lib/net472/SixLabors.ImageSharp.xml",
-        "lib/netcoreapp2.1/SixLabors.ImageSharp.dll",
-        "lib/netcoreapp2.1/SixLabors.ImageSharp.xml",
-        "lib/netcoreapp3.1/SixLabors.ImageSharp.dll",
-        "lib/netcoreapp3.1/SixLabors.ImageSharp.xml",
-        "lib/netstandard1.3/SixLabors.ImageSharp.dll",
-        "lib/netstandard1.3/SixLabors.ImageSharp.xml",
-        "lib/netstandard2.0/SixLabors.ImageSharp.dll",
-        "lib/netstandard2.0/SixLabors.ImageSharp.xml",
-        "lib/netstandard2.1/SixLabors.ImageSharp.dll",
-        "lib/netstandard2.1/SixLabors.ImageSharp.xml",
-        "sixlabors.imagesharp.1.0.4.nupkg.sha512",
-        "sixlabors.imagesharp.128.png",
-        "sixlabors.imagesharp.nuspec"
-      ]
-    },
     "System.AppContext/4.3.0": {
       "sha512": "fKC+rmaLfeIzUhagxY17Q9siv/sPrjjKcfNg1Ic8IlQkZLipo8ljcaZQu4VtI4Jqbzjc2VTjzGLF6WmsRXAEgA==",
       "type": "package",
@@ -28065,13 +27873,12 @@
         "system.io.isolatedstorage.nuspec"
       ]
     },
-    "System.IO.UnmanagedMemoryStream/4.3.0": {
-      "sha512": "tS89nK7pw8ebkkEfWujA05+ZReHKzz39W+bcX1okVR0GJCJuzPyfYfQZyiLSrjp121BB5J4uewZQiUTKri2pSQ==",
+    "System.IO.UnmanagedMemoryStream/4.0.1": {
+      "sha512": "wcq0kXcpfJwdl1Y4/ZjDk7Dhx5HdLyRYYWYmD8Nn8skoGYYQd2BQWbXwjWSczip8AL4Z57o2dWWXAl4aABAKiQ==",
       "type": "package",
-      "path": "system.io.unmanagedmemorystream/4.3.0",
+      "path": "system.io.unmanagedmemorystream/4.0.1",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -28100,7 +27907,7 @@
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._",
-        "system.io.unmanagedmemorystream.4.3.0.nupkg.sha512",
+        "system.io.unmanagedmemorystream.4.0.1.nupkg.sha512",
         "system.io.unmanagedmemorystream.nuspec"
       ]
     },
@@ -28914,51 +28721,39 @@
         "system.net.websockets.client.nuspec"
       ]
     },
-    "System.Numerics.Vectors/4.5.0": {
-      "sha512": "QQTlPTl06J/iiDbJCiepZ4H//BVraReU4O4EoRw1U02H5TLUIT7xn3GnDp9AXPSlJUDyFs4uWjWafNX6WrAojQ==",
+    "System.Numerics.Vectors/4.1.1": {
+      "sha512": "3Tz9YBcCj9NI+WuJinVpCfJFMM0HVK8E1AyM7/dWdvzvp7XbpNfnE3NWInEqmRx2EDhXhSUsVih+0jj239GkUw==",
       "type": "package",
-      "path": "system.numerics.vectors/4.5.0",
+      "path": "system.numerics.vectors/4.1.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
         "lib/net46/System.Numerics.Vectors.dll",
         "lib/net46/System.Numerics.Vectors.xml",
-        "lib/netcoreapp2.0/_._",
         "lib/netstandard1.0/System.Numerics.Vectors.dll",
         "lib/netstandard1.0/System.Numerics.Vectors.xml",
-        "lib/netstandard2.0/System.Numerics.Vectors.dll",
-        "lib/netstandard2.0/System.Numerics.Vectors.xml",
         "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.dll",
         "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.xml",
-        "lib/uap10.0.16299/_._",
         "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
         "lib/xamarintvos10/_._",
         "lib/xamarinwatchos10/_._",
         "ref/MonoAndroid10/_._",
         "ref/MonoTouch10/_._",
-        "ref/net45/System.Numerics.Vectors.dll",
-        "ref/net45/System.Numerics.Vectors.xml",
         "ref/net46/System.Numerics.Vectors.dll",
         "ref/net46/System.Numerics.Vectors.xml",
-        "ref/netcoreapp2.0/_._",
         "ref/netstandard1.0/System.Numerics.Vectors.dll",
         "ref/netstandard1.0/System.Numerics.Vectors.xml",
-        "ref/netstandard2.0/System.Numerics.Vectors.dll",
-        "ref/netstandard2.0/System.Numerics.Vectors.xml",
-        "ref/uap10.0.16299/_._",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._",
-        "system.numerics.vectors.4.5.0.nupkg.sha512",
-        "system.numerics.vectors.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "system.numerics.vectors.4.1.1.nupkg.sha512",
+        "system.numerics.vectors.nuspec"
       ]
     },
     "System.Numerics.Vectors.WindowsRuntime/4.0.1": {
@@ -31500,13 +31295,12 @@
         "system.threading.tasks.extensions.nuspec"
       ]
     },
-    "System.Threading.Tasks.Parallel/4.3.0": {
-      "sha512": "cbjBNZHf/vQCfcdhzx7knsiygoCKgxL8mZOeocXZn5gWhCdzHIq6bYNKWX0LAJCWYP7bds4yBK8p06YkP0oa0g==",
+    "System.Threading.Tasks.Parallel/4.0.1": {
+      "sha512": "7Pc9t25bcynT9FpMvkUw4ZjYwUiGup/5cJFW72/5MgCG+np2cfVUMdh29u8d7onxX7d8PS3J+wL73zQRqkdrSA==",
       "type": "package",
-      "path": "system.threading.tasks.parallel/4.3.0",
+      "path": "system.threading.tasks.parallel/4.0.1",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -31553,7 +31347,7 @@
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._",
-        "system.threading.tasks.parallel.4.3.0.nupkg.sha512",
+        "system.threading.tasks.parallel.4.0.1.nupkg.sha512",
         "system.threading.tasks.parallel.nuspec"
       ]
     },
@@ -31612,48 +31406,21 @@
         "system.threading.timer.nuspec"
       ]
     },
-    "System.ValueTuple/4.5.0": {
-      "sha512": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ==",
+    "System.ValueTuple/4.3.0": {
+      "sha512": "cNLEvBX3d6MMQRZe3SMFNukVbitDAEpVZO17qa0/2FHxZ7Y7PpFRpr6m2615XYM/tYYYf0B+WyHNujqIw8Luwg==",
       "type": "package",
-      "path": "system.valuetuple/4.5.0",
+      "path": "system.valuetuple/4.3.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net461/System.ValueTuple.dll",
-        "lib/net461/System.ValueTuple.xml",
-        "lib/net47/System.ValueTuple.dll",
-        "lib/net47/System.ValueTuple.xml",
-        "lib/netcoreapp2.0/_._",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/netstandard1.0/.xml",
         "lib/netstandard1.0/System.ValueTuple.dll",
-        "lib/netstandard1.0/System.ValueTuple.xml",
-        "lib/netstandard2.0/_._",
+        "lib/portable-net40+sl4+win8+wp8/.xml",
         "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
-        "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.xml",
-        "lib/uap10.0.16299/_._",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "lib/xamarintvos10/_._",
-        "lib/xamarinwatchos10/_._",
-        "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
-        "ref/net461/System.ValueTuple.dll",
-        "ref/net47/System.ValueTuple.dll",
-        "ref/netcoreapp2.0/_._",
-        "ref/netstandard2.0/_._",
-        "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
-        "ref/uap10.0.16299/_._",
-        "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._",
-        "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._",
-        "system.valuetuple.4.5.0.nupkg.sha512",
-        "system.valuetuple.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "system.valuetuple.4.3.0.nupkg.sha512",
+        "system.valuetuple.nuspec"
       ]
     },
     "System.Xml.ReaderWriter/4.3.0": {
@@ -31916,7 +31683,6 @@
       "Microsoft.Identity.Client >= 4.36.1",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 6.2.12",
       "Microsoft.UI.Xaml >= 2.4.3",
-      "SixLabors.ImageSharp >= 1.0.4",
       "System.Memory >= 4.5.4",
       "ksemenenko.ColorThief >= 1.1.1.4"
     ]
@@ -31980,10 +31746,6 @@
           "Microsoft.UI.Xaml": {
             "target": "Package",
             "version": "[2.4.3, )"
-          },
-          "SixLabors.ImageSharp": {
-            "target": "Package",
-            "version": "[1.0.4, )"
           },
           "System.Memory": {
             "target": "Package",

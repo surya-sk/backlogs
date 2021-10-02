@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="35c3cf05-89ac-49e7-b361-e26293584da5"
-    Publisher="CN=surya"
-    Version="1.0.0.0" />
+    Name="37533SuryaKashyap.Backlogs"
+    Publisher="CN=7115D965-9BEF-4D32-9397-2F0F733B3D6D"
+    Version="0.1.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="35c3cf05-89ac-49e7-b361-e26293584da5" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="af8238ee-b880-4e0d-9580-215f87474c52" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>backlog</DisplayName>
-    <PublisherDisplayName>surya</PublisherDisplayName>
+    <DisplayName>Backlogs</DisplayName>
+    <PublisherDisplayName>Surya Kashyap</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -37,7 +37,7 @@
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="backlog"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
