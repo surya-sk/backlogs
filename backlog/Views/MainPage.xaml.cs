@@ -417,7 +417,7 @@ namespace backlog.Views
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(SettingsPage));
         }
 
         private void RateButton_Click(object sender, RoutedEventArgs e)

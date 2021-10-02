@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using backlog.Views;
+using backlog.Utils;
+using System.Reflection;
 
 namespace backlog
 {
@@ -31,6 +33,15 @@ namespace backlog
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+        }
+
+        public static TEnum GetEnum<TEnum>(string text) where TEnum : struct
+        {
+            if (!typeof(TEnum).GetTypeInfo().IsEnum)
+            {
+                throw new InvalidOperationException("Generic parameter 'TEnum' must be an enum.");
+            }
+            return (TEnum)Enum.Parse(typeof(TEnum), text);
         }
 
         /// <summary>
@@ -96,6 +107,53 @@ namespace backlog
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            InitFrame(args);
+
+            base.OnActivated(args);
+        }
+
+        /// <summary>
+        /// Initialized root frame and navigates to the main page
+        /// </summary>
+        /// <param name="args"></param>
+        private void InitFrame(IActivatedEventArgs args)
+        {
+            Frame rootFrame = GetRootFrame();
+            ThemeHelper.Initialize();
+
+            rootFrame.Navigate(typeof(MainPage));
+        }
+
+        /// <summary>
+        /// Gets the root frame. Used for setting the app theme at launch
+        /// </summary>
+        /// <returns>The root frame</returns>
+        private Frame GetRootFrame()
+        {
+            Frame rootFrame;
+            if (!(Window.Current.Content is MainPage rootPage))
+            {
+                rootPage = new MainPage();
+                rootFrame = (Frame)rootPage.FindName("rootFrame");
+                if (rootFrame == null)
+                {
+                    throw new Exception("Root frame not found");
+                }
+                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                Window.Current.Content = rootPage;
+            }
+            else
+            {
+                rootFrame = (Frame)rootPage.FindName("rootFrame");
+            }
+
+            return rootFrame;
         }
     }
 }
