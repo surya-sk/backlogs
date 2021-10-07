@@ -31,7 +31,7 @@
                                     <VisualStateGroup x:Name="LayoutVisualStates">
                                         <VisualState x:Name="WideLayout">
                                             <VisualState.StateTriggers>
-                                                <AdaptiveTrigger MinWindowWidth="800" />
+                                                <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
                                             </VisualState.StateTriggers>
                                             <VisualState.Setters />
                                         </VisualState>
