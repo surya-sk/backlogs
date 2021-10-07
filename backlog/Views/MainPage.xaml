@@ -92,7 +92,7 @@
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
-                                                TextWrapping="NoWrap" />
+                                                TextWrapping="Wrap" />
                                                     <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
@@ -166,7 +166,7 @@
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
-                                                TextWrapping="NoWrap" />
+                                                TextWrapping="Wrap" />
                                                     <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
@@ -240,7 +240,7 @@
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
-                                                TextWrapping="NoWrap" />
+                                                TextWrapping="Wrap" />
                                                     <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
@@ -314,7 +314,7 @@
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
-                                                TextWrapping="NoWrap" />
+                                                TextWrapping="Wrap" />
                                                     <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
@@ -388,7 +388,7 @@
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
-                                                TextWrapping="NoWrap" />
+                                                TextWrapping="Wrap" />
                                                     <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
@@ -462,7 +462,7 @@
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
-                                                TextWrapping="NoWrap" />
+                                                TextWrapping="Wrap" />
                                                     <TextBlock x:Name="DirectorText"
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
