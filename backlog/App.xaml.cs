@@ -116,22 +116,22 @@ namespace backlog
             base.OnActivated(args);
         }
 
-        //// Event fired when a Background Task is activated (in Single Process Model)
-        //protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
-        //{
-        //    base.OnBackgroundActivated(args);
+        // Event fired when a Background Task is activated (in Single Process Model)
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
 
-        //    var deferral = args.TaskInstance.GetDeferral();
+            var deferral = args.TaskInstance.GetDeferral();
 
-        //    switch (args.TaskInstance.Task.Name)
-        //    {
-        //        case "ToastTask":
-        //            new ToastBackgroundTask().Run(args.TaskInstance);
-        //            break;
-        //    }
+            switch (args.TaskInstance.Task.Name)
+            {
+                case "ToastTask":
+                    new ToastBackgroundTask().Run(args.TaskInstance);
+                    break;
+            }
 
-        //    deferral.Complete();
-        //}
+            deferral.Complete();
+        }
 
         /// <summary>
         /// Initialized root frame and navigates to the main page

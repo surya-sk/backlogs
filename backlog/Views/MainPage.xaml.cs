@@ -46,6 +46,7 @@ namespace backlog.Views
         private ObservableCollection<Backlog> bookBacklogs { get; set; }
         GraphServiceClient graphServiceClient;
 
+        readonly string toastTaskName = "ToastTask";
 
         bool checkboxChecked = false;
         bool isNetworkAvailable = false;
@@ -84,6 +85,7 @@ namespace backlog.Views
                 await SaveData.GetInstance().ReadDataAsync(true);
                 PopulateBacklogs();
             }
+            await BuildNotifactionQueue();
             ProgBar.Visibility = Visibility.Collapsed;
             base.OnNavigatedTo(e);
         }
@@ -251,6 +253,7 @@ namespace backlog.Views
                 checkboxChecked = false;
                 SaveData.GetInstance().SaveSettings(backlogs);
                 await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
+                await BuildNotifactionQueue();
                 CreationProgBar.Visibility = Visibility.Collapsed;
             }
         }
@@ -453,9 +456,8 @@ namespace backlog.Views
             return false;
         }
 
-        private async void RateButton_Click(object sender, RoutedEventArgs e)
+        private void RateButton_Click(object sender, RoutedEventArgs e)
         {
-            await BuildNotifactionQueue();
         }
 
         private async Task BuildNotifactionQueue()
@@ -464,25 +466,28 @@ namespace backlog.Views
             {
                 if (!b.NotifSent)
                 {
-                    if(!b.RemindEveryday)
+                    var builder = new ToastContentBuilder()
+                    .AddText($"Have you checked out {b.Name} today?", hintMaxLines: 1)
+                    .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
+                    .AddHeroImage(new Uri(b.ImageURL));
+                    DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate).Add(b.NotifTime);
+                    ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
+                    ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+                    if(b.RemindEveryday)
                     {
-                        var builder = new ToastContentBuilder()
-                        .AddText($"Have you checked out {b.Name} today?", hintMaxLines: 1)
-                        .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
-                        .AddHeroImage(new Uri(b.ImageURL));
-                        DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate).Add(b.NotifTime);
-                        ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
-                        ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
-                        b.NotifSent = true;
-                    }
-                    else
-                    {
+                        if(IsBackgroundTaskRegistered(toastTaskName))
+                        {
+                            return;
+                        }
 
+                        await BackgroundExecutionManager.RequestAccessAsync();
+                        BackgroundTaskHelper.Register(toastTaskName, new TimeTrigger(1440, false));
                     }
+                    b.NotifSent = true;
+                    SaveData.GetInstance().SaveSettings(backlogs);
+                    await SaveData.GetInstance().WriteDataAsync();
                 }
             }
-            SaveData.GetInstance().SaveSettings(backlogs);
-            await SaveData.GetInstance().WriteDataAsync();
         }
 
         private void ShareButton_Click(object sender, RoutedEventArgs e)

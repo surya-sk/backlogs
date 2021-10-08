@@ -15,21 +15,19 @@ namespace backlog.Utils
 {
     internal class ToastBackgroundTask : IBackgroundTask
     {
-        ObservableCollection<Backlog> backlogs;
         public void Run(IBackgroundTaskInstance taskInstance)
         {
-            SaveData.GetInstance().ReadDataAsync();
-            var _backlogs = SaveData.GetInstance().GetBacklogs();
-            backlogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.NotifSent = false));
+            ObservableCollection<Backlog> backlogs = SaveData.GetInstance().GetBacklogs();
             foreach(Backlog b in backlogs)
             {
-                Debug.WriteLine(b.Name);
-                var builder = new ToastContentBuilder().AddText($"Remember to check out {b.Name}", hintMaxLines: 1)
-                    .AddText($"You wanted to check {b.Name} by {b.Director} out today. Here's your reminder!", hintMaxLines: 2)
-                    .AddHeroImage(new Uri(b.ImageURL));
-                ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), DateTimeOffset.Now.AddSeconds(10));
-                ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
-                b.NotifSent = true;
+                if(b.RemindEveryday)
+                {
+                    var builder = new ToastContentBuilder()
+                                    .AddText($"Have you checked out {b.Name} today?", hintMaxLines: 1)
+                                    .AddText($"You wanted to check {b.Name} by {b.Director} out today. Here's your reminder!", hintMaxLines: 2)
+                                    .AddHeroImage(new Uri(b.ImageURL));
+                    builder.Show();
+                }
             }
         }
     }
