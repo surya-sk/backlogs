@@ -500,7 +500,8 @@
                                Foreground="LightYellow" TextWrapping="Wrap" />
                     <DatePicker x:Name="DatePicker" Header="Target Date (when you want to check it out)"  Margin="0,20,0,0" />
                     <TimePicker x:Name="TimePicker" Header="When do you want to be notified?" Margin="0,20,0,0" />
-                    <CheckBox x:Name="CheckBox" Content="Remind me everyday until this is complete" Checked="CheckBox_Checked" Margin="0,20,0,0" />
+                    <CheckBox x:Name="CheckBox" Content="Remind me everyday until this is complete" 
+                              Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Margin="0,20,0,0" />
                     <TextBlock x:Name="ErrorText" Foreground="Red" Margin="0,20,0,0" Visibility="Collapsed"/>
                 </StackPanel>
             </ContentDialog>

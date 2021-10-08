@@ -464,19 +464,20 @@ namespace backlog.Views
             {
                 if (!b.NotifSent)
                 {
-                    var builder = new ToastContentBuilder()
+                    if(!b.RemindEveryday)
+                    {
+                        var builder = new ToastContentBuilder()
                         .AddText($"Have you checked out {b.Name} today?", hintMaxLines: 1)
                         .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
                         .AddHeroImage(new Uri(b.ImageURL));
-                    DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate).Add(b.NotifTime);
-                    Debug.WriteLine(date.ToString());
-                    ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
-                    ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
-                    if(!b.RemindEveryday)
+                        DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate).Add(b.NotifTime);
+                        ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
+                        ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
                         b.NotifSent = true;
+                    }
                     else
                     {
-                        // start background task
+
                     }
                 }
             }
@@ -497,6 +498,11 @@ namespace backlog.Views
         private void SupportButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            checkboxChecked = false;
         }
     }
 }
