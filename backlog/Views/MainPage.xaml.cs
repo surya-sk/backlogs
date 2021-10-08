@@ -467,7 +467,7 @@ namespace backlog.Views
                 if (!b.NotifSent)
                 {
                     var builder = new ToastContentBuilder()
-                    .AddText($"Have you checked out {b.Name} today?", hintMaxLines: 1)
+                    .AddText($"Hey there!", hintMaxLines: 1)
                     .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
                     .AddHeroImage(new Uri(b.ImageURL));
                     DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate).Add(b.NotifTime);
