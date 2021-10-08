@@ -499,6 +499,8 @@
                     <TextBlock Text="Please follow the format given in the box above. Do NOT use special characters such as -*, expect for when searching for an album" FontStyle="Italic" 
                                Foreground="LightYellow" TextWrapping="Wrap" />
                     <DatePicker x:Name="DatePicker" Header="Target Date (when you want to check it out)"  Margin="0,20,0,0" />
+                    <TimePicker x:Name="TimePicker" Header="When do you want to be notified?" Margin="0,20,0,0" />
+                    <CheckBox x:Name="CheckBox" Content="Remind me everyday until this is complete" Checked="CheckBox_Checked" Margin="0,20,0,0" />
                     <TextBlock x:Name="ErrorText" Foreground="Red" Margin="0,20,0,0" Visibility="Collapsed"/>
                 </StackPanel>
             </ContentDialog>
@@ -514,7 +516,7 @@
                 <CommandBar.SecondaryCommands>
                     <AppBarButton x:Name="SettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
                     <AppBarButton x:Name="RateButton" Label="Rate and Review on the Store" Icon="Like" Click="RateButton_Click" />
-                    <AppBarButton x:Name="SupprtButton" Label="Support developer" Icon="MailReply" Click="SupprtButton_Click" />
+                    <AppBarButton x:Name="SupportButton" Label="Support developer" Icon="MailReply" Click="SupportButton_Click" />
                     <AppBarButton x:Name="ShareButton" Label="Share this app" Click="ShareButton_Click" >
                         <FontIcon Glyph="" />
                     </AppBarButton>

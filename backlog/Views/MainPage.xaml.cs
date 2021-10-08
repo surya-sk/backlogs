@@ -24,6 +24,10 @@ using Newtonsoft.Json;
 using Windows.UI.Core;
 using System.Net.NetworkInformation;
 using Microsoft.Graph;
+using Microsoft.Toolkit.Uwp.Helpers;
+using Windows.ApplicationModel.Background;
+using Microsoft.Toolkit.Uwp.Notifications;
+using Windows.UI.Notifications;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -42,8 +46,10 @@ namespace backlog.Views
         private ObservableCollection<Backlog> bookBacklogs { get; set; }
         GraphServiceClient graphServiceClient;
 
+
+        bool checkboxChecked = false;
         bool isNetworkAvailable = false;
-       string signedIn;
+        string signedIn;
         public MainPage()
         {
             this.InitializeComponent();
@@ -207,7 +213,7 @@ namespace backlog.Views
 
         private async void CreateBacklogDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            if (NameInput.Text == "" || TypeComoBox.SelectedIndex < 0 || DatePicker.Date == null) 
+            if (NameInput.Text == "" || TypeComoBox.SelectedIndex < 0 || DatePicker.Date == null || TimePicker.Time == null) 
             {
                 ErrorText.Text = "Fill out all the fields";
                 ErrorText.Visibility = Visibility.Visible;
@@ -222,33 +228,34 @@ namespace backlog.Views
                 switch(TypeComoBox.SelectedItem.ToString())
                 {
                     case "Film":
-                        await CreateFilmBacklog(title, date);
+                        await CreateFilmBacklog(title, date, TimePicker.Time);
                         EmtpyFilmsText.Visibility = Visibility.Collapsed;
                         break;
                     case "TV":
-                        await CreateSeriesBacklog(title, date);
+                        await CreateSeriesBacklog(title, date, TimePicker.Time);
                         EmtpyTVText.Visibility = Visibility.Collapsed;
                         break;
                     case "Game":
-                        await CreateGameBacklog(NameInput.Text, date);
+                        await CreateGameBacklog(NameInput.Text, date, TimePicker.Time);
                         EmtpyGamesText.Visibility = Visibility.Collapsed;
                         break;
                     case "Book":
-                        await CreateBookBacklog(NameInput.Text, date);
+                        await CreateBookBacklog(NameInput.Text, date, TimePicker.Time);
                         EmtpyBooksText.Visibility = Visibility.Collapsed;
                         break;
                     case "Music":
-                        await CreateMusicBacklog(NameInput.Text, date);
+                        await CreateMusicBacklog(NameInput.Text, date, TimePicker.Time);
                         EmtpyMusicText.Visibility = Visibility.Collapsed;
                         break;
                 }
+                checkboxChecked = false;
                 SaveData.GetInstance().SaveSettings(backlogs);
                 await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
                 CreationProgBar.Visibility = Visibility.Collapsed;
             }
         }
 
-        private async Task CreateFilmBacklog(string title, string date)
+        private async Task CreateFilmBacklog(string title, string date, TimeSpan time)
         {
             string response = await RestClient.GetFilmResponse(title);
             FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
@@ -270,14 +277,17 @@ namespace backlog.Views
                     Director = film.directors,
                     Progress = 0,
                     Units = "Minutes",
-                    ShowProgress = true
+                    ShowProgress = true,
+                    NotifTime = time,
+                    NotifSent = false,
+                    RemindEveryday = checkboxChecked
                 };
                 backlogs.Add(backlog);
                 filmBacklogs.Add(backlog);
             }
         }
 
-        private async Task CreateMusicBacklog(string title, string date)
+        private async Task CreateMusicBacklog(string title, string date, TimeSpan time)
         {
             string response = await RestClient.GetMusicResponse(title);
             var musicData = JsonConvert.DeserializeObject<MusicData>(response);
@@ -301,13 +311,16 @@ namespace backlog.Views
                 Director = music.artist,
                 Progress = 0,
                 Units = "Minutes",
-                ShowProgress = false
+                ShowProgress = false,
+                NotifTime = time,
+                NotifSent = false,
+                RemindEveryday = checkboxChecked
             };
             backlogs.Add(backlog);
             musicBacklogs.Add(backlog);
         }
 
-        private async Task CreateBookBacklog(string title, string date)
+        private async Task CreateBookBacklog(string title, string date, TimeSpan time)
         {
             string response = await RestClient.GetBookResponse(title);
             var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
@@ -335,14 +348,17 @@ namespace backlog.Views
                     Length = book.length,
                     Progress = 0,
                     Units = "Pages",
-                    ShowProgress = true
+                    ShowProgress = true,
+                    NotifTime = time,
+                    NotifSent = false,
+                    RemindEveryday = checkboxChecked
                 };
                 backlogs.Add(backlog);
                 bookBacklogs.Add(backlog);
             }
         }
 
-        private async Task CreateSeriesBacklog(string titile, string date)
+        private async Task CreateSeriesBacklog(string titile, string date, TimeSpan time)
         {
             string response = await RestClient.GetSeriesResponse(titile);
             SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
@@ -364,14 +380,17 @@ namespace backlog.Views
                     Director = series.TvSeriesInfo.Creators,
                     Progress = 0,
                     Units = "Season",
-                    ShowProgress = true
+                    ShowProgress = true,
+                    NotifTime = time,
+                    NotifSent = false,
+                    RemindEveryday = checkboxChecked
                 };
                 backlogs.Add(backlog);
                 tvBacklogs.Add(backlog);
             }
         }
 
-        private async Task CreateGameBacklog(string title, string date)
+        private async Task CreateGameBacklog(string title, string date, TimeSpan time)
         {
             string response = await RestClient.GetGameResponse(title);
             var result = JsonConvert.DeserializeObject<GameResponse[]>(response);
@@ -408,7 +427,10 @@ namespace backlog.Views
                     Length = 0,
                     Director = game.company,
                     Progress = 0,
-                    ShowProgress = false
+                    ShowProgress = false,
+                    NotifTime = time,
+                    NotifSent = false,
+                    RemindEveryday = checkboxChecked
                 };
                 backlogs.Add(backlog);
                 gameBacklogs.Add(backlog);
@@ -420,17 +442,59 @@ namespace backlog.Views
             Frame.Navigate(typeof(SettingsPage));
         }
 
-        private void RateButton_Click(object sender, RoutedEventArgs e)
+        private bool IsBackgroundTaskRegistered(string taskName)
         {
+            if (BackgroundTaskHelper.IsBackgroundTaskRegistered(taskName))
+            {
+                // Background task already registered.
+                return true;
+            }
 
+            return false;
         }
 
-        private void SupprtButton_Click(object sender, RoutedEventArgs e)
+        private async void RateButton_Click(object sender, RoutedEventArgs e)
         {
+            await BuildNotifactionQueue();
+        }
 
+        private async Task BuildNotifactionQueue()
+        {
+            foreach (Backlog b in backlogs)
+            {
+                if (!b.NotifSent)
+                {
+                    var builder = new ToastContentBuilder()
+                        .AddText($"Have you checked out {b.Name} today?", hintMaxLines: 1)
+                        .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
+                        .AddHeroImage(new Uri(b.ImageURL));
+                    DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate).Add(b.NotifTime);
+                    Debug.WriteLine(date.ToString());
+                    ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
+                    ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+                    if(!b.RemindEveryday)
+                        b.NotifSent = true;
+                    else
+                    {
+                        // start background task
+                    }
+                }
+            }
+            SaveData.GetInstance().SaveSettings(backlogs);
+            await SaveData.GetInstance().WriteDataAsync();
         }
 
         private void ShareButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            checkboxChecked = true;
+        }
+
+        private void SupportButton_Click(object sender, RoutedEventArgs e)
         {
 
         }

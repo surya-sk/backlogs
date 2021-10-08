@@ -382,6 +382,41 @@
       "Microsoft.NETCore.Windows.ApiSets/1.0.1": {
         "type": "package"
       },
+      "Microsoft.Toolkit/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Identity.Client": "1.1.2-preview0008",
+          "Microsoft.Toolkit": "4.0.0",
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp.Notifications/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        },
+        "runtime": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        }
+      },
       "Microsoft.UI.Xaml/2.4.3": {
         "type": "package",
         "compile": {
@@ -391,7 +426,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -481,13 +516,21 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json/9.0.1": {
+      "Newtonsoft.Json/10.0.3": {
         "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.3.0",
+          "NETStandard.Library": "1.6.1",
+          "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Runtime.Serialization.Formatters": "4.3.0",
+          "System.Runtime.Serialization.Primitives": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
         "compile": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -785,6 +828,27 @@
         },
         "runtime": {
           "lib/netcore50/System.ComponentModel.EventBasedAsync.dll": {}
+        }
+      },
+      "System.ComponentModel.Primitives/4.3.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        }
+      },
+      "System.ComponentModel.TypeConverter/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel.Primitives": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -2894,6 +2958,41 @@
       "Microsoft.NETCore.Windows.ApiSets/1.0.1": {
         "type": "package"
       },
+      "Microsoft.Toolkit/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Identity.Client": "1.1.2-preview0008",
+          "Microsoft.Toolkit": "4.0.0",
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp.Notifications/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        },
+        "runtime": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        }
+      },
       "Microsoft.UI.Xaml/2.4.3": {
         "type": "package",
         "compile": {
@@ -2903,7 +3002,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -2994,13 +3093,21 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json/9.0.1": {
+      "Newtonsoft.Json/10.0.3": {
         "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.3.0",
+          "NETStandard.Library": "1.6.1",
+          "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Runtime.Serialization.Formatters": "4.3.0",
+          "System.Runtime.Serialization.Primitives": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
         "compile": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.any.System.Collections/4.3.0": {
@@ -3549,6 +3656,27 @@
         },
         "runtime": {
           "lib/netcore50/System.ComponentModel.EventBasedAsync.dll": {}
+        }
+      },
+      "System.ComponentModel.Primitives/4.3.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        }
+      },
+      "System.ComponentModel.TypeConverter/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel.Primitives": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -5473,6 +5601,41 @@
       "Microsoft.NETCore.Windows.ApiSets/1.0.1": {
         "type": "package"
       },
+      "Microsoft.Toolkit/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Identity.Client": "1.1.2-preview0008",
+          "Microsoft.Toolkit": "4.0.0",
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp.Notifications/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        },
+        "runtime": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        }
+      },
       "Microsoft.UI.Xaml/2.4.3": {
         "type": "package",
         "compile": {
@@ -5482,7 +5645,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -5573,13 +5736,21 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json/9.0.1": {
+      "Newtonsoft.Json/10.0.3": {
         "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.3.0",
+          "NETStandard.Library": "1.6.1",
+          "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Runtime.Serialization.Formatters": "4.3.0",
+          "System.Runtime.Serialization.Primitives": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
         "compile": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.aot.System.Collections/4.3.0": {
@@ -6163,6 +6334,27 @@
         },
         "runtime": {
           "lib/netcore50/System.ComponentModel.EventBasedAsync.dll": {}
+        }
+      },
+      "System.ComponentModel.Primitives/4.3.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        }
+      },
+      "System.ComponentModel.TypeConverter/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel.Primitives": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -8086,6 +8278,41 @@
       "Microsoft.NETCore.Windows.ApiSets/1.0.1": {
         "type": "package"
       },
+      "Microsoft.Toolkit/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Identity.Client": "1.1.2-preview0008",
+          "Microsoft.Toolkit": "4.0.0",
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp.Notifications/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        },
+        "runtime": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        }
+      },
       "Microsoft.UI.Xaml/2.4.3": {
         "type": "package",
         "compile": {
@@ -8095,7 +8322,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -8186,13 +8413,21 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json/9.0.1": {
+      "Newtonsoft.Json/10.0.3": {
         "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.3.0",
+          "NETStandard.Library": "1.6.1",
+          "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Runtime.Serialization.Formatters": "4.3.0",
+          "System.Runtime.Serialization.Primitives": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
         "compile": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.aot.System.Collections/4.3.0": {
@@ -8764,6 +8999,27 @@
         },
         "runtime": {
           "lib/netcore50/System.ComponentModel.EventBasedAsync.dll": {}
+        }
+      },
+      "System.ComponentModel.Primitives/4.3.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        }
+      },
+      "System.ComponentModel.TypeConverter/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel.Primitives": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -10690,6 +10946,41 @@
       "Microsoft.NETCore.Windows.ApiSets/1.0.1": {
         "type": "package"
       },
+      "Microsoft.Toolkit/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Identity.Client": "1.1.2-preview0008",
+          "Microsoft.Toolkit": "4.0.0",
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp.Notifications/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        },
+        "runtime": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        }
+      },
       "Microsoft.UI.Xaml/2.4.3": {
         "type": "package",
         "compile": {
@@ -10699,7 +10990,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -10790,13 +11081,21 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json/9.0.1": {
+      "Newtonsoft.Json/10.0.3": {
         "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.3.0",
+          "NETStandard.Library": "1.6.1",
+          "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Runtime.Serialization.Formatters": "4.3.0",
+          "System.Runtime.Serialization.Primitives": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
         "compile": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.any.System.Collections/4.3.0": {
@@ -11351,6 +11650,27 @@
         },
         "runtime": {
           "lib/netcore50/System.ComponentModel.EventBasedAsync.dll": {}
+        }
+      },
+      "System.ComponentModel.Primitives/4.3.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        }
+      },
+      "System.ComponentModel.TypeConverter/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel.Primitives": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -13278,6 +13598,41 @@
       "Microsoft.NETCore.Windows.ApiSets/1.0.1": {
         "type": "package"
       },
+      "Microsoft.Toolkit/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Identity.Client": "1.1.2-preview0008",
+          "Microsoft.Toolkit": "4.0.0",
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp.Notifications/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        },
+        "runtime": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        }
+      },
       "Microsoft.UI.Xaml/2.4.3": {
         "type": "package",
         "compile": {
@@ -13287,7 +13642,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -13378,13 +13733,21 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json/9.0.1": {
+      "Newtonsoft.Json/10.0.3": {
         "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.3.0",
+          "NETStandard.Library": "1.6.1",
+          "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Runtime.Serialization.Formatters": "4.3.0",
+          "System.Runtime.Serialization.Primitives": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
         "compile": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.aot.System.Collections/4.3.0": {
@@ -13974,6 +14337,27 @@
         },
         "runtime": {
           "lib/netcore50/System.ComponentModel.EventBasedAsync.dll": {}
+        }
+      },
+      "System.ComponentModel.Primitives/4.3.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        }
+      },
+      "System.ComponentModel.TypeConverter/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel.Primitives": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -15900,6 +16284,41 @@
       "Microsoft.NETCore.Windows.ApiSets/1.0.1": {
         "type": "package"
       },
+      "Microsoft.Toolkit/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Identity.Client": "1.1.2-preview0008",
+          "Microsoft.Toolkit": "4.0.0",
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp.Notifications/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        },
+        "runtime": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        }
+      },
       "Microsoft.UI.Xaml/2.4.3": {
         "type": "package",
         "compile": {
@@ -15909,7 +16328,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -16000,13 +16419,21 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json/9.0.1": {
+      "Newtonsoft.Json/10.0.3": {
         "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.3.0",
+          "NETStandard.Library": "1.6.1",
+          "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Runtime.Serialization.Formatters": "4.3.0",
+          "System.Runtime.Serialization.Primitives": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
         "compile": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.any.System.Collections/4.3.0": {
@@ -16561,6 +16988,27 @@
         },
         "runtime": {
           "lib/netcore50/System.ComponentModel.EventBasedAsync.dll": {}
+        }
+      },
+      "System.ComponentModel.Primitives/4.3.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        }
+      },
+      "System.ComponentModel.TypeConverter/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel.Primitives": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -18488,6 +18936,41 @@
       "Microsoft.NETCore.Windows.ApiSets/1.0.1": {
         "type": "package"
       },
+      "Microsoft.Toolkit/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.4/Microsoft.Toolkit.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Identity.Client": "1.1.2-preview0008",
+          "Microsoft.Toolkit": "4.0.0",
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Toolkit.Uwp.dll": {}
+        }
+      },
+      "Microsoft.Toolkit.Uwp.Notifications/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        },
+        "runtime": {
+          "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd": {}
+        }
+      },
       "Microsoft.UI.Xaml/2.4.3": {
         "type": "package",
         "compile": {
@@ -18497,7 +18980,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -18588,13 +19071,21 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json/9.0.1": {
+      "Newtonsoft.Json/10.0.3": {
         "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.3.0",
+          "NETStandard.Library": "1.6.1",
+          "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Runtime.Serialization.Formatters": "4.3.0",
+          "System.Runtime.Serialization.Primitives": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        },
         "compile": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.aot.System.Collections/4.3.0": {
@@ -19184,6 +19675,27 @@
         },
         "runtime": {
           "lib/netcore50/System.ComponentModel.EventBasedAsync.dll": {}
+        }
+      },
+      "System.ComponentModel.Primitives/4.3.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.Primitives.dll": {}
+        }
+      },
+      "System.ComponentModel.TypeConverter/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel.Primitives": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/System.ComponentModel.TypeConverter.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -23716,6 +24228,76 @@
         "runtime.json"
       ]
     },
+    "Microsoft.Toolkit/4.0.0": {
+      "sha512": "tGCovrIKh2mpIIr/Sit42YaaHBR1iuSeAVpdnYg8mRloarDpoKqNcEdhGDU6cZKqfOt3hGpJSWcruv6nwpLlvw==",
+      "type": "package",
+      "path": "microsoft.toolkit/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard1.4/Microsoft.Toolkit.dll",
+        "lib/netstandard1.4/Microsoft.Toolkit.pdb",
+        "lib/netstandard1.4/Microsoft.Toolkit.xml",
+        "microsoft.toolkit.4.0.0.nupkg.sha512",
+        "microsoft.toolkit.nuspec"
+      ]
+    },
+    "Microsoft.Toolkit.Uwp/4.0.0": {
+      "sha512": "JM2hMzHe7k2pF06EUZd7Yz9kX2J3LryUrKxrZofOpVWsbX40lGkU96xoE5o9+WmOmbogDNIAZgtEQXSHofs2iQ==",
+      "type": "package",
+      "path": "microsoft.toolkit.uwp/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/uap10.0/Microsoft.Toolkit.Uwp.dll",
+        "lib/uap10.0/Microsoft.Toolkit.Uwp.pdb",
+        "lib/uap10.0/Microsoft.Toolkit.Uwp.pri",
+        "lib/uap10.0/Microsoft.Toolkit.Uwp.xml",
+        "microsoft.toolkit.uwp.4.0.0.nupkg.sha512",
+        "microsoft.toolkit.uwp.nuspec"
+      ]
+    },
+    "Microsoft.Toolkit.Uwp.Notifications/7.0.0": {
+      "sha512": "w3dZxNfOxcwRwe+rOKZ+l9NihbrUbPvwRFk8FIXkiM2aLFhOX3DFjgdZ1hchyzQvYl9k2heY6xX5A83Br8mp8A==",
+      "type": "package",
+      "path": "microsoft.toolkit.uwp.notifications/7.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/native/Microsoft.Toolkit.Uwp.Notifications.targets",
+        "images/nuget.png",
+        "lib/native/Microsoft.Toolkit.Uwp.Notifications.pdb",
+        "lib/native/Microsoft.Toolkit.Uwp.Notifications.pri",
+        "lib/native/Microsoft.Toolkit.Uwp.Notifications.winmd",
+        "lib/native/Microsoft.Toolkit.Uwp.Notifications.xml",
+        "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll",
+        "lib/net461/Microsoft.Toolkit.Uwp.Notifications.pdb",
+        "lib/net461/Microsoft.Toolkit.Uwp.Notifications.xml",
+        "lib/net5.0-windows10.0.17763/Microsoft.Toolkit.Uwp.Notifications.dll",
+        "lib/net5.0-windows10.0.17763/Microsoft.Toolkit.Uwp.Notifications.pdb",
+        "lib/net5.0-windows10.0.17763/Microsoft.Toolkit.Uwp.Notifications.xml",
+        "lib/net5.0/Microsoft.Toolkit.Uwp.Notifications.dll",
+        "lib/net5.0/Microsoft.Toolkit.Uwp.Notifications.pdb",
+        "lib/net5.0/Microsoft.Toolkit.Uwp.Notifications.xml",
+        "lib/netcoreapp3.1/Microsoft.Toolkit.Uwp.Notifications.dll",
+        "lib/netcoreapp3.1/Microsoft.Toolkit.Uwp.Notifications.pdb",
+        "lib/netcoreapp3.1/Microsoft.Toolkit.Uwp.Notifications.xml",
+        "lib/netstandard1.4/Microsoft.Toolkit.Uwp.Notifications.dll",
+        "lib/netstandard1.4/Microsoft.Toolkit.Uwp.Notifications.pdb",
+        "lib/netstandard1.4/Microsoft.Toolkit.Uwp.Notifications.xml",
+        "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.pdb",
+        "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.pri",
+        "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.winmd",
+        "lib/uap10.0.10240/Microsoft.Toolkit.Uwp.Notifications.xml",
+        "lib/uap10.0.16299/Microsoft.Toolkit.Uwp.Notifications.dll",
+        "lib/uap10.0.16299/Microsoft.Toolkit.Uwp.Notifications.pdb",
+        "lib/uap10.0.16299/Microsoft.Toolkit.Uwp.Notifications.pri",
+        "lib/uap10.0.16299/Microsoft.Toolkit.Uwp.Notifications.xml",
+        "license.md",
+        "microsoft.toolkit.uwp.notifications.7.0.0.nupkg.sha512",
+        "microsoft.toolkit.uwp.notifications.nuspec"
+      ]
+    },
     "Microsoft.UI.Xaml/2.4.3": {
       "sha512": "jGFY1bLlAQn88d5377Gis6CyeitbPzaYZpOKdPsgFztzccetElmSB9/2JUVtOFUeZcCjOpKSgFkKPFlMbgBwvg==",
       "type": "package",
@@ -23843,14 +24425,15 @@
         "netstandard.library.nuspec"
       ]
     },
-    "Newtonsoft.Json/9.0.1": {
-      "sha512": "U82mHQSKaIk+lpSVCbWYKNavmNH1i5xrExDEquU1i6I5pV6UMOqRnJRSlKO3cMPfcpp0RgDY+8jUXHdQ4IfXvw==",
+    "Newtonsoft.Json/10.0.3": {
+      "sha512": "hSXaFmh7hNCuEoC4XNY5DrRkLDzYHqPx/Ik23R4J86Z7PE/Y6YidhG602dFVdLBRSdG6xp9NabH3dXpcoxWvww==",
       "type": "package",
-      "path": "newtonsoft.json/9.0.1",
+      "path": "newtonsoft.json/10.0.3",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "LICENSE.md",
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
         "lib/net35/Newtonsoft.Json.dll",
@@ -23861,11 +24444,13 @@
         "lib/net45/Newtonsoft.Json.xml",
         "lib/netstandard1.0/Newtonsoft.Json.dll",
         "lib/netstandard1.0/Newtonsoft.Json.xml",
-        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
-        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
-        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
-        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
-        "newtonsoft.json.9.0.1.nupkg.sha512",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.10.0.3.nupkg.sha512",
         "newtonsoft.json.nuspec",
         "tools/install.ps1"
       ]
@@ -26923,6 +27508,98 @@
         "ref/xamarinwatchos10/_._",
         "system.componentmodel.eventbasedasync.4.3.0.nupkg.sha512",
         "system.componentmodel.eventbasedasync.nuspec"
+      ]
+    },
+    "System.ComponentModel.Primitives/4.3.0": {
+      "sha512": "j8GUkCpM8V4d4vhLIIoBLGey2Z5bCkMVNjEZseyAlm4n5arcsJOeI3zkUP+zvZgzsbLTYh4lYeP/ZD/gdIAPrw==",
+      "type": "package",
+      "path": "system.componentmodel.primitives/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net45/System.ComponentModel.Primitives.dll",
+        "lib/netstandard1.0/System.ComponentModel.Primitives.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net45/System.ComponentModel.Primitives.dll",
+        "ref/netstandard1.0/System.ComponentModel.Primitives.dll",
+        "ref/netstandard1.0/System.ComponentModel.Primitives.xml",
+        "ref/netstandard1.0/de/System.ComponentModel.Primitives.xml",
+        "ref/netstandard1.0/es/System.ComponentModel.Primitives.xml",
+        "ref/netstandard1.0/fr/System.ComponentModel.Primitives.xml",
+        "ref/netstandard1.0/it/System.ComponentModel.Primitives.xml",
+        "ref/netstandard1.0/ja/System.ComponentModel.Primitives.xml",
+        "ref/netstandard1.0/ko/System.ComponentModel.Primitives.xml",
+        "ref/netstandard1.0/ru/System.ComponentModel.Primitives.xml",
+        "ref/netstandard1.0/zh-hans/System.ComponentModel.Primitives.xml",
+        "ref/netstandard1.0/zh-hant/System.ComponentModel.Primitives.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.componentmodel.primitives.4.3.0.nupkg.sha512",
+        "system.componentmodel.primitives.nuspec"
+      ]
+    },
+    "System.ComponentModel.TypeConverter/4.3.0": {
+      "sha512": "16pQ6P+EdhcXzPiEK4kbA953Fu0MNG2ovxTZU81/qsCd1zPRsKc3uif5NgvllCY598k6bI0KUyKW8fanlfaDQg==",
+      "type": "package",
+      "path": "system.componentmodel.typeconverter/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net45/System.ComponentModel.TypeConverter.dll",
+        "lib/net462/System.ComponentModel.TypeConverter.dll",
+        "lib/netstandard1.0/System.ComponentModel.TypeConverter.dll",
+        "lib/netstandard1.5/System.ComponentModel.TypeConverter.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net45/System.ComponentModel.TypeConverter.dll",
+        "ref/net462/System.ComponentModel.TypeConverter.dll",
+        "ref/netstandard1.0/System.ComponentModel.TypeConverter.dll",
+        "ref/netstandard1.0/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.0/de/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.0/es/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.0/fr/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.0/it/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.0/ja/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.0/ko/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.0/ru/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.0/zh-hans/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.0/zh-hant/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.5/System.ComponentModel.TypeConverter.dll",
+        "ref/netstandard1.5/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.5/de/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.5/es/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.5/fr/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.5/it/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.5/ja/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.5/ko/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.5/ru/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.5/zh-hans/System.ComponentModel.TypeConverter.xml",
+        "ref/netstandard1.5/zh-hant/System.ComponentModel.TypeConverter.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.componentmodel.typeconverter.4.3.0.nupkg.sha512",
+        "system.componentmodel.typeconverter.nuspec"
       ]
     },
     "System.Console/4.3.0": {
@@ -31682,24 +32359,26 @@
       "Microsoft.Graph >= 1.15.0",
       "Microsoft.Identity.Client >= 4.36.1",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 6.2.12",
+      "Microsoft.Toolkit.Uwp >= 4.0.0",
+      "Microsoft.Toolkit.Uwp.Notifications >= 7.0.0",
       "Microsoft.UI.Xaml >= 2.4.3",
       "System.Memory >= 4.5.4",
       "ksemenenko.ColorThief >= 1.1.1.4"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\surya\\.nuget\\packages\\": {},
+    "C:\\Users\\skotcharlakota\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\surya\\repo\\backlog\\backlog\\backlog.csproj",
+      "projectUniqueName": "C:\\backlogs\\backlog\\backlog.csproj",
       "projectName": "backlog",
-      "projectPath": "C:\\Users\\surya\\repo\\backlog\\backlog\\backlog.csproj",
-      "packagesPath": "C:\\Users\\surya\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\surya\\repo\\backlog\\backlog\\obj\\",
+      "projectPath": "C:\\backlogs\\backlog\\backlog.csproj",
+      "packagesPath": "C:\\Users\\skotcharlakota\\.nuget\\packages\\",
+      "outputPath": "C:\\backlogs\\backlog\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
@@ -31707,7 +32386,7 @@
         "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\surya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\skotcharlakota\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -31742,6 +32421,14 @@
           "Microsoft.NETCore.UniversalWindowsPlatform": {
             "target": "Package",
             "version": "[6.2.12, )"
+          },
+          "Microsoft.Toolkit.Uwp": {
+            "target": "Package",
+            "version": "[4.0.0, )"
+          },
+          "Microsoft.Toolkit.Uwp.Notifications": {
+            "target": "Package",
+            "version": "[7.0.0, )"
           },
           "Microsoft.UI.Xaml": {
             "target": "Package",

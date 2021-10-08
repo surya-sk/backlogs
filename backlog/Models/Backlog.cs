@@ -26,6 +26,9 @@ namespace backlog.Models
         private string units;
         private string director;
         private bool showProgress;
+        private bool notifSent;
+        private TimeSpan notifTime;
+        private bool remindEveryday;
 
         public string Name
         {
@@ -87,6 +90,16 @@ namespace backlog.Models
             }
         }
 
+        public TimeSpan NotifTime
+        {
+            get => notifTime;
+            set
+            {
+                notifTime = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotifTime)));
+            }
+        }
+
         public bool IsComplete
         {
             get => isComplete;
@@ -97,6 +110,16 @@ namespace backlog.Models
             }
         }
 
+        public bool NotifSent
+        {
+            get => notifSent;
+            set
+            {
+                notifSent = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotifSent)));
+            }
+        }
+
         public bool ShowProgress
         {
             get => showProgress;
@@ -104,6 +127,16 @@ namespace backlog.Models
             {
                 showProgress = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowProgress)));
+            }
+        }
+
+        public bool RemindEveryday
+        {
+            get => remindEveryday;
+            set
+            {
+                remindEveryday = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RemindEveryday)));
             }
         }
 
