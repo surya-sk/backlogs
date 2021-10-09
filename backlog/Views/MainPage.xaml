@@ -484,7 +484,7 @@
                 </PivotItem>
             </Pivot>
 
-            <ContentDialog x:Name="CreateBacklogDialog"
+            <ContentDialog x:Name="CreateBacklogDialog" FullSizeDesired="False" 
                            PrimaryButtonText="Create" PrimaryButtonClick="CreateBacklogDialog_PrimaryButtonClick"
                            SecondaryButtonText="Cancel" Title="Create a backlog item">
                 <StackPanel Orientation="Vertical">
