@@ -57,16 +57,13 @@ namespace backlog.Views
             isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             InitBacklogs();
+            TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
         }
 
         private void InitBacklogs()
         {
             var readBacklogs = SaveData.GetInstance().GetBacklogs();
             backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.TargetDate));
-            foreach(Backlog b in backlogs)
-            {
-                GenerateLiveTiles(b);
-            }
             filmBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
             tvBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
             gameBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
@@ -613,6 +610,11 @@ namespace backlog.Views
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             checkboxChecked = false;
+        }
+
+        private void SyncButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainPage));
         }
     }
 }

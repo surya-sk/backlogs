@@ -509,6 +509,7 @@
             <muxc:ProgressBar x:Name="CreationProgBar" IsIndeterminate="True" Visibility="Collapsed" />
 
             <CommandBar Grid.Row="1">
+                <AppBarButton x:Name="SyncButton" Label="Sync" Icon="Refresh" Click="SyncButton_Click" />
                 <AppBarButton x:Name="CreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
                 <AppBarButton x:Name="SigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
                 <AppBarButton x:Name="ProfileButton" Label="Signed-in" Visibility="Collapsed">
