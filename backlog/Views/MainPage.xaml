@@ -39,7 +39,7 @@
             <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
 
             <Pivot x:Name="Pivot">
-                <PivotItem Header="All">
+                <PivotItem Header="all">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical">
                             <TextBlock x:Name="EmtpyListText" Text="Thank you for trying Backlog. Sign-in for cross-device syncing and data backups! This is pre-release software, so your local data might be deleted. " Visibility="Collapsed"
@@ -113,7 +113,7 @@
                     </ScrollViewer>
                 </PivotItem>
 
-                <PivotItem Header="Films">
+                <PivotItem Header="films">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical">
                             <TextBlock x:Name="EmtpyFilmsText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
@@ -187,7 +187,7 @@
                     </ScrollViewer>
                 </PivotItem>
 
-                <PivotItem Header="Music">
+                <PivotItem Header="music">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical">
                             <TextBlock x:Name="EmtpyMusicText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
@@ -261,7 +261,7 @@
                     </ScrollViewer>
                 </PivotItem>
 
-                <PivotItem Header="TV">
+                <PivotItem Header="tv">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical">
                             <TextBlock x:Name="EmtpyTVText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
@@ -335,7 +335,7 @@
                     </ScrollViewer>
                 </PivotItem>
 
-                <PivotItem Header="Games">
+                <PivotItem Header="games">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical">
                             <TextBlock x:Name="EmtpyGamesText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
@@ -409,7 +409,7 @@
                     </ScrollViewer>
                 </PivotItem>
 
-                <PivotItem Header="Books">
+                <PivotItem Header="books">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical">
                             <TextBlock x:Name="EmtpyBooksText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
@@ -509,7 +509,7 @@
             <muxc:ProgressBar x:Name="CreationProgBar" IsIndeterminate="True" Visibility="Collapsed" />
 
             <CommandBar Grid.Row="1">
-                <AppBarButton x:Name="SyncButton" Label="Sync" Icon="Refresh" Click="SyncButton_Click" />
+                <AppBarButton x:Name="SyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
                 <AppBarButton x:Name="CreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
                 <AppBarButton x:Name="SigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
                 <AppBarButton x:Name="ProfileButton" Label="Signed-in" Visibility="Collapsed">

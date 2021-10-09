@@ -31,7 +31,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Pivot>
-            <PivotItem Header="Settings">
+            <PivotItem Header="settings">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -65,7 +65,7 @@
                 </ScrollViewer>
             </PivotItem>
 
-            <PivotItem Header="About">
+            <PivotItem Header="about">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -153,11 +153,11 @@
                 </ScrollViewer>
             </PivotItem>
 
-            <PivotItem Header="Help">
+            <PivotItem Header="help">
                 <TextBlock Text="Work in progress" />
             </PivotItem>
 
-            <PivotItem Header="Feedback">
+            <PivotItem Header="feedback">
                 <TextBlock Text="Under construction" />
             </PivotItem>
         </Pivot>
