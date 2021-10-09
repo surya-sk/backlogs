@@ -253,7 +253,6 @@ namespace backlog.Views
                 checkboxChecked = false;
                 SaveData.GetInstance().SaveSettings(backlogs);
                 await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
-                await BuildNotifactionQueue();
                 CreationProgBar.Visibility = Visibility.Collapsed;
             }
         }
@@ -464,7 +463,9 @@ namespace backlog.Views
         {
             foreach (Backlog b in backlogs)
             {
-                if (!b.NotifSent)
+                ApplicationDataContainer notifSettings = ApplicationData.Current.LocalSettings;
+                int? notifSent = (int?)notifSettings.Values[b.id.ToString()];
+                if (notifSent != 1)
                 {
                     var builder = new ToastContentBuilder()
                     .AddText($"Hey there!", hintMaxLines: 1)
@@ -473,7 +474,7 @@ namespace backlog.Views
                     DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate).Add(b.NotifTime);
                     ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
                     ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
-                    if(b.RemindEveryday)
+                    if (b.RemindEveryday)
                     {
                         if(IsBackgroundTaskRegistered(toastTaskName))
                         {
@@ -483,9 +484,7 @@ namespace backlog.Views
                         await BackgroundExecutionManager.RequestAccessAsync();
                         BackgroundTaskHelper.Register(toastTaskName, new TimeTrigger(1440, false));
                     }
-                    b.NotifSent = true;
-                    SaveData.GetInstance().SaveSettings(backlogs);
-                    await SaveData.GetInstance().WriteDataAsync();
+                    notifSettings.Values[b.id.ToString()] = 1;
                 }
             }
         }
