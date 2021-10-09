@@ -281,7 +281,6 @@ namespace backlog.Views
                     Units = "Minutes",
                     ShowProgress = true,
                     NotifTime = time,
-                    NotifSent = false,
                     RemindEveryday = checkboxChecked
                 };
                 backlogs.Add(backlog);
@@ -315,7 +314,6 @@ namespace backlog.Views
                 Units = "Minutes",
                 ShowProgress = false,
                 NotifTime = time,
-                NotifSent = false,
                 RemindEveryday = checkboxChecked
             };
             backlogs.Add(backlog);
@@ -352,7 +350,6 @@ namespace backlog.Views
                     Units = "Pages",
                     ShowProgress = true,
                     NotifTime = time,
-                    NotifSent = false,
                     RemindEveryday = checkboxChecked
                 };
                 backlogs.Add(backlog);
@@ -384,7 +381,6 @@ namespace backlog.Views
                     Units = "Season",
                     ShowProgress = true,
                     NotifTime = time,
-                    NotifSent = false,
                     RemindEveryday = checkboxChecked
                 };
                 backlogs.Add(backlog);
@@ -431,7 +427,6 @@ namespace backlog.Views
                     Progress = 0,
                     ShowProgress = false,
                     NotifTime = time,
-                    NotifSent = false,
                     RemindEveryday = checkboxChecked
                 };
                 backlogs.Add(backlog);
