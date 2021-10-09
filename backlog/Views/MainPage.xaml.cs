@@ -89,6 +89,10 @@ namespace backlog.Views
                 await SaveData.GetInstance().ReadDataAsync(true);
                 PopulateBacklogs();
             }
+            foreach(Backlog b in backlogs)
+            {
+                await BuildNotifactionQueue(b);
+            }
             ProgBar.Visibility = Visibility.Collapsed;
             base.OnNavigatedTo(e);
         }
@@ -487,8 +491,9 @@ namespace backlog.Views
             int? notifSent = (int?)notifSettings.Values[b.id.ToString()];
             if (notifSent != 1)
             {
-                if(result < 0)
+                if(result > 0)
                 {
+                    Debug.WriteLine(result);
                     var builder = new ToastContentBuilder()
                     .AddText($"Hey there!", hintMaxLines: 1)
                     .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)

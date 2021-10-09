@@ -75,7 +75,7 @@
 
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" MaxWidth="700" >
                             <Image Source="ms-appx:///Assets/app-icon.png" Height="100" Width="100"/>
-                            <TextBlock Text="Backlog" FontSize="40" Margin="0,10,0,0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Backlogs" FontSize="40" Margin="0,10,0,0" HorizontalAlignment="Center"/>
                             <TextBlock FontWeight="ExtraLight" IsTextSelectionEnabled="True" HorizontalAlignment="Center">
                         Version:
                         <Run Text="{x:Bind Version}" FontWeight="Bold"/>
