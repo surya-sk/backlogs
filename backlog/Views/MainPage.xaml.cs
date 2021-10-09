@@ -89,7 +89,6 @@ namespace backlog.Views
                 await SaveData.GetInstance().ReadDataAsync(true);
                 PopulateBacklogs();
             }
-            await BuildNotifactionQueue();
             ProgBar.Visibility = Visibility.Collapsed;
             base.OnNavigatedTo(e);
         }
@@ -275,7 +274,6 @@ namespace backlog.Views
             checkboxChecked = false;
             SaveData.GetInstance().SaveSettings(backlogs);
             await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
-            await BuildNotifactionQueue();
             CreationProgBar.Visibility = Visibility.Collapsed;
         }
 
@@ -305,6 +303,7 @@ namespace backlog.Views
                     NotifTime = time,
                     RemindEveryday = checkboxChecked
                 };
+                await BuildNotifactionQueue(backlog);
                 backlogs.Add(backlog);
                 filmBacklogs.Add(backlog);
             }
@@ -338,6 +337,7 @@ namespace backlog.Views
                 NotifTime = time,
                 RemindEveryday = checkboxChecked
             };
+            await BuildNotifactionQueue(backlog);
             backlogs.Add(backlog);
             musicBacklogs.Add(backlog);
         }
@@ -374,6 +374,7 @@ namespace backlog.Views
                     NotifTime = time,
                     RemindEveryday = checkboxChecked
                 };
+                await BuildNotifactionQueue(backlog);
                 backlogs.Add(backlog);
                 bookBacklogs.Add(backlog);
             }
@@ -405,6 +406,7 @@ namespace backlog.Views
                     NotifTime = time,
                     RemindEveryday = checkboxChecked
                 };
+                await BuildNotifactionQueue(backlog);
                 backlogs.Add(backlog);
                 tvBacklogs.Add(backlog);
             }
@@ -451,6 +453,7 @@ namespace backlog.Views
                     NotifTime = time,
                     RemindEveryday = checkboxChecked
                 };
+                await BuildNotifactionQueue(backlog);
                 backlogs.Add(backlog);
                 gameBacklogs.Add(backlog);
             }
@@ -476,24 +479,25 @@ namespace backlog.Views
         {
         }
 
-        private async Task BuildNotifactionQueue()
+        private async Task BuildNotifactionQueue(Backlog b)
         {
-            foreach (Backlog b in backlogs)
+            DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate).Add(b.NotifTime);
+            int result = DateTimeOffset.Compare(date, DateTimeOffset.Now);
+            ApplicationDataContainer notifSettings = ApplicationData.Current.LocalSettings;
+            int? notifSent = (int?)notifSettings.Values[b.id.ToString()];
+            if (notifSent != 1)
             {
-                ApplicationDataContainer notifSettings = ApplicationData.Current.LocalSettings;
-                int? notifSent = (int?)notifSettings.Values[b.id.ToString()];
-                if (notifSent != 1)
+                if(result < 0)
                 {
                     var builder = new ToastContentBuilder()
                     .AddText($"Hey there!", hintMaxLines: 1)
                     .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
                     .AddHeroImage(new Uri(b.ImageURL));
-                    DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate).Add(b.NotifTime);
                     ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
                     ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
                     if (b.RemindEveryday)
                     {
-                        if(IsBackgroundTaskRegistered(toastTaskName))
+                        if (IsBackgroundTaskRegistered(toastTaskName))
                         {
                             return;
                         }
@@ -501,9 +505,10 @@ namespace backlog.Views
                         await BackgroundExecutionManager.RequestAccessAsync();
                         BackgroundTaskHelper.Register(toastTaskName, new TimeTrigger(1440, false));
                     }
-                    notifSettings.Values[b.id.ToString()] = 1;
                 }
+                notifSettings.Values[b.id.ToString()] = 1;
             }
+            GenerateLiveTiles(b);
         }
 
         private void GenerateLiveTiles(Backlog b)
