@@ -63,6 +63,10 @@ namespace backlog.Views
         {
             var readBacklogs = SaveData.GetInstance().GetBacklogs();
             backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.TargetDate));
+            foreach(Backlog b in backlogs)
+            {
+                GenerateLiveTiles(b);
+            }
             filmBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
             tvBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
             gameBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
@@ -482,6 +486,85 @@ namespace backlog.Views
                     notifSettings.Values[b.id.ToString()] = 1;
                 }
             }
+        }
+
+        private void GenerateLiveTiles(Backlog b)
+        {
+            var tileContent = new TileContent()
+            {
+                Visual = new TileVisual()
+                {
+
+                    TileMedium = new TileBinding()
+                    {
+                        Branding = TileBranding.Name,
+                        DisplayName = "Backlogs",
+                        Content = new TileBindingContentAdaptive()
+                        {
+                            BackgroundImage = new TileBackgroundImage()
+                            {
+                                Source = b.ImageURL,
+                            },
+                            Children =
+                            {
+                                new AdaptiveText()
+                                {
+                                    Text = b.Name,
+                                    HintWrap = true,
+                                    HintMaxLines = 2
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = b.Type,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = b.TargetDate,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                }
+                            }
+                        }
+                    },
+                    TileWide = new TileBinding()
+                    {
+                        Branding = TileBranding.NameAndLogo,
+                        DisplayName = "Backlogs",
+                        Content = new TileBindingContentAdaptive()
+                        {
+                            PeekImage = new TilePeekImage()
+                            {
+                                Source = b.ImageURL
+                            },
+                            Children =
+                            {
+                                new AdaptiveText()
+                                {
+                                    Text = b.Name
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = $"{b.Type} - {b.Director}",
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = $"You have this set for {b.TargetDate}",
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                }
+                            }
+                        }
+                    },
+                }
+            };
+
+            // Create the tile notification
+            var tileNotif = new TileNotification(tileContent.GetXml());
+
+            // And send the notification to the primary tile
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotif);
         }
 
         private void ShareButton_Click(object sender, RoutedEventArgs e)
