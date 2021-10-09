@@ -227,38 +227,56 @@ namespace backlog.Views
             }
             else
             {
-                CreationProgBar.Visibility = Visibility.Visible;
+               
                 string title = NameInput.Text.Replace(" ", string.Empty);
                 string date = DatePicker.Date.ToString("d");
-                EmtpyListText.Visibility = Visibility.Collapsed;
-                switch(TypeComoBox.SelectedItem.ToString())
+                DateTimeOffset dateTime = DateTimeOffset.Parse(date).Add(TimePicker.Time);
+                int result = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
+                if(result < 0)
                 {
-                    case "Film":
-                        await CreateFilmBacklog(title, date, TimePicker.Time);
-                        EmtpyFilmsText.Visibility = Visibility.Collapsed;
-                        break;
-                    case "TV":
-                        await CreateSeriesBacklog(title, date, TimePicker.Time);
-                        EmtpyTVText.Visibility = Visibility.Collapsed;
-                        break;
-                    case "Game":
-                        await CreateGameBacklog(NameInput.Text, date, TimePicker.Time);
-                        EmtpyGamesText.Visibility = Visibility.Collapsed;
-                        break;
-                    case "Book":
-                        await CreateBookBacklog(NameInput.Text, date, TimePicker.Time);
-                        EmtpyBooksText.Visibility = Visibility.Collapsed;
-                        break;
-                    case "Music":
-                        await CreateMusicBacklog(NameInput.Text, date, TimePicker.Time);
-                        EmtpyMusicText.Visibility = Visibility.Collapsed;
-                        break;
+                    ErrorText.Visibility = Visibility.Visible;
+                    ErrorText.Text = "The date and time you've chosen are in the past!";
+                    args.Cancel = true;
                 }
-                checkboxChecked = false;
-                SaveData.GetInstance().SaveSettings(backlogs);
-                await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
-                CreationProgBar.Visibility = Visibility.Collapsed;
+                else
+                { 
+                    EmtpyListText.Visibility = Visibility.Collapsed;
+                    await CreateBacklog(title, date);
+                }
             }
+        }
+
+        private async Task CreateBacklog(string title, string date)
+        {
+            CreationProgBar.Visibility = Visibility.Visible;
+            switch (TypeComoBox.SelectedItem.ToString())
+            {
+                case "Film":
+                    await CreateFilmBacklog(title, date, TimePicker.Time);
+                    EmtpyFilmsText.Visibility = Visibility.Collapsed;
+                    break;
+                case "TV":
+                    await CreateSeriesBacklog(title, date, TimePicker.Time);
+                    EmtpyTVText.Visibility = Visibility.Collapsed;
+                    break;
+                case "Game":
+                    await CreateGameBacklog(NameInput.Text, date, TimePicker.Time);
+                    EmtpyGamesText.Visibility = Visibility.Collapsed;
+                    break;
+                case "Book":
+                    await CreateBookBacklog(NameInput.Text, date, TimePicker.Time);
+                    EmtpyBooksText.Visibility = Visibility.Collapsed;
+                    break;
+                case "Music":
+                    await CreateMusicBacklog(NameInput.Text, date, TimePicker.Time);
+                    EmtpyMusicText.Visibility = Visibility.Collapsed;
+                    break;
+            }
+            checkboxChecked = false;
+            SaveData.GetInstance().SaveSettings(backlogs);
+            await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
+            await BuildNotifactionQueue();
+            CreationProgBar.Visibility = Visibility.Collapsed;
         }
 
         private async Task CreateFilmBacklog(string title, string date, TimeSpan time)
