@@ -28,6 +28,7 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using Windows.ApplicationModel.Background;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
+using System.Globalization;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -227,9 +228,8 @@ namespace backlog.Views
             }
             else
             {
-               
                 string title = NameInput.Text.Replace(" ", string.Empty);
-                string date = DatePicker.Date.ToString("d");
+                string date = DatePicker.Date.ToString(CultureInfo.InvariantCulture);
                 DateTimeOffset dateTime = DateTimeOffset.Parse(date).Add(TimePicker.Time);
                 int result = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
                 if(result < 0)
@@ -482,7 +482,7 @@ namespace backlog.Views
 
         private async Task BuildNotifactionQueue(Backlog b)
         {
-            DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate).Add(b.NotifTime);
+            DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate, CultureInfo.InvariantCulture).Add(b.NotifTime);
             int result = DateTimeOffset.Compare(date, DateTimeOffset.Now);
             ApplicationDataContainer notifSettings = ApplicationData.Current.LocalSettings;
             int? notifSent = (int?)notifSettings.Values[b.id.ToString()];
