@@ -88,7 +88,7 @@
 
                                                 <RelativePanel Grid.Row="1" Margin="16,6,0,0">
                                                     <TextBlock
-                                                x:Name="TitleText"
+                                                x:Name="TitleText" MaxLines="1" TextTrimming="CharacterEllipsis"
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
@@ -97,7 +97,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Director}"/>
+                                                Text="{x:Bind Director}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
                                                     <TextBlock
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
@@ -162,7 +162,7 @@
 
                                                 <RelativePanel Grid.Row="1" Margin="16,6,0,0">
                                                     <TextBlock
-                                                x:Name="TitleText"
+                                                x:Name="TitleText" MaxLines="1" TextTrimming="CharacterEllipsis"
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
@@ -171,7 +171,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Director}"/>
+                                                Text="{x:Bind Director}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
                                                     <TextBlock
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
@@ -236,7 +236,7 @@
 
                                                 <RelativePanel Grid.Row="1" Margin="16,6,0,0">
                                                     <TextBlock
-                                                x:Name="TitleText"
+                                                x:Name="TitleText" MaxLines="1" TextTrimming="CharacterEllipsis"
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
@@ -245,7 +245,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Director}"/>
+                                                Text="{x:Bind Director}" TextWrapping="Wrap" MaxLines="1"  TextTrimming="CharacterEllipsis"/>
                                                     <TextBlock
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
@@ -310,7 +310,7 @@
 
                                                 <RelativePanel Grid.Row="1" Margin="16,6,0,0">
                                                     <TextBlock
-                                                x:Name="TitleText"
+                                                x:Name="TitleText" MaxLines="1" TextTrimming="CharacterEllipsis"
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
@@ -319,7 +319,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Director}"/>
+                                                Text="{x:Bind Director}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
                                                     <TextBlock
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
@@ -384,7 +384,7 @@
 
                                                 <RelativePanel Grid.Row="1" Margin="16,6,0,0">
                                                     <TextBlock
-                                                x:Name="TitleText"
+                                                x:Name="TitleText" MaxLines="1" TextTrimming="CharacterEllipsis"
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
@@ -393,7 +393,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Director}"/>
+                                                Text="{x:Bind Director}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
                                                     <TextBlock
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
@@ -458,7 +458,7 @@
 
                                                 <RelativePanel Grid.Row="1" Margin="16,6,0,0">
                                                     <TextBlock
-                                                x:Name="TitleText"
+                                                x:Name="TitleText" MaxLines="1" TextTrimming="CharacterEllipsis"
                                                 Style="{StaticResource BaseTextBlockStyle}"
                                                 Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
@@ -467,7 +467,7 @@
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Director}"/>
+                                                Text="{x:Bind Director}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis" />
                                                     <TextBlock
                                                 Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"

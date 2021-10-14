@@ -229,7 +229,7 @@ namespace backlog.Views
             else
             {
                 string title = NameInput.Text.Replace(" ", string.Empty);
-                string date = DatePicker.Date.ToString(CultureInfo.InvariantCulture);
+                string date = DatePicker.Date.ToString("d", CultureInfo.InvariantCulture);
                 DateTimeOffset dateTime = DateTimeOffset.Parse(date).Add(TimePicker.Time);
                 int result = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
                 if(result < 0)
