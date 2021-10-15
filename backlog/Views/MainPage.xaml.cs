@@ -81,11 +81,12 @@ namespace backlog.Views
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
             if (isNetworkAvailable && signedIn == "Yes")
             {
+                await Logger.WriteLogAsync("Signed in");
                 graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
                 SigninButton.Visibility = Visibility.Collapsed;
                 ProfileButton.Visibility = Visibility.Visible;
                 await SaveData.GetInstance().ReadDataAsync(true);
-                PopulateBacklogs();
+                await PopulateBacklogs();
             }
             foreach(Backlog b in backlogs)
             {
@@ -95,9 +96,10 @@ namespace backlog.Views
             base.OnNavigatedTo(e);
         }
 
-        private void PopulateBacklogs()
+        private async Task PopulateBacklogs()
         {
             ObservableCollection<Backlog> readBacklogs = SaveData.GetInstance().GetBacklogs();
+            await Logger.WriteLogAsync($"Number of backlogs found: {readBacklogs.Count}");
             var _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.TargetDate)); // sort by last created
             var _filmBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
             var _tvBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
@@ -241,6 +243,7 @@ namespace backlog.Views
                 else
                 { 
                     EmtpyListText.Visibility = Visibility.Collapsed;
+                    await Logger.WriteLogAsync($"Creating backlog {title}");
                     await CreateBacklog(title, date);
                 }
             }
@@ -280,183 +283,223 @@ namespace backlog.Views
 
         private async Task CreateFilmBacklog(string title, string date, TimeSpan time)
         {
-            string response = await RestClient.GetFilmResponse(title);
-            FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
-            FilmResponse filmResponse = filmResult.results[0];
-            string filmData = await RestClient.GetFilmDataResponse(filmResponse.id);
-            if (filmData != null)
+           try
             {
-                Film film = JsonConvert.DeserializeObject<Film>(filmData);
-                Backlog backlog = new Backlog
+                string response = await RestClient.GetFilmResponse(title);
+                await Logger.WriteLogAsync("Response: " + response);
+                FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
+                FilmResponse filmResponse = filmResult.results[0];
+                string filmData = await RestClient.GetFilmDataResponse(filmResponse.id);
+                if (filmData != null)
                 {
-                    id = Guid.NewGuid(),
-                    Name = film.fullTitle,
-                    Type = "Film",
-                    ReleaseDate = film.releaseDate,
-                    ImageURL = film.image,
-                    TargetDate = date,
-                    Description = film.plot,
-                    Length = film.runtimeMins,
-                    Director = film.directors,
-                    Progress = 0,
-                    Units = "Minutes",
-                    ShowProgress = true,
-                    NotifTime = time,
-                    RemindEveryday = checkboxChecked
-                };
-                await BuildNotifactionQueue(backlog);
-                backlogs.Add(backlog);
-                filmBacklogs.Add(backlog);
+                    Film film = JsonConvert.DeserializeObject<Film>(filmData);
+                    Backlog backlog = new Backlog
+                    {
+                        id = Guid.NewGuid(),
+                        Name = film.fullTitle,
+                        Type = "Film",
+                        ReleaseDate = film.releaseDate,
+                        ImageURL = film.image,
+                        TargetDate = date,
+                        Description = film.plot,
+                        Length = film.runtimeMins,
+                        Director = film.directors,
+                        Progress = 0,
+                        Units = "Minutes",
+                        ShowProgress = true,
+                        NotifTime = time,
+                        RemindEveryday = checkboxChecked
+                    };
+                    await BuildNotifactionQueue(backlog);
+                    backlogs.Add(backlog);
+                    filmBacklogs.Add(backlog);
+                }
+            }
+            catch (Exception e)
+            {
+                await Logger.WriteLogAsync(e.ToString());
             }
         }
 
         private async Task CreateMusicBacklog(string title, string date, TimeSpan time)
         {
-            string response = await RestClient.GetMusicResponse(title);
-            var musicData = JsonConvert.DeserializeObject<MusicData>(response);
-            Music music = new Music
+            try
             {
-                name = musicData.album.name,
-                artist = musicData.album.artist,
-                description = musicData.album.wiki == null ? "" : musicData.album.wiki.summary,
-                releaseDate = musicData.album.wiki == null ? "" : musicData.album.wiki.published,
-                image = musicData.album.image[2].Text
-            };
-            Backlog backlog = new Backlog
-            {
-                id = Guid.NewGuid(),
-                Name = music.name,
-                Type = "Music",
-                ReleaseDate = music.releaseDate,
-                ImageURL = music.image,
-                TargetDate = date,
-                Description = music.description,
-                Director = music.artist,
-                Progress = 0,
-                Units = "Minutes",
-                ShowProgress = false,
-                NotifTime = time,
-                RemindEveryday = checkboxChecked
-            };
-            await BuildNotifactionQueue(backlog);
-            backlogs.Add(backlog);
-            musicBacklogs.Add(backlog);
-        }
-
-        private async Task CreateBookBacklog(string title, string date, TimeSpan time)
-        {
-            string response = await RestClient.GetBookResponse(title);
-            var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
-            Book book = new Book
-            {
-                name = bookData.items[0].volumeInfo.title,
-                author = string.Concat(bookData.items[0].volumeInfo.authors),
-                desciption = bookData.items[0].volumeInfo.description,
-                releaseDate = bookData.items[0].volumeInfo.publishedDate,
-                image = bookData.items[0].volumeInfo.imageLinks.thumbnail,
-                length = bookData.items[0].volumeInfo.pageCount
-            };
-            if(book != null)
-            {
-                Backlog backlog = new Backlog
+                string response = await RestClient.GetMusicResponse(title);
+                await Logger.WriteLogAsync("Response: " + response);
+                var musicData = JsonConvert.DeserializeObject<MusicData>(response);
+                Music music = new Music
                 {
-                    id = Guid.NewGuid(),
-                    Name = book.name,
-                    Type = "Book",
-                    ReleaseDate = book.releaseDate,
-                    ImageURL = book.image,
-                    TargetDate = date,
-                    Description = book.desciption,
-                    Director = book.author,
-                    Length = book.length,
-                    Progress = 0,
-                    Units = "Pages",
-                    ShowProgress = true,
-                    NotifTime = time,
-                    RemindEveryday = checkboxChecked
+                    name = musicData.album.name,
+                    artist = musicData.album.artist,
+                    description = musicData.album.wiki == null ? "" : musicData.album.wiki.summary,
+                    releaseDate = musicData.album.wiki == null ? "" : musicData.album.wiki.published,
+                    image = musicData.album.image[2].Text
                 };
-                await BuildNotifactionQueue(backlog);
-                backlogs.Add(backlog);
-                bookBacklogs.Add(backlog);
-            }
-        }
-
-        private async Task CreateSeriesBacklog(string titile, string date, TimeSpan time)
-        {
-            string response = await RestClient.GetSeriesResponse(titile);
-            SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
-            SeriesResponse seriesResponse = seriesResult.results[0];
-            string seriesData = await RestClient.GetSeriesDataResponse(seriesResponse.id);
-            if(seriesData != null)
-            {
-                Series series = JsonConvert.DeserializeObject<Series>(seriesData);
                 Backlog backlog = new Backlog
                 {
                     id = Guid.NewGuid(),
-                    Name = series.fullTitle,
-                    Type = "TV",
-                    ReleaseDate = series.releaseDate,
-                    ImageURL = series.image,
+                    Name = music.name,
+                    Type = "Music",
+                    ReleaseDate = music.releaseDate,
+                    ImageURL = music.image,
                     TargetDate = date,
-                    Description = series.plot,
-                    Length = series.TvSeriesInfo.Seasons.Count,
-                    Director = series.TvSeriesInfo.Creators,
+                    Description = music.description,
+                    Director = music.artist,
                     Progress = 0,
-                    Units = "Season",
-                    ShowProgress = true,
-                    NotifTime = time,
-                    RemindEveryday = checkboxChecked
-                };
-                await BuildNotifactionQueue(backlog);
-                backlogs.Add(backlog);
-                tvBacklogs.Add(backlog);
-            }
-        }
-
-        private async Task CreateGameBacklog(string title, string date, TimeSpan time)
-        {
-            string response = await RestClient.GetGameResponse(title);
-            var result = JsonConvert.DeserializeObject<GameResponse[]>(response);
-            string id = result[0].id.ToString();
-            string gameResponse = await RestClient.GetGameResult(id);
-            var gameResult = JsonConvert.DeserializeObject<GameResult[]>(gameResponse);
-            int companyID = await RestClient.GetCompanyID(gameResult[0].involved_companies[0].ToString());
-            var gameCompanyResponse = await RestClient.GetGameCompanyResponse(companyID.ToString());
-            var gameCompany = JsonConvert.DeserializeObject<GameCompany[]>(gameCompanyResponse);
-            var gameCoverResponse = await RestClient.GetGameCover(gameResult[0].cover.ToString());
-            var gameCover = JsonConvert.DeserializeObject<GameCover[]>(gameCoverResponse);
-            string releaseDateResponse = await RestClient.GetGameReleaseResponse(gameResult[0].release_dates[0].ToString());
-            var releaseDateTimestamp = JsonConvert.DeserializeObject<GameReleaseDate[]>(releaseDateResponse);
-            var releaseDate = DateTimeOffset.FromUnixTimeSeconds(releaseDateTimestamp[0].date);
-            Game game = new Game
-            {
-                name = gameResult[0].name + $" ({releaseDate.Year})",
-                releaseDate = releaseDate.ToString("D"),
-                company = gameCompany[0].name,
-                image = "https:" + gameCover[0].url,
-                storyline = gameResult[0].storyline
-            };
-            if (game != null)
-            {
-                Backlog backlog = new Backlog
-                {
-                    id = Guid.NewGuid(),
-                    Name = game.name,
-                    Type = "Game",
-                    ReleaseDate = game.releaseDate,
-                    ImageURL = game.image,
-                    TargetDate = date,
-                    Description = game.storyline,
-                    Length = 0,
-                    Director = game.company,
-                    Progress = 0,
+                    Units = "Minutes",
                     ShowProgress = false,
                     NotifTime = time,
                     RemindEveryday = checkboxChecked
                 };
                 await BuildNotifactionQueue(backlog);
                 backlogs.Add(backlog);
-                gameBacklogs.Add(backlog);
+                musicBacklogs.Add(backlog);
+            }
+            catch(Exception e)
+            {
+                await Logger.WriteLogAsync(e.ToString());
+            }
+        }
+
+        private async Task CreateBookBacklog(string title, string date, TimeSpan time)
+        {
+            try
+            {
+                string response = await RestClient.GetBookResponse(title);
+                await Logger.WriteLogAsync("Response: " + response);
+                var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
+                Book book = new Book
+                {
+                    name = bookData.items[0].volumeInfo.title,
+                    author = string.Concat(bookData.items[0].volumeInfo.authors),
+                    desciption = bookData.items[0].volumeInfo.description,
+                    releaseDate = bookData.items[0].volumeInfo.publishedDate,
+                    image = bookData.items[0].volumeInfo.imageLinks.thumbnail,
+                    length = bookData.items[0].volumeInfo.pageCount
+                };
+                if (book != null)
+                {
+                    Backlog backlog = new Backlog
+                    {
+                        id = Guid.NewGuid(),
+                        Name = book.name,
+                        Type = "Book",
+                        ReleaseDate = book.releaseDate,
+                        ImageURL = book.image,
+                        TargetDate = date,
+                        Description = book.desciption,
+                        Director = book.author,
+                        Length = book.length,
+                        Progress = 0,
+                        Units = "Pages",
+                        ShowProgress = true,
+                        NotifTime = time,
+                        RemindEveryday = checkboxChecked
+                    };
+                    await BuildNotifactionQueue(backlog);
+                    backlogs.Add(backlog);
+                    bookBacklogs.Add(backlog);
+                }
+            }
+            catch(Exception e)
+            {
+                await Logger.WriteLogAsync(e.ToString());
+            }
+        }
+
+        private async Task CreateSeriesBacklog(string titile, string date, TimeSpan time)
+        {
+            try
+            {
+                string response = await RestClient.GetSeriesResponse(titile);
+                await Logger.WriteLogAsync("Response: " + response);
+                SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
+                SeriesResponse seriesResponse = seriesResult.results[0];
+                string seriesData = await RestClient.GetSeriesDataResponse(seriesResponse.id);
+                if (seriesData != null)
+                {
+                    Series series = JsonConvert.DeserializeObject<Series>(seriesData);
+                    Backlog backlog = new Backlog
+                    {
+                        id = Guid.NewGuid(),
+                        Name = series.fullTitle,
+                        Type = "TV",
+                        ReleaseDate = series.releaseDate,
+                        ImageURL = series.image,
+                        TargetDate = date,
+                        Description = series.plot,
+                        Length = series.TvSeriesInfo.Seasons.Count,
+                        Director = series.TvSeriesInfo.Creators,
+                        Progress = 0,
+                        Units = "Season",
+                        ShowProgress = true,
+                        NotifTime = time,
+                        RemindEveryday = checkboxChecked
+                    };
+                    await BuildNotifactionQueue(backlog);
+                    backlogs.Add(backlog);
+                    tvBacklogs.Add(backlog);
+                }
+            }
+            catch (Exception e)
+            {
+                await Logger.WriteLogAsync(e.ToString());
+            }
+        }
+
+        private async Task CreateGameBacklog(string title, string date, TimeSpan time)
+        {
+            try
+            {
+                string response = await RestClient.GetGameResponse(title);
+                await Logger.WriteLogAsync("Response: " + response);
+                var result = JsonConvert.DeserializeObject<GameResponse[]>(response);
+                string id = result[0].id.ToString();
+                string gameResponse = await RestClient.GetGameResult(id);
+                var gameResult = JsonConvert.DeserializeObject<GameResult[]>(gameResponse);
+                int companyID = await RestClient.GetCompanyID(gameResult[0].involved_companies[0].ToString());
+                var gameCompanyResponse = await RestClient.GetGameCompanyResponse(companyID.ToString());
+                var gameCompany = JsonConvert.DeserializeObject<GameCompany[]>(gameCompanyResponse);
+                var gameCoverResponse = await RestClient.GetGameCover(gameResult[0].cover.ToString());
+                var gameCover = JsonConvert.DeserializeObject<GameCover[]>(gameCoverResponse);
+                string releaseDateResponse = await RestClient.GetGameReleaseResponse(gameResult[0].release_dates[0].ToString());
+                var releaseDateTimestamp = JsonConvert.DeserializeObject<GameReleaseDate[]>(releaseDateResponse);
+                var releaseDate = DateTimeOffset.FromUnixTimeSeconds(releaseDateTimestamp[0].date);
+                Game game = new Game
+                {
+                    name = gameResult[0].name + $" ({releaseDate.Year})",
+                    releaseDate = releaseDate.ToString("D"),
+                    company = gameCompany[0].name,
+                    image = "https:" + gameCover[0].url,
+                    storyline = gameResult[0].storyline
+                };
+                if (game != null)
+                {
+                    Backlog backlog = new Backlog
+                    {
+                        id = Guid.NewGuid(),
+                        Name = game.name,
+                        Type = "Game",
+                        ReleaseDate = game.releaseDate,
+                        ImageURL = game.image,
+                        TargetDate = date,
+                        Description = game.storyline,
+                        Length = 0,
+                        Director = game.company,
+                        Progress = 0,
+                        ShowProgress = false,
+                        NotifTime = time,
+                        RemindEveryday = checkboxChecked
+                    };
+                    await BuildNotifactionQueue(backlog);
+                    backlogs.Add(backlog);
+                    gameBacklogs.Add(backlog);
+                }
+            }
+            catch(Exception e)
+            {
+                await Logger.WriteLogAsync(e.ToString());
             }
         }
 

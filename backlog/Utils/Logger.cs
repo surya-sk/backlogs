@@ -15,8 +15,9 @@ namespace backlog.Utils
 
         public static async Task WriteLogAsync(string log)
         {
+            string logMessage = $"[{DateTime.Now}] - {log}\n\n";
             var file = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
-            await FileIO.AppendTextAsync(file, log);
+            await FileIO.AppendTextAsync(file, logMessage);
         }
 
         public static async Task<String> ReadLogAsync()
