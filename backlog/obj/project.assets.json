@@ -426,7 +426,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "buildTransitive/Microsoft.UI.Xaml.props": {}
+          "build/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -3002,7 +3002,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "buildTransitive/Microsoft.UI.Xaml.props": {}
+          "build/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -5645,7 +5645,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "buildTransitive/Microsoft.UI.Xaml.props": {}
+          "build/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -8322,7 +8322,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "buildTransitive/Microsoft.UI.Xaml.props": {}
+          "build/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -10990,7 +10990,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "buildTransitive/Microsoft.UI.Xaml.props": {}
+          "build/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -13642,7 +13642,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "buildTransitive/Microsoft.UI.Xaml.props": {}
+          "build/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -16328,7 +16328,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "buildTransitive/Microsoft.UI.Xaml.props": {}
+          "build/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -18980,7 +18980,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "buildTransitive/Microsoft.UI.Xaml.props": {}
+          "build/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {

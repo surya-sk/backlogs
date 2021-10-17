@@ -220,6 +220,17 @@ namespace backlog.Views
             }
         }
 
+        private async Task ShowErrorDialog(string name, string type)
+        {
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = $"Couldn't find {name}",
+                Content = $"We couldn't find {name} of type {type}. Check if you've picked the right type or try entering the full title if you haven't done so.",
+                CloseButtonText = "Ok"
+            };
+            ContentDialogResult result = await contentDialog.ShowAsync();
+        }
+
         private async void CreateBacklogDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             if (NameInput.Text == "" || TypeComoBox.SelectedIndex < 0 || DatePicker.Date == null || TimePicker.Time == null) 
@@ -232,7 +243,7 @@ namespace backlog.Views
             {
                 string title = NameInput.Text.Replace(" ", string.Empty);
                 string date = DatePicker.Date.ToString("d", CultureInfo.InvariantCulture);
-                DateTimeOffset dateTime = DateTimeOffset.Parse(date).Add(TimePicker.Time);
+                DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
                 int result = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
                 if(result < 0)
                 {
@@ -314,9 +325,11 @@ namespace backlog.Views
                     backlogs.Add(backlog);
                     filmBacklogs.Add(backlog);
                 }
+                Debug.WriteLine("Success");
             }
             catch (Exception e)
             {
+                await ShowErrorDialog(title, "Film");
                 await Logger.WriteLogAsync(e.ToString());
             }
         }
@@ -358,6 +371,7 @@ namespace backlog.Views
             }
             catch(Exception e)
             {
+                await ShowErrorDialog(title, "Music");
                 await Logger.WriteLogAsync(e.ToString());
             }
         }
@@ -404,15 +418,16 @@ namespace backlog.Views
             }
             catch(Exception e)
             {
+                await ShowErrorDialog(title, "Book");
                 await Logger.WriteLogAsync(e.ToString());
             }
         }
 
-        private async Task CreateSeriesBacklog(string titile, string date, TimeSpan time)
+        private async Task CreateSeriesBacklog(string title, string date, TimeSpan time)
         {
             try
             {
-                string response = await RestClient.GetSeriesResponse(titile);
+                string response = await RestClient.GetSeriesResponse(title);
                 await Logger.WriteLogAsync("Response: " + response);
                 SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
                 SeriesResponse seriesResponse = seriesResult.results[0];
@@ -444,6 +459,7 @@ namespace backlog.Views
             }
             catch (Exception e)
             {
+                await ShowErrorDialog(title, "TV");
                 await Logger.WriteLogAsync(e.ToString());
             }
         }
@@ -499,6 +515,7 @@ namespace backlog.Views
             }
             catch(Exception e)
             {
+                await ShowErrorDialog(title, "Game");
                 await Logger.WriteLogAsync(e.ToString());
             }
         }
