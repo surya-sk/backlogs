@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using backlog.Utils;
+using System.Diagnostics;
+using Windows.ApplicationModel.Email;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -85,6 +87,18 @@ namespace backlog.Views
                 }
                 ThemeHelper.RootTheme = App.GetEnum<ElementTheme>(selectedTheme);
             }
+        }
+
+        private async void SendLogsButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProgRing.IsActive = true;
+            string logs = await Logger.ReadLogsAsync();
+            EmailMessage emailMessage = new EmailMessage();
+            emailMessage.To.Add(new EmailRecipient("surya.sk05@outlook.com"));
+            emailMessage.Subject = "Logs from Backlogs";
+            emailMessage.Body = logs;
+            await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+            ProgRing.IsActive = false;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace backlog.Utils
             await FileIO.AppendTextAsync(file, logMessage);
         }
 
-        public static async Task<String> ReadLogAsync()
+        public static async Task<String> ReadLogsAsync()
         {
             var file = await localFolder.GetFileAsync(fileName);
             string logs = await FileIO.ReadTextAsync(file);

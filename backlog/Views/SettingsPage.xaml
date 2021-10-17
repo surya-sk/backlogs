@@ -30,6 +30,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+        <ProgressRing x:Name="ProgRing" IsActive="False" />
         <Pivot>
             <PivotItem Header="settings">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -154,7 +155,10 @@
             </PivotItem>
 
             <PivotItem Header="help">
-                <TextBlock Text="Work in progress" />
+                <StackPanel>
+                    <TextBlock Text="If the app is crashing or you're unable to create Backlogs, or if anything odd is happening, sending me the logs will help me identify and fix the issue." Margin="20" TextWrapping="Wrap" />
+                    <Button x:Name="SendLogsButton" Content="Send logs" Click="SendLogsButton_Click" Margin="20" />
+                </StackPanel>
             </PivotItem>
 
             <PivotItem Header="feedback">
