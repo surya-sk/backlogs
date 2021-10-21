@@ -29,6 +29,7 @@ using Windows.ApplicationModel.Background;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
 using System.Globalization;
+using Windows.ApplicationModel.DataTransfer;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -659,7 +660,17 @@ namespace backlog.Views
 
         private void ShareButton_Click(object sender, RoutedEventArgs e)
         {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+            DataTransferManager.ShowShareUI();
+        }
 
+        private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            DataRequest request = args.Request;
+            request.Data.SetText("https://www.microsoft.com/store/apps/9N2H8CM2KWVZ");
+            request.Data.Properties.Title = "https://www.microsoft.com/store/apps/9N2H8CM2KWVZ";
+            request.Data.Properties.Description = "Share this app with your contacts";
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
