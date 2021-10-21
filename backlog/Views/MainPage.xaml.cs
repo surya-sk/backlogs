@@ -536,8 +536,10 @@ namespace backlog.Views
             return false;
         }
 
-        private void RateButton_Click(object sender, RoutedEventArgs e)
+        private async void RateButton_Click(object sender, RoutedEventArgs e)
         {
+            var ratingUri = new Uri(@"ms-windows-store://review/?ProductId=9N2H8CM2KWVZ");
+            await Windows.System.Launcher.LaunchUriAsync(ratingUri);
         }
 
         private async Task BuildNotifactionQueue(Backlog b)
@@ -570,7 +572,10 @@ namespace backlog.Views
                 }
                 notifSettings.Values[b.id.ToString()] = 1;
             }
-            GenerateLiveTiles(b);
+            string showLiveTile = ApplicationData.Current.LocalSettings.Values["LiveTileOn"]?.ToString();
+            if (showLiveTile == null || showLiveTile == "True")
+                GenerateLiveTiles(b);
+
         }
 
         private void GenerateLiveTiles(Backlog b)

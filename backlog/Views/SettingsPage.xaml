@@ -25,7 +25,9 @@
                         <Setter Target="RelatedPanel.(Grid.Row)" Value="1" />
                         <Setter Target="RelatedPanel.HorizontalAlignment" Value="Left" />                        
                         <Setter Target="RefLinks.(Grid.Row)" Value="1" />
-                        <Setter Target="RefLinks.HorizontalAlignment" Value="Left" />
+                        <Setter Target="RefLinks.HorizontalAlignment" Value="Left" />                        
+                        <Setter Target="StoreLink.(Grid.Row)" Value="1" />
+                        <Setter Target="StoreLink.HorizontalAlignment" Value="Left" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -46,6 +48,14 @@
                                 <x:String>Dark</x:String>
                                 <x:String>Light</x:String>
                             </ComboBox>
+
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Live tile" Margin="0,20,0,0" FontSize="15"/>
+                                <TextBlock Text="Pin the app to start to see a live tile. Available on Windows 10 only." FontStyle="Italic" 
+                                       FontWeight="ExtraLight" TextWrapping="Wrap"/>
+                                <ToggleSwitch x:Name="TileToggle" OffContent="Off" OnContent="On" Margin="0,10,0,20" IsOn="True" FontSize="15" 
+                                      Toggled="TileToggle_Toggled"/>
+                            </StackPanel>
 
                             <TextBlock Text="For the best experience, sign-in with your Microsoft Account. This will sync concepts using OneDrive so you can access them on all of your Windows devices."
                                    FontStyle="Italic" Margin="0,20,0,0" TextWrapping="Wrap" />
@@ -140,29 +150,56 @@
                             </Hyperlink>
                             </TextBlock>
                             <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
-                            <Hyperlink NavigateUri="https://github.com/microsoft/Xaml-Controls-Gallery">
-                                <Run Text="XAML Controls Library" />
-                            </Hyperlink>
+                                <Hyperlink NavigateUri="https://github.com/microsoft/Xaml-Controls-Gallery">
+                                    <Run Text="XAML Controls Library" />
+                                </Hyperlink>
                             </TextBlock>
                             <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
-                            <Hyperlink NavigateUri="https://developer.microsoft.com/en-us/graph">
-                                <Run Text="Microsoft Graph API" />
-                            </Hyperlink>
+                                <Hyperlink NavigateUri="https://developer.microsoft.com/en-us/graph">
+                                    <Run Text="Microsoft Graph API" />
+                                </Hyperlink>
                             </TextBlock>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
             </PivotItem>
 
-            <PivotItem Header="help">
-                <StackPanel>
-                    <TextBlock Text="If the app is crashing or you're unable to create Backlogs, or if anything odd is happening, sending me the logs will help me identify and fix the issue." Margin="20" TextWrapping="Wrap" />
-                    <Button x:Name="SendLogsButton" Content="Send logs" Click="SendLogsButton_Click" Margin="20" />
-                </StackPanel>
-            </PivotItem>
+            <PivotItem Header="help and feedback">
+                <Grid>
+                    <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel MaxWidth="600" HorizontalAlignment="Left" >
+                            <TextBlock Text="If the app is crashing or you're unable to create Backlogs, or if anything odd is happening, sending me the logs will help me identify and fix the issue." 
+                                   Margin="0,10,0,10" TextWrapping="Wrap" FontSize="15" />
+                            <Button x:Name="SendLogsButton" Content="Send logs" Click="SendLogsButton_Click" Margin="0,10,0,10" />
+                            <TextBlock Text="Have feedback? Want to report bugs or request a new feature? That's brilliant!" Margin="0,10,0,10" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10" >
+                            <Hyperlink NavigateUri="https://github.com/surya-sk/backlogs/issues/new">
+                                <Run Text="Create an issue on Github (preferred)" />
+                            </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Text="OR"  Margin="20,20,0,20" />
+                            <TextBlock Text="Send me an email" Margin="0,10,0,10" />
+                            <ComboBox x:Name="IssueTypeComboBox" Margin="0,10,0,10" Header="Type" PlaceholderText="Pick a type" >
+                                <x:String>Bug</x:String>
+                                <x:String>Feature Request</x:String>
+                                <x:String>Feedback</x:String>
+                            </ComboBox>
+                            <TextBox x:Name="MessageBox" PlaceholderText="Enter a description of your issue/feature" MinHeight="80" Margin="0,10,0,10" />
+                        <Button x:Name="SendButton" Content="Send" Click="SendButton_Click" />
+                    </StackPanel>
 
-            <PivotItem Header="feedback">
-                <TextBlock Text="Under construction" />
+                    <StackPanel x:Name="StoreLink" HorizontalAlignment="Right" Margin="0,20,20,0" >
+                        <TextBlock Text="Additional links" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
+                        <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                            <Hyperlink NavigateUri="ms-windows-store://review/?ProductId=	9N2H8CM2KWVZ">
+                                <Run Text="Rate and Review on the Store" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
             </PivotItem>
         </Pivot>
     </Grid>

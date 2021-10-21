@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Navigation;
 using backlog.Utils;
 using System.Diagnostics;
 using Windows.ApplicationModel.Email;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -97,6 +98,45 @@ namespace backlog.Views
             emailMessage.To.Add(new EmailRecipient("surya.sk05@outlook.com"));
             emailMessage.Subject = "Logs from Backlogs";
             emailMessage.Body = logs;
+            await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+            ProgRing.IsActive = false;
+        }
+
+        private void TileToggle_Toggled(object sender, RoutedEventArgs e)
+        {
+            ApplicationData.Current.LocalSettings.Values["LiveTileOn"] = TileToggle.IsOn.ToString();
+        }
+
+        private async void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(IssueTypeComboBox.SelectedIndex < 0 || MessageBox.Text == "")
+            {
+                await ShowError();
+            }
+            else
+            {
+                await SendEmail();
+            }
+        }
+
+        private async Task ShowError()
+        {
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = "Insufficient data",
+                Content = "Please fill in both the fields",
+                CloseButtonText = "Ok"
+            };
+            ContentDialogResult result = await contentDialog.ShowAsync();
+        }
+
+        private async Task SendEmail()
+        {
+            ProgRing.IsActive = true;
+            EmailMessage emailMessage = new EmailMessage();
+            emailMessage.Subject = "[Backlogs] " + IssueTypeComboBox.SelectedItem.ToString();
+            emailMessage.Body = MessageBox.Text;
+            emailMessage.To.Add(new EmailRecipient("surya.sk05@outlook.com"));
             await EmailManager.ShowComposeNewEmailAsync(emailMessage);
             ProgRing.IsActive = false;
         }
