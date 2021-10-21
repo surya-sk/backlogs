@@ -678,9 +678,10 @@ namespace backlog.Views
             checkboxChecked = true;
         }
 
-        private void SupportButton_Click(object sender, RoutedEventArgs e)
+        private async void SupportButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var ratingUri = new Uri(@"https://paypal.me/surya4822?locale.x=en_US");
+            await Windows.System.Launcher.LaunchUriAsync(ratingUri);
         }
 
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)

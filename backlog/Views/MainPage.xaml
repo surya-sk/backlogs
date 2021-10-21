@@ -518,7 +518,9 @@
                 <CommandBar.SecondaryCommands>
                     <AppBarButton x:Name="SettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
                     <AppBarButton x:Name="RateButton" Label="Rate and Review on the Store" Icon="Like" Click="RateButton_Click" />
-                    <AppBarButton x:Name="SupportButton" Label="Support developer" Icon="MailReply" Click="SupportButton_Click" />
+                    <AppBarButton x:Name="SupportButton" Label="Support developer"  Click="SupportButton_Click" >
+                        <FontIcon Glyph="" />
+                    </AppBarButton>
                     <AppBarButton x:Name="ShareButton" Label="Share this app" Click="ShareButton_Click" >
                         <FontIcon Glyph="" />
                     </AppBarButton>
