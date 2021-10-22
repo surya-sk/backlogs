@@ -484,28 +484,6 @@
                 </PivotItem>
             </Pivot>
 
-            <ContentDialog x:Name="CreateBacklogDialog" FullSizeDesired="False" 
-                           PrimaryButtonText="Create" PrimaryButtonClick="CreateBacklogDialog_PrimaryButtonClick"
-                           SecondaryButtonText="Cancel" Title="Create a backlog item">
-                <StackPanel Orientation="Vertical">
-                    <ComboBox x:Name="TypeComoBox" Header="Type" SelectionChanged="TypeComoBox_SelectionChanged" PlaceholderText="Choose type">
-                        <x:String>Film</x:String>
-                        <x:String>TV</x:String>
-                        <x:String>Music</x:String>
-                        <x:String>Game</x:String>
-                        <x:String>Book</x:String>
-                    </ComboBox>
-                    <TextBox x:Name="NameInput" PlaceholderText="Enter the name" Margin="0,20,0,0" />
-                    <TextBlock Text="Please follow the format given in the box above. Do NOT use special characters such as -*, expect for when searching for an album" FontStyle="Italic" 
-                               Foreground="LightYellow" TextWrapping="Wrap" />
-                    <DatePicker x:Name="DatePicker" Header="Target Date (when you want to check it out)"  Margin="0,20,0,0" />
-                    <TimePicker x:Name="TimePicker" Header="When do you want to be notified?" Margin="0,20,0,0" />
-                    <CheckBox x:Name="CheckBox" Content="Remind me everyday until this is complete" 
-                              Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Margin="0,20,0,0" />
-                    <TextBlock x:Name="ErrorText" Foreground="Red" Margin="0,20,0,0" Visibility="Collapsed"/>
-                </StackPanel>
-            </ContentDialog>
-
             <muxc:ProgressBar x:Name="CreationProgBar" IsIndeterminate="True" Visibility="Collapsed" />
 
             <CommandBar Grid.Row="1">

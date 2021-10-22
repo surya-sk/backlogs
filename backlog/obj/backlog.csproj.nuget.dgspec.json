@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\surya\\repo\\backlog\\backlog\\backlog.csproj": {}
+    "C:\\git\\backlogs\\backlog\\backlog.csproj": {}
   },
   "projects": {
-    "C:\\Users\\surya\\repo\\backlog\\backlog\\backlog.csproj": {
+    "C:\\git\\backlogs\\backlog\\backlog.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\surya\\repo\\backlog\\backlog\\backlog.csproj",
+        "projectUniqueName": "C:\\git\\backlogs\\backlog\\backlog.csproj",
         "projectName": "backlog",
-        "projectPath": "C:\\Users\\surya\\repo\\backlog\\backlog\\backlog.csproj",
-        "packagesPath": "C:\\Users\\surya\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\surya\\repo\\backlog\\backlog\\obj\\",
+        "projectPath": "C:\\git\\backlogs\\backlog\\backlog.csproj",
+        "packagesPath": "C:\\Users\\skotcharlakota\\.nuget\\packages\\",
+        "outputPath": "C:\\git\\backlogs\\backlog\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [
@@ -19,7 +19,7 @@
           "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\surya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\skotcharlakota\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

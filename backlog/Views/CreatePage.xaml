@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="backlog.Views.CreatePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:backlog.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Create a new Backlog" FontSize="30" Margin="10,0,0,20" />
+                <TextBlock Text="The app will search various sources such as IMDB and Twitch for metadata, and will fail to create a Backlog if not found. Be sure to be specific when entering the name and always enter the full title"
+                       Margin="10,0,0,20" TextWrapping="Wrap" />
+                <TextBlock Text="Please follow the hints given in the textbox when entering the name. Do NOT use special characters. Entering the year when searching for films is optional but it will help in getting accurate results"
+                       Foreground="LightYellow" FontStyle="Italic" Margin="10,0,0,20" TextWrapping="Wrap" />
+                <ComboBox x:Name="TypeComoBox" Header="Type" SelectionChanged="TypeComoBox_SelectionChanged" PlaceholderText="Choose type" Margin="10,0,0,20">
+                    <x:String>Film</x:String>
+                    <x:String>TV</x:String>
+                    <x:String>Music</x:String>
+                    <x:String>Game</x:String>
+                    <x:String>Book</x:String>
+                </ComboBox>
+                <TextBlock Text="Name" Margin="10,0,0,20" />
+                <TextBox x:Name="NameInput" PlaceholderText="Enter the name" Margin="10,0,0,20" />
+                <DatePicker x:Name="DatePicker" Header="Target Date (when you want to check it out)"  Margin="10,0,0,20" />
+                <TimePicker x:Name="TimePicker" Header="When do you want to be notified?" Margin="10,0,0,20" />
+                <CheckBox x:Name="CheckBox" Content="Remind me everyday until this is complete" 
+                              Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Margin="10,0,0,20" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
+
+        <CommandBar Grid.Row="1">
+            <AppBarButton x:Name="CreateButton" Icon="Accept" Label="Create" Click="CreateButton_Click" />
+            <AppBarButton x:Name="CancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
+        </CommandBar>
+    </Grid>
+</Page>
