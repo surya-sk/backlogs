@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -89,7 +90,11 @@ namespace backlog.Views
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (NameInput.Text == "" || TypeComoBox.SelectedIndex < 0 || DatePicker.Date == null || TimePicker.Time == null)
+            string title = NameInput.Text.Replace(" ", string.Empty);
+            string date = DatePicker.Date.ToString("d", CultureInfo.InvariantCulture);
+            DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
+            int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
+            if (title == "" || TypeComoBox.SelectedIndex < 0 || DatePicker.Date == null || TimePicker.Time == null)
             {
                 ContentDialog contentDialog = new ContentDialog
                 {
@@ -99,10 +104,21 @@ namespace backlog.Views
                 };
                 await contentDialog.ShowAsync();
             }
+            else if(diff < 0)
+            {
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "Invalid date and time",
+                    Content = "The date and time you've chosen are in the past!",
+                    CloseButtonText = "Ok"
+                };
+                await contentDialog.ShowAsync();
+            }   
             else
             {
-                // Create backlog
-            }    
+                await Logger.WriteLogAsync($"Creating backlog {title}");
+                await CreateBacklog(title, date);
+            }
         }
 
         private async Task CreateBacklog(string title, string date)

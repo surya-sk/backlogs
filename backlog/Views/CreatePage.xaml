@@ -5,6 +5,7 @@
     xmlns:local="using:backlog.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -36,7 +37,7 @@
             </StackPanel>
         </ScrollViewer>
 
-        <ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
+        <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
 
         <CommandBar Grid.Row="1">
             <AppBarButton x:Name="CreateButton" Icon="Accept" Label="Create" Click="CreateButton_Click" />
