@@ -32,6 +32,12 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
         <ProgressRing x:Name="ProgRing" IsActive="False" />
         <Pivot>
             <PivotItem Header="settings">
@@ -202,5 +208,10 @@
                 </Grid>
             </PivotItem>
         </Pivot>
+
+        <CommandBar Grid.Row="1">
+            <AppBarButton x:Name="HomeButton" Icon="Home" Label="Home" Click="HomeButton_Click" />
+        </CommandBar>
+        
     </Grid>
 </Page>

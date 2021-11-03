@@ -62,7 +62,7 @@ namespace backlog.Views
             }
             // show back button
             var view = SystemNavigationManager.GetForCurrentView();
-            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            //view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += View_BackRequested;
         }
 
@@ -139,6 +139,11 @@ namespace backlog.Views
             emailMessage.To.Add(new EmailRecipient("surya.sk05@outlook.com"));
             await EmailManager.ShowComposeNewEmailAsync(emailMessage);
             ProgRing.IsActive = false;
+        }
+
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainPage));
         }
     }
 }
