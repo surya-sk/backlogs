@@ -50,7 +50,6 @@ namespace backlog.Views
 
         readonly string toastTaskName = "ToastTask";
 
-        bool checkboxChecked = false;
         bool isNetworkAvailable = false;
         string signedIn;
         public MainPage()
@@ -113,7 +112,7 @@ namespace backlog.Views
             gameBacklogs.Clear();
             musicBacklogs.Clear();
             bookBacklogs.Clear();
-            EmtpyListText.Visibility = Visibility.Collapsed;
+            EmptyListText.Visibility = Visibility.Collapsed;
             foreach (var b in _backlogs)
             {
                 backlogs.Add(b);
@@ -143,7 +142,7 @@ namespace backlog.Views
         private void ShowEmptyMessage()
         {
             ObservableCollection<Backlog>[] _backlogs = { backlogs, filmBacklogs, tvBacklogs, gameBacklogs, musicBacklogs, bookBacklogs };
-            TextBlock[] textBlocks = { EmtpyListText, EmtpyFilmsText, EmtpyTVText, EmtpyGamesText, EmtpyMusicText, EmtpyBooksText };
+            TextBlock[] textBlocks = { EmptyListText, EmptyFilmsText, EmptyTVText, EmptyGamesText, EmptyMusicText, EmptyBooksText };
             for (int i = 0; i < _backlogs.Length; i++)
             {
                 if(_backlogs[i].Count <=0)
@@ -344,20 +343,11 @@ namespace backlog.Views
             request.Data.Properties.Description = "Share this app with your contacts";
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            checkboxChecked = true;
-        }
 
         private async void SupportButton_Click(object sender, RoutedEventArgs e)
         {
             var ratingUri = new Uri(@"https://paypal.me/surya4822?locale.x=en_US");
             await Windows.System.Launcher.LaunchUriAsync(ratingUri);
-        }
-
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            checkboxChecked = false;
         }
 
         private void SyncButton_Click(object sender, RoutedEventArgs e)
