@@ -12,8 +12,11 @@ The app is currently in preview. <a href="https://forms.office.com/Pages/Respons
 This app is built using the Universal Windows Platform framework using C# and XAML. The controls use WinUI 2. The app implements the MVVM design pattern. The backlogs created are stored in JSON format in a txt file locally and on the user's OneDrive. A Singleton is used for managing the collection of backlogs and reading/writing to the save file. OneDrive storage is implemented using Microsoft Graph.
 
 ## Screenshots
-<img src="backlog/Screenshots/Desktop.png" />
-<img src="backlog/Screenshots/Mobile.png" />
+<table><tr>
+<td> <img src="backlog/Screenshots/Mobile.png" alt="Drawing" style="width: 250px;"/> </td>
+<td> <img src="backlog/Screenshots/Mobile-light.png" alt="Drawing" style="width: 250px;"/> </td>
+<td> <img src="backlog/Screenshots/Desktop.png" alt="Drawing" style="width: 550px;"/> </td>
+</tr></table>
 
 ## Building
 The app requires Visual Studio 2017 and above to be built. You will need the Universal Windows Platform compnent installed. With all of that installed, just clone the repo and run the .sln file. 
