@@ -115,6 +115,7 @@ namespace backlog.Views
                         randomAccessStream.Seek(0);
                         await image.SetSourceAsync(randomAccessStream);
                         TopAccountPic.ProfilePicture = image;
+                        BottomAccountPic.ProfilePicture = image;
                     }
                 }
             }
