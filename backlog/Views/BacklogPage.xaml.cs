@@ -62,7 +62,7 @@ namespace backlog.Views
             var gridColour = await GetAverageColour(new Uri(backlog.ImageURL));
             var color = Windows.UI.Color.FromArgb(gridColour.A, gridColour.R, gridColour.G, gridColour.B);
             var fill = new SolidColorBrush(color);
-            mainGrid.Background = fill;
+            //mainGrid.Background = fill;
             base.OnNavigatedTo(e);
         }
 
