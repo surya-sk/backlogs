@@ -30,6 +30,7 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
 using System.Globalization;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.UI.Xaml.Media.Imaging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -89,6 +90,7 @@ namespace backlog.Views
                 BottomProfileButton.Visibility = Visibility.Visible;
                 await SaveData.GetInstance().ReadDataAsync(true);
                 await PopulateBacklogs();
+                await SetUserPhotoAsync();
             }
             foreach(Backlog b in backlogs)
             {
@@ -96,6 +98,30 @@ namespace backlog.Views
             }
             ProgBar.Visibility = Visibility.Collapsed;
             base.OnNavigatedTo(e);
+        }
+
+        public async Task SetUserPhotoAsync()
+        {
+            try
+            {
+                // GET /me
+                Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
+
+                if (photoresponse != null)
+                {
+                    using (var randomAccessStream = photoresponse.AsRandomAccessStream())
+                    {
+                        BitmapImage image = new BitmapImage();
+                        randomAccessStream.Seek(0);
+                        await image.SetSourceAsync(randomAccessStream);
+                        TopAccountPic.ProfilePicture = image;
+                    }
+                }
+            }
+            catch (ServiceException ex)
+            {
+                Debug.WriteLine($"Error getting signed-in user profilephoto: {ex.Message}");
+            }
         }
 
         private async Task PopulateBacklogs()
