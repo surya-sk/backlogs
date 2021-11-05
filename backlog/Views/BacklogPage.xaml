@@ -128,7 +128,7 @@
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" VerticalAlignment="Top" />
     </Grid>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar">
+        <CommandBar x:Name="TopBar" Background="Transparent">
             <AppBarButton x:Name="TopDoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="TopDeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
