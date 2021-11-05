@@ -63,7 +63,7 @@
                                       Toggled="TileToggle_Toggled"/>
                             </StackPanel>
 
-                            <TextBlock Text="For the best experience, sign-in with your Microsoft Account. This will sync concepts using OneDrive so you can access them on all of your Windows devices."
+                            <TextBlock Text="For the best experience, sign-in with your Microsoft Account. This will sync backlogs using OneDrive so you can access them on all of your Windows devices."
                                    FontStyle="Italic" Margin="0,20,0,0" TextWrapping="Wrap" />
 
                             <TextBlock Text="Backlogs are stored in your root OneDrive folder in a file named backlogs.txt. DO NOT modify or delete the file, as it can lead to your concepts being lost forever."

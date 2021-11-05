@@ -26910,7 +26910,7 @@
       ]
     },
     "runtime.win7.System.Private.Uri/4.0.4": {
-      "sha512": "k2xVGa4NJL0GnzyB+nT3QOCspTAuW2SM2BaTsNSFMAyM2fn2qSDtd6TE8a2Y6Cu/uiwUbupjXlyYNbpN0Wofpg==",
+      "sha512": "vQt0oWFh1615fWs1OBCYp2z9oLS3ZAVR7ceOI11zkqKXCKnHqQelK7fqMrqJ6X6cS9/q9NyCM9lfGV70znebDg==",
       "type": "package",
       "path": "runtime.win7.system.private.uri/4.0.4",
       "files": [
@@ -32367,31 +32367,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\surya\\.nuget\\packages\\": {},
+    "C:\\Users\\skotcharlakota\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\surya\\repo\\backlogs\\backlog\\backlog.csproj",
+      "projectUniqueName": "C:\\git\\backlogs\\backlog\\backlog.csproj",
       "projectName": "backlog",
-      "projectPath": "C:\\Users\\surya\\repo\\backlogs\\backlog\\backlog.csproj",
-      "packagesPath": "C:\\Users\\surya\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\surya\\repo\\backlogs\\backlog\\obj\\",
+      "projectPath": "C:\\git\\backlogs\\backlog\\backlog.csproj",
+      "packagesPath": "C:\\Users\\skotcharlakota\\.nuget\\packages\\",
+      "outputPath": "C:\\git\\backlogs\\backlog\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\surya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\skotcharlakota\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "uap10.0.15063"
