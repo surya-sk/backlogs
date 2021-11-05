@@ -83,8 +83,10 @@ namespace backlog.Views
             {
                 await Logger.WriteLogAsync("Signed in");
                 graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
-                SigninButton.Visibility = Visibility.Collapsed;
-                ProfileButton.Visibility = Visibility.Visible;
+                TopSigninButton.Visibility = Visibility.Collapsed;
+                BottomSigninButton.Visibility = Visibility.Collapsed;
+                TopProfileButton.Visibility = Visibility.Visible;
+                BottomProfileButton.Visibility = Visibility.Visible;
                 await SaveData.GetInstance().ReadDataAsync(true);
                 await PopulateBacklogs();
             }

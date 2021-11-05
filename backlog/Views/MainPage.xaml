@@ -11,26 +11,27 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Frame x:Name="rootFrame">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters />
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BacklogView.Padding" Value="12,0,12,36" />
+                        <Setter Target="BottomBar.Visibility" Value="Visible" />
+                        <Setter Target="TopBar.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid x:Name="mainGrid">
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="LayoutVisualStates">
-                    <VisualState x:Name="WideLayout">
-                        <VisualState.StateTriggers>
-                            <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                        </VisualState.StateTriggers>
-                        <VisualState.Setters />
-                    </VisualState>
-                    <VisualState x:Name="NarrowLayout">
-                        <VisualState.StateTriggers>
-                            <AdaptiveTrigger MinWindowWidth="0" />
-                        </VisualState.StateTriggers>
-                        <VisualState.Setters>
-                            <Setter Target="BacklogView.Padding" Value="12,0,12,36" />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto" />
@@ -485,25 +486,46 @@
             </Pivot>
 
             <muxc:ProgressBar x:Name="CreationProgBar" IsIndeterminate="True" Visibility="Collapsed" />
-
-            <CommandBar Grid.Row="1">
-                <AppBarButton x:Name="SyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
-                <AppBarButton x:Name="CreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
-                <AppBarButton x:Name="SigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
-                <AppBarButton x:Name="ProfileButton" Label="Signed-in" Visibility="Collapsed">
-                    <muxc:PersonPicture x:Name="AccountPic" Height="30" Width="30"/>
-                </AppBarButton>
-                <CommandBar.SecondaryCommands>
-                    <AppBarButton x:Name="SettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
-                    <AppBarButton x:Name="RateButton" Label="Rate and Review on the Store" Icon="Like" Click="RateButton_Click" />
-                    <AppBarButton x:Name="SupportButton" Label="Support developer"  Click="SupportButton_Click" >
-                        <FontIcon Glyph="" />
-                    </AppBarButton>
-                    <AppBarButton x:Name="ShareButton" Label="Share this app" Click="ShareButton_Click" >
-                        <FontIcon Glyph="" />
-                    </AppBarButton>
-                </CommandBar.SecondaryCommands>
-            </CommandBar>
         </Grid>
     </Frame>
+    <Page.TopAppBar>
+        <CommandBar x:Name="TopBar">
+            <AppBarButton x:Name="TopSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
+            <AppBarButton x:Name="TopCreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
+            <AppBarButton x:Name="TopSigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
+            <AppBarButton x:Name="TopProfileButton" Label="Signed-in" Visibility="Collapsed">
+                <muxc:PersonPicture x:Name="TopAccountPic" Height="30" Width="30"/>
+            </AppBarButton>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="TopSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+                <AppBarButton x:Name="TopRateButton" Label="Rate and Review on the Store" Icon="Like" Click="RateButton_Click" />
+                <AppBarButton x:Name="TopSupportButton" Label="Support developer"  Click="SupportButton_Click" >
+                    <FontIcon Glyph="" />
+                </AppBarButton>
+                <AppBarButton x:Name="TopShareButton" Label="Share this app" Click="ShareButton_Click" >
+                    <FontIcon Glyph="" />
+                </AppBarButton>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.TopAppBar>
+    <Page.BottomAppBar>
+        <CommandBar x:Name="BottomBar" Visibility="Collapsed">
+            <AppBarButton x:Name="BottomSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
+            <AppBarButton x:Name="BottomCreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
+            <AppBarButton x:Name="BottomSigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
+            <AppBarButton x:Name="BottomProfileButton" Label="Signed-in" Visibility="Collapsed">
+                <muxc:PersonPicture x:Name="BottomAccountPic" Height="30" Width="30"/>
+            </AppBarButton>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+                <AppBarButton x:Name="BottomRateButton" Label="Rate and Review on the Store" Icon="Like" Click="RateButton_Click" />
+                <AppBarButton x:Name="BottomSupportButton" Label="Support developer"  Click="SupportButton_Click" >
+                    <FontIcon Glyph="" />
+                </AppBarButton>
+                <AppBarButton x:Name="BottomShareButton" Label="Share this app" Click="ShareButton_Click" >
+                    <FontIcon Glyph="" />
+                </AppBarButton>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

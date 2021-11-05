@@ -16,6 +16,25 @@
     </Page.Resources>
 
     <Grid x:Name="mainGrid">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters />
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BottomBar.Visibility" Value="Visible" />
+                        <Setter Target="TopBar.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -107,10 +126,21 @@
         </ScrollViewer>
 
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" VerticalAlignment="Top" />
-
-        <CommandBar Grid.Row="4">
-            <AppBarButton x:Name="DoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
-            <AppBarButton x:Name="DeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
-        </CommandBar>
     </Grid>
+    <Page.TopAppBar>
+        <CommandBar x:Name="TopBar">
+            <AppBarButton x:Name="TopDoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="TopDeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.TopAppBar>
+    <Page.BottomAppBar>
+        <CommandBar x:Name="BottomBar" Visibility="Collapsed">
+            <AppBarButton x:Name="BottomDoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="BottomDeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

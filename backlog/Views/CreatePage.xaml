@@ -10,6 +10,25 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters />
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BottomBar.Visibility" Value="Visible" />
+                        <Setter Target="TopBar.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -38,10 +57,17 @@
         </ScrollViewer>
 
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
-
-        <CommandBar Grid.Row="1">
-            <AppBarButton x:Name="CreateButton" Icon="Accept" Label="Create" Click="CreateButton_Click" />
-            <AppBarButton x:Name="CancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
-        </CommandBar>
     </Grid>
+    <Page.TopAppBar>
+        <CommandBar x:Name="TopBar">
+            <AppBarButton x:Name="TopCreateButton" Icon="Accept" Label="Create" Click="CreateButton_Click" />
+            <AppBarButton x:Name="TopCancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
+        </CommandBar>
+    </Page.TopAppBar>
+    <Page.BottomAppBar>
+        <CommandBar x:Name="BottomBar" Visibility="Collapsed" >
+            <AppBarButton x:Name="BottomCreateButton" Icon="Accept" Label="Create" Click="CreateButton_Click" />
+            <AppBarButton x:Name="BottomCancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>
