@@ -32,10 +32,6 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid x:Name="mainGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
 
             <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
 

@@ -35,11 +35,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        
+
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <ContentControl Content="{x:Bind backlog}">
                 <ContentControl.ContentTemplate>

@@ -23,9 +23,9 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RelatedPanel.(Grid.Row)" Value="1" />
-                        <Setter Target="RelatedPanel.HorizontalAlignment" Value="Left" />                        
+                        <Setter Target="RelatedPanel.HorizontalAlignment" Value="Left" />
                         <Setter Target="RefLinks.(Grid.Row)" Value="1" />
-                        <Setter Target="RefLinks.HorizontalAlignment" Value="Left" />                        
+                        <Setter Target="RefLinks.HorizontalAlignment" Value="Left" />
                         <Setter Target="StoreLink.(Grid.Row)" Value="1" />
                         <Setter Target="StoreLink.HorizontalAlignment" Value="Left" />
                         <Setter Target="BottomBar.Visibility" Value="Visible" />
@@ -35,11 +35,6 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        
         <ProgressRing x:Name="ProgRing" IsActive="False" />
         <Pivot>
             <PivotItem Header="settings">
