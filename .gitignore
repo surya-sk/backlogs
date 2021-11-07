@@ -8,6 +8,9 @@
 *.userosscache
 *.sln.docstates
 
+# API Keys
+backlog/Utils/Keys.cs
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
