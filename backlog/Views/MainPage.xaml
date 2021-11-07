@@ -25,6 +25,11 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="BacklogView.Padding" Value="12,0,12,36" />
+                        <Setter Target="FilmBacklogView.Padding" Value="12,0,12,36" />
+                        <Setter Target="TVBacklogView.Padding" Value="12,0,12,36" />
+                        <Setter Target="MusicBacklogView.Padding" Value="12,0,12,36" />
+                        <Setter Target="GameBacklogView.Padding" Value="12,0,12,36" />
+                        <Setter Target="BooksBacklogView.Padding" Value="12,0,12,36" />
                         <Setter Target="BottomBar.Visibility" Value="Visible" />
                         <Setter Target="TopBar.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
@@ -48,26 +53,6 @@
                                         <UserControl>
                                             <Grid x:Name="rootGrid"  Width="200" Height="250" Padding="8" 
                                               BorderThickness="1">
-                                                <VisualStateManager.VisualStateGroups>
-                                                    <VisualStateGroup x:Name="LayoutVisualStates">
-                                                        <VisualState x:Name="WideLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters />
-                                                        </VisualState>
-                                                        <VisualState x:Name="NarrowLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="0" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters>
-                                                                <Setter Target="rootGrid.Width" Value="Auto" />
-                                                                <Setter Target="rootGrid.Height" Value="Auto" />
-                                                            </VisualState.Setters>
-                                                        </VisualState>
-                                                    </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>
-
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
                                                     <RowDefinition Height="Auto" />
@@ -122,26 +107,6 @@
                                         <UserControl>
                                             <Grid x:Name="rootGrid"  Width="200" Height="250" Padding="8" 
                                               BorderThickness="1">
-                                                <VisualStateManager.VisualStateGroups>
-                                                    <VisualStateGroup x:Name="LayoutVisualStates">
-                                                        <VisualState x:Name="WideLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters />
-                                                        </VisualState>
-                                                        <VisualState x:Name="NarrowLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="0" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters>
-                                                                <Setter Target="rootGrid.Width" Value="Auto" />
-                                                                <Setter Target="rootGrid.Height" Value="Auto" />
-                                                            </VisualState.Setters>
-                                                        </VisualState>
-                                                    </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>
-
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
                                                     <RowDefinition Height="Auto" />
@@ -196,25 +161,6 @@
                                         <UserControl>
                                             <Grid x:Name="rootGrid"  Width="200" Height="250" Padding="8" 
                                               BorderThickness="1">
-                                                <VisualStateManager.VisualStateGroups>
-                                                    <VisualStateGroup x:Name="LayoutVisualStates">
-                                                        <VisualState x:Name="WideLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters />
-                                                        </VisualState>
-                                                        <VisualState x:Name="NarrowLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="0" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters>
-                                                                <Setter Target="rootGrid.Width" Value="Auto" />
-                                                                <Setter Target="rootGrid.Height" Value="Auto" />
-                                                            </VisualState.Setters>
-                                                        </VisualState>
-                                                    </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>
 
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
@@ -270,26 +216,7 @@
                                         <UserControl>
                                             <Grid x:Name="rootGrid"  Width="200" Height="250" Padding="8" 
                                               BorderThickness="1">
-                                                <VisualStateManager.VisualStateGroups>
-                                                    <VisualStateGroup x:Name="LayoutVisualStates">
-                                                        <VisualState x:Name="WideLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters />
-                                                        </VisualState>
-                                                        <VisualState x:Name="NarrowLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="0" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters>
-                                                                <Setter Target="rootGrid.Width" Value="Auto" />
-                                                                <Setter Target="rootGrid.Height" Value="Auto" />
-                                                            </VisualState.Setters>
-                                                        </VisualState>
-                                                    </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>
-
+                                               
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
                                                     <RowDefinition Height="Auto" />
@@ -344,25 +271,6 @@
                                         <UserControl>
                                             <Grid x:Name="rootGrid"  Width="200" Height="250" Padding="8" 
                                               BorderThickness="1">
-                                                <VisualStateManager.VisualStateGroups>
-                                                    <VisualStateGroup x:Name="LayoutVisualStates">
-                                                        <VisualState x:Name="WideLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters />
-                                                        </VisualState>
-                                                        <VisualState x:Name="NarrowLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="0" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters>
-                                                                <Setter Target="rootGrid.Width" Value="Auto" />
-                                                                <Setter Target="rootGrid.Height" Value="Auto" />
-                                                            </VisualState.Setters>
-                                                        </VisualState>
-                                                    </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>
 
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
@@ -418,26 +326,7 @@
                                         <UserControl>
                                             <Grid x:Name="rootGrid"  Width="200" Height="250" Padding="8" 
                                               BorderThickness="1">
-                                                <VisualStateManager.VisualStateGroups>
-                                                    <VisualStateGroup x:Name="LayoutVisualStates">
-                                                        <VisualState x:Name="WideLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters />
-                                                        </VisualState>
-                                                        <VisualState x:Name="NarrowLayout">
-                                                            <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="0" />
-                                                            </VisualState.StateTriggers>
-                                                            <VisualState.Setters>
-                                                                <Setter Target="rootGrid.Width" Value="Auto" />
-                                                                <Setter Target="rootGrid.Height" Value="Auto" />
-                                                            </VisualState.Setters>
-                                                        </VisualState>
-                                                    </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>
-
+                                               
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
                                                     <RowDefinition Height="Auto" />
