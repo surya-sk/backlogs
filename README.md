@@ -20,7 +20,7 @@ This app is built using the Universal Windows Platform framework using C# and XA
 
 ## Building
 The app requires Visual Studio 2017 and above to be built. You will need the Universal Windows Platform compnent installed. With all of that installed, just clone the repo and run the .sln file. 
-The project will fail to compile because of a missing Keys.cs file. This file contains all the API keys, and is not checked in. Contact me if you would like access to the file, or create your file if you have your own API keys. The file should be names Keys.cs and places in the Utils folder and namespace. 
+The project will fail to compile because of a missing Keys.cs file. This file contains all the API keys, and is not checked in. Contact me if you would like access to the file, or create your own file if you have your own API keys. The file should be named Keys.cs and places in the Utils folder and namespace. 
 
 ## Contributing and more
 PRs are welcome! Make sure you create a new branch when making changes and pushing them. 
