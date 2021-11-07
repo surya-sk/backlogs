@@ -104,7 +104,7 @@ namespace backlog.Views
         {
             try
             {
-                // GET /me
+                var user = await graphServiceClient.Me.Request().GetAsync();
                 Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
 
                 if (photoresponse != null)
@@ -118,6 +118,8 @@ namespace backlog.Views
                         BottomAccountPic.ProfilePicture = image;
                     }
                 }
+                TopProfileButton.Label = user.GivenName;
+                BottomProfileButton.Label = user.GivenName;
             }
             catch (ServiceException ex)
             {
