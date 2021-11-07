@@ -16,7 +16,7 @@ namespace backlog.Utils
 
         public static async Task<string> GetFilmResponse(string query)
         {
-            string key = "k_hrve7bkc";
+            string key = Keys.IMDB_KEY;
             Uri imdbURL = new Uri($"https://imdb-api.com/en/API/SearchMovie/{key}/{query}"); 
             HttpResponseMessage response = await client.GetAsync(imdbURL);
             if(response.IsSuccessStatusCode)
@@ -28,7 +28,7 @@ namespace backlog.Utils
 
         public static async Task<string> GetFilmDataResponse(string query)
         {
-            string key = "k_hrve7bkc";
+            string key = Keys.IMDB_KEY;
             Uri imdbURL = new Uri($"https://imdb-api.com/en/API/Title/{key}/{query}");
             HttpResponseMessage response = await client.GetAsync(imdbURL);
             if (response.IsSuccessStatusCode)
@@ -40,7 +40,7 @@ namespace backlog.Utils
 
         public static async Task<string> GetSeriesResponse(string query)
         {
-            string key = "k_hrve7bkc";
+            string key = Keys.IMDB_KEY;
             Uri imdbURL = new Uri($"https://imdb-api.com/en/API/SearchSeries/{key}/{query}");
             HttpResponseMessage response = await client.GetAsync(imdbURL);
             if (response.IsSuccessStatusCode)
@@ -52,7 +52,7 @@ namespace backlog.Utils
 
         public static async Task<string> GetSeriesDataResponse(string query)
         {
-            string key = "k_hrve7bkc";
+            string key = Keys.IMDB_KEY;
             Uri imdbURL = new Uri($"https://imdb-api.com/en/API/Title/{key}/{query}");
             HttpResponseMessage response = await client.GetAsync(imdbURL);
             if (response.IsSuccessStatusCode)
@@ -64,8 +64,8 @@ namespace backlog.Utils
 
         public static async Task<string> GetGameResponse(string query)
         {
-            string clientID = "p5kss9df35wfut72upg5gbpp0bwzvg";
-            string accessToken = "c6vf30cc8ib72zp9nyc3ci1ed0rxqe";
+            string clientID = Keys.TWITCH_CLIENT_ID;
+            string accessToken = Keys.TWITCH_ACCESS_TOKEN;
             Uri igdbURL = new Uri($"https://api.igdb.com/v4/games");
             var cl = new HttpClient();
             cl.BaseAddress = igdbURL;
@@ -82,8 +82,8 @@ namespace backlog.Utils
 
         public static async Task<string> GetGameResult(string id)
         {
-            string clientID = "p5kss9df35wfut72upg5gbpp0bwzvg";
-            string accessToken = "c6vf30cc8ib72zp9nyc3ci1ed0rxqe";
+            string clientID = Keys.TWITCH_CLIENT_ID;
+            string accessToken = Keys.TWITCH_ACCESS_TOKEN;
             Uri igdbURL = new Uri($"https://api.igdb.com/v4/games");
             var cl = new HttpClient();
             cl.BaseAddress = igdbURL;
@@ -100,8 +100,8 @@ namespace backlog.Utils
 
         public static async Task<int> GetCompanyID(string id)
         {
-            string clientID = "p5kss9df35wfut72upg5gbpp0bwzvg";
-            string accessToken = "c6vf30cc8ib72zp9nyc3ci1ed0rxqe";
+            string clientID = Keys.TWITCH_CLIENT_ID;
+            string accessToken = Keys.TWITCH_ACCESS_TOKEN;
             Uri igdbURL = new Uri($"https://api.igdb.com/v4/involved_companies");
             var cl = new HttpClient();
             cl.BaseAddress = igdbURL;
@@ -121,8 +121,8 @@ namespace backlog.Utils
 
         public static async Task<string> GetGameCompanyResponse(string id)
         {
-            string clientID = "p5kss9df35wfut72upg5gbpp0bwzvg";
-            string accessToken = "c6vf30cc8ib72zp9nyc3ci1ed0rxqe";
+            string clientID = Keys.TWITCH_CLIENT_ID;
+            string accessToken = Keys.TWITCH_ACCESS_TOKEN;
             Uri igdbURL = new Uri($"https://api.igdb.com/v4/companies");
             var cl = new HttpClient();
             cl.BaseAddress = igdbURL;
@@ -139,8 +139,8 @@ namespace backlog.Utils
 
         public static async Task<string> GetGameCover(string id)
         {
-            string clientID = "p5kss9df35wfut72upg5gbpp0bwzvg";
-            string accessToken = "c6vf30cc8ib72zp9nyc3ci1ed0rxqe";
+            string clientID = Keys.TWITCH_CLIENT_ID;
+            string accessToken = Keys.TWITCH_ACCESS_TOKEN;
             Uri igdbURL = new Uri($"https://api.igdb.com/v4/covers");
             var cl = new HttpClient();
             cl.BaseAddress = igdbURL;
@@ -157,8 +157,8 @@ namespace backlog.Utils
 
         public static async Task<string> GetGameReleaseResponse(string id)
         {
-            string clientID = "p5kss9df35wfut72upg5gbpp0bwzvg";
-            string accessToken = "c6vf30cc8ib72zp9nyc3ci1ed0rxqe";
+            string clientID = Keys.TWITCH_CLIENT_ID;
+            string accessToken = Keys.TWITCH_ACCESS_TOKEN;
             Uri igdbURL = new Uri($"https://api.igdb.com/v4/release_dates");
             var cl = new HttpClient();
             cl.BaseAddress = igdbURL;
@@ -186,7 +186,7 @@ namespace backlog.Utils
 
         public static async Task<string> GetMusicResponse(string query)
         {
-            string apiKey = "94ffbb89403de22a94516302cbc0bfe2";
+            string apiKey = Keys.LASTFM_KEY;
             string[] queryArr = query.Split('-');
             string artist = queryArr[0];
             string album = queryArr[1];
