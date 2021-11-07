@@ -62,7 +62,7 @@ namespace backlog.Views
             }
             // show back button
             var view = SystemNavigationManager.GetForCurrentView();
-            //view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += View_BackRequested;
         }
 
