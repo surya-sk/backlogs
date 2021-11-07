@@ -104,6 +104,7 @@ namespace backlog.Views
         {
             try
             {
+                await Logger.WriteLogAsync("Getting user photo");
                 var user = await graphServiceClient.Me.Request().GetAsync();
                 Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
 
@@ -121,9 +122,9 @@ namespace backlog.Views
                 TopProfileButton.Label = user.GivenName;
                 BottomProfileButton.Label = user.GivenName;
             }
-            catch (ServiceException ex)
+            catch(Exception e)
             {
-                Debug.WriteLine($"Error getting signed-in user profilephoto: {ex.Message}");
+                await Logger.WriteLogAsync($"Unable to get user info\n{e.ToString()}");
             }
         }
 
