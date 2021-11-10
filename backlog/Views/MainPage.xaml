@@ -496,7 +496,7 @@
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
-            <AppBarButton x:Name="TopCreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
+            <AppBarButton x:Name="TopCreateButton" Label="New" Icon="Add" Click="CreateButton_Click" />
             <AppBarButton x:Name="TopSigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
             <AppBarButton x:Name="TopProfileButton" Label="Signed-in" Visibility="Collapsed">
                 <muxc:PersonPicture x:Name="TopAccountPic" Height="30" Width="30"/>
@@ -516,7 +516,7 @@
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
             <AppBarButton x:Name="BottomSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
-            <AppBarButton x:Name="BottomCreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
+            <AppBarButton x:Name="BottomCreateButton" Label="New" Icon="Add" Click="CreateButton_Click" />
             <AppBarButton x:Name="BottomSigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
             <AppBarButton x:Name="BottomProfileButton" Label="Signed-in" Visibility="Collapsed">
                 <muxc:PersonPicture x:Name="BottomAccountPic" Height="30" Width="30"/>
