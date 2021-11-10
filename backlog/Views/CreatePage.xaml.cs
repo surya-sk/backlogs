@@ -90,7 +90,7 @@ namespace backlog.Views
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            string title = NameInput.Text.Replace(" ", string.Empty);
+            string title = NameInput.Text;
             string date = DatePicker.Date.ToString("d", CultureInfo.InvariantCulture);
             DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
             int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
@@ -370,7 +370,7 @@ namespace backlog.Views
             ContentDialog contentDialog = new ContentDialog
             {
                 Title = $"Couldn't find {name}",
-                Content = $"We couldn't find {name} of type {type}. Check if you've picked the right type or try entering the full title if you haven't done so.",
+                Content = $"Couldn't find {name}. Check if you've picked the right type or try entering the full title if you haven't done so. If that doesn't work, please go to \'Settings + more\' and send me the logs",
                 CloseButtonText = "Ok"
             };
             ContentDialogResult result = await contentDialog.ShowAsync();
@@ -380,6 +380,11 @@ namespace backlog.Views
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainPage));
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SettingsPage));
         }
     }
 }

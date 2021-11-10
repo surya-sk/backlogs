@@ -124,10 +124,11 @@
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" VerticalAlignment="Top" />
     </Grid>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="Transparent">
+        <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopDoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="TopDeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
+                <AppBarButton x:Name="TopSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>
@@ -136,6 +137,7 @@
             <AppBarButton x:Name="BottomDoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="BottomDeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
+                <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "k0dF8A+dJuNBVR+j5EhNPZfK/yw0QbEJ8IPuhunEdeYg+xJitHUav6frc3dLAbpx9H1StoB+2PllXeSllsOzIA==",
+  "dgSpecHash": "MbKisuV+JNT5J+7/UDDEvmqHuxGumWCyzcB4x9xtZWINROY2ZgNfP4pzzWrlF0+yPnzlVh1YAFye9jd/Gh4QOA==",
   "success": true,
   "projectFilePath": "C:\\Users\\surya\\repo\\backlogs\\backlog\\backlog.csproj",
   "expectedPackageFiles": [
@@ -103,7 +103,7 @@
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\runtime.win7-x86.microsoft.netcore.jit\\1.0.3\\runtime.win7-x86.microsoft.netcore.jit.1.0.3.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\runtime.win7-x86.microsoft.netcore.runtime.coreclr\\1.0.2\\runtime.win7-x86.microsoft.netcore.runtime.coreclr.1.0.2.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\runtime.win7-x86.runtime.native.system.io.compression\\4.3.0\\runtime.win7-x86.runtime.native.system.io.compression.4.3.0.nupkg.sha512",
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\runtime.win7.system.private.uri\\4.0.4\\runtime.win7.system.private.uri.4.0.4.nupkg.sha512",
+    "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\runtime.win7.system.private.uri\\4.0.4\\runtime.win7.system.private.uri.4.0.4.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\runtime.win7.system.private.uri\\4.3.0\\runtime.win7.system.private.uri.4.3.0.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\runtime.win8-arm.microsoft.netcore.runtime.coreclr\\1.0.2\\runtime.win8-arm.microsoft.netcore.runtime.coreclr.1.0.2.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\runtime.win8-arm.runtime.native.system.io.compression\\4.3.0\\runtime.win8-arm.runtime.native.system.io.compression.4.3.0.nupkg.sha512",
