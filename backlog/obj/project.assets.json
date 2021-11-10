@@ -29158,7 +29158,7 @@
       ]
     },
     "System.Net.Requests/4.0.11": {
-      "sha512": "vxGt7C0cZixN+VqoSW4Yakc1Y9WknmxauDqzxgpw/FnBdz4kQNN51l4wxdXX5VY1xjqy//+G+4CvJWp1+f+y6Q==",
+      "sha512": "IvOLGTTzJ2y5GpSn0ewgypC52TCCD6tYU8MdLedtZQW0VcP241b6sRJ2rLhFFPn5n+biTXXuYGfaTyT3CVUf8Q==",
       "type": "package",
       "path": "system.net.requests/4.0.11",
       "files": [
@@ -32367,18 +32367,18 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\skotcharlakota\\.nuget\\packages\\": {},
+    "C:\\Users\\surya\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\git\\backlogs\\backlog\\backlog.csproj",
+      "projectUniqueName": "C:\\Users\\surya\\repo\\backlogs\\backlog\\backlog.csproj",
       "projectName": "backlog",
-      "projectPath": "C:\\git\\backlogs\\backlog\\backlog.csproj",
-      "packagesPath": "C:\\Users\\skotcharlakota\\.nuget\\packages\\",
-      "outputPath": "C:\\git\\backlogs\\backlog\\obj\\",
+      "projectPath": "C:\\Users\\surya\\repo\\backlogs\\backlog\\backlog.csproj",
+      "packagesPath": "C:\\Users\\surya\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\surya\\repo\\backlogs\\backlog\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
@@ -32386,7 +32386,7 @@
         "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\skotcharlakota\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\surya\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
