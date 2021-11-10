@@ -152,5 +152,10 @@ namespace backlog.Views
                 await DeleteConfirmation_Click();
             }
         }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SettingsPage));
+        }
     }
 }

@@ -92,10 +92,6 @@ namespace backlog.Views
                 await PopulateBacklogs();
                 await SetUserPhotoAsync();
             }
-            foreach(Backlog b in backlogs)
-            {
-                await BuildNotifactionQueue(b);
-            }
             ProgBar.Visibility = Visibility.Collapsed;
             base.OnNavigatedTo(e);
         }
@@ -132,7 +128,7 @@ namespace backlog.Views
         {
             ObservableCollection<Backlog> readBacklogs = SaveData.GetInstance().GetBacklogs();
             await Logger.WriteLogAsync($"Number of backlogs found: {readBacklogs.Count}");
-            var _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.TargetDate)); // sort by last created
+            var _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.TargetDate)); // sort by last created
             var _filmBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
             var _tvBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
             var _gameBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
@@ -168,6 +164,10 @@ namespace backlog.Views
             foreach (var b in _musicBacklogs)
             {
                 musicBacklogs.Add(b);
+            }
+            foreach (Backlog b in _backlogs)
+            {
+                await BuildNotifactionQueue(b);
             }
         }
 
