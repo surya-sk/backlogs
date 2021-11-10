@@ -374,7 +374,7 @@
         </Grid>
     </Frame>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="Transparent">
+        <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
             <AppBarButton x:Name="TopCreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
             <AppBarButton x:Name="TopSigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />

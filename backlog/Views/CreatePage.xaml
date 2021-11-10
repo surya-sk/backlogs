@@ -56,7 +56,7 @@
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
     </Grid>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="Transparent" >
+        <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopCreateButton" Icon="Accept" Label="Create" Click="CreateButton_Click" />
             <AppBarButton x:Name="TopCancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
         </CommandBar>

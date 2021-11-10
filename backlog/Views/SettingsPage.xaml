@@ -211,7 +211,7 @@
     </Grid>
     
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="Transparent">
+        <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right">
             <AppBarButton x:Name="TopHomeButton" Icon="Home" Label="Home" Click="HomeButton_Click" />
         </CommandBar>
     </Page.TopAppBar>
