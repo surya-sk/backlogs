@@ -381,5 +381,10 @@ namespace backlog.Views
         {
             Frame.Navigate(typeof(MainPage));
         }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SettingsPage));
+        }
     }
 }
