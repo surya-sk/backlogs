@@ -143,7 +143,7 @@ namespace backlog.Saving
             {
                 if(sync)
                 {
-                    string jsonDownload = await DownloadConceptsJsonAsync();
+                    string jsonDownload = await DownloadBacklogsJsonAsync();
                     if(jsonDownload != null)
                     {
                         StorageFile file = await roamingFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
@@ -164,7 +164,7 @@ namespace backlog.Saving
         /// Download backlog json
         /// </summary>
         /// <returns></returns>
-        private async Task<string> DownloadConceptsJsonAsync()
+        private async Task<string> DownloadBacklogsJsonAsync()
         {
             var search = await graphServiceClient.Me.Drive.Root.Search(fileName).Request().GetAsync();
             if (search.Count == 0)

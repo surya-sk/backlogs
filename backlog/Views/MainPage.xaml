@@ -71,7 +71,7 @@
                                                                 <AdaptiveTrigger MinWindowWidth="0" />
                                                             </VisualState.StateTriggers>
                                                             <VisualState.Setters>
-                                                                <Setter Target="rootGrid.Width" Value="200"/> 
+                                                                <Setter Target="rootGrid.Width" Value="170"/> 
                                                                 <Setter Target="rootGrid.Height" Value="200" />
                                                             </VisualState.Setters>
                                                         </VisualState>

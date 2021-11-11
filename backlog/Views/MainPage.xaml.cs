@@ -65,7 +65,7 @@ namespace backlog.Views
         private void InitBacklogs()
         {
             var readBacklogs = SaveData.GetInstance().GetBacklogs();
-            backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.TargetDate));
+            backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.TargetDate));
             filmBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
             tvBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
             gameBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
