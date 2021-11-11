@@ -71,8 +71,8 @@
                                                                 <AdaptiveTrigger MinWindowWidth="0" />
                                                             </VisualState.StateTriggers>
                                                             <VisualState.Setters>
-                                                                <Setter Target="rootGrid.Width" Value="Auto" />
-                                                                <Setter Target="rootGrid.Height" Value="Auto" />
+                                                                <Setter Target="rootGrid.Width" Value="200"/> 
+                                                                <Setter Target="rootGrid.Height" Value="200" />
                                                             </VisualState.Setters>
                                                         </VisualState>
                                                     </VisualStateGroup>
@@ -166,7 +166,6 @@
                                                     <TextBlock
                                                 x:Name="TitleText" MaxLines="1" TextTrimming="CharacterEllipsis"
                                                 Style="{StaticResource BaseTextBlockStyle}"
-                                                Text="{x:Bind Name}"
                                                 TextLineBounds="TrimToCapHeight"
                                                 TextWrapping="Wrap" />
                                                     <TextBlock x:Name="DirectorText"
