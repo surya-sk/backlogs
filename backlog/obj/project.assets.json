@@ -426,7 +426,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -3002,7 +3002,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -5645,7 +5645,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -8322,7 +8322,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -10990,7 +10990,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -13642,7 +13642,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -16328,7 +16328,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -18980,7 +18980,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -32374,11 +32374,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\surya\\repo\\backlogs\\backlog\\backlog.csproj",
+      "projectUniqueName": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
       "projectName": "backlog",
-      "projectPath": "C:\\Users\\surya\\repo\\backlogs\\backlog\\backlog.csproj",
+      "projectPath": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
       "packagesPath": "C:\\Users\\surya\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\surya\\repo\\backlogs\\backlog\\obj\\",
+      "outputPath": "C:\\Users\\surya\\git\\backlogs\\backlog\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [

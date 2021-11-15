@@ -31,6 +31,8 @@ using Windows.UI.Notifications;
 using System.Globalization;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -84,43 +86,32 @@ namespace backlog.Views
             {
                 await Logger.WriteLogAsync("Signed in");
                 graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
+                await SetUserPhotoAsync();
                 TopSigninButton.Visibility = Visibility.Collapsed;
                 BottomSigninButton.Visibility = Visibility.Collapsed;
                 TopProfileButton.Visibility = Visibility.Visible;
                 BottomProfileButton.Visibility = Visibility.Visible;
                 await SaveData.GetInstance().ReadDataAsync(true);
                 await PopulateBacklogs();
-                await SetUserPhotoAsync();
             }
             ProgBar.Visibility = Visibility.Collapsed;
             base.OnNavigatedTo(e);
         }
 
-        public async Task SetUserPhotoAsync()
+        private async Task SetUserPhotoAsync()
         {
-            try
+            string userName = ApplicationData.Current.LocalSettings.Values["UserName"]?.ToString();
+            TopProfileButton.Label = userName;
+            BottomProfileButton.Label = userName;
+            var cacheFolder = ApplicationData.Current.LocalCacheFolder;
+            var accountPicFile = await cacheFolder.GetFileAsync("profile.png");
+            using(IRandomAccessStream stream = await accountPicFile.OpenAsync(FileAccessMode.Read))
             {
-                await Logger.WriteLogAsync("Getting user photo");
-                var user = await graphServiceClient.Me.Request().GetAsync();
-                Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
-
-                if (photoresponse != null)
-                {
-                    using (var randomAccessStream = photoresponse.AsRandomAccessStream())
-                    {
-                        BitmapImage image = new BitmapImage();
-                        randomAccessStream.Seek(0);
-                        await image.SetSourceAsync(randomAccessStream);
-                        TopAccountPic.ProfilePicture = image;
-                        BottomAccountPic.ProfilePicture = image;
-                    }
-                }
-                TopProfileButton.Label = user.GivenName;
-                BottomProfileButton.Label = user.GivenName;
-            }
-            catch(Exception e)
-            {
-                await Logger.WriteLogAsync($"Unable to get user info\n{e.ToString()}");
+                BitmapImage image = new BitmapImage();
+                stream.Seek(0);
+                await image.SetSourceAsync(stream);
+                TopAccountPic.ProfilePicture = image;
+                BottomAccountPic.ProfilePicture = image;
             }
         }
 
@@ -196,6 +187,7 @@ namespace backlog.Views
 
         private async void SigninButton_Click(object sender, RoutedEventArgs e)
         {
+            ProgBar.Visibility = Visibility.Visible;
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
             if (isNetworkAvailable)
             {

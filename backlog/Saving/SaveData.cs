@@ -11,7 +11,9 @@ using backlog.Models;
 using Microsoft.Graph;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
+using Windows.Graphics.Imaging;
 using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace backlog.Saving
 {
@@ -21,6 +23,8 @@ namespace backlog.Saving
         private ObservableCollection<Backlog> Backogs = null;
         StorageFolder roamingFolder = ApplicationData.Current.RoamingFolder;
         string fileName = "backlogs.txt";
+        StorageFolder cacheFolder = ApplicationData.Current.LocalCacheFolder;
+        string accountPicFile = "profile.png";
 
         private static string[] scopes = new string[]
         {
@@ -102,7 +106,37 @@ namespace backlog.Saving
         public async Task<GraphServiceClient> GetGraphServiceClient()
         {
             if (graphServiceClient == null)
+            {
                 graphServiceClient = await SignInAndInitializeGraphServiceClient(scopes);
+                try
+                {
+                    await Utils.Logger.WriteLogAsync("Getting user photo");
+                    var user = await graphServiceClient.Me.Request().GetAsync();
+                    Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
+                    ApplicationData.Current.LocalSettings.Values["UserName"] = user.GivenName;
+
+                    if (photoresponse != null)
+                    {
+                        using (var randomAccessStream = photoresponse.AsRandomAccessStream())
+                        {
+                            BitmapImage image = new BitmapImage();
+                            randomAccessStream.Seek(0);
+                            await image.SetSourceAsync(randomAccessStream);
+
+                            BitmapDecoder decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
+                            SoftwareBitmap softwareBitmap = await decoder.GetSoftwareBitmapAsync();
+                            var storageFile = await cacheFolder.CreateFileAsync(accountPicFile, CreationCollisionOption.ReplaceExisting);
+                            BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, await storageFile.OpenAsync(FileAccessMode.ReadWrite));
+                            encoder.SetSoftwareBitmap(softwareBitmap);
+                            await encoder.FlushAsync();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    await Utils.Logger.WriteLogAsync($"Unable to get user info\n{e.ToString()}");
+                }
+            }
             return graphServiceClient;
         }
 

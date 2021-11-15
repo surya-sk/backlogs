@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MbKisuV+JNT5J+7/UDDEvmqHuxGumWCyzcB4x9xtZWINROY2ZgNfP4pzzWrlF0+yPnzlVh1YAFye9jd/Gh4QOA==",
+  "dgSpecHash": "/PC6jiobPgiMfooAaRzg0jH0Zz+fIpd6z0EdIbvDGxeWm3KX8rmeMuztLexwB9K43B/zO6bJs3T7HHtH0IN2ag==",
   "success": true,
-  "projectFilePath": "C:\\Users\\surya\\repo\\backlogs\\backlog\\backlog.csproj",
+  "projectFilePath": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\surya\\.nuget\\packages\\ksemenenko.colorthief\\1.1.1.4\\ksemenenko.colorthief.1.1.1.4.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.7\\microsoft.aspnet.webapi.client.5.2.7.nupkg.sha512",
