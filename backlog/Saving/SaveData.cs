@@ -114,7 +114,6 @@ namespace backlog.Saving
                     var user = await graphServiceClient.Me.Request().GetAsync();
                     Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
                     ApplicationData.Current.LocalSettings.Values["UserName"] = user.GivenName;
-
                     if (photoresponse != null)
                     {
                         using (var randomAccessStream = photoresponse.AsRandomAccessStream())

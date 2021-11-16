@@ -19,6 +19,8 @@ using backlog.Utils;
 using System.Diagnostics;
 using Windows.ApplicationModel.Email;
 using System.Threading.Tasks;
+using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media.Imaging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -29,6 +31,7 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
+        string signedIn;
         public string Version
         {
             get
@@ -64,6 +67,34 @@ namespace backlog.Views
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += View_BackRequested;
+        }
+
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
+            if(signedIn == "Yes")
+            {
+                AccountPanel.Visibility = Visibility.Visible;
+                await SetUserPhotoAsync();
+                SignInText.Visibility = Visibility.Collapsed;
+                WarningText.Visibility = Visibility.Visible;
+            }
+            base.OnNavigatedTo(e);
+        }
+
+        private async Task SetUserPhotoAsync()
+        {
+            string userName = ApplicationData.Current.LocalSettings.Values["UserName"]?.ToString();
+            UserNameText.Text = $"Hey there, {userName}! You are all synced.";
+            var cacheFolder = ApplicationData.Current.LocalCacheFolder;
+            var accountPicFile = await cacheFolder.GetFileAsync("profile.png");
+            using (IRandomAccessStream stream = await accountPicFile.OpenAsync(FileAccessMode.Read))
+            {
+                BitmapImage image = new BitmapImage();
+                stream.Seek(0);
+                await image.SetSourceAsync(stream);
+                AccountPic.ProfilePicture = image;
+            }
         }
 
         private void View_BackRequested(object sender, BackRequestedEventArgs e)
@@ -144,6 +175,11 @@ namespace backlog.Views
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainPage));
+        }
+
+        private void SignOutButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
