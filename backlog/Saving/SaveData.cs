@@ -21,7 +21,7 @@ namespace backlog.Saving
     {
         private static SaveData instance = new SaveData();
         private ObservableCollection<Backlog> Backogs = null;
-        StorageFolder roamingFolder = ApplicationData.Current.RoamingFolder;
+        StorageFolder localFolder = ApplicationData.Current.LocalFolder;
         string fileName = "backlogs.txt";
         StorageFolder cacheFolder = ApplicationData.Current.LocalCacheFolder;
         string accountPicFile = "profile.png";
@@ -112,7 +112,7 @@ namespace backlog.Saving
             {
                 await PublicClientApp.RemoveAsync(firstAccount).ConfigureAwait(false);
                 ApplicationData.Current.LocalSettings.Values["SignedIn"] = "No";
-                var file = await roamingFolder.GetFileAsync(fileName);
+                var file = await localFolder.GetFileAsync(fileName);
                 await file.DeleteAsync(StorageDeleteOption.Default);
             }
             catch (Exception ex)
@@ -164,7 +164,7 @@ namespace backlog.Saving
         public async Task WriteDataAsync(bool sync = false)
         {
             string json = JsonConvert.SerializeObject(Backogs);
-            StorageFile storageFile = await roamingFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+            StorageFile storageFile = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(storageFile, json);
             if(sync)
             {
@@ -197,11 +197,11 @@ namespace backlog.Saving
                     string jsonDownload = await DownloadBacklogsJsonAsync();
                     if(jsonDownload != null)
                     {
-                        StorageFile file = await roamingFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+                        StorageFile file = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
                         await FileIO.WriteTextAsync(file, jsonDownload);
                     }
                 }
-                StorageFile storageFile = await roamingFolder.GetFileAsync(fileName);
+                StorageFile storageFile = await localFolder.GetFileAsync(fileName);
                 string json = await FileIO.ReadTextAsync(storageFile);
                 Backogs = JsonConvert.DeserializeObject<ObservableCollection<Backlog>>(json);
             }
