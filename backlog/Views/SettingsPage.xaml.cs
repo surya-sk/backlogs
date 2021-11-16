@@ -21,6 +21,7 @@ using Windows.ApplicationModel.Email;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
+using backlog.Saving;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -177,9 +178,21 @@ namespace backlog.Views
             Frame.Navigate(typeof(MainPage));
         }
 
-        private void SignOutButton_Click(object sender, RoutedEventArgs e)
+        private async void SignOutButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = "Sign out?",
+                Content = "You will no longer have access to your backlogs, and new ones will no longer be synced",
+                PrimaryButtonText = "Yes",
+                CloseButtonText = "No"
+            };
+            ContentDialogResult result = await contentDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                await SaveData.GetInstance().SignOut();
+                Frame.Navigate(typeof(MainPage));
+            }
         }
     }
 }

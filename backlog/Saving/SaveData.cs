@@ -103,6 +103,24 @@ namespace backlog.Saving
             return await Task.FromResult(graphClient);
         }
 
+        public async Task SignOut()
+        {
+            IEnumerable<IAccount> accounts = await PublicClientApp.GetAccountsAsync().ConfigureAwait(false);
+            IAccount firstAccount = accounts.FirstOrDefault();
+            await Utils.Logger.WriteLogAsync("Signing out user");
+            try
+            {
+                await PublicClientApp.RemoveAsync(firstAccount).ConfigureAwait(false);
+                ApplicationData.Current.LocalSettings.Values["SignedIn"] = "No";
+                var file = await roamingFolder.GetFileAsync(fileName);
+                await file.DeleteAsync(StorageDeleteOption.Default);
+            }
+            catch (Exception ex)
+            {
+                await Utils.Logger.WriteLogAsync($"Error signing out user: {ex.Message}");
+            }
+        }
+
         public async Task<GraphServiceClient> GetGraphServiceClient()
         {
             if (graphServiceClient == null)
