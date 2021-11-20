@@ -48,8 +48,6 @@
                 <TextBox x:Name="NameInput" PlaceholderText="Enter the name" Margin="10,0,0,20" />
                 <DatePicker x:Name="DatePicker" Header="Target Date (when you want to check it out)"  Margin="10,0,0,20" />
                 <TimePicker x:Name="TimePicker" Header="When do you want to be notified?" Margin="10,0,0,20" />
-                <CheckBox x:Name="CheckBox" Content="Remind me everyday until this is complete" 
-                              Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Margin="10,0,0,20" />
             </StackPanel>
         </ScrollViewer>
 

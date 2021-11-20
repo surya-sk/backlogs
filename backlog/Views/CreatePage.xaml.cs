@@ -33,7 +33,6 @@ namespace backlog.Views
     public sealed partial class CreatePage : Page
     {
         ObservableCollection<Backlog> backlogs { get; set; }
-        bool checkboxChecked;
         string signedIn;
         bool isNetworkAvailable = false;
         GraphServiceClient graphServiceClient;
@@ -76,16 +75,6 @@ namespace backlog.Views
                     NameInput.PlaceholderText = "Never Let Me Go";
                     break;
             }
-        }
-
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            checkboxChecked = false;
-        }
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            checkboxChecked = true;
         }
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
@@ -182,8 +171,7 @@ namespace backlog.Views
                     Progress = 0,
                     Units = "Minutes",
                     ShowProgress = true,
-                    NotifTime = time,
-                    RemindEveryday = checkboxChecked
+                    NotifTime = time
                 };
                 return backlog;
             }
@@ -223,8 +211,7 @@ namespace backlog.Views
                     Progress = 0,
                     Units = "Minutes",
                     ShowProgress = false,
-                    NotifTime = time,
-                    RemindEveryday = checkboxChecked
+                    NotifTime = time
                 };
                 return backlog;
             }
@@ -265,8 +252,7 @@ namespace backlog.Views
                     Progress = 0,
                     Units = "Pages",
                     ShowProgress = true,
-                    NotifTime = time,
-                    RemindEveryday = checkboxChecked
+                    NotifTime = time
                 };
                 return backlog;
             }
@@ -301,8 +287,7 @@ namespace backlog.Views
                     Progress = 0,
                     Units = "Season",
                     ShowProgress = true,
-                    NotifTime = time,
-                    RemindEveryday = checkboxChecked
+                    NotifTime = time
                 };
                 return backlog;
             }
@@ -352,8 +337,7 @@ namespace backlog.Views
                     Director = game.company,
                     Progress = 0,
                     ShowProgress = false,
-                    NotifTime = time,
-                    RemindEveryday = checkboxChecked
+                    NotifTime = time
                 };
                 return backlog;
                 
