@@ -82,6 +82,7 @@ namespace backlog.Views
         {
             ProgBar.Visibility = Visibility.Visible;
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
+            bool rebuildNotifQueue = (bool)e.Parameter;
             if (isNetworkAvailable && signedIn == "Yes")
             {
                 await Logger.WriteLogAsync("Signed in");
@@ -93,6 +94,7 @@ namespace backlog.Views
                 BottomProfileButton.Visibility = Visibility.Visible;
                 await SaveData.GetInstance().ReadDataAsync(true);
                 await PopulateBacklogs();
+                BuildNotifactionQueue();
             }
             ProgBar.Visibility = Visibility.Collapsed;
             base.OnNavigatedTo(e);
@@ -155,11 +157,6 @@ namespace backlog.Views
             foreach (var b in _musicBacklogs)
             {
                 musicBacklogs.Add(b);
-            }
-            foreach (Backlog b in _backlogs)
-            {
-                if(b.TargetDate != "None")
-                    await BuildNotifactionQueue(b);
             }
         }
 
@@ -238,40 +235,35 @@ namespace backlog.Views
             await Windows.System.Launcher.LaunchUriAsync(ratingUri);
         }
 
-        private async Task BuildNotifactionQueue(Backlog b)
+        private void BuildNotifactionQueue()
         {
-            DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate, CultureInfo.InvariantCulture).Add(b.NotifTime);
-            int result = DateTimeOffset.Compare(date, DateTimeOffset.Now);
-            ApplicationDataContainer notifSettings = ApplicationData.Current.LocalSettings;
-            int? notifSent = (int?)notifSettings.Values[b.id.ToString()];
-            if (notifSent != 1)
+            foreach(var b in backlogs)
             {
-                if(result > 0)
+                if(b.TargetDate != "None")
                 {
-                    Debug.WriteLine(result);
-                    var builder = new ToastContentBuilder()
-                    .AddText($"Hey there!", hintMaxLines: 1)
-                    .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
-                    .AddHeroImage(new Uri(b.ImageURL));
-                    ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
-                    ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
-                    if (b.RemindEveryday)
+                    ApplicationDataContainer notifSettings = ApplicationData.Current.LocalSettings;
+                    int? notifSent = (int?)notifSettings.Values[b.id.ToString()];
+                    if (notifSent != 1)
                     {
-                        if (IsBackgroundTaskRegistered(toastTaskName))
+                        DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate, CultureInfo.InvariantCulture).Add(b.NotifTime);
+                        int result = DateTimeOffset.Compare(date, DateTimeOffset.Now);
+                        if (result > 0)
                         {
-                            return;
+                            Debug.WriteLine(result);
+                            var builder = new ToastContentBuilder()
+                            .AddText($"Hey there!", hintMaxLines: 1)
+                            .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
+                            .AddHeroImage(new Uri(b.ImageURL));
+                            ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
+                            ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
                         }
-
-                        await BackgroundExecutionManager.RequestAccessAsync();
-                        BackgroundTaskHelper.Register(toastTaskName, new TimeTrigger(1440, false));
+                        notifSettings.Values[b.id.ToString()] = 1;
                     }
                 }
-                notifSettings.Values[b.id.ToString()] = 1;
+                string showLiveTile = ApplicationData.Current.LocalSettings.Values["LiveTileOn"]?.ToString();
+                if (showLiveTile == null || showLiveTile == "True")
+                    GenerateLiveTiles(b);
             }
-            string showLiveTile = ApplicationData.Current.LocalSettings.Values["LiveTileOn"]?.ToString();
-            if (showLiveTile == null || showLiveTile == "True")
-                GenerateLiveTiles(b);
-
         }
 
         private void GenerateLiveTiles(Backlog b)
