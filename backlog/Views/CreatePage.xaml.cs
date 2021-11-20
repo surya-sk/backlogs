@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -80,10 +81,8 @@ namespace backlog.Views
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             string title = NameInput.Text;
-            string date = DatePicker.Date.ToString("d", CultureInfo.InvariantCulture);
-            DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
-            int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
-            if (title == "" || TypeComoBox.SelectedIndex < 0 || DatePicker.Date == null || TimePicker.Time == null)
+            
+            if (title == "" || TypeComoBox.SelectedIndex < 0)
             {
                 ContentDialog contentDialog = new ContentDialog
                 {
@@ -92,28 +91,61 @@ namespace backlog.Views
                     CloseButtonText = "Ok"
                 };
                 await contentDialog.ShowAsync();
-            }
-            else if(diff < 0)
-            {
-                ContentDialog contentDialog = new ContentDialog
-                {
-                    Title = "Invalid date and time",
-                    Content = "The date and time you've chosen are in the past!",
-                    CloseButtonText = "Ok"
-                };
-                await contentDialog.ShowAsync();
             }   
             else
             {
+                if (DatePicker.SelectedDates.Count > 0)
+                {
+                    if(TimePicker.SelectedTime == null)
+                    {
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Invalid date and time",
+                            Content = "Please pick a time!",
+                            CloseButtonText = "Ok"
+                        };
+                        await contentDialog.ShowAsync();
+                        return;
+                    }
+                    string date = DatePicker.SelectedDates[0].ToString("d", CultureInfo.InvariantCulture);
+                    DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
+                    int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
+                    if (diff < 0)
+                    {
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Invalid date and time",
+                            Content = "The date and time you've chosen are in the past!",
+                            CloseButtonText = "Ok"
+                        };
+                        await contentDialog.ShowAsync();
+                        return;
+                    }
+                }
+                else if(TimePicker.SelectedTime != null)
+                { 
+                    if(DatePicker.SelectedDates.Count <= 0)
+                    {
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Invalid date and time",
+                            Content = "Please pick a date!",
+                            CloseButtonText = "Ok"
+                        };
+                        await contentDialog.ShowAsync();
+                        return;
+                    }
+                }
                 await Logger.WriteLogAsync($"Creating backlog {title}");
-                await CreateBacklog(title, date);
+                await CreateBacklog(title);
             }
         }
 
-        private async Task CreateBacklog(string title, string date)
+        private async Task CreateBacklog(string title)
         {
             ProgBar.Visibility = Visibility.Visible;
             Backlog backlog = null;
+            string date = DatePicker.SelectedDates.Count > 0 ? DatePicker.SelectedDates[0].ToString("d", CultureInfo.InvariantCulture) : "None";
             string type = TypeComoBox.SelectedItem.ToString();
             switch (type)
             {
@@ -171,7 +203,7 @@ namespace backlog.Views
                     Progress = 0,
                     Units = "Minutes",
                     ShowProgress = true,
-                    NotifTime = time
+                    NotifTime = time == null ? TimeSpan.Zero : time
                 };
                 return backlog;
             }

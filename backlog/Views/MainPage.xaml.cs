@@ -158,7 +158,8 @@ namespace backlog.Views
             }
             foreach (Backlog b in _backlogs)
             {
-                await BuildNotifactionQueue(b);
+                if(b.TargetDate != "None")
+                    await BuildNotifactionQueue(b);
             }
         }
 
