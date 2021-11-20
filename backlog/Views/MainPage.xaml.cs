@@ -71,7 +71,7 @@ namespace backlog.Views
             filmBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
             tvBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
             gameBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
-            musicBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Music.ToString()));
+            musicBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Album.ToString()));
             bookBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Book.ToString()));
             ShowEmptyMessage();
             var view = SystemNavigationManager.GetForCurrentView();
@@ -82,7 +82,6 @@ namespace backlog.Views
         {
             ProgBar.Visibility = Visibility.Visible;
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
-            bool rebuildNotifQueue = (bool)e.Parameter;
             if (isNetworkAvailable && signedIn == "Yes")
             {
                 await Logger.WriteLogAsync("Signed in");
@@ -125,7 +124,7 @@ namespace backlog.Views
             var _filmBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
             var _tvBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
             var _gameBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
-            var _musicBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Music.ToString()));
+            var _musicBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Album.ToString()));
             var _bookBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Book.ToString()));
             backlogs.Clear();
             filmBacklogs.Clear();
@@ -218,16 +217,6 @@ namespace backlog.Views
             Frame.Navigate(typeof(SettingsPage));
         }
 
-        private bool IsBackgroundTaskRegistered(string taskName)
-        {
-            if (BackgroundTaskHelper.IsBackgroundTaskRegistered(taskName))
-            {
-                // Background task already registered.
-                return true;
-            }
-
-            return false;
-        }
 
         private async void RateButton_Click(object sender, RoutedEventArgs e)
         {
@@ -328,7 +317,7 @@ namespace backlog.Views
                                 },
                                 new AdaptiveText()
                                 {
-                                    Text = $"You have this set for {b.TargetDate}",
+                                    Text = b.Description,
                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                     HintWrap = true
                                 }

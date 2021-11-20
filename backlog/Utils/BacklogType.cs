@@ -4,7 +4,7 @@
     {
         Film,
         TV,
-        Music,
+        Album,
         Game,
         Book
     }

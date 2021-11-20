@@ -234,7 +234,7 @@ namespace backlog.Views
                 {
                     id = Guid.NewGuid(),
                     Name = music.name,
-                    Type = "Music",
+                    Type = "Album",
                     ReleaseDate = music.releaseDate,
                     ImageURL = music.image,
                     TargetDate = date,

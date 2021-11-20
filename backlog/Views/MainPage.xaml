@@ -188,7 +188,7 @@
                     </ScrollViewer>
                 </PivotItem>
 
-                <PivotItem Header="music">
+                <PivotItem Header="albums">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical">
                             <TextBlock x:Name="EmptyMusicText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
