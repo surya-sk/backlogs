@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "/PC6jiobPgiMfooAaRzg0jH0Zz+fIpd6z0EdIbvDGxeWm3KX8rmeMuztLexwB9K43B/zO6bJs3T7HHtH0IN2ag==",
+  "dgSpecHash": "ALNp4aUWdqev5yhoUeRvK1zwDbhfFo3b+pLDyEMdf7q8zUkW0VZN8qq8QkteiskhXpmEtLDh+zwEkSrE6vQfZQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\surya\\.nuget\\packages\\colorcode.core\\2.0.5\\colorcode.core.2.0.5.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\colorcode.uwp\\2.0.5\\colorcode.uwp.2.0.5.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\ksemenenko.colorthief\\1.1.1.4\\ksemenenko.colorthief.1.1.1.4.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.7\\microsoft.aspnet.webapi.client.5.2.7.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.bcl\\1.1.9\\microsoft.bcl.1.1.9.nupkg.sha512",
@@ -26,13 +28,19 @@
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\microsoft.netcore.universalwindowsplatform\\6.2.12\\microsoft.netcore.universalwindowsplatform.6.2.12.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\microsoft.netcore.windows.apisets\\1.0.1\\microsoft.netcore.windows.apisets.1.0.1.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.toolkit\\4.0.0\\microsoft.toolkit.4.0.0.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\microsoft.toolkit.parsers\\4.0.0\\microsoft.toolkit.parsers.4.0.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.toolkit.uwp\\4.0.0\\microsoft.toolkit.uwp.4.0.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.toolkit.uwp.notifications\\7.0.0\\microsoft.toolkit.uwp.notifications.7.0.0.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\microsoft.toolkit.uwp.ui\\4.0.0\\microsoft.toolkit.uwp.ui.4.0.0.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\microsoft.toolkit.uwp.ui.animations\\4.0.0\\microsoft.toolkit.uwp.ui.animations.4.0.0.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\microsoft.toolkit.uwp.ui.controls\\4.0.0\\microsoft.toolkit.uwp.ui.controls.4.0.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.ui.xaml\\2.4.3\\microsoft.ui.xaml.2.4.3.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\microsoft.visualbasic\\10.0.1\\microsoft.visualbasic.10.0.1.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\microsoft.xaml.behaviors.uwp.managed\\1.1.0\\microsoft.xaml.behaviors.uwp.managed.1.1.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\newtonsoft.json\\10.0.3\\newtonsoft.json.10.0.3.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\robmikh.compositionsurfacefactory\\0.7.3\\robmikh.compositionsurfacefactory.0.7.3.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\runtime.any.system.collections\\4.3.0\\runtime.any.system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\runtime.any.system.diagnostics.tools\\4.3.0\\runtime.any.system.diagnostics.tools.4.3.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\runtime.any.system.diagnostics.tracing\\4.3.0\\runtime.any.system.diagnostics.tracing.4.3.0.nupkg.sha512",
@@ -209,11 +217,12 @@
     "C:\\Users\\surya\\.nuget\\packages\\system.threading.tasks.extensions\\4.3.0\\system.threading.tasks.extensions.4.3.0.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\system.threading.tasks.parallel\\4.0.1\\system.threading.tasks.parallel.4.0.1.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
-    "C:\\Users\\surya\\.nuget\\packages\\system.valuetuple\\4.3.0\\system.valuetuple.4.3.0.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\system.valuetuple\\4.4.0\\system.valuetuple.4.4.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\surya\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
+    "C:\\Users\\surya\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\win2d.uwp\\1.21.0\\win2d.uwp.1.21.0.nupkg.sha512"
   ],
   "logs": []
 }
