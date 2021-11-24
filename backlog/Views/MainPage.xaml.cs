@@ -226,7 +226,7 @@ namespace backlog.Views
 
         private void BuildNotifactionQueue()
         {
-            foreach (var b in new ObservableCollection<Backlog>(backlogs.OrderByDescending(b => DateTimeOffset.Parse(b.TargetDate, CultureInfo.InvariantCulture))))
+            foreach (var b in new ObservableCollection<Backlog>(backlogs.OrderByDescending(b => b.TargetDate)))
             {
                 if(b.TargetDate != "None")
                 {
