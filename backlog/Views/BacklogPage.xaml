@@ -79,7 +79,7 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <TextBlock Text="{x:Bind Name}" FontSize="30" Margin="0,0,0,10"/>
+                                        <TextBlock Text="{x:Bind Name}" FontSize="25" Margin="0,0,0,10" TextWrapping="Wrap"/>
                                         <TextBlock x:Name="ArtistText" Text="{x:Bind Director}" FontSize="20" Margin="0,0,0,10" Grid.Row="1" />
                                         <RelativePanel Margin="0,0,0,20" Grid.Row="2">
                                             <TextBlock x:Name="descText" Text="{x:Bind Description}" TextTrimming="WordEllipsis" MaxLines="4" TextWrapping="Wrap" FontSize="15"
