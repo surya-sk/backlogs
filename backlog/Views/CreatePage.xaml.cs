@@ -66,7 +66,7 @@ namespace backlog.Views
                 case "TV":
                     NameInput.PlaceholderText = "Hannibal";
                     break;
-                case "Music":
+                case "Album":
                     NameInput.PlaceholderText = "Radiohead - Amnesiac";
                     break;
                 case "Game":
