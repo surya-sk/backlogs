@@ -161,7 +161,7 @@ namespace backlog.Views
                 case "Book":
                     backlog = await CreateBookBacklog(NameInput.Text, date, TimePicker.Time);
                     break;
-                case "Music":
+                case "Album":
                     backlog = await CreateMusicBacklog(NameInput.Text, date, TimePicker.Time);
                     break;
             }
