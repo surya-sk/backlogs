@@ -215,6 +215,11 @@
                     </Grid>
                 </ScrollViewer>
             </PivotItem>
+            <PivotItem Header="licenses">
+                <ScrollViewer>
+                    
+                </ScrollViewer>
+            </PivotItem>
         </Pivot>
     </Grid>
     
