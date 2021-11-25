@@ -317,7 +317,7 @@ namespace backlog.Views
                     Length = series.TvSeriesInfo.Seasons.Count,
                     Director = series.TvSeriesInfo.Creators,
                     Progress = 0,
-                    Units = "Season",
+                    Units = "Season(s)",
                     ShowProgress = true,
                     NotifTime = time
                 };
