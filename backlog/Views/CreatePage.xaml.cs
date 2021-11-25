@@ -80,64 +80,72 @@ namespace backlog.Views
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            string title = NameInput.Text;
-            
-            if (title == "" || TypeComoBox.SelectedIndex < 0)
+           try
             {
-                ContentDialog contentDialog = new ContentDialog
+                string title = NameInput.Text;
+
+                if (title == "" || TypeComoBox.SelectedIndex < 0)
                 {
-                    Title = "Missing fields",
-                    Content = "Please fill in all the values",
-                    CloseButtonText = "Ok"
-                };
-                await contentDialog.ShowAsync();
-            }   
-            else
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Missing fields",
+                        Content = "Please fill in all the values",
+                        CloseButtonText = "Ok"
+                    };
+                    await contentDialog.ShowAsync();
+                }
+                else
+                {
+                    if (DatePicker.SelectedDates.Count > 0)
+                    {
+                        if (TimePicker.SelectedTime == null)
+                        {
+                            ContentDialog contentDialog = new ContentDialog
+                            {
+                                Title = "Invalid date and time",
+                                Content = "Please pick a time!",
+                                CloseButtonText = "Ok"
+                            };
+                            await contentDialog.ShowAsync();
+                            return;
+                        }
+                        string date = DatePicker.SelectedDates[0].ToString("d", CultureInfo.InvariantCulture);
+                        DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
+                        int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
+                        if (diff < 0)
+                        {
+                            ContentDialog contentDialog = new ContentDialog
+                            {
+                                Title = "Invalid date and time",
+                                Content = "The date and time you've chosen are in the past!",
+                                CloseButtonText = "Ok"
+                            };
+                            await contentDialog.ShowAsync();
+                            return;
+                        }
+                    }
+                    else if (TimePicker.SelectedTime != null)
+                    {
+                        if (DatePicker.SelectedDates.Count <= 0)
+                        {
+                            ContentDialog contentDialog = new ContentDialog
+                            {
+                                Title = "Invalid date and time",
+                                Content = "Please pick a date!",
+                                CloseButtonText = "Ok"
+                            };
+                            await contentDialog.ShowAsync();
+                            return;
+                        }
+                    }
+                    await Logger.WriteLogAsync($"Creating backlog {title}");
+                    await CreateBacklog(title);
+                }
+            }
+            catch (Exception ex)
             {
-                if (DatePicker.SelectedDates.Count > 0)
-                {
-                    if(TimePicker.SelectedTime == null)
-                    {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Invalid date and time",
-                            Content = "Please pick a time!",
-                            CloseButtonText = "Ok"
-                        };
-                        await contentDialog.ShowAsync();
-                        return;
-                    }
-                    string date = DatePicker.SelectedDates[0].ToString("d", CultureInfo.InvariantCulture);
-                    DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
-                    int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
-                    if (diff < 0)
-                    {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Invalid date and time",
-                            Content = "The date and time you've chosen are in the past!",
-                            CloseButtonText = "Ok"
-                        };
-                        await contentDialog.ShowAsync();
-                        return;
-                    }
-                }
-                else if(TimePicker.SelectedTime != null)
-                { 
-                    if(DatePicker.SelectedDates.Count <= 0)
-                    {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Invalid date and time",
-                            Content = "Please pick a date!",
-                            CloseButtonText = "Ok"
-                        };
-                        await contentDialog.ShowAsync();
-                        return;
-                    }
-                }
-                await Logger.WriteLogAsync($"Creating backlog {title}");
-                await CreateBacklog(title);
+                Debug.WriteLine(ex.StackTrace);
+                await Logger.WriteLogAsync($"EXCEPTION OCCURED: {ex.ToString()} \n\n Stack trace:\n{ex.StackTrace}");
             }
         }
 
