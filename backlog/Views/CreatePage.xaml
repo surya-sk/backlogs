@@ -48,7 +48,7 @@
                 <TextBox x:Name="NameInput" PlaceholderText="Enter the name" Margin="10,0,0,20" />
                 <TextBlock Text="When do you want to check this out? (optional)" Margin="10,0,0,20" />
                 <CalendarView x:Name="DatePicker" Margin="10,0,0,20" />
-                <TimePicker x:Name="TimePicker" Header="When do you want to be notified? (optional)" Margin="10,0,0,20" />
+                <TimePicker x:Name="TimePicker" Header="When do you want to be notified? (optional)" Margin="10,0,0,20" Time="0" />
             </StackPanel>
         </ScrollViewer>
 

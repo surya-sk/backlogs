@@ -98,7 +98,7 @@ namespace backlog.Views
                 {
                     if (DatePicker.SelectedDates.Count > 0)
                     {
-                        if (TimePicker.SelectedTime == null)
+                        if (TimePicker.Time == TimeSpan.Zero)
                         {
                             ContentDialog contentDialog = new ContentDialog
                             {
@@ -124,7 +124,7 @@ namespace backlog.Views
                             return;
                         }
                     }
-                    else if (TimePicker.SelectedTime != null)
+                    else if (TimePicker.Time != TimeSpan.Zero)
                     {
                         if (DatePicker.SelectedDates.Count <= 0)
                         {
