@@ -246,8 +246,15 @@ namespace backlog.Saving
         /// <returns></returns>
         public async Task DeleteLocalFileAsync()
         {
-            StorageFile file = await localFolder.GetFileAsync(fileName);
-            await file.DeleteAsync(StorageDeleteOption.Default);
+            try
+            {
+                StorageFile file = await localFolder.GetFileAsync(fileName);
+                await file.DeleteAsync(StorageDeleteOption.Default);
+            }
+            catch(FileNotFoundException ex)
+            {
+                // : )
+            }
         }
 
         public ObservableCollection<Backlog> GetBacklogs()
