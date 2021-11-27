@@ -190,9 +190,9 @@ namespace backlog.Views
             {
                 if (signedIn != "Yes")
                 {
+                    await SaveData.GetInstance().DeleteLocalFileAsync();
                     graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
                     ApplicationData.Current.LocalSettings.Values["SignedIn"] = "Yes";
-                    await SaveData.GetInstance().DeleteLocalFileAsync();
                     Frame.Navigate(typeof(MainPage));
                 }
             }
