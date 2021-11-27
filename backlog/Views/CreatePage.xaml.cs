@@ -47,15 +47,28 @@ namespace backlog.Views
         {
             await Logger.WriteLogAsync("Navigated to Create page");
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
-            if(isNetworkAvailable && signedIn == "Yes")
+            if(isNetworkAvailable)
             {
-                await SaveData.GetInstance().ReadDataAsync(true);
-                backlogs = SaveData.GetInstance().GetBacklogs();
+                if(signedIn == "Yes")
+                {
+                    await SaveData.GetInstance().ReadDataAsync(true);
+                    backlogs = SaveData.GetInstance().GetBacklogs();
+                }
+                else
+                {
+                    Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
+                    backlogs = SaveData.GetInstance().GetBacklogs();
+                }
             }
-            else
+           else
             {
-                Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
-                backlogs = SaveData.GetInstance().GetBacklogs();
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "No internet",
+                    Content = "You need the internet to create backlogs",
+                    CloseButtonText = "Ok"
+                };
+                await contentDialog.ShowAsync();
             }
             base.OnNavigatedTo(e);
         }

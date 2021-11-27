@@ -103,6 +103,10 @@ namespace backlog.Saving
             return await Task.FromResult(graphClient);
         }
 
+        /// <summary>
+        /// Sign out of MSA
+        /// </summary>
+        /// <returns></returns>
         public async Task SignOut()
         {
             IEnumerable<IAccount> accounts = await PublicClientApp.GetAccountsAsync().ConfigureAwait(false);
@@ -121,6 +125,10 @@ namespace backlog.Saving
             }
         }
 
+        /// <summary>
+        /// Returns the service client, and signs the user in if they haven't
+        /// </summary>
+        /// <returns></returns>
         public async Task<GraphServiceClient> GetGraphServiceClient()
         {
             if (graphServiceClient == null)
@@ -230,6 +238,16 @@ namespace backlog.Saving
                     return json;
                 }
             }
+        }
+
+        /// <summary>
+        /// Delete the local backlogs
+        /// </summary>
+        /// <returns></returns>
+        public async Task DeleteLocalFileAsync()
+        {
+            StorageFile file = await localFolder.GetFileAsync(fileName);
+            await file.DeleteAsync(StorageDeleteOption.Default);
         }
 
         public ObservableCollection<Backlog> GetBacklogs()
