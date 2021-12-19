@@ -116,8 +116,7 @@ namespace backlog.Views
 
         private async Task PopulateBacklogs()
         {
-            ObservableCollection<Backlog> readBacklogs = SaveData.GetInstance().GetBacklogs();
-            await Logger.WriteLogAsync($"Number of backlogs found: {readBacklogs.Count}");
+            var readBacklogs = SaveData.GetInstance().GetBacklogs().Where(b => b.IsComplete == false);
             var _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.TargetDate)); // sort by last created
             var _filmBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
             var _tvBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.TV.ToString()));

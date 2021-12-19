@@ -44,7 +44,7 @@
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
                                                 Text="{x:Bind Director}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
-                            <muxc:RatingControl RelativePanel.Below="DirectorText" Value="{x:Bind UserRating}" />
+                            <muxc:RatingControl RelativePanel.Below="DirectorText" Value="{x:Bind UserRating}" IsReadOnly="True"/>
                         </RelativePanel>
                     </Grid>
                 </DataTemplate>
