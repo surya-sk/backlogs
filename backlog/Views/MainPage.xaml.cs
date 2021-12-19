@@ -90,7 +90,7 @@ namespace backlog.Views
                 TopProfileButton.Visibility = Visibility.Visible;
                 BottomProfileButton.Visibility = Visibility.Visible;
                 await SaveData.GetInstance().ReadDataAsync(true);
-                await PopulateBacklogs();
+                PopulateBacklogs();
                 BuildNotifactionQueue();
             }
             ProgBar.Visibility = Visibility.Collapsed;
@@ -114,7 +114,7 @@ namespace backlog.Views
             }
         }
 
-        private async Task PopulateBacklogs()
+        private void PopulateBacklogs()
         {
             var readBacklogs = SaveData.GetInstance().GetBacklogs().Where(b => b.IsComplete == false);
             var _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.TargetDate)); // sort by last created
