@@ -5,7 +5,7 @@ Backlogs is a native Windows application that lets you manage your film, TV, mus
 
 The application is available to download for Windows 10, Windows 10 Mobile, Windows 11, Xbox One and Xbox Series X.
 
-The app is currently in preview. <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__iSaqoNUOUlNSU9CUlk4T0pKU1hTSjZWODZXRjdHMi4u">Sign up here to download</a>
+<a href='https://www.microsoft.com/store/productId/9N2H8CM2KWVZ'><img src='https://developer.microsoft.com/en-us/store/badges/images/English_get-it-from-MS.png' alt='Store Link' height="50px"/></a>
 
 
 ## Description
