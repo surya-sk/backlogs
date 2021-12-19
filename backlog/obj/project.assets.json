@@ -36,6 +36,17 @@
           "lib/UAP10/ColorThief.UWP.dll": {}
         }
       },
+      "MetroLog/1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
         "type": "package",
         "dependencies": {
@@ -508,7 +519,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -2830,6 +2841,17 @@
           "lib/UAP10/ColorThief.UWP.dll": {}
         }
       },
+      "MetroLog/1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
         "type": "package",
         "dependencies": {
@@ -3250,7 +3272,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -5594,6 +5616,17 @@
           "lib/UAP10/ColorThief.UWP.dll": {}
         }
       },
+      "MetroLog/1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
         "type": "package",
         "dependencies": {
@@ -6015,7 +6048,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -8394,6 +8427,17 @@
           "lib/UAP10/ColorThief.UWP.dll": {}
         }
       },
+      "MetroLog/1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
         "type": "package",
         "dependencies": {
@@ -8814,7 +8858,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -11173,6 +11217,17 @@
           "lib/UAP10/ColorThief.UWP.dll": {}
         }
       },
+      "MetroLog/1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
         "type": "package",
         "dependencies": {
@@ -11596,7 +11651,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -13946,6 +14001,17 @@
           "lib/UAP10/ColorThief.UWP.dll": {}
         }
       },
+      "MetroLog/1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
         "type": "package",
         "dependencies": {
@@ -14370,7 +14436,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -16755,6 +16821,17 @@
           "lib/UAP10/ColorThief.UWP.dll": {}
         }
       },
+      "MetroLog/1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
         "type": "package",
         "dependencies": {
@@ -17178,7 +17255,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -19528,6 +19605,17 @@
           "lib/UAP10/ColorThief.UWP.dll": {}
         }
       },
+      "MetroLog/1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MetroLog.WinRT.winmd": {},
+          "lib/win81/MetroLog.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
         "type": "package",
         "dependencies": {
@@ -19952,7 +20040,7 @@
           "lib/uap10.0/Microsoft.UI.Xaml.winmd": {}
         },
         "build": {
-          "build/Microsoft.UI.Xaml.props": {}
+          "buildTransitive/Microsoft.UI.Xaml.props": {}
         }
       },
       "Microsoft.VisualBasic/10.0.1": {
@@ -22357,6 +22445,43 @@
         "lib/net46/ColorThief.Desktop.v46.xml",
         "lib/netstandard2.0/ColorThief.Netstandard.v20.dll",
         "lib/netstandard2.0/ColorThief.Netstandard.v20.pdb"
+      ]
+    },
+    "MetroLog/1.0.1": {
+      "sha512": "9+i0lIT+OAf9FQOrnSbyxG5RbBtRUthIQAn73c9Y1z0v+2dPCKn9oTPTt8njHPMzy5lRoT9MDQRkYSqJ7aVqgA==",
+      "type": "package",
+      "path": "metrolog/1.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/win8-javascript/MetroLog ReadMe.txt",
+        "content/win8-javascript/typings/MetroLog.WinRT.d.ts",
+        "content/win8-javascript/typings/winrt.d.ts",
+        "lib/MonoAndroid/MetroLog.dll",
+        "lib/MonoAndroid/MetroLog.pdb",
+        "lib/MonoTouch/MetroLog.dll",
+        "lib/MonoTouch/MetroLog.pdb",
+        "lib/Xamarin.iOS/MetroLog.dll",
+        "lib/Xamarin.iOS/MetroLog.pdb",
+        "lib/dotnet/MetroLog.dll",
+        "lib/dotnet/MetroLog.pdb",
+        "lib/net45/MetroLog.dll",
+        "lib/net45/MetroLog.pdb",
+        "lib/portable-net45+wp8+win8+wpa81/MetroLog.dll",
+        "lib/portable-net45+wp8+win8+wpa81/MetroLog.pdb",
+        "lib/win81/MetroLog.WinRT.pdb",
+        "lib/win81/MetroLog.WinRT.pri",
+        "lib/win81/MetroLog.WinRT.winmd",
+        "lib/win81/MetroLog.dll",
+        "lib/win81/MetroLog.pdb",
+        "lib/win81/MetroLog.pri",
+        "lib/wp8/MetroLog.dll",
+        "lib/wp8/MetroLog.pdb",
+        "lib/wpa81/MetroLog.dll",
+        "lib/wpa81/MetroLog.pdb",
+        "lib/wpa81/MetroLog.pri",
+        "metrolog.1.0.1.nupkg.sha512",
+        "metrolog.nuspec"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.7": {
@@ -33643,6 +33768,7 @@
   },
   "projectFileDependencyGroups": {
     "UAP,Version=v10.0.15063": [
+      "MetroLog >= 1.0.1",
       "Microsoft.AspNet.WebApi.Client >= 5.2.7",
       "Microsoft.Graph >= 1.15.0",
       "Microsoft.Identity.Client >= 4.36.1",
@@ -33695,6 +33821,10 @@
     "frameworks": {
       "uap10.0.15063": {
         "dependencies": {
+          "MetroLog": {
+            "target": "Package",
+            "version": "[1.0.1, )"
+          },
           "Microsoft.AspNet.WebApi.Client": {
             "target": "Package",
             "version": "[5.2.7, )"

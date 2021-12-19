@@ -39,6 +39,10 @@
       "frameworks": {
         "uap10.0.15063": {
           "dependencies": {
+            "MetroLog": {
+              "target": "Package",
+              "version": "[1.0.1, )"
+            },
             "Microsoft.AspNet.WebApi.Client": {
               "target": "Package",
               "version": "[5.2.7, )"
