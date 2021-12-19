@@ -9,6 +9,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -33,6 +34,18 @@ namespace backlog.Views
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             var _readBacklogs = SaveData.GetInstance().GetBacklogs();
             FinishedBacklogs = new ObservableCollection<Backlog>(_readBacklogs.Where(b => b.IsComplete));
+            var view = SystemNavigationManager.GetForCurrentView();
+            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            view.BackRequested += View_BackRequested;
+        }
+
+        private void View_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if(Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+            e.Handled = true;
         }
     }
 }

@@ -78,7 +78,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
                             <TextBlock x:Name="EmptyFilmsText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="200"
+                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind filmBacklogs}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" />
                         </StackPanel>
@@ -90,7 +90,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
                             <TextBlock x:Name="EmptyMusicText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="200"
+                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind musicBacklogs}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" />
                         </StackPanel>
@@ -102,7 +102,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
                             <TextBlock x:Name="EmptyTVText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="200"
+                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind tvBacklogs}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" />
                         </StackPanel>
@@ -126,7 +126,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
                             <TextBlock x:Name="EmptyBooksText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="200"
+                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind bookBacklogs}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" />
                         </StackPanel>
@@ -146,6 +146,7 @@
                 <muxc:PersonPicture x:Name="TopAccountPic" Height="30" Width="30"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="TopCompletedBacklogsButton" Label="Completed backlogs" Icon="List" Click="CompletedBacklogsButton_Click" />
                 <AppBarButton x:Name="TopSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
                 <AppBarButton x:Name="TopRateButton" Label="Rate and Review on the Store" Icon="Like" Click="RateButton_Click" />
                 <AppBarButton x:Name="TopSupportButton" Label="Support developer"  Click="SupportButton_Click" >
@@ -166,6 +167,7 @@
                 <muxc:PersonPicture x:Name="BottomAccountPic" Height="30" Width="30"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="BottomCompletedBacklogsButton" Label="Completed backlogs" Icon="List" Click="CompletedBacklogsButton_Click" />
                 <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
                 <AppBarButton x:Name="BottomRateButton" Label="Rate and Review on the Store" Icon="Like" Click="RateButton_Click" />
                 <AppBarButton x:Name="BottomSupportButton" Label="Support developer"  Click="SupportButton_Click" >
