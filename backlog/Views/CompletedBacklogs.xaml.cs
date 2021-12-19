@@ -1,8 +1,12 @@
-﻿using System;
+﻿using backlog.Models;
+using backlog.Saving;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,9 +26,13 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class CompletedBacklogs : Page
     {
+        private ObservableCollection<Backlog> FinishedBacklogs;
         public CompletedBacklogs()
         {
             this.InitializeComponent();
+            Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
+            var _readBacklogs = SaveData.GetInstance().GetBacklogs();
+            FinishedBacklogs = new ObservableCollection<Backlog>(_readBacklogs.Where(b => b.IsComplete));
         }
     }
 }
