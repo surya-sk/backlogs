@@ -34,6 +34,11 @@ namespace backlog.Views
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             var _readBacklogs = SaveData.GetInstance().GetBacklogs();
             FinishedBacklogs = new ObservableCollection<Backlog>(_readBacklogs.Where(b => b.IsComplete));
+            if(FinishedBacklogs.Count < 1)
+            {
+                EmptyText.Visibility = Visibility.Visible;
+                MainGrid.Visibility = Visibility.Collapsed; 
+            }
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += View_BackRequested;

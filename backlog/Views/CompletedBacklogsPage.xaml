@@ -11,32 +11,44 @@
     xmlns:data="using:backlog.Models"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="250"
-                                                       SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind FinishedBacklogs}">
-        <controls:AdaptiveGridView.ItemTemplate>
-            <DataTemplate x:DataType="data:Backlog">
-                <Grid x:Name="rootGrid">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/> 
+        </Grid.RowDefinitions>
 
-                    <Image Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch"/>
-                    <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Left">
-                        <TextBlock
+        <TextBlock Text="completed backlogs" FontSize="30" FontWeight="SemiBold" />
+
+        <TextBlock  x:Name="EmptyText" Text="you haven't completed any of your backlogs yet :(" TextWrapping="Wrap" Grid.Row="1" Visibility="Collapsed"
+                    Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+
+        <controls:AdaptiveGridView x:Name="MainGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="250" Grid.Row="1"
+                                                       SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind FinishedBacklogs}" Margin="20">
+            <controls:AdaptiveGridView.ItemTemplate>
+                <DataTemplate x:DataType="data:Backlog">
+                    <Grid x:Name="rootGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Image Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch"/>
+                        <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Left">
+                            <TextBlock
                         x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
                                     Style="{StaticResource BaseTextBlockStyle}"
                                     Text="{x:Bind Name}"
                                     TextLineBounds="TrimToCapHeight"
                                     TextWrapping="Wrap" />
-                        <TextBlock x:Name="DirectorText" Style="{StaticResource CaptionTextBlockStyle}"
+                            <TextBlock x:Name="DirectorText" Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
                                                 Text="{x:Bind Director}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
-                        <muxc:RatingControl RelativePanel.Below="DirectorText" Value="{x:Bind UserRating}" />
-                    </RelativePanel>
-                </Grid>
-            </DataTemplate>
-        </controls:AdaptiveGridView.ItemTemplate>
-    </controls:AdaptiveGridView>
+                            <muxc:RatingControl RelativePanel.Below="DirectorText" Value="{x:Bind UserRating}" />
+                        </RelativePanel>
+                    </Grid>
+                </DataTemplate>
+            </controls:AdaptiveGridView.ItemTemplate>
+        </controls:AdaptiveGridView>
+    </Grid>
 </Page>
