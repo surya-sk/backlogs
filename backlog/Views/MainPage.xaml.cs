@@ -51,8 +51,6 @@ namespace backlog.Views
         private ObservableCollection<Backlog> bookBacklogs { get; set; }
         GraphServiceClient graphServiceClient;
 
-        readonly string toastTaskName = "ToastTask";
-
         bool isNetworkAvailable = false;
         string signedIn;
         public MainPage()
