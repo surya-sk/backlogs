@@ -128,12 +128,8 @@ namespace backlog.Views
         private async void DoneButton_Click(object sender, RoutedEventArgs e)
         {
             ProgBar.Visibility = Visibility.Visible;
-            if(edited)
-            {
-                backlogs[backlogIndex] = backlog;
-                SaveData.GetInstance().SaveSettings(backlogs);
-                await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
-            }
+            if (edited)
+                await SaveBacklog();
             Frame.Navigate(typeof(MainPage));
         }
 
@@ -141,16 +137,21 @@ namespace backlog.Views
         {
             ContentDialog deleteDialog = new ContentDialog
             {
-                Title = "Are you done?",
-                Content = "This will delete this Backlog permanently.",
-                PrimaryButtonText = "Yes",
-                CloseButtonText = "Not yet"
+                Title = "What did you think?",
+                Content = "Give this a review",
+                CloseButtonText = "Done"
             };
-            ContentDialogResult result = await deleteDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
-            {
-                await DeleteConfirmation_Click();
-            }
+            await deleteDialog.ShowAsync();
+            backlog.IsComplete = true;
+            await SaveBacklog();
+            Frame.Navigate(typeof(MainPage));
+        }
+
+        private async Task SaveBacklog()
+        {
+            backlogs[backlogIndex] = backlog;
+            SaveData.GetInstance().SaveSettings(backlogs);
+            await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
