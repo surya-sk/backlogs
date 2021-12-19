@@ -25,10 +25,10 @@ namespace backlog.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CompletedBacklogs : Page
+    public sealed partial class CompletedBacklogsPage : Page
     {
         private ObservableCollection<Backlog> FinishedBacklogs;
-        public CompletedBacklogs()
+        public CompletedBacklogsPage()
         {
             this.InitializeComponent();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();

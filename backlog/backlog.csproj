@@ -143,8 +143,8 @@
     <Compile Include="Views\BacklogPage.xaml.cs">
       <DependentUpon>BacklogPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompletedBacklogs.xaml.cs">
-      <DependentUpon>CompletedBacklogs.xaml</DependentUpon>
+    <Compile Include="Views\CompletedBacklogsPage.xaml.cs">
+      <DependentUpon>CompletedBacklogsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CreatePage.xaml.cs">
       <DependentUpon>CreatePage.xaml</DependentUpon>
@@ -227,7 +227,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CompletedBacklogs.xaml">
+    <Page Include="Views\CompletedBacklogsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

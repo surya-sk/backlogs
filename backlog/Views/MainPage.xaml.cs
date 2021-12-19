@@ -362,7 +362,7 @@ namespace backlog.Views
 
         private void CompletedBacklogsButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(CompletedBacklogs));
+            Frame.Navigate(typeof(CompletedBacklogsPage));
         }
     }
 }
