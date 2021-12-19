@@ -17,7 +17,7 @@
             <RowDefinition Height="*"/> 
         </Grid.RowDefinitions>
 
-        <TextBlock Text="completed backlogs" FontSize="30" FontWeight="SemiBold" />
+        <TextBlock Text="completed backlogs" FontSize="30" Margin="30"/>
 
         <TextBlock  x:Name="EmptyText" Text="you haven't completed any of your backlogs yet :(" TextWrapping="Wrap" Grid.Row="1" Visibility="Collapsed"
                     Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>

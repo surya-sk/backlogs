@@ -135,13 +135,6 @@ namespace backlog.Views
 
         private async void FinishButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog deleteDialog = new ContentDialog
-            {
-                Title = "What did you think?",
-                Content = "Give this a review",
-                CloseButtonText = "Done"
-            };
-            await deleteDialog.ShowAsync();
             backlog.IsComplete = true;
             await SaveBacklog();
             Frame.Navigate(typeof(MainPage));
