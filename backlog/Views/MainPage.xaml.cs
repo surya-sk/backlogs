@@ -176,6 +176,7 @@ namespace backlog.Views
         private void BacklogView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedBacklog = (Backlog)e.ClickedItem;
+            BacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
             Frame.Navigate(typeof(BacklogPage), selectedBacklog.id);
         }
 

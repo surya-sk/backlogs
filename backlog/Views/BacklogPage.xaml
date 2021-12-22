@@ -31,95 +31,69 @@
                     <VisualState.Setters>
                         <Setter Target="BottomBar.Visibility" Value="Visible" />
                         <Setter Target="TopBar.Visibility" Value="Collapsed" />
+                        <Setter Target="detailsGrid.(RelativePanel.Below)" Value="img" />
+                        <Setter Target="detailsGrid.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="detailsGrid.(RelativePanel.AlignRightWithPanel)" Value="True" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ContentControl Content="{x:Bind backlog}">
-                <ContentControl.ContentTemplate>
-                    <DataTemplate x:DataType="data:Backlog">
-                        <UserControl>
-                            <Grid x:Name="rootGrid">
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup x:Name="LayoutVisualStates">
-                                        <VisualState x:Name="WideLayout">
-                                            <VisualState.StateTriggers>
-                                                <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                                            </VisualState.StateTriggers>
-                                            <VisualState.Setters />
-                                        </VisualState>
-                                        <VisualState x:Name="NarrowLayout">
-                                            <VisualState.StateTriggers>
-                                                <AdaptiveTrigger MinWindowWidth="0" />
-                                            </VisualState.StateTriggers>
-                                            <VisualState.Setters>
-                                                <Setter Target="detailsGrid.(RelativePanel.Below)" Value="img" />
-                                                <Setter Target="detailsGrid.(RelativePanel.AlignLeftWithPanel)" Value="True" />
-                                                <Setter Target="detailsGrid.(RelativePanel.AlignRightWithPanel)" Value="True" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
+            <Grid x:Name="rootGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
+                <RelativePanel>
+                    <Image x:Name="img" Source="{x:Bind backlog.ImageURL}" Height="200" Width="200" HorizontalAlignment="Center" Margin="30"/>
+                    <Grid x:Name="detailsGrid" RelativePanel.RightOf="img" Height="200" Margin="30">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{x:Bind backlog.Name}" FontSize="25" Margin="0,0,0,10" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="ArtistText" Text="{x:Bind backlog.Director}" FontSize="20" Margin="0,0,0,10" Grid.Row="1" />
+                        <RelativePanel Margin="0,0,0,20" Grid.Row="2">
+                            <TextBlock x:Name="descText" Text="{x:Bind backlog.Description}" TextTrimming="WordEllipsis" MaxLines="4" TextWrapping="Wrap" FontSize="15"
+                                                    Margin="0,0,0,10" />
+                            <TextBlock RelativePanel.Below="descText">
+                                            <Hyperlink Click="Hyperlink_Click">
+                                                <Run Text="Read full" />
+                                            </Hyperlink>
+                            </TextBlock>
+                        </RelativePanel>
+                    </Grid>
+                </RelativePanel>
 
-                                <RelativePanel>
-                                    <Image x:Name="img" Source="{x:Bind ImageURL}" Height="200" Width="200" HorizontalAlignment="Center" Margin="30"/>
-                                    <Grid x:Name="detailsGrid" RelativePanel.RightOf="img" Height="200" Margin="30">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Text="{x:Bind Name}" FontSize="25" Margin="0,0,0,10" TextWrapping="Wrap"/>
-                                        <TextBlock x:Name="ArtistText" Text="{x:Bind Director}" FontSize="20" Margin="0,0,0,10" Grid.Row="1" />
-                                        <RelativePanel Margin="0,0,0,20" Grid.Row="2">
-                                            <TextBlock x:Name="descText" Text="{x:Bind Description}" TextTrimming="WordEllipsis" MaxLines="4" TextWrapping="Wrap" FontSize="15"
-                                                       Margin="0,0,0,10" />
-                                            <TextBlock RelativePanel.Below="descText">
-                                                <Hyperlink Click="Hyperlink_Click">
-                                                    <Run Text="Read full" />
-                                                </Hyperlink>
-                                            </TextBlock>
-                                        </RelativePanel>
-                                    </Grid>
-                                </RelativePanel>
+                <StackPanel Grid.Row="1" Margin="30">
+                    <TextBlock Text="Target Date" FontStyle="Oblique" />
+                    <TextBlock Text="{x:Bind backlog.TargetDate}" />
+                </StackPanel>
 
-                                <StackPanel Grid.Row="1" Margin="30">
-                                    <TextBlock Text="Target Date" FontStyle="Oblique" />
-                                    <TextBlock Text="{x:Bind TargetDate}" />
-                                </StackPanel>
+                <StackPanel Grid.Row="2" Margin="30" Visibility="{x:Bind backlog.ShowProgress, Converter={StaticResource BoolToVis}}">
+                    <TextBlock Text="Progress" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,10" />
+                    <TextBlock Text="Enter how much progress you've made" FontStyle="Oblique" Margin="0,0,0,10" />
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <muxc:NumberBox Value="{x:Bind backlog.Progress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpinButtonPlacementMode="Inline" ValueChanged="NumberBox_ValueChanged"/>
+                        <TextBlock Text="of"  Margin="10,5,10,0" FontSize="15"/>
+                        <TextBlock Text="{x:Bind backlog.Length}" Margin="0,5,10,0" FontSize="15"/>
+                        <TextBlock Text="{x:Bind backlog.Units}" Margin="0,5,10,0" FontSize="15" />
+                    </StackPanel>
+                    <muxc:ProgressBar Value="{x:Bind backlog.Progress}" Minimum="0" Maximum="{x:Bind backlog.Length}" IsIndeterminate="False" Margin="20"/>
+                </StackPanel>
 
-                                <StackPanel Grid.Row="2" Margin="30" Visibility="{x:Bind ShowProgress, Converter={StaticResource BoolToVis}}">
-                                    <TextBlock Text="Progress" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,10" />
-                                    <TextBlock Text="Enter how much progress you've made" FontStyle="Oblique" Margin="0,0,0,10" />
-                                    <StackPanel Orientation="Horizontal" Margin="10">
-                                        <muxc:NumberBox Value="{x:Bind Progress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpinButtonPlacementMode="Inline" ValueChanged="NumberBox_ValueChanged"/>
-                                        <TextBlock Text="of"  Margin="10,5,10,0" FontSize="15"/>
-                                        <TextBlock Text="{x:Bind Length}" Margin="0,5,10,0" FontSize="15"/>
-                                        <TextBlock Text="{x:Bind Units}" Margin="0,5,10,0" FontSize="15" />
-                                    </StackPanel>
-                                    <muxc:ProgressBar Value="{x:Bind Progress}" Minimum="0" Maximum="{x:Bind Length}" IsIndeterminate="False" Margin="20"/>
-                                </StackPanel>
-
-                                <StackPanel Grid.Row="3" Margin="30">
-                                    <TextBlock Text="Have you finished checking this out?" Margin="0,20,0,10"/>
-                                    <muxc:RatingControl Value="{x:Bind UserRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,20,0,10" HorizontalAlignment="Left"/>
-                                     <Button x:Name="FinishButton" Content="Mark As Complete" Background="Green" Click="FinishButton_Click" />
-                                </StackPanel>
-                            </Grid>
-                        </UserControl>
-                    </DataTemplate>
-                </ContentControl.ContentTemplate>
-            </ContentControl>
+                <StackPanel Grid.Row="3" Margin="30">
+                    <TextBlock Text="Have you finished checking this out?" Margin="0,20,0,10"/>
+                    <muxc:RatingControl Value="{x:Bind backlog.UserRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,20,0,10" HorizontalAlignment="Left"/>
+                    <Button x:Name="FinishButton" Content="Mark As Complete" Background="Green" Click="FinishButton_Click" />
+                </StackPanel>
+            </Grid>
         </ScrollViewer>
 
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" VerticalAlignment="Top" />

@@ -23,6 +23,7 @@ using ColorThiefDotNet;
 using System.Diagnostics;
 using Windows.Storage;
 using backlog.Utils;
+using Windows.UI.Xaml.Media.Animation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -64,6 +65,9 @@ namespace backlog.Views
             var fill = new SolidColorBrush(color);
             //mainGrid.Background = fill;
             base.OnNavigatedTo(e);
+            ConnectedAnimation imageAnimation =
+        ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
+            imageAnimation?.TryStart(img);
         }
 
         private async Task<Color> GetAverageColour(Uri uri)

@@ -19,7 +19,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 
-                <Image Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch"/>
+                <Image x:Name="coverImage" Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch"/>
                 <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Left">
                     <TextBlock
                         x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
@@ -66,7 +66,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
                             <TextBlock x:Name="EmptyListText" Text="Thank you for trying Backlog. Sign-in for cross-device syncing and data backups! This is pre-release software, so your local data might be deleted. " Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
+                            <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind backlogs}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" />
                         </StackPanel>
