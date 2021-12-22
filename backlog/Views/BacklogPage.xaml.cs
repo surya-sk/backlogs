@@ -130,10 +130,19 @@ namespace backlog.Views
 
         private async void DoneButton_Click(object sender, RoutedEventArgs e)
         {
-            ConnectedAnimation animation =
-            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backAnimation", img);
-            animation.Configuration = new DirectConnectedAnimationConfiguration();
-            Frame.Navigate(typeof(MainPage), backlogIndex, new SuppressNavigationTransitionInfo());
+            try
+            {
+                ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backAnimation", img);
+                animation.Configuration = new DirectConnectedAnimationConfiguration();
+            }
+            catch
+            {
+                // :)
+            }
+            finally
+            {
+                Frame.Navigate(typeof(MainPage), backlogIndex, new SuppressNavigationTransitionInfo());
+            }
             if (edited)
                 await SaveBacklog();
         }
