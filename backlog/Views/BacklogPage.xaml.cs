@@ -49,7 +49,7 @@ namespace backlog.Views
             edited = false;
         }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Guid selectedId = (Guid)e.Parameter;
             foreach (Backlog b in backlogs)
@@ -60,9 +60,9 @@ namespace backlog.Views
                     backlogIndex = backlogs.IndexOf(b);
                 }
             }
-            var gridColour = await GetAverageColour(new Uri(backlog.ImageURL));
-            var color = Windows.UI.Color.FromArgb(gridColour.A, gridColour.R, gridColour.G, gridColour.B);
-            var fill = new SolidColorBrush(color);
+            //var gridColour = await GetAverageColour(new Uri(backlog.ImageURL));
+            //var color = Windows.UI.Color.FromArgb(gridColour.A, gridColour.R, gridColour.G, gridColour.B);
+            //var fill = new SolidColorBrush(color);
             //mainGrid.Background = fill;
             base.OnNavigatedTo(e);
             ConnectedAnimation imageAnimation =
