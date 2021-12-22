@@ -182,7 +182,28 @@ namespace backlog.Views
         private void BacklogView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedBacklog = (Backlog)e.ClickedItem;
-            BacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+            PivotItem pivotItem = (PivotItem)mainPivot.SelectedItem;
+            switch(pivotItem.Header.ToString())
+            {
+                default:
+                    BacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break;
+                case "films":
+                    FilmsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break ;
+                case "tv":
+                    TVGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break;
+                case "books":
+                    BooksGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break;
+                case "games":
+                    GamesGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break;
+                case "albums":
+                    AlbumsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break;
+            }
             Frame.Navigate(typeof(BacklogPage), selectedBacklog.id);
         }
 

@@ -61,7 +61,7 @@
 
             <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
 
-            <Pivot x:Name="Pivot">
+            <Pivot x:Name="mainPivot">
                 <PivotItem Header="all">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
@@ -80,7 +80,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
                             <TextBlock x:Name="EmptyFilmsText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
+                            <controls:AdaptiveGridView x:Name="FilmsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind filmBacklogs}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
@@ -93,7 +93,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
                             <TextBlock x:Name="EmptyMusicText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
+                            <controls:AdaptiveGridView x:Name="AlbumsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind musicBacklogs}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
@@ -106,7 +106,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
                             <TextBlock x:Name="EmptyTVText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
+                            <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind tvBacklogs}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
@@ -119,7 +119,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
                             <TextBlock x:Name="EmptyGamesText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="200"
+                            <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind gameBacklogs}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
@@ -132,7 +132,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
                             <TextBlock x:Name="EmptyBooksText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
+                            <controls:AdaptiveGridView x:Name="BooksGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind bookBacklogs}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" 
                                                        animations:ReorderGridAnimation.Duration="200"/>
