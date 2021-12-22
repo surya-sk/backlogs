@@ -67,6 +67,10 @@
               "target": "Package",
               "version": "[7.0.0, )"
             },
+            "Microsoft.Toolkit.Uwp.UI.Animations": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
             "Microsoft.Toolkit.Uwp.UI.Controls": {
               "target": "Package",
               "version": "[4.0.0, )"
@@ -78,6 +82,10 @@
             "System.Memory": {
               "target": "Package",
               "version": "[4.5.4, )"
+            },
+            "Win2D.uwp": {
+              "target": "Package",
+              "version": "[1.26.0, )"
             },
             "ksemenenko.ColorThief": {
               "target": "Package",

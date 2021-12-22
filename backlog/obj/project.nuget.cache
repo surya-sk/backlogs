@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "zAy5pAS+tn81hQuT1izLnABLH9Uii6m02XD3xHe36D6B894BKcaCmD8t6BaNVCg/tR4U/huQ7qWdl6qxgKnUSg==",
+  "dgSpecHash": "XKcHgZMtvl4iEew6wYf19UAmqGIdunQr3gv5Dho+5adQ5DNEF0lDUMKKmzSAsLNJiF5W1881DEjs29UUc2sF5Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
   "expectedPackageFiles": [
@@ -223,7 +223,7 @@
     "C:\\Users\\surya\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "C:\\Users\\surya\\.nuget\\packages\\win2d.uwp\\1.21.0\\win2d.uwp.1.21.0.nupkg.sha512"
+    "C:\\Users\\surya\\.nuget\\packages\\win2d.uwp\\1.26.0\\win2d.uwp.1.26.0.nupkg.sha512"
   ],
   "logs": []
 }

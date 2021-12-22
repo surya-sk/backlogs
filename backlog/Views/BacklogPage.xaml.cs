@@ -24,6 +24,11 @@ using System.Diagnostics;
 using Windows.Storage;
 using backlog.Utils;
 using Windows.UI.Xaml.Media.Animation;
+using Microsoft.Graphics.Canvas.Effects;
+using Windows.UI.Composition;
+using Windows.UI.Xaml.Hosting;
+using Microsoft.Graphics.Canvas;
+using Windows.UI.Xaml.Media.Imaging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -59,10 +64,6 @@ namespace backlog.Views
                     backlogIndex = backlogs.IndexOf(b);
                 }
             }
-            //var gridColour = await GetAverageColour(new Uri(backlog.ImageURL));
-            //var color = Windows.UI.Color.FromArgb(gridColour.A, gridColour.R, gridColour.G, gridColour.B);
-            //var fill = new SolidColorBrush(color);
-            //mainGrid.Background = fill;
             base.OnNavigatedTo(e);
             ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
             imageAnimation?.TryStart(img);
