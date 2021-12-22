@@ -68,7 +68,7 @@
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind backlogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}" />
+                                                       ItemTemplate="{StaticResource BacklogTemplate}" Loaded="BacklogsGrid_Loaded" />
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>

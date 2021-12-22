@@ -33,6 +33,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media.Animation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -53,6 +54,7 @@ namespace backlog.Views
 
         bool isNetworkAvailable = false;
         string signedIn;
+        int backlogIndex = -1;
         public MainPage()
         {
             this.InitializeComponent();
@@ -78,6 +80,11 @@ namespace backlog.Views
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+            if(e.Parameter.ToString() != "")
+            {
+                backlogIndex = (int)e.Parameter;
+            }
             ProgBar.Visibility = Visibility.Visible;
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
             if (isNetworkAvailable && signedIn == "Yes")
@@ -94,7 +101,6 @@ namespace backlog.Views
                 BuildNotifactionQueue();
             }
             ProgBar.Visibility = Visibility.Collapsed;
-            base.OnNavigatedTo(e);
         }
 
         private async Task SetUserPhotoAsync()
@@ -363,6 +369,15 @@ namespace backlog.Views
         private void CompletedBacklogsButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(CompletedBacklogsPage));
+        }
+
+        private async void BacklogsGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(backlogIndex != -1)
+            {
+                ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
+                await BacklogsGrid.TryStartConnectedAnimationAsync(animation, backlogs[backlogIndex], "coverImage");
+            }
         }
     }
 }

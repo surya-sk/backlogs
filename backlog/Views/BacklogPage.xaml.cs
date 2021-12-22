@@ -44,7 +44,8 @@ namespace backlog.Views
         {
             this.InitializeComponent();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
-            backlogs = SaveData.GetInstance().GetBacklogs();
+            var _backlogs = SaveData.GetInstance().GetBacklogs().Where(b => b.IsComplete == false);
+            backlogs = new ObservableCollection<Backlog>(_backlogs);
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
             edited = false;
         }
@@ -65,8 +66,7 @@ namespace backlog.Views
             //var fill = new SolidColorBrush(color);
             //mainGrid.Background = fill;
             base.OnNavigatedTo(e);
-            ConnectedAnimation imageAnimation =
-        ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
+            ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
             imageAnimation?.TryStart(img);
         }
 
@@ -131,10 +131,12 @@ namespace backlog.Views
 
         private async void DoneButton_Click(object sender, RoutedEventArgs e)
         {
-            ProgBar.Visibility = Visibility.Visible;
+            ConnectedAnimation animation =
+            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backAnimation", img);
+            animation.Configuration = new DirectConnectedAnimationConfiguration();
+            Frame.Navigate(typeof(MainPage), backlogIndex, new SuppressNavigationTransitionInfo());
             if (edited)
                 await SaveBacklog();
-            Frame.Navigate(typeof(MainPage));
         }
 
         private async void FinishButton_Click(object sender, RoutedEventArgs e)
