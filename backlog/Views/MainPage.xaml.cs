@@ -44,6 +44,7 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private ObservableCollection<Backlog> allBacklogs { get; set; }
         private ObservableCollection<Backlog> backlogs { get; set; }
         private ObservableCollection<Backlog> filmBacklogs { get; set; }
         private ObservableCollection<Backlog> tvBacklogs { get; set; }
@@ -66,7 +67,8 @@ namespace backlog.Views
 
         private void InitBacklogs()
         {
-            var readBacklogs = SaveData.GetInstance().GetBacklogs().Where(b => b.IsComplete == false);
+            allBacklogs = SaveData.GetInstance().GetBacklogs();
+            var readBacklogs = new ObservableCollection<Backlog>(allBacklogs.Where(b => b.IsComplete == false));
             backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.TargetDate));
             filmBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
             tvBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
@@ -397,7 +399,7 @@ namespace backlog.Views
             if(backlogIndex != -1)
             {
                 ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
-                await BacklogsGrid.TryStartConnectedAnimationAsync(animation, backlogs[backlogIndex], "coverImage");
+                await BacklogsGrid.TryStartConnectedAnimationAsync(animation, allBacklogs[backlogIndex], "coverImage");
             }
         }
     }

@@ -43,8 +43,7 @@ namespace backlog.Views
         {
             this.InitializeComponent();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
-            var _backlogs = SaveData.GetInstance().GetBacklogs().Where(b => b.IsComplete == false);
-            backlogs = new ObservableCollection<Backlog>(_backlogs);
+            backlogs = SaveData.GetInstance().GetBacklogs();
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
             edited = false;
         }
