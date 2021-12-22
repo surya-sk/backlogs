@@ -102,7 +102,6 @@ namespace backlog.Views
         private async Task DeleteConfirmation_Click()
         {
             ProgBar.Visibility = Visibility.Visible;
-            await Logger.WriteLogAsync($"Deleting {backlog.Name}");
             backlogs.Remove(backlog);
             SaveData.GetInstance().SaveSettings(backlogs);
             await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");

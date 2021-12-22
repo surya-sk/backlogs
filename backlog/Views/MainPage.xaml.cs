@@ -91,7 +91,6 @@ namespace backlog.Views
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
             if (isNetworkAvailable && signedIn == "Yes")
             {
-                await Logger.WriteLogAsync("Signed in");
                 graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
                 await SetUserPhotoAsync();
                 TopSigninButton.Visibility = Visibility.Collapsed;

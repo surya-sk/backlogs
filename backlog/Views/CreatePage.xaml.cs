@@ -45,7 +45,6 @@ namespace backlog.Views
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            await Logger.WriteLogAsync("Navigated to Create page");
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
             if(isNetworkAvailable)
             {
@@ -156,14 +155,12 @@ namespace backlog.Views
                             return;
                         }
                     }
-                    await Logger.WriteLogAsync($"Creating backlog {title}");
                     await CreateBacklog(title);
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.StackTrace);
-                await Logger.WriteLogAsync($"EXCEPTION OCCURED: {ex.ToString()} \n\n Stack trace:\n{ex.StackTrace}");
             }
         }
 
@@ -210,7 +207,6 @@ namespace backlog.Views
             try
             {
                 string response = await RestClient.GetFilmResponse(title);
-                await Logger.WriteLogAsync("Response: " + response);
                 FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
                 FilmResponse filmResponse = filmResult.results[0];
                 string filmData = await RestClient.GetFilmDataResponse(filmResponse.id);
@@ -235,7 +231,6 @@ namespace backlog.Views
             }
             catch (Exception e)
             {
-                await Logger.WriteLogAsync(e.ToString());
                 return null;
             }
         }
@@ -246,7 +241,6 @@ namespace backlog.Views
             try
             {
                 string response = await RestClient.GetMusicResponse(title);
-                await Logger.WriteLogAsync("Response: " + response);
                 var musicData = JsonConvert.DeserializeObject<MusicData>(response);
                 Music music = new Music
                 {
@@ -275,7 +269,6 @@ namespace backlog.Views
             }
             catch (Exception e)
             {
-                await Logger.WriteLogAsync(e.ToString());
                 return null;
             }
         }
@@ -285,7 +278,6 @@ namespace backlog.Views
             try
             {
                 string response = await RestClient.GetBookResponse(title);
-                await Logger.WriteLogAsync("Response: " + response);
                 var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
                 Book book = new Book
                 {
@@ -316,7 +308,6 @@ namespace backlog.Views
             }
             catch (Exception e)
             {
-                await Logger.WriteLogAsync(e.ToString());
                 return null;
             }
         }
@@ -326,7 +317,6 @@ namespace backlog.Views
             try
             {
                 string response = await RestClient.GetSeriesResponse(title);
-                await Logger.WriteLogAsync("Response: " + response);
                 SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
                 SeriesResponse seriesResponse = seriesResult.results[0];
                 string seriesData = await RestClient.GetSeriesDataResponse(seriesResponse.id);
@@ -351,7 +341,6 @@ namespace backlog.Views
             }
             catch (Exception e)
             {
-                await Logger.WriteLogAsync(e.ToString());
                 return null;
             }
         }
@@ -361,7 +350,6 @@ namespace backlog.Views
             try
             {
                 string response = await RestClient.GetGameResponse(title);
-                await Logger.WriteLogAsync("Response: " + response);
                 var result = JsonConvert.DeserializeObject<GameResponse[]>(response);
                 string id = result[0].id.ToString();
                 string gameResponse = await RestClient.GetGameResult(id);
@@ -402,7 +390,6 @@ namespace backlog.Views
             }
             catch (Exception e)
             {
-                await Logger.WriteLogAsync(e.ToString());
                 return null;
             }
         }
