@@ -7,6 +7,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:data="using:backlog.Models"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -68,7 +69,8 @@
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind backlogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}" Loaded="BacklogsGrid_Loaded" />
+                                                       ItemTemplate="{StaticResource BacklogTemplate}" Loaded="BacklogsGrid_Loaded"
+                                                       animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
@@ -80,7 +82,8 @@
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind filmBacklogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}" />
+                                                       ItemTemplate="{StaticResource BacklogTemplate}"
+                                                       animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
@@ -92,7 +95,8 @@
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind musicBacklogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}" />
+                                                       ItemTemplate="{StaticResource BacklogTemplate}"
+                                                       animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
@@ -104,7 +108,8 @@
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind tvBacklogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}" />
+                                                       ItemTemplate="{StaticResource BacklogTemplate}"
+                                                       animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
@@ -116,7 +121,8 @@
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind gameBacklogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}" />
+                                                       ItemTemplate="{StaticResource BacklogTemplate}"
+                                                       animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
@@ -128,7 +134,8 @@
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind bookBacklogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}" />
+                                                       ItemTemplate="{StaticResource BacklogTemplate}" 
+                                                       animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
