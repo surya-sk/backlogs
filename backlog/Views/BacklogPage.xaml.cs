@@ -19,7 +19,6 @@ using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.Storage.Streams;
 using Windows.Graphics.Imaging;
-using ColorThiefDotNet;
 using System.Diagnostics;
 using Windows.Storage;
 using backlog.Utils;
@@ -67,19 +66,6 @@ namespace backlog.Views
             base.OnNavigatedTo(e);
             ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
             imageAnimation?.TryStart(img);
-        }
-
-        private async Task<Color> GetAverageColour(Uri uri)
-        {
-            RandomAccessStreamReference random = RandomAccessStreamReference.CreateFromUri(uri);
-            using (IRandomAccessStream stream = await random.OpenReadAsync())
-            {
-                //Create a decoder for the image
-                var decoder = await BitmapDecoder.CreateAsync(stream);
-                var colorThief = new ColorThief();
-                var color = await colorThief.GetColor(decoder);
-                return color.Color;
-            }
         }
 
         private async void Hyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
