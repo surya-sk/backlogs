@@ -34,7 +34,6 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class BacklogPage : Page
     {
-
         private Backlog backlog;
         private ObservableCollection<Backlog> backlogs;
         private int backlogIndex;

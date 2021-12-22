@@ -81,7 +81,7 @@ namespace backlog.Views
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if(e.Parameter.ToString() != "")
+            if(e.Parameter != null && e.Parameter.ToString() != "")
             {
                 backlogIndex = (int)e.Parameter;
             }
