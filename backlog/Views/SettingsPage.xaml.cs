@@ -131,11 +131,9 @@ namespace backlog.Views
         private async void SendLogsButton_Click(object sender, RoutedEventArgs e)
         {
             ProgRing.IsActive = true;
-            string logs = await Logger.ReadLogsAsync();
             EmailMessage emailMessage = new EmailMessage();
             emailMessage.To.Add(new EmailRecipient("surya.sk05@outlook.com"));
             emailMessage.Subject = "Logs from Backlogs";
-            emailMessage.Body = logs;
             await EmailManager.ShowComposeNewEmailAsync(emailMessage);
             ProgRing.IsActive = false;
         }

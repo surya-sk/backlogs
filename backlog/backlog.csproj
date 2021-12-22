@@ -135,7 +135,6 @@
     <Compile Include="Utils\BacklogType.cs" />
     <Compile Include="Utils\BooleanToVisibilityConverter.cs" />
     <Compile Include="Utils\Keys.cs" />
-    <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\MediaObjects.cs" />
     <Compile Include="Utils\RestClient.cs" />
     <Compile Include="Utils\ToastBackgroundTask.cs" />

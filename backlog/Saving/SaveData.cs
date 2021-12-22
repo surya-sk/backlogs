@@ -111,7 +111,6 @@ namespace backlog.Saving
         {
             IEnumerable<IAccount> accounts = await PublicClientApp.GetAccountsAsync().ConfigureAwait(false);
             IAccount firstAccount = accounts.FirstOrDefault();
-            await Utils.Logger.WriteLogAsync("Signing out user");
             try
             {
                 await PublicClientApp.RemoveAsync(firstAccount).ConfigureAwait(false);
@@ -119,9 +118,9 @@ namespace backlog.Saving
                 var file = await localFolder.GetFileAsync(fileName);
                 await file.DeleteAsync(StorageDeleteOption.Default);
             }
-            catch (Exception ex)
+            catch
             {
-                await Utils.Logger.WriteLogAsync($"Error signing out user: {ex.Message}");
+                // Log stuff here
             }
         }
 
@@ -136,7 +135,6 @@ namespace backlog.Saving
                 graphServiceClient = await SignInAndInitializeGraphServiceClient(scopes);
                 try
                 {
-                    await Utils.Logger.WriteLogAsync("Getting user photo");
                     var user = await graphServiceClient.Me.Request().GetAsync();
                     Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
                     ApplicationData.Current.LocalSettings.Values["UserName"] = user.GivenName;
@@ -157,9 +155,9 @@ namespace backlog.Saving
                         }
                     }
                 }
-                catch (Exception e)
+                catch
                 {
-                    await Utils.Logger.WriteLogAsync($"Unable to get user info\n{e.ToString()}");
+                    // TODO: Log exception here
                 }
             }
             return graphServiceClient;
