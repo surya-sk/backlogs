@@ -55,7 +55,7 @@
                     </Grid.Background>
                     <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <Border.Background>
-                            <media:BackdropBlurBrush Amount="20.0" />
+                            <media:BackdropBlurBrush Amount="15" />
                         </Border.Background>
                     </Border>
                     
