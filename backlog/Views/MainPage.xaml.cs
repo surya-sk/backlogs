@@ -57,6 +57,7 @@ namespace backlog.Views
         string signedIn;
         int backlogIndex = -1;
         bool sync = false;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -66,6 +67,9 @@ namespace backlog.Views
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
         }
 
+        /// <summary>
+        /// Initalize backlogs
+        /// </summary>
         private void InitBacklogs()
         {
             allBacklogs = SaveData.GetInstance().GetBacklogs();
@@ -92,6 +96,7 @@ namespace backlog.Views
                 }
                 else
                 {
+                    // for backward connected animation
                     backlogIndex = int.Parse(e.Parameter.ToString());
                 }
             }
@@ -115,6 +120,10 @@ namespace backlog.Views
             ProgBar.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Set the user photo in the command bar
+        /// </summary>
+        /// <returns></returns>
         private async Task SetUserPhotoAsync()
         {
             string userName = ApplicationData.Current.LocalSettings.Values["UserName"]?.ToString();
@@ -132,6 +141,9 @@ namespace backlog.Views
             }
         }
 
+        /// <summary>
+        /// Populate the backlogs list with up-to-date backlogs
+        /// </summary>
         private void PopulateBacklogs()
         {
             var readBacklogs = SaveData.GetInstance().GetBacklogs().Where(b => b.IsComplete == false);
@@ -191,10 +203,16 @@ namespace backlog.Views
             }
         }
 
+        /// <summary>
+        /// Opens the Backlog details page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BacklogView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedBacklog = (Backlog)e.ClickedItem;
             PivotItem pivotItem = (PivotItem)mainPivot.SelectedItem;
+            // Prepare connected animation based on which section the user is on
             switch(pivotItem.Header.ToString())
             {
                 default:
@@ -216,9 +234,14 @@ namespace backlog.Views
                     AlbumsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
                     break;
             }
-            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id);
+            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, new SuppressNavigationTransitionInfo());
         }
 
+        /// <summary>
+        /// Signs the user in if connected to the internet
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void SigninButton_Click(object sender, RoutedEventArgs e)
         {
             ProgBar.Visibility = Visibility.Visible;
@@ -245,23 +268,40 @@ namespace backlog.Views
             }
         }
 
+        /// <summary>
+        /// Opens the Create page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(CreatePage));
         }
 
+        /// <summary>
+        /// Opens the Setting page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(SettingsPage));
         }
 
-
+        /// <summary>
+        /// Launches the Store rating page for the app
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void RateButton_Click(object sender, RoutedEventArgs e)
         {
             var ratingUri = new Uri(@"ms-windows-store://review/?ProductId=9N2H8CM2KWVZ");
             await Windows.System.Launcher.LaunchUriAsync(ratingUri);
         }
 
+        /// <summary>
+        /// Build the notif queue based on whether backlogs have notif time
+        /// </summary>
         private void BuildNotifactionQueue()
         {
             foreach (var b in new ObservableCollection<Backlog>(backlogs.OrderByDescending(b => b.TargetDate)))
@@ -276,7 +316,6 @@ namespace backlog.Views
                         int result = DateTimeOffset.Compare(date, DateTimeOffset.Now);
                         if (result > 0)
                         {
-                            Debug.WriteLine(result);
                             var builder = new ToastContentBuilder()
                             .AddText($"Hey there!", hintMaxLines: 1)
                             .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
@@ -394,6 +433,11 @@ namespace backlog.Views
             await Windows.System.Launcher.LaunchUriAsync(ratingUri);
         }
 
+        /// <summary>
+        /// Sync backlogs
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SyncButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainPage), "sync");
@@ -404,11 +448,15 @@ namespace backlog.Views
             Frame.Navigate(typeof(CompletedBacklogsPage));
         }
 
+        /// <summary>
+        /// Finish connected animation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void BacklogsGrid_Loaded(object sender, RoutedEventArgs e)
         {
             if(backlogIndex != -1)
             {
-                Debug.WriteLine(backlogIndex);
                 ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
                 await BacklogsGrid.TryStartConnectedAnimationAsync(animation, allBacklogs[backlogIndex], "coverImage");
             }

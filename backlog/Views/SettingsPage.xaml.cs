@@ -89,6 +89,10 @@ namespace backlog.Views
             base.OnNavigatedTo(e);
         }
 
+        /// <summary>
+        /// Show the user photo
+        /// </summary>
+        /// <returns></returns>
         private async Task SetUserPhotoAsync()
         {
             string userName = ApplicationData.Current.LocalSettings.Values["UserName"]?.ToString();
@@ -104,6 +108,11 @@ namespace backlog.Views
             }
         }
 
+        /// <summary>
+        /// Go back if possible
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void View_BackRequested(object sender, BackRequestedEventArgs e)
         {
             if (Frame.CanGoBack)
@@ -114,7 +123,11 @@ namespace backlog.Views
             e.Handled = true;
         }
 
-        // Change app theme on the fly and save it 
+        /// <summary>
+        /// Change app theme on the fly and save it 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ThemeInput_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedTheme = e.AddedItems[0].ToString();
@@ -166,6 +179,10 @@ namespace backlog.Views
             ContentDialogResult result = await contentDialog.ShowAsync();
         }
 
+        /// <summary>
+        /// Open the user's default email client
+        /// </summary>
+        /// <returns></returns>
         private async Task SendEmail()
         {
             ProgRing.IsActive = true;
@@ -182,6 +199,11 @@ namespace backlog.Views
             Frame.Navigate(typeof(MainPage));
         }
 
+        /// <summary>
+        /// Signs the user out
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void SignOutButton_Click(object sender, RoutedEventArgs e)
         {
             ContentDialog contentDialog = new ContentDialog

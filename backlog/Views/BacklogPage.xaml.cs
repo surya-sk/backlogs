@@ -95,7 +95,7 @@ namespace backlog.Views
         }
 
         /// <summary>
-        /// Delete a concept after confirmation
+        /// Delete a backlog after confirmation
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -132,6 +132,11 @@ namespace backlog.Views
                 await SaveBacklog();
         }
 
+        /// <summary>
+        /// Mark backlogs as completed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void FinishButton_Click(object sender, RoutedEventArgs e)
         {
             backlog.IsComplete = true;
@@ -139,6 +144,10 @@ namespace backlog.Views
             Frame.Navigate(typeof(MainPage));
         }
 
+        /// <summary>
+        /// Write backlog to the json file locally and on OneDrive if signed-in
+        /// </summary>
+        /// <returns></returns>
         private async Task SaveBacklog()
         {
             backlogs[backlogIndex] = backlog;

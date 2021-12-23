@@ -72,6 +72,11 @@ namespace backlog.Views
             base.OnNavigatedTo(e);
         }
 
+        /// <summary>
+        /// Show hint text according to the selected type
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TypeComoBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string value = TypeComoBox.SelectedValue.ToString();
@@ -95,6 +100,11 @@ namespace backlog.Views
             }
         }
 
+        /// <summary>
+        /// Validate user input and proceed to create the backlog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
            try
@@ -164,6 +174,11 @@ namespace backlog.Views
             }
         }
 
+        /// <summary>
+        /// Search for the backlog metadata and create it
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
         private async Task CreateBacklog(string title)
         {
             ProgBar.Visibility = Visibility.Visible;
