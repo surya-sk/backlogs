@@ -56,6 +56,7 @@ namespace backlog.Views
         bool isNetworkAvailable = false;
         string signedIn;
         int backlogIndex = -1;
+        bool sync = false;
         public MainPage()
         {
             this.InitializeComponent();
@@ -85,7 +86,14 @@ namespace backlog.Views
             base.OnNavigatedTo(e);
             if(e.Parameter != null && e.Parameter.ToString() != "")
             {
-                backlogIndex = (int)e.Parameter;
+                if(e.Parameter.ToString() == "sync")
+                {
+                    sync = true;
+                }
+                else
+                {
+                    backlogIndex = int.Parse(e.Parameter.ToString());
+                }
             }
             ProgBar.Visibility = Visibility.Visible;
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
@@ -97,8 +105,11 @@ namespace backlog.Views
                 BottomSigninButton.Visibility = Visibility.Collapsed;
                 TopProfileButton.Visibility = Visibility.Visible;
                 BottomProfileButton.Visibility = Visibility.Visible;
-                await SaveData.GetInstance().ReadDataAsync(true);
-                PopulateBacklogs();
+                if(sync)
+                {
+                    await SaveData.GetInstance().ReadDataAsync(true);
+                    PopulateBacklogs();
+                }
                 BuildNotifactionQueue();
             }
             ProgBar.Visibility = Visibility.Collapsed;
@@ -385,7 +396,7 @@ namespace backlog.Views
 
         private void SyncButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage));
+            Frame.Navigate(typeof(MainPage), "sync");
         }
 
         private void CompletedBacklogsButton_Click(object sender, RoutedEventArgs e)
@@ -397,6 +408,7 @@ namespace backlog.Views
         {
             if(backlogIndex != -1)
             {
+                Debug.WriteLine(backlogIndex);
                 ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
                 await BacklogsGrid.TryStartConnectedAnimationAsync(animation, allBacklogs[backlogIndex], "coverImage");
             }

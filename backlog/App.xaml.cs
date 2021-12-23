@@ -78,7 +78,7 @@ namespace backlog
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(MainPage), "sync");
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
@@ -142,7 +142,7 @@ namespace backlog
             Frame rootFrame = GetRootFrame();
             ThemeHelper.Initialize();
 
-            rootFrame.Navigate(typeof(MainPage));
+            rootFrame.Navigate(typeof(MainPage), "sync");
         }
 
         /// <summary>
