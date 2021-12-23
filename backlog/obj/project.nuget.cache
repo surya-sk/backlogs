@@ -1,13 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "vZxRkGYPTi7zr0UmjKZQJ/iXcffebrgWDV5kkhZpnJUOGFLnCV7JyLEUzAk/a8ahODhBP7fP4HW4Z7BCfqVJHQ==",
+  "dgSpecHash": "UQULJlO19QZi1cJC/ETbwxlqsea+1Y7sCVIjVuLBwNhp2YR4R7R5VDmhB9czrMM5s7hz6obh2prTP4WHeCC2mw==",
   "success": true,
   "projectFilePath": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\surya\\.nuget\\packages\\colorcode.core\\2.0.5\\colorcode.core.2.0.5.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\colorcode.uwp\\2.0.5\\colorcode.uwp.2.0.5.nupkg.sha512",
-    "C:\\Users\\surya\\.nuget\\packages\\ksemenenko.colorthief\\1.1.1.4\\ksemenenko.colorthief.1.1.1.4.nupkg.sha512",
-    "C:\\Users\\surya\\.nuget\\packages\\metrolog\\1.0.1\\metrolog.1.0.1.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.7\\microsoft.aspnet.webapi.client.5.2.7.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.bcl\\1.1.9\\microsoft.bcl.1.1.9.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.bcl.build\\1.0.14\\microsoft.bcl.build.1.0.14.nupkg.sha512",
@@ -225,7 +223,7 @@
     "C:\\Users\\surya\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "C:\\Users\\surya\\.nuget\\packages\\win2d.uwp\\1.26.0\\win2d.uwp.1.26.0.nupkg.sha512"
+    "C:\\Users\\surya\\.nuget\\packages\\win2d.uwp\\1.21.0\\win2d.uwp.1.21.0.nupkg.sha512"
   ],
   "logs": []
 }

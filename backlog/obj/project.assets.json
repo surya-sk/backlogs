@@ -27,26 +27,6 @@
           "lib/uap10.0/ColorCode.UWP.dll": {}
         }
       },
-      "ksemenenko.ColorThief/1.1.1.4": {
-        "type": "package",
-        "compile": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        },
-        "runtime": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        }
-      },
-      "MetroLog/1.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
-        },
-        "runtime": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
-        }
-      },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
         "type": "package",
         "dependencies": {
@@ -2820,7 +2800,7 @@
           }
         }
       },
-      "Win2D.uwp/1.26.0": {
+      "Win2D.uwp/1.21.0": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
@@ -2828,17 +2808,10 @@
         "runtime": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
         },
-        "build": {
-          "build/win10/Win2D.uwp.targets": {}
-        },
         "runtimeTargets": {
           "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll": {
             "assetType": "native",
             "rid": "win10-arm"
-          },
-          "runtimes/win10-arm64/native/Microsoft.Graphics.Canvas.dll": {
-            "assetType": "native",
-            "rid": "win10-arm64"
           },
           "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll": {
             "assetType": "native",
@@ -2875,26 +2848,6 @@
         },
         "runtime": {
           "lib/uap10.0/ColorCode.UWP.dll": {}
-        }
-      },
-      "ksemenenko.ColorThief/1.1.1.4": {
-        "type": "package",
-        "compile": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        },
-        "runtime": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        }
-      },
-      "MetroLog/1.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
-        },
-        "runtime": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
@@ -5651,7 +5604,7 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Win2D.uwp/1.26.0": {
+      "Win2D.uwp/1.21.0": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
@@ -5661,9 +5614,6 @@
         },
         "native": {
           "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll": {}
-        },
-        "build": {
-          "build/win10/Win2D.uwp.targets": {}
         }
       }
     },
@@ -5691,26 +5641,6 @@
         },
         "runtime": {
           "lib/uap10.0/ColorCode.UWP.dll": {}
-        }
-      },
-      "ksemenenko.ColorThief/1.1.1.4": {
-        "type": "package",
-        "compile": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        },
-        "runtime": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        }
-      },
-      "MetroLog/1.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
-        },
-        "runtime": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
@@ -8503,7 +8433,7 @@
           "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Win2D.uwp/1.26.0": {
+      "Win2D.uwp/1.21.0": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
@@ -8513,9 +8443,6 @@
         },
         "native": {
           "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll": {}
-        },
-        "build": {
-          "build/win10/Win2D.uwp.targets": {}
         }
       }
     },
@@ -8543,26 +8470,6 @@
         },
         "runtime": {
           "lib/uap10.0/ColorCode.UWP.dll": {}
-        }
-      },
-      "ksemenenko.ColorThief/1.1.1.4": {
-        "type": "package",
-        "compile": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        },
-        "runtime": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        }
-      },
-      "MetroLog/1.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
-        },
-        "runtime": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
@@ -11337,19 +11244,13 @@
           "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Win2D.uwp/1.26.0": {
+      "Win2D.uwp/1.21.0": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
         },
         "runtime": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
-        },
-        "native": {
-          "runtimes/win10-arm64/native/Microsoft.Graphics.Canvas.dll": {}
-        },
-        "build": {
-          "build/win10/Win2D.uwp.targets": {}
         }
       }
     },
@@ -11377,26 +11278,6 @@
         },
         "runtime": {
           "lib/uap10.0/ColorCode.UWP.dll": {}
-        }
-      },
-      "ksemenenko.ColorThief/1.1.1.4": {
-        "type": "package",
-        "compile": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        },
-        "runtime": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        }
-      },
-      "MetroLog/1.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
-        },
-        "runtime": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
@@ -14162,7 +14043,7 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Win2D.uwp/1.26.0": {
+      "Win2D.uwp/1.21.0": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
@@ -14172,9 +14053,6 @@
         },
         "native": {
           "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll": {}
-        },
-        "build": {
-          "build/win10/Win2D.uwp.targets": {}
         }
       }
     },
@@ -14202,26 +14080,6 @@
         },
         "runtime": {
           "lib/uap10.0/ColorCode.UWP.dll": {}
-        }
-      },
-      "ksemenenko.ColorThief/1.1.1.4": {
-        "type": "package",
-        "compile": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        },
-        "runtime": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        }
-      },
-      "MetroLog/1.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
-        },
-        "runtime": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
@@ -17023,7 +16881,7 @@
           "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Win2D.uwp/1.26.0": {
+      "Win2D.uwp/1.21.0": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
@@ -17033,9 +16891,6 @@
         },
         "native": {
           "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll": {}
-        },
-        "build": {
-          "build/win10/Win2D.uwp.targets": {}
         }
       }
     },
@@ -17063,26 +16918,6 @@
         },
         "runtime": {
           "lib/uap10.0/ColorCode.UWP.dll": {}
-        }
-      },
-      "ksemenenko.ColorThief/1.1.1.4": {
-        "type": "package",
-        "compile": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        },
-        "runtime": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        }
-      },
-      "MetroLog/1.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
-        },
-        "runtime": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
@@ -19848,7 +19683,7 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Win2D.uwp/1.26.0": {
+      "Win2D.uwp/1.21.0": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
@@ -19858,9 +19693,6 @@
         },
         "native": {
           "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll": {}
-        },
-        "build": {
-          "build/win10/Win2D.uwp.targets": {}
         }
       }
     },
@@ -19888,26 +19720,6 @@
         },
         "runtime": {
           "lib/uap10.0/ColorCode.UWP.dll": {}
-        }
-      },
-      "ksemenenko.ColorThief/1.1.1.4": {
-        "type": "package",
-        "compile": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        },
-        "runtime": {
-          "lib/UAP10/ColorThief.UWP.dll": {}
-        }
-      },
-      "MetroLog/1.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
-        },
-        "runtime": {
-          "lib/win81/MetroLog.WinRT.winmd": {},
-          "lib/win81/MetroLog.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.7": {
@@ -22709,7 +22521,7 @@
           "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Win2D.uwp/1.26.0": {
+      "Win2D.uwp/1.21.0": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {}
@@ -22719,9 +22531,6 @@
         },
         "native": {
           "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll": {}
-        },
-        "build": {
-          "build/win10/Win2D.uwp.targets": {}
         }
       }
     }
@@ -22752,71 +22561,6 @@
         "lib/uap10.0/ColorCode.UWP.dll",
         "lib/uap10.0/ColorCode.UWP.pdb",
         "lib/uap10.0/ColorCode.UWP.pri"
-      ]
-    },
-    "ksemenenko.ColorThief/1.1.1.4": {
-      "sha512": "970sWLIXgBOldyxatU2zGK3+nSLZER0xFW9uSjUkgNR2pvTqyjJp8yEFFKEnf1Tp7DzhmMAfFs9j/UvdM5pKcw==",
-      "type": "package",
-      "path": "ksemenenko.colorthief/1.1.1.4",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "ksemenenko.colorthief.1.1.1.4.nupkg.sha512",
-        "ksemenenko.colorthief.nuspec",
-        "lib/MonoAndroid10/ColorThief.Android.dll",
-        "lib/MonoAndroid10/ColorThief.Android.pdb",
-        "lib/MonoAndroid10/ColorThief.Android.xml",
-        "lib/UAP10/ColorThief.UWP.dll",
-        "lib/UAP10/ColorThief.UWP.pdb",
-        "lib/UAP10/ColorThief.UWP.xml",
-        "lib/Xamarin.iOS10/ColorThief.iOS.dll",
-        "lib/Xamarin.iOS10/ColorThief.iOS.pdb",
-        "lib/Xamarin.iOS10/ColorThief.iOS.xml",
-        "lib/net45/ColorThief.Desktop.v45.dll",
-        "lib/net45/ColorThief.Desktop.v45.pdb",
-        "lib/net45/ColorThief.Desktop.v45.xml",
-        "lib/net46/ColorThief.Desktop.v46.dll",
-        "lib/net46/ColorThief.Desktop.v46.pdb",
-        "lib/net46/ColorThief.Desktop.v46.xml",
-        "lib/netstandard2.0/ColorThief.Netstandard.v20.dll",
-        "lib/netstandard2.0/ColorThief.Netstandard.v20.pdb"
-      ]
-    },
-    "MetroLog/1.0.1": {
-      "sha512": "9+i0lIT+OAf9FQOrnSbyxG5RbBtRUthIQAn73c9Y1z0v+2dPCKn9oTPTt8njHPMzy5lRoT9MDQRkYSqJ7aVqgA==",
-      "type": "package",
-      "path": "metrolog/1.0.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "content/win8-javascript/MetroLog ReadMe.txt",
-        "content/win8-javascript/typings/MetroLog.WinRT.d.ts",
-        "content/win8-javascript/typings/winrt.d.ts",
-        "lib/MonoAndroid/MetroLog.dll",
-        "lib/MonoAndroid/MetroLog.pdb",
-        "lib/MonoTouch/MetroLog.dll",
-        "lib/MonoTouch/MetroLog.pdb",
-        "lib/Xamarin.iOS/MetroLog.dll",
-        "lib/Xamarin.iOS/MetroLog.pdb",
-        "lib/dotnet/MetroLog.dll",
-        "lib/dotnet/MetroLog.pdb",
-        "lib/net45/MetroLog.dll",
-        "lib/net45/MetroLog.pdb",
-        "lib/portable-net45+wp8+win8+wpa81/MetroLog.dll",
-        "lib/portable-net45+wp8+win8+wpa81/MetroLog.pdb",
-        "lib/win81/MetroLog.WinRT.pdb",
-        "lib/win81/MetroLog.WinRT.pri",
-        "lib/win81/MetroLog.WinRT.winmd",
-        "lib/win81/MetroLog.dll",
-        "lib/win81/MetroLog.pdb",
-        "lib/win81/MetroLog.pri",
-        "lib/wp8/MetroLog.dll",
-        "lib/wp8/MetroLog.pdb",
-        "lib/wpa81/MetroLog.dll",
-        "lib/wpa81/MetroLog.pdb",
-        "lib/wpa81/MetroLog.pri",
-        "metrolog.1.0.1.nupkg.sha512",
-        "metrolog.nuspec"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.7": {
@@ -34128,39 +33872,29 @@
         "system.xml.xmlserializer.nuspec"
       ]
     },
-    "Win2D.uwp/1.26.0": {
-      "sha512": "smA/NJWM3ruhWeKPHmCyW8PX8w1ckD9SN7qWEOePe/iuFKvLyC8govCHq/F40hQCRs8zBqHWaWBpekTnQuXx6w==",
+    "Win2D.uwp/1.21.0": {
+      "sha512": "4ddgs6Mt4cDVOPcKE+gV02Rn8G9nhp8C9S94A/msxULD2ysq6Q/z3CmeyATJhJNVfhumWUaXzx0B3v39vB5A4Q==",
       "type": "package",
-      "path": "win2d.uwp/1.26.0",
+      "path": "win2d.uwp/1.21.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Win2d.githash.txt",
-        "build/Win2D.common.targets",
         "build/native/Win2D.uwp.targets",
-        "build/net45/Win2D.uwp.targets",
-        "build/netcoreapp3.0/Win2D.uwp.targets",
-        "build/win10/Win2D.uwp.targets",
         "include/Microsoft.Graphics.Canvas.h",
         "include/Microsoft.Graphics.Canvas.native.h",
-        "lib/net45/Microsoft.Graphics.Canvas.winmd",
-        "lib/net45/Microsoft.Graphics.Canvas.xml",
-        "lib/netcoreapp3.0/Microsoft.Graphics.Canvas.winmd",
-        "lib/netcoreapp3.0/Microsoft.Graphics.Canvas.xml",
         "lib/uap10.0/Microsoft.Graphics.Canvas.winmd",
         "lib/uap10.0/Microsoft.Graphics.Canvas.xml",
         "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll",
-        "runtimes/win10-arm64/native/Microsoft.Graphics.Canvas.dll",
         "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll",
         "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll",
-        "win2d.uwp.1.26.0.nupkg.sha512",
+        "win2d.uwp.1.21.0.nupkg.sha512",
         "win2d.uwp.nuspec"
       ]
     }
   },
   "projectFileDependencyGroups": {
     "UAP,Version=v10.0.15063": [
-      "MetroLog >= 1.0.1",
       "Microsoft.AspNet.WebApi.Client >= 5.2.7",
       "Microsoft.Graph >= 1.15.0",
       "Microsoft.Identity.Client >= 4.36.1",
@@ -34171,9 +33905,7 @@
       "Microsoft.Toolkit.Uwp.UI.Controls >= 4.0.0",
       "Microsoft.UI.Xaml >= 2.4.3",
       "NLog >= 4.7.13",
-      "System.Memory >= 4.5.4",
-      "Win2D.uwp >= 1.26.0",
-      "ksemenenko.ColorThief >= 1.1.1.4"
+      "System.Memory >= 4.5.4"
     ]
   },
   "packageFolders": {
@@ -34216,10 +33948,6 @@
     "frameworks": {
       "uap10.0.15063": {
         "dependencies": {
-          "MetroLog": {
-            "target": "Package",
-            "version": "[1.0.1, )"
-          },
           "Microsoft.AspNet.WebApi.Client": {
             "target": "Package",
             "version": "[5.2.7, )"
@@ -34263,14 +33991,6 @@
           "System.Memory": {
             "target": "Package",
             "version": "[4.5.4, )"
-          },
-          "Win2D.uwp": {
-            "target": "Package",
-            "version": "[1.26.0, )"
-          },
-          "ksemenenko.ColorThief": {
-            "target": "Package",
-            "version": "[1.1.1.4, )"
           }
         }
       }

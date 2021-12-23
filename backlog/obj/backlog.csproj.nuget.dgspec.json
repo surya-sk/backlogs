@@ -39,10 +39,6 @@
       "frameworks": {
         "uap10.0.15063": {
           "dependencies": {
-            "MetroLog": {
-              "target": "Package",
-              "version": "[1.0.1, )"
-            },
             "Microsoft.AspNet.WebApi.Client": {
               "target": "Package",
               "version": "[5.2.7, )"
@@ -86,14 +82,6 @@
             "System.Memory": {
               "target": "Package",
               "version": "[4.5.4, )"
-            },
-            "Win2D.uwp": {
-              "target": "Package",
-              "version": "[1.26.0, )"
-            },
-            "ksemenenko.ColorThief": {
-              "target": "Package",
-              "version": "[1.1.1.4, )"
             }
           }
         }
