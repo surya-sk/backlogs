@@ -99,7 +99,7 @@
                                    Margin="0,10,0,10" TextWrapping="Wrap" FontSize="15" />
                             <StackPanel Orientation="Horizontal">
                                 <Button x:Name="SendLogsButton" Content="Send logs" Click="SendLogsButton_Click" Margin="0,10,0,10" />
-                                <Button x:Name="OpenLogsButton" Content="Open logs folder" Click="OpenLogsButton_Click" Margin="0,10,0,10" />
+                                <Button x:Name="OpenLogsButton" Content="Open logs folder" Click="OpenLogsButton_Click" Margin="10,10,0,10" />
                             </StackPanel>
                             <TextBlock Text="Have feedback? Want to report bugs or request a new feature? That's brilliant!" Margin="0,10,0,10" TextWrapping="Wrap" />
                             <TextBlock TextWrapping="Wrap" Margin="0,10,0,10" >
