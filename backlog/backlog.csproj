@@ -248,9 +248,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MetroLog">
-      <Version>1.0.1</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client">
       <Version>5.2.7</Version>
     </PackageReference>
@@ -283,9 +280,6 @@
     </PackageReference>
     <PackageReference Include="System.Memory">
       <Version>4.5.4</Version>
-    </PackageReference>
-    <PackageReference Include="Win2D.uwp">
-      <Version>1.26.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

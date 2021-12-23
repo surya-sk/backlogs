@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 using backlog.Saving;
+using backlog.Logging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -149,6 +150,11 @@ namespace backlog.Views
             emailMessage.Subject = "Logs from Backlogs";
             await EmailManager.ShowComposeNewEmailAsync(emailMessage);
             ProgRing.IsActive = false;
+        }
+
+        private async void OpenLogsButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Logger.OpenLogFolderAsync();
         }
 
         private void TileToggle_Toggled(object sender, RoutedEventArgs e)

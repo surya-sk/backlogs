@@ -70,11 +70,6 @@ namespace backlog.Logging
             return sizes.Sum(l => (long)l) / 1024;
         }
 
-        private static string GetExportedLogsPath()
-        {
-            return Path.Combine(ApplicationData.Current.LocalFolder.Path, "BacklogsLogs.zip");
-        }
-
         public static void Trace(string message)
         {
               NLOGGER.Trace(message);
@@ -135,54 +130,6 @@ namespace backlog.Logging
         {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
             return Windows.System.Launcher.LaunchFolderAsync(folder);
-        }
-
-        /// <summary>
-        /// Exports all logs as a .zip file to the selected path.
-        /// </summary>
-        public static async Task ExportLogsAsync()
-        {
-            // Get the target path/file:
-            StorageFile targetFile = await GetTargetPathAsync();
-            if (targetFile is null)
-            {
-                Info("Exporting logs canceled.");
-                return;
-            }
-            Info("Started exporting logs to: " + targetFile.Path);
-
-            // Delete existing log export zip files:
-            IStorageItem zipItem = await ApplicationData.Current.LocalFolder.TryGetItemAsync("BacklogsLogs.zip");
-            if (zipItem != null)
-            {
-                await zipItem.DeleteAsync(StorageDeleteOption.PermanentDelete);
-            }
-
-            StorageFolder logsFolder = await GetLogFolderAsync();
-            ZipFile.CreateFromDirectory(logsFolder.Path, GetExportedLogsPath(), CompressionLevel.Fastest, true);
-
-            try
-            {
-                zipItem = await ApplicationData.Current.LocalFolder.TryGetItemAsync("BacklogLogs.zip");
-                if (zipItem is null)
-                {
-                    Error("Failed to export logs - zipItem is null");
-                }
-                else if (zipItem is StorageFile zipFile)
-                {
-                    await zipFile.MoveAndReplaceAsync(targetFile);
-                    Info("Exported logs successfully to:" + targetFile.Path);
-                }
-                else
-                {
-                    Error("Failed to export logs - zipItem is no StorageFile");
-                }
-
-            }
-            catch (Exception e)
-            {
-                Error("Error during exporting logs", e);
-            }
         }
     }
 }
