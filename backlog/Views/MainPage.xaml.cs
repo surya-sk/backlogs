@@ -34,6 +34,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Animation;
+using backlog.Logging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -72,6 +73,7 @@ namespace backlog.Views
         /// </summary>
         private void InitBacklogs()
         {
+            Logger.Info("Initializing backlogs....");
             allBacklogs = SaveData.GetInstance().GetBacklogs();
             var readBacklogs = new ObservableCollection<Backlog>(allBacklogs.Where(b => b.IsComplete == false));
             backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.TargetDate));
@@ -104,6 +106,7 @@ namespace backlog.Views
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
             if (isNetworkAvailable && signedIn == "Yes")
             {
+                Logger.Info("Signing in user....");
                 graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
                 await SetUserPhotoAsync();
                 TopSigninButton.Visibility = Visibility.Collapsed;
@@ -112,6 +115,7 @@ namespace backlog.Views
                 BottomProfileButton.Visibility = Visibility.Visible;
                 if(sync)
                 {
+                    Logger.Info("Syncing backlogs....");
                     await SaveData.GetInstance().ReadDataAsync(true);
                     PopulateBacklogs();
                 }
@@ -126,6 +130,7 @@ namespace backlog.Views
         /// <returns></returns>
         private async Task SetUserPhotoAsync()
         {
+            Logger.Info("Setting user photo....");
             string userName = ApplicationData.Current.LocalSettings.Values["UserName"]?.ToString();
             TopProfileButton.Label = userName;
             BottomProfileButton.Label = userName;
@@ -146,6 +151,7 @@ namespace backlog.Views
         /// </summary>
         private void PopulateBacklogs()
         {
+            Logger.Info("Populating backlogs.....");
             var readBacklogs = SaveData.GetInstance().GetBacklogs().Where(b => b.IsComplete == false);
             var _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.TargetDate)); // sort by last created
             var _filmBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Film.ToString()));

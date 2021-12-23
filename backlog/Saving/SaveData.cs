@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
+using backlog.Logging;
 
 namespace backlog.Saving
 {
@@ -76,10 +77,13 @@ namespace backlog.Saving
 
             try
             {
+                Logging.Logger.Info("Getting auth result.....");
                 authResult = await PublicClientApp.AcquireTokenSilent(scopes, firstAccount).ExecuteAsync();
             }
             catch (MsalUiRequiredException ex)
             {
+                Logging.Logger.Warn("Could not acquite token silently");
+                Logging.Logger.Warn(ex.Message);
                 // A MsalUiRequiredException happened on AcquireTokenSilentAsync. This indicates you need to call AcquireTokenAsync to acquire a token
                 Debug.WriteLine($"MsalUiRequiredException: {ex.Message}");
                 authResult = await PublicClientApp.AcquireTokenInteractive(scopes).ExecuteAsync().ConfigureAwait(false);
@@ -113,14 +117,15 @@ namespace backlog.Saving
             IAccount firstAccount = accounts.FirstOrDefault();
             try
             {
+                Logging.Logger.Info("Signing out user...");
                 await PublicClientApp.RemoveAsync(firstAccount).ConfigureAwait(false);
                 ApplicationData.Current.LocalSettings.Values["SignedIn"] = "No";
                 var file = await localFolder.GetFileAsync(fileName);
                 await file.DeleteAsync(StorageDeleteOption.Default);
             }
-            catch
+            catch(Exception ex)
             {
-                // Log stuff here
+                Logging.Logger.Error("Failed to sign out user.", ex);
             }
         }
 
@@ -135,6 +140,7 @@ namespace backlog.Saving
                 graphServiceClient = await SignInAndInitializeGraphServiceClient(scopes);
                 try
                 {
+                    Logging.Logger.Info("Fetching graph service client.....");
                     var user = await graphServiceClient.Me.Request().GetAsync();
                     Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
                     ApplicationData.Current.LocalSettings.Values["UserName"] = user.GivenName;
@@ -155,9 +161,9 @@ namespace backlog.Saving
                         }
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
-                    // TODO: Log exception here
+                    Logging.Logger.Error("Failed to sign-in user or get user photo and name", ex);
                 }
             }
             return graphServiceClient;
@@ -251,7 +257,7 @@ namespace backlog.Saving
             }
             catch(FileNotFoundException ex)
             {
-                // : )
+                Logging.Logger.Error("Error deleting local backlogs", ex);
             }
         }
 

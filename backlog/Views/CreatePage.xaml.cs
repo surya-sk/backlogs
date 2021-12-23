@@ -23,6 +23,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using backlog.Logging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -48,6 +49,7 @@ namespace backlog.Views
             signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
             if(isNetworkAvailable)
             {
+                Logger.Info("Fetching backlogs...");
                 if(signedIn == "Yes")
                 {
                     await SaveData.GetInstance().ReadDataAsync(true);
@@ -67,6 +69,7 @@ namespace backlog.Views
                     Content = "You need the internet to create backlogs",
                     CloseButtonText = "Ok"
                 };
+                Logger.Warn("Not connected to the internet");
                 await contentDialog.ShowAsync();
             }
             base.OnNavigatedTo(e);
@@ -109,6 +112,7 @@ namespace backlog.Views
         {
            try
             {
+                Logger.Info("Creating backlog.....");
                 string title = NameInput.Text;
 
                 if (title == "" || TypeComoBox.SelectedIndex < 0)
@@ -171,6 +175,7 @@ namespace backlog.Views
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.StackTrace);
+                Logger.Error("Failed to create backlog", ex);
             }
         }
 
@@ -222,6 +227,7 @@ namespace backlog.Views
             try
             {
                 string response = await RestClient.GetFilmResponse(title);
+                Logger.Info($"Trying to find film {title}. Response: {response}");
                 FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
                 FilmResponse filmResponse = filmResult.results[0];
                 string filmData = await RestClient.GetFilmDataResponse(filmResponse.id);
@@ -242,10 +248,12 @@ namespace backlog.Views
                     ShowProgress = true,
                     NotifTime = time == null ? TimeSpan.Zero : time
                 };
+                Logger.Info("Succesfully created backlog");
                 return backlog;
             }
             catch (Exception e)
             {
+                Logger.Error("Failed to find film.", e);
                 return null;
             }
         }
@@ -256,6 +264,7 @@ namespace backlog.Views
             try
             {
                 string response = await RestClient.GetMusicResponse(title);
+                Logger.Info($"Searching for album {title}. Response: {response}");
                 var musicData = JsonConvert.DeserializeObject<MusicData>(response);
                 Music music = new Music
                 {
@@ -280,10 +289,12 @@ namespace backlog.Views
                     ShowProgress = false,
                     NotifTime = time
                 };
+                Logger.Info("Succesfully created backlog");
                 return backlog;
             }
             catch (Exception e)
             {
+                Logger.Error("Failed to create backlog", e);
                 return null;
             }
         }
@@ -293,6 +304,7 @@ namespace backlog.Views
             try
             {
                 string response = await RestClient.GetBookResponse(title);
+                Logger.Info($"Trying to find book {title}. Response {response}");
                 var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
                 Book book = new Book
                 {
@@ -319,10 +331,12 @@ namespace backlog.Views
                     ShowProgress = true,
                     NotifTime = time
                 };
+                Logger.Info("Succesfully created backlog");
                 return backlog;
             }
             catch (Exception e)
             {
+                Logger.Error("Failed to create backlog", e);
                 return null;
             }
         }
@@ -332,6 +346,7 @@ namespace backlog.Views
             try
             {
                 string response = await RestClient.GetSeriesResponse(title);
+                Logger.Info($"Trying to find series {title}. Response: {response}");
                 SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
                 SeriesResponse seriesResponse = seriesResult.results[0];
                 string seriesData = await RestClient.GetSeriesDataResponse(seriesResponse.id);
@@ -352,10 +367,12 @@ namespace backlog.Views
                     ShowProgress = true,
                     NotifTime = time
                 };
+                Logger.Info("Succesfully created backlog");
                 return backlog;
             }
             catch (Exception e)
             {
+                Logger.Error("Failed to create backlog", e);
                 return null;
             }
         }
@@ -365,6 +382,7 @@ namespace backlog.Views
             try
             {
                 string response = await RestClient.GetGameResponse(title);
+                Logger.Info($"Trying to find game {title}. Response: {response}");
                 var result = JsonConvert.DeserializeObject<GameResponse[]>(response);
                 string id = result[0].id.ToString();
                 string gameResponse = await RestClient.GetGameResult(id);
@@ -400,11 +418,13 @@ namespace backlog.Views
                     ShowProgress = false,
                     NotifTime = time
                 };
+                Logger.Info("Succesfully created backlog");
                 return backlog;
                 
             }
             catch (Exception e)
             {
+                Logger.Error("Failed to create backlog", e);
                 return null;
             }
         }
@@ -419,7 +439,6 @@ namespace backlog.Views
             };
             ContentDialogResult result = await contentDialog.ShowAsync();
         }
-
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {

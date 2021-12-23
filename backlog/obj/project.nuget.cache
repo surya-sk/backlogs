@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XKcHgZMtvl4iEew6wYf19UAmqGIdunQr3gv5Dho+5adQ5DNEF0lDUMKKmzSAsLNJiF5W1881DEjs29UUc2sF5Q==",
+  "dgSpecHash": "vZxRkGYPTi7zr0UmjKZQJ/iXcffebrgWDV5kkhZpnJUOGFLnCV7JyLEUzAk/a8ahODhBP7fP4HW4Z7BCfqVJHQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,7 @@
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.bcl\\1.1.9\\microsoft.bcl.1.1.9.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.bcl.build\\1.0.14\\microsoft.bcl.build.1.0.14.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\microsoft.extensions.platformabstractions\\1.0.0\\microsoft.extensions.platformabstractions.1.0.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.graph\\1.15.0\\microsoft.graph.1.15.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.graph.core\\1.15.0\\microsoft.graph.core.1.15.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.identity.client\\4.36.1\\microsoft.identity.client.4.36.1.nupkg.sha512",
@@ -41,6 +42,7 @@
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.xaml.behaviors.uwp.managed\\1.1.0\\microsoft.xaml.behaviors.uwp.managed.1.1.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\newtonsoft.json\\10.0.3\\newtonsoft.json.10.0.3.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\nlog\\4.7.13\\nlog.4.7.13.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\robmikh.compositionsurfacefactory\\0.7.3\\robmikh.compositionsurfacefactory.0.7.3.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\runtime.any.system.collections\\4.3.0\\runtime.any.system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\runtime.any.system.diagnostics.tools\\4.3.0\\runtime.any.system.diagnostics.tools.4.3.0.nupkg.sha512",

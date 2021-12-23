@@ -79,6 +79,10 @@
               "target": "Package",
               "version": "[2.4.3, )"
             },
+            "NLog": {
+              "target": "Package",
+              "version": "[4.7.13, )"
+            },
             "System.Memory": {
               "target": "Package",
               "version": "[4.5.4, )"
