@@ -23,6 +23,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 using backlog.Saving;
 using backlog.Logging;
+using System.Text;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -148,6 +149,12 @@ namespace backlog.Views
             EmailMessage emailMessage = new EmailMessage();
             emailMessage.To.Add(new EmailRecipient("surya.sk05@outlook.com"));
             emailMessage.Subject = "Logs from Backlogs";
+            StringBuilder body = new StringBuilder();
+            body.AppendLine("*Enter a brief description of your issue here*");
+            body.AppendLine("\n\n\n");
+            body.AppendLine("Logs:");
+            body.AppendLine(await Logger.GetLogsAsync());
+            emailMessage.Body = body.ToString();
             await EmailManager.ShowComposeNewEmailAsync(emailMessage);
             ProgRing.IsActive = false;
         }

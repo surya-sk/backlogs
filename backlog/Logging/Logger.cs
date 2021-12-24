@@ -41,21 +41,6 @@ namespace backlog.Logging
         }
 
         /// <summary>
-        /// Opens a FileSavePicker and lets the user pick the destination.
-        /// </summary>
-        /// <returns>Returns the selected path.</returns>
-        private static IAsyncOperation<StorageFile> GetTargetPathAsync()
-        {
-            FileSavePicker savePicker = new FileSavePicker
-            {
-                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
-            };
-            savePicker.FileTypeChoices.Add("Logs", new List<string>() { ".zip" });
-            savePicker.SuggestedFileName = "Logs";
-            return savePicker.PickSaveFileAsync();
-        }
-
-        /// <summary>
         /// Calculates the size of the "Logs" folder.
         /// </summary>
         /// <returns>Returns the "Logs" folder size in KB.</returns>
@@ -130,6 +115,17 @@ namespace backlog.Logging
         {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
             return Windows.System.Launcher.LaunchFolderAsync(folder);
+        }
+
+        /// <summary>
+        /// Returns the logs
+        /// </summary>
+        /// <returns>An async task</returns>
+        public static async Task<string> GetLogsAsync()
+        {
+            var path = Path.Combine(GetLogsFolderPath(), "backlogs.log");
+            var logFile = await StorageFile.GetFileFromPathAsync(path);
+            return await FileIO.ReadTextAsync(logFile);
         }
     }
 }
