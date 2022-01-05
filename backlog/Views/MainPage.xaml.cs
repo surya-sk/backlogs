@@ -259,7 +259,7 @@ namespace backlog.Views
                     await SaveData.GetInstance().DeleteLocalFileAsync();
                     graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
                     ApplicationData.Current.LocalSettings.Values["SignedIn"] = "Yes";
-                    Frame.Navigate(typeof(MainPage));
+                    Frame.Navigate(typeof(MainPage), "sync");
                 }
             }
             else
