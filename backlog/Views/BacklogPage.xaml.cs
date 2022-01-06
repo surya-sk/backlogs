@@ -81,7 +81,7 @@ namespace backlog.Views
         }
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            Logger.Info("Deleting backlog.....");
+            await Logger.Info("Deleting backlog.....");
             ContentDialog deleteDialog = new ContentDialog
             {
                 Title = "Delete backlog?",
@@ -94,7 +94,7 @@ namespace backlog.Views
             {
                 await DeleteConfirmation_Click();
             }
-            Logger.Info("Deleted backlog");
+            await Logger.Info("Deleted backlog");
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace backlog.Views
             }
             catch (Exception ex)
             {
-                Logger.Warn("Error occured during navigation:");
-                Logger.Trace(ex.StackTrace);
+                await Logger.Warn("Error occured during navigation:");
+                await Logger.Trace(ex.StackTrace);
             }
             finally
             {
@@ -143,7 +143,7 @@ namespace backlog.Views
         /// <param name="e"></param>
         private async void FinishButton_Click(object sender, RoutedEventArgs e)
         {
-            Logger.Info("Marking backlog as complete");
+            await Logger.Info("Marking backlog as complete");
             backlog.IsComplete = true;
             await SaveBacklog();
             Frame.Navigate(typeof(MainPage));
@@ -155,7 +155,7 @@ namespace backlog.Views
         /// <returns></returns>
         private async Task SaveBacklog()
         {
-            Logger.Info("Saving backlog....");
+            await Logger.Info("Saving backlog....");
             backlogs[backlogIndex] = backlog;
             SaveData.GetInstance().SaveSettings(backlogs);
             await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");

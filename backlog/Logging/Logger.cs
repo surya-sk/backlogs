@@ -5,8 +5,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NLog;
-using NLog.Config;
 using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Storage;
@@ -15,15 +13,21 @@ using Windows.Storage.Search;
 
 namespace backlog.Logging
 {
-    public static class Logger
+    public class Logger
     {
-        private static readonly NLog.Logger NLOGGER;
+        public static Logger instance = null;
 
         static Logger()
         {
-            LogManager.Configuration = new XmlLoggingConfiguration(Path.Combine(Package.Current.InstalledLocation.Path, @"Logging\NLog.config"));
-            LogManager.Configuration.Variables["LogPath"] = GetLogsFolderPath();
-            NLOGGER = LogManager.GetCurrentClassLogger();
+        }
+
+        public static Logger GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new Logger();
+            }
+            return instance;
         }
 
         /// <summary>
@@ -35,76 +39,59 @@ namespace backlog.Logging
             return ApplicationData.Current.LocalFolder.CreateFolderAsync("Logs", CreationCollisionOption.OpenIfExists);
         }
 
-        private static string GetLogsFolderPath()
+        private static async Task WriteLog(string message, Exception ex = null)
         {
-            return Path.Combine(ApplicationData.Current.LocalFolder.Path, "Logs");
+            var _logsFolder = await GetLogFolderAsync();
+            try
+            {
+                var logFile = await _logsFolder.GetFileAsync("backlogs.log");
+                if(ex !=null)
+                    await FileIO.WriteTextAsync(logFile, $"[{DateTime.Now}] - {message}\nException: {ex.Message}");
+                else
+                    await FileIO.WriteTextAsync(logFile, $"[{DateTime.Now}] - {message}");
+            }
+            catch
+            {
+                await _logsFolder.CreateFileAsync("backlogs.log", CreationCollisionOption.ReplaceExisting);
+                await WriteLog(message, ex);
+            }
         }
 
-        /// <summary>
-        /// Calculates the size of the "Logs" folder.
-        /// </summary>
-        /// <returns>Returns the "Logs" folder size in KB.</returns>
-        public static async Task<long> GetLogFolderSizeAsync()
+        public static async Task Trace(string message)
         {
-            StorageFolder logsFolder = await GetLogFolderAsync();
-            StorageFileQueryResult result = logsFolder.CreateFileQuery();
-
-            IEnumerable<Task<ulong>> fileSizeTasks = (await result.GetFilesAsync()).Select(async file => (await file.GetBasicPropertiesAsync()).Size);
-            ulong[] sizes = await Task.WhenAll(fileSizeTasks);
-
-            return sizes.Sum(l => (long)l) / 1024;
-        }
-
-        public static void Trace(string message)
-        {
-              NLOGGER.Trace(message);
+              await WriteLog(message);
         }
 
         /// <summary>
         /// Adds a Debug message to the log
         /// </summary>
-        public static void Debug(string message)
+        public static async Task Debug(string message)
         {
-             NLOGGER.Debug(message);
+            await WriteLog(message);
         }
 
         /// <summary>
         /// Adds a Info message to the log
         /// </summary>
-        public static void Info(string message)
+        public static async Task Info(string message)
         {
-              NLOGGER.Info(message);
+            await WriteLog(message);
         }
 
         /// <summary>
         /// Adds a Warn message to the log
         /// </summary>
-        public static void Warn(string message)
+        public static async Task Warn(string message)
         {
-               NLOGGER.Warn(message);
+            await WriteLog(message);
         }
 
         /// <summary>
         /// Adds a Error message to the log
         /// </summary>
-        public static void Error(string message, Exception e)
+        public static async Task Error(string message, Exception e)
         {
-            if (e != null)
-            {
-                NLOGGER.Error(e, message);
-            }
-            else
-            {
-                NLOGGER.Error(message);
-            }
-        }
-
-        /// <summary>
-        /// Adds a Error message to the log
-        /// </summary>
-        public static void Error(string message)
-        {
-            Error(message, null);
+            await WriteLog(message, e);
         }
 
         /// <summary>
@@ -123,7 +110,8 @@ namespace backlog.Logging
         /// <returns>An async task</returns>
         public static async Task<string> GetLogsAsync()
         {
-            var path = Path.Combine(GetLogsFolderPath(), "backlogs.log");
+            var folder = await GetLogFolderAsync();
+            var path = Path.Combine(folder.Path, "backlogs.log");
             var logFile = await StorageFile.GetFileFromPathAsync(path);
             return await FileIO.ReadTextAsync(logFile);
         }
