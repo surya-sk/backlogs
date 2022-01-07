@@ -24,6 +24,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using backlog.Logging;
+using Windows.UI.Xaml.Media.Animation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -213,7 +214,14 @@ namespace backlog.Views
                 backlogs.Add(backlog);
                 SaveData.GetInstance().SaveSettings(backlogs);
                 await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
-                Frame.Navigate(typeof(MainPage));
+                try
+                {
+                    Frame.Navigate(typeof(MainPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom });
+                }
+                catch
+                {
+                    Frame.Navigate(typeof(MainPage));
+                }
             }
             else
             {
@@ -442,7 +450,14 @@ namespace backlog.Views
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage));
+            try
+            {
+                Frame.Navigate(typeof(MainPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom});
+            }
+            catch
+            {
+                Frame.Navigate(typeof(MainPage));
+            }
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)

@@ -279,7 +279,14 @@ namespace backlog.Views
         /// <param name="e"></param>
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(CreatePage));
+            try
+            {
+                Frame.Navigate(typeof(CreatePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom});
+            }
+            catch
+            {
+                Frame.Navigate(typeof(CreatePage));
+            }
         }
 
         /// <summary>
