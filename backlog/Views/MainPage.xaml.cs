@@ -50,6 +50,7 @@ namespace backlog.Views
             isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             InitBacklogs();
+            ShowTeachingTips();
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
         }
 
@@ -69,6 +70,18 @@ namespace backlog.Views
             ShowEmptyMessage();
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
+        }
+
+        /// <summary>
+        /// Shows the teaching tips on fresh install
+        /// </summary>
+        private void ShowTeachingTips()
+        {
+            if(Settings.IsFirstRun)
+            {
+                NavigationTeachingTip.IsOpen = true;
+                Settings.IsFirstRun = false;
+            }
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -173,6 +186,7 @@ namespace backlog.Views
             {
                 musicBacklogs.Add(b);
             }
+            ShowEmptyMessage();
         }
 
         private void ShowEmptyMessage()
@@ -188,6 +202,10 @@ namespace backlog.Views
                     {
                         textBlocks[i].Text = $"Nothing to see here. Add some!";
                     }
+                }
+                else
+                {
+                    textBlocks[i].Visibility = Visibility.Collapsed;
                 }
             }
         }

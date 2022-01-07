@@ -142,6 +142,8 @@
             </Pivot>
 
             <muxc:ProgressBar x:Name="CreationProgBar" IsIndeterminate="True" Visibility="Collapsed" />
+
+            <muxc:TeachingTip x:Name="NavigationTeachingTip" Title="Moving around" Subtitle="To move around different sections, swipe using your finger or trackpad" />
         </Grid>
     </Frame>
     <Page.TopAppBar>
