@@ -65,7 +65,7 @@
                 <PivotItem Header="all">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyListText" Text="Thank you for trying Backlog. Sign-in for cross-device syncing and data backups! This is pre-release software, so your local data might be deleted. " Visibility="Collapsed"
+                            <TextBlock x:Name="EmptyListText" Text="Thank you for trying Backlogs. Sign-in for cross-device syncing and data backups! This is pre-release software, so use at your peril " Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind backlogs}" ItemClick="BacklogView_ItemClick"
