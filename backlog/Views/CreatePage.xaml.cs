@@ -243,7 +243,8 @@ namespace backlog.Views
                     Progress = 0,
                     Units = "Minutes",
                     ShowProgress = true,
-                    NotifTime = time == null ? TimeSpan.Zero : time
+                    NotifTime = time == null ? TimeSpan.Zero : time,
+                    UserRating = -1
                 };
                 await Logger.Info("Succesfully created backlog");
                 return backlog;
@@ -284,7 +285,8 @@ namespace backlog.Views
                     Progress = 0,
                     Units = "Minutes",
                     ShowProgress = false,
-                    NotifTime = time
+                    NotifTime = time,
+                    UserRating = -1
                 };
                 await Logger.Info("Succesfully created backlog");
                 return backlog;
@@ -326,7 +328,8 @@ namespace backlog.Views
                     Progress = 0,
                     Units = "Pages",
                     ShowProgress = true,
-                    NotifTime = time
+                    NotifTime = time,
+                    UserRating = -1
                 };
                 await Logger.Info("Succesfully created backlog");
                 return backlog;
@@ -362,7 +365,8 @@ namespace backlog.Views
                     Progress = 0,
                     Units = "Season(s)",
                     ShowProgress = true,
-                    NotifTime = time
+                    NotifTime = time,
+                    UserRating = -1
                 };
                 await Logger.Info("Succesfully created backlog");
                 return backlog;
@@ -413,7 +417,8 @@ namespace backlog.Views
                     Director = game.company,
                     Progress = 0,
                     ShowProgress = false,
-                    NotifTime = time
+                    NotifTime = time,
+                    UserRating = -1
                 };
                 await Logger.Info("Succesfully created backlog");
                 return backlog;
