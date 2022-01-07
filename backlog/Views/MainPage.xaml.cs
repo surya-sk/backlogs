@@ -449,7 +449,14 @@ namespace backlog.Views
 
         private void CompletedBacklogsButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(CompletedBacklogsPage));
+            try
+            {
+                Frame.Navigate(typeof(CompletedBacklogsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight});
+            }
+            catch
+            {
+                Frame.Navigate(typeof(CompletedBacklogsPage));
+            }
         }
 
         /// <summary>

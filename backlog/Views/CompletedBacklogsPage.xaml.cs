@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -46,9 +47,13 @@ namespace backlog.Views
 
         private void View_BackRequested(object sender, BackRequestedEventArgs e)
         {
-            if(Frame.CanGoBack)
+            try
             {
-                Frame.GoBack();
+                Frame.Navigate(typeof(MainPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            catch
+            {
+                Frame.Navigate(typeof(MainPage));
             }
             e.Handled = true;
         }
