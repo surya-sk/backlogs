@@ -15,19 +15,8 @@ namespace backlog.Logging
 {
     public class Logger
     {
-        public static Logger instance = null;
-
         static Logger()
         {
-        }
-
-        public static Logger GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new Logger();
-            }
-            return instance;
         }
 
         /// <summary>
