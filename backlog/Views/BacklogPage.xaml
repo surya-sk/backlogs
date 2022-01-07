@@ -91,12 +91,13 @@
                     <TextBlock Text="Progress" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,10" />
                     <TextBlock Text="Enter how much progress you've made" FontStyle="Oblique" Margin="0,0,0,10" />
                     <StackPanel Orientation="Horizontal" Margin="10">
-                        <muxc:NumberBox Value="{x:Bind backlog.Progress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpinButtonPlacementMode="Inline" ValueChanged="NumberBox_ValueChanged"/>
+                        <muxc:NumberBox x:Name="ProgressNumBox" Value="{x:Bind backlog.Progress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpinButtonPlacementMode="Inline" 
+                                        ValueChanged="NumberBox_ValueChanged" Minimum="0" Maximum="{x:Bind backlog.Length}"/>
                         <TextBlock Text="of"  Margin="10,5,10,0" FontSize="15"/>
                         <TextBlock Text="{x:Bind backlog.Length}" Margin="0,5,10,0" FontSize="15"/>
                         <TextBlock Text="{x:Bind backlog.Units}" Margin="0,5,10,0" FontSize="15" />
                     </StackPanel>
-                    <muxc:ProgressBar Value="{x:Bind backlog.Progress}" Minimum="0" Maximum="{x:Bind backlog.Length}" IsIndeterminate="False" Margin="20"/>
+                    <muxc:ProgressBar x:Name="BacklogProgressBar" Value="{x:Bind backlog.Progress}" Minimum="0" Maximum="{x:Bind backlog.Length}" IsIndeterminate="False" Margin="20"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="3" Margin="30">

@@ -95,6 +95,7 @@ namespace backlog.Views
         private void NumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
         {
             edited = true;
+            BacklogProgressBar.Value = ProgressNumBox.Value;
         }
 
         private async void DoneButton_Click(object sender, RoutedEventArgs e)
