@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using backlog.Models;
 using Microsoft.Graph;
@@ -14,7 +13,7 @@ using Newtonsoft.Json;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
-using backlog.Logging;
+using backlog.Utils;
 
 namespace backlog.Saving
 {
@@ -119,7 +118,7 @@ namespace backlog.Saving
             {
                 await Logging.Logger.Info("Signing out user...");
                 await PublicClientApp.RemoveAsync(firstAccount).ConfigureAwait(false);
-                ApplicationData.Current.LocalSettings.Values["SignedIn"] = "No";
+                Settings.IsSignedIn = false;
                 var file = await localFolder.GetFileAsync(fileName);
                 await file.DeleteAsync(StorageDeleteOption.Default);
             }
@@ -143,7 +142,7 @@ namespace backlog.Saving
                     await Logging.Logger.Info("Fetching graph service client.....");
                     var user = await graphServiceClient.Me.Request().GetAsync();
                     Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
-                    ApplicationData.Current.LocalSettings.Values["UserName"] = user.GivenName;
+                    Settings.UserName = user.GivenName;
                     if (photoresponse != null)
                     {
                         using (var randomAccessStream = photoresponse.AsRandomAccessStream())

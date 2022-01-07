@@ -138,6 +138,7 @@
     <Compile Include="Utils\Keys.cs" />
     <Compile Include="Utils\MediaObjects.cs" />
     <Compile Include="Utils\RestClient.cs" />
+    <Compile Include="Utils\Settings.cs" />
     <Compile Include="Utils\ToastBackgroundTask.cs" />
     <Compile Include="Utils\ThemeHelper.cs" />
     <Compile Include="Views\BacklogPage.xaml.cs">

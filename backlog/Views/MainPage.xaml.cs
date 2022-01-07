@@ -1,40 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using backlog.Models;
 using backlog.Saving;
 using backlog.Utils;
 using System.Collections.ObjectModel;
-using Windows.Storage;
 using System.Threading.Tasks;
-using System.Diagnostics;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using Windows.UI.Core;
 using System.Net.NetworkInformation;
 using Microsoft.Graph;
-using Microsoft.Toolkit.Uwp.Helpers;
-using Windows.ApplicationModel.Background;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
 using System.Globalization;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Animation;
 using backlog.Logging;
+using Windows.Storage;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -55,7 +40,7 @@ namespace backlog.Views
         GraphServiceClient graphServiceClient;
 
         bool isNetworkAvailable = false;
-        string signedIn;
+        bool signedIn;
         int backlogIndex = -1;
         bool sync = false;
 
@@ -102,8 +87,8 @@ namespace backlog.Views
                 }
             }
             ProgBar.Visibility = Visibility.Visible;
-            signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
-            if (isNetworkAvailable && signedIn == "Yes")
+            signedIn = Settings.IsSignedIn;
+            if (isNetworkAvailable && signedIn)
             {
                 await Logger.Info("Signing in user....");
                 graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
@@ -130,7 +115,7 @@ namespace backlog.Views
         private async Task SetUserPhotoAsync()
         {
             await Logger.Info("Setting user photo....");
-            string userName = ApplicationData.Current.LocalSettings.Values["UserName"]?.ToString();
+            string userName = Settings.UserName;
             TopProfileButton.Label = userName;
             BottomProfileButton.Label = userName;
             var cacheFolder = ApplicationData.Current.LocalCacheFolder;
@@ -249,14 +234,14 @@ namespace backlog.Views
         private async void SigninButton_Click(object sender, RoutedEventArgs e)
         {
             ProgBar.Visibility = Visibility.Visible;
-            signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
+            signedIn = Settings.IsSignedIn;
             if (isNetworkAvailable)
             {
-                if (signedIn != "Yes")
+                if (!signedIn)
                 {
                     await SaveData.GetInstance().DeleteLocalFileAsync();
                     graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
-                    ApplicationData.Current.LocalSettings.Values["SignedIn"] = "Yes";
+                    Settings.IsSignedIn = true;
                     Frame.Navigate(typeof(MainPage), "sync");
                 }
             }

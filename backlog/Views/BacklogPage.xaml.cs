@@ -1,34 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using backlog.Models;
 using backlog.Saving;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Windows.UI.Core;
-using Windows.Storage.Streams;
-using Windows.Graphics.Imaging;
-using System.Diagnostics;
 using Windows.Storage;
-using backlog.Utils;
 using Windows.UI.Xaml.Media.Animation;
-using Microsoft.Graphics.Canvas.Effects;
-using Windows.UI.Composition;
-using Windows.UI.Xaml.Hosting;
-using Microsoft.Graphics.Canvas;
-using Windows.UI.Xaml.Media.Imaging;
 using backlog.Logging;
+using backlog.Utils;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -43,13 +24,13 @@ namespace backlog.Views
         private ObservableCollection<Backlog> backlogs;
         private int backlogIndex;
         private bool edited;
-        string signedIn;
+        bool signedIn;
         public BacklogPage()
         {
             this.InitializeComponent();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             backlogs = SaveData.GetInstance().GetBacklogs();
-            signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
+            signedIn = Settings.IsSignedIn;
             edited = false;
         }
 
@@ -107,7 +88,7 @@ namespace backlog.Views
             ProgBar.Visibility = Visibility.Visible;
             backlogs.Remove(backlog);
             SaveData.GetInstance().SaveSettings(backlogs);
-            await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
+            await SaveData.GetInstance().WriteDataAsync(signedIn);
             Frame.Navigate(typeof(MainPage));
         }
 
@@ -158,7 +139,7 @@ namespace backlog.Views
             await Logger.Info("Saving backlog....");
             backlogs[backlogIndex] = backlog;
             SaveData.GetInstance().SaveSettings(backlogs);
-            await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
+            await SaveData.GetInstance().WriteDataAsync(signedIn);
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)

@@ -4,24 +4,13 @@ using backlog.Utils;
 using Microsoft.Graph;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Net.NetworkInformation;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using backlog.Logging;
 using Windows.UI.Xaml.Media.Animation;
@@ -36,7 +25,7 @@ namespace backlog.Views
     public sealed partial class CreatePage : Page
     {
         ObservableCollection<Backlog> backlogs { get; set; }
-        string signedIn;
+        bool signedIn;
         bool isNetworkAvailable = false;
         GraphServiceClient graphServiceClient;
         public CreatePage()
@@ -47,11 +36,11 @@ namespace backlog.Views
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            signedIn = ApplicationData.Current.LocalSettings.Values["SignedIn"]?.ToString();
+            signedIn = Settings.IsSignedIn;
             if(isNetworkAvailable)
             {
                 await Logger.Info("Fetching backlogs...");
-                if(signedIn == "Yes")
+                if(signedIn)
                 {
                     await SaveData.GetInstance().ReadDataAsync(true);
                     backlogs = SaveData.GetInstance().GetBacklogs();
@@ -213,7 +202,7 @@ namespace backlog.Views
             {
                 backlogs.Add(backlog);
                 SaveData.GetInstance().SaveSettings(backlogs);
-                await SaveData.GetInstance().WriteDataAsync(signedIn == "Yes");
+                await SaveData.GetInstance().WriteDataAsync(signedIn);
                 try
                 {
                     Frame.Navigate(typeof(MainPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom });
