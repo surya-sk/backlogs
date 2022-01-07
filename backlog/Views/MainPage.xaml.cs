@@ -50,7 +50,6 @@ namespace backlog.Views
             isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             InitBacklogs();
-            ShowTeachingTips();
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
         }
 
@@ -81,6 +80,17 @@ namespace backlog.Views
             {
                 NavigationTeachingTip.IsOpen = true;
                 Settings.IsFirstRun = false;
+            }
+            if(!Settings.IsSignedIn)
+            {
+                if(TopAppBar.Visibility == Visibility.Visible)
+                {
+                    TopSigninTeachingTip.IsOpen=true;
+                }
+                else
+                {
+                    BottomSigninTeachingTip.IsOpen = true;
+                }
             }
         }
 
@@ -118,6 +128,7 @@ namespace backlog.Views
                 }
                 BuildNotifactionQueue();
             }
+            ShowTeachingTips();
             ProgBar.Visibility = Visibility.Collapsed;
         }
 
@@ -252,6 +263,8 @@ namespace backlog.Views
         private async void SigninButton_Click(object sender, RoutedEventArgs e)
         {
             ProgBar.Visibility = Visibility.Visible;
+            TopSigninTeachingTip.IsOpen = false;
+            BottomSigninTeachingTip.IsOpen = false;
             signedIn = Settings.IsSignedIn;
             if (isNetworkAvailable)
             {

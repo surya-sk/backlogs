@@ -27,7 +27,7 @@ namespace backlog.Utils
                 {
                     return (bool)isSignedIn;
                 }
-                return true;
+                return false;
             }
             set => _settings.Values[nameof(IsSignedIn)] = value;
         }
