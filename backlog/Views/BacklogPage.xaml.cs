@@ -146,5 +146,10 @@ namespace backlog.Views
         {
             Frame.Navigate(typeof(SettingsPage));
         }
+
+        private void RatingSlider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+        {
+            UserRating.Value = RatingSlider.Value;
+        }
     }
 }
