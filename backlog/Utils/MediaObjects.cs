@@ -77,6 +77,7 @@ namespace backlog.Utils
     public class GameResponse
     {
         public int id { get; set; }
+        public string name { get; set; }
     }
 
     public class GameResult

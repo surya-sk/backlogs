@@ -185,10 +185,10 @@ namespace backlog.Views
                     await SearchFilmBacklog(title, date, TimePicker.Time);
                     break;
                 case "TV":
-                    await CreateSeriesBacklog(title, date, TimePicker.Time);
+                    await SearchSeriesBacklog(title, date, TimePicker.Time);
                     break;
                 case "Game":
-                    await CreateGameBacklog(NameInput.Text, date, TimePicker.Time);
+                    await SearchGameBacklog(NameInput.Text, date, TimePicker.Time);
                     break;
                 case "Book":
                     await CreateBookBacklog(NameInput.Text, date, TimePicker.Time);
@@ -332,34 +332,27 @@ namespace backlog.Views
             }
         }
 
-        private async Task CreateSeriesBacklog(string title, string date, TimeSpan time)
+        private async Task SearchSeriesBacklog(string title, string date, TimeSpan time)
         {
             try
             {
                 string response = await RestClient.GetSeriesResponse(title);
                 await Logger.Info($"Trying to find series {title}. Response: {response}");
                 SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
-                SeriesResponse seriesResponse = seriesResult.results[0];
-                string seriesData = await RestClient.GetSeriesDataResponse(seriesResponse.id);
-                Series series = JsonConvert.DeserializeObject<Series>(seriesData);
-                Backlog backlog = new Backlog
+                ObservableCollection<Models.SearchResult> searchResults = new ObservableCollection<Models.SearchResult>();
+                foreach(var result in seriesResult.results)
                 {
-                    id = Guid.NewGuid(),
-                    Name = series.fullTitle,
-                    Type = "TV",
-                    ReleaseDate = series.releaseDate,
-                    ImageURL = series.image,
-                    TargetDate = date,
-                    Description = series.plot,
-                    Length = series.TvSeriesInfo.Seasons.Count,
-                    Director = series.TvSeriesInfo.Creators,
-                    Progress = 0,
-                    Units = "Season(s)",
-                    ShowProgress = true,
-                    NotifTime = time,
-                    UserRating = -1
-                };
-                await CreateBacklog(backlog);
+                    searchResults.Add(new Models.SearchResult
+                    {
+                        Id = result.id,
+                        Name = result.title,
+                        Description = result.description,
+                        ImageURL = result.image,
+                    });
+                }
+                ResultsListView.ItemsSource = searchResults;
+                _ = await ResultsDialog.ShowAsync();
+                // SeriesResponse seriesResponse = seriesResult.results[0
                 await Logger.Info("Succesfully created backlog");
             }
             catch (Exception e)
@@ -368,49 +361,45 @@ namespace backlog.Views
             }
         }
 
-        private async Task CreateGameBacklog(string title, string date, TimeSpan time)
+        private async Task SearchGameBacklog(string title, string date, TimeSpan time)
         {
             try
             {
                 string response = await RestClient.GetGameResponse(title);
                 await Logger.Info($"Trying to find game {title}. Response: {response}");
                 var result = JsonConvert.DeserializeObject<GameResponse[]>(response);
-                string id = result[0].id.ToString();
-                string gameResponse = await RestClient.GetGameResult(id);
-                var gameResult = JsonConvert.DeserializeObject<GameResult[]>(gameResponse);
-                int companyID = await RestClient.GetCompanyID(gameResult[0].involved_companies[0].ToString());
-                var gameCompanyResponse = await RestClient.GetGameCompanyResponse(companyID.ToString());
-                var gameCompany = JsonConvert.DeserializeObject<GameCompany[]>(gameCompanyResponse);
-                var gameCoverResponse = await RestClient.GetGameCover(gameResult[0].cover.ToString());
-                var gameCover = JsonConvert.DeserializeObject<GameCover[]>(gameCoverResponse);
-                string releaseDateResponse = await RestClient.GetGameReleaseResponse(gameResult[0].release_dates[0].ToString());
-                var releaseDateTimestamp = JsonConvert.DeserializeObject<GameReleaseDate[]>(releaseDateResponse);
-                var releaseDate = DateTimeOffset.FromUnixTimeSeconds(releaseDateTimestamp[0].date);
-                Game game = new Game
+                ObservableCollection<Models.SearchResult> results = new ObservableCollection<Models.SearchResult>();
+                foreach(var res in result)
                 {
-                    name = gameResult[0].name + $" ({releaseDate.Year})",
-                    releaseDate = releaseDate.ToString("D"),
-                    company = gameCompany[0].name,
-                    image = "https:" + gameCover[0].url,
-                    storyline = gameResult[0].storyline
-                };  
-                Backlog backlog = new Backlog
-                {
-                    id = Guid.NewGuid(),
-                    Name = game.name,
-                    Type = "Game",
-                    ReleaseDate = game.releaseDate,
-                    ImageURL = game.image,
-                    TargetDate = date,
-                    Description = game.storyline,
-                    Length = 0,
-                    Director = game.company,
-                    Progress = 0,
-                    ShowProgress = false,
-                    NotifTime = time,
-                    UserRating = -1
-                };
-                await CreateBacklog(backlog);
+                    string id = res.id.ToString();
+                    string gameResponse = await RestClient.GetGameResult(id);
+                    var gameResult = JsonConvert.DeserializeObject<GameResult[]>(gameResponse);
+                    int companyID = await RestClient.GetCompanyID(gameResult[0].involved_companies[0].ToString());
+                    var gameCompanyResponse = await RestClient.GetGameCompanyResponse(companyID.ToString());
+                    var gameCompany = JsonConvert.DeserializeObject<GameCompany[]>(gameCompanyResponse);
+                    var gameCoverResponse = await RestClient.GetGameCover(gameResult[0].cover.ToString());
+                    var gameCover = JsonConvert.DeserializeObject<GameCover[]>(gameCoverResponse);
+                    string releaseDateResponse = await RestClient.GetGameReleaseResponse(gameResult[0].release_dates[0].ToString());
+                    var releaseDateTimestamp = JsonConvert.DeserializeObject<GameReleaseDate[]>(releaseDateResponse);
+                    var releaseDate = DateTimeOffset.FromUnixTimeSeconds(releaseDateTimestamp[0].date);
+                    Game game = new Game
+                    {
+                        name = gameResult[0].name + $" ({releaseDate.Year})",
+                        releaseDate = releaseDate.ToString("D"),
+                        company = gameCompany[0].name,
+                        image = "https:" + gameCover[0].url,
+                        storyline = gameResult[0].storyline
+                    };
+                    results.Add(new Models.SearchResult
+                    {
+                        Id = res.id.ToString(),
+                        Name = game.name,
+                        Description = game.releaseDate,
+                        ImageURL = game.image
+                    });
+                }
+                ResultsListView.ItemsSource = results;
+                _ = await ResultsDialog.ShowAsync();
                 await Logger.Info("Succesfully created backlog");
             }
             catch (Exception e)
@@ -461,6 +450,12 @@ namespace backlog.Views
                     case "Film":
                         await CreateFilmBacklog(selectedItem, date, time);
                         break;
+                    case "TV":
+                        await CreateSeriesBacklog(selectedItem, date, time);
+                        break;
+                    case "Game":
+                        await CreateGameBacklog(selectedItem, date, time);
+                        break;
                 }
             }
         }
@@ -484,6 +479,70 @@ namespace backlog.Views
                 Units = "Minutes",
                 ShowProgress = true,
                 NotifTime = time == null ? TimeSpan.Zero : time,
+                UserRating = -1
+            };
+            await CreateBacklog(backlog);
+        }
+
+        private async Task CreateSeriesBacklog(Models.SearchResult selectedItem, string date, TimeSpan time)
+        {
+            string seriesData = await RestClient.GetSeriesDataResponse(selectedItem.Id);
+            Series series = JsonConvert.DeserializeObject<Series>(seriesData);
+            Backlog backlog = new Backlog
+            {
+                id = Guid.NewGuid(),
+                Name = series.fullTitle,
+                Type = "TV",
+                ReleaseDate = series.releaseDate,
+                ImageURL = series.image,
+                TargetDate = date,
+                Description = series.plot,
+                Length = series.TvSeriesInfo.Seasons.Count,
+                Director = series.TvSeriesInfo.Creators,
+                Progress = 0,
+                Units = "Season(s)",
+                ShowProgress = true,
+                NotifTime = time,
+                UserRating = -1
+            };
+            await CreateBacklog(backlog);
+        }
+
+        private async Task CreateGameBacklog(Models.SearchResult selectedItem, string date, TimeSpan time)
+        {
+            string id = selectedItem.Id;
+            string gameResponse = await RestClient.GetGameResult(id);
+            var gameResult = JsonConvert.DeserializeObject<GameResult[]>(gameResponse);
+            int companyID = await RestClient.GetCompanyID(gameResult[0].involved_companies[0].ToString());
+            var gameCompanyResponse = await RestClient.GetGameCompanyResponse(companyID.ToString());
+            var gameCompany = JsonConvert.DeserializeObject<GameCompany[]>(gameCompanyResponse);
+            var gameCoverResponse = await RestClient.GetGameCover(gameResult[0].cover.ToString());
+            var gameCover = JsonConvert.DeserializeObject<GameCover[]>(gameCoverResponse);
+            string releaseDateResponse = await RestClient.GetGameReleaseResponse(gameResult[0].release_dates[0].ToString());
+            var releaseDateTimestamp = JsonConvert.DeserializeObject<GameReleaseDate[]>(releaseDateResponse);
+            var releaseDate = DateTimeOffset.FromUnixTimeSeconds(releaseDateTimestamp[0].date);
+            Game game = new Game
+            {
+                name = gameResult[0].name + $" ({releaseDate.Year})",
+                releaseDate = releaseDate.ToString("D"),
+                company = gameCompany[0].name,
+                image = "https:" + gameCover[0].url,
+                storyline = gameResult[0].storyline
+            };
+            Backlog backlog = new Backlog
+            {
+                id = Guid.NewGuid(),
+                Name = game.name,
+                Type = "Game",
+                ReleaseDate = game.releaseDate,
+                ImageURL = game.image,
+                TargetDate = date,
+                Description = game.storyline,
+                Length = 0,
+                Director = game.company,
+                Progress = 0,
+                ShowProgress = false,
+                NotifTime = time,
                 UserRating = -1
             };
             await CreateBacklog(backlog);
