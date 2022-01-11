@@ -191,7 +191,7 @@ namespace backlog.Views
                     await SearchGameBacklog(NameInput.Text, date, TimePicker.Time);
                     break;
                 case "Book":
-                    await CreateBookBacklog(NameInput.Text, date, TimePicker.Time);
+                    await SearchBookBacklog(NameInput.Text, date, TimePicker.Time);
                     break;
                 case "Album":
                     await CreateMusicBacklog(NameInput.Text, date, TimePicker.Time);
@@ -290,7 +290,7 @@ namespace backlog.Views
             }
         }
 
-        private async Task CreateBookBacklog(string title, string date, TimeSpan time)
+        private async Task SearchBookBacklog(string title, string date, TimeSpan time)
         {
             try
             {
@@ -374,9 +374,6 @@ namespace backlog.Views
                     string id = res.id.ToString();
                     string gameResponse = await RestClient.GetGameResult(id);
                     var gameResult = JsonConvert.DeserializeObject<GameResult[]>(gameResponse);
-                    int companyID = await RestClient.GetCompanyID(gameResult[0].involved_companies[0].ToString());
-                    var gameCompanyResponse = await RestClient.GetGameCompanyResponse(companyID.ToString());
-                    var gameCompany = JsonConvert.DeserializeObject<GameCompany[]>(gameCompanyResponse);
                     var gameCoverResponse = await RestClient.GetGameCover(gameResult[0].cover.ToString());
                     var gameCover = JsonConvert.DeserializeObject<GameCover[]>(gameCoverResponse);
                     string releaseDateResponse = await RestClient.GetGameReleaseResponse(gameResult[0].release_dates[0].ToString());
@@ -386,9 +383,7 @@ namespace backlog.Views
                     {
                         name = gameResult[0].name + $" ({releaseDate.Year})",
                         releaseDate = releaseDate.ToString("D"),
-                        company = gameCompany[0].name,
-                        image = "https:" + gameCover[0].url,
-                        storyline = gameResult[0].storyline
+                        image = "https:" + gameCover[0].url
                     };
                     results.Add(new Models.SearchResult
                     {
