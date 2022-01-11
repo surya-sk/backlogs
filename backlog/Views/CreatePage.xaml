@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:backlog.Views"
+    xmlns:data="using:backlog.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -53,6 +54,35 @@
         </ScrollViewer>
 
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
+
+        <ContentDialog x:Name="ResultsDialog" CloseButtonText="Cancel">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="The following results were found. Click on the one you want" />
+                <ListView x:Name="ResultsListView" SelectionChanged="ResultsListView_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="data:SearchResult">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{x:Bind ImageURL}" MaxHeight="100" Stretch="Fill"/>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{x:Bind Name}" Margin="10"/>
+                                    <TextBlock Text="{x:Bind Description}"  Margin="10"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </ContentDialog>
     </Grid>
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >

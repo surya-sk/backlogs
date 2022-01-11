@@ -182,7 +182,7 @@ namespace backlog.Views
             switch (type)
             {
                 case "Film":
-                    await CreateFilmBacklog(title, date, TimePicker.Time);
+                    await SearchFilmBacklog(title, date, TimePicker.Time);
                     break;
                 case "TV":
                     await CreateSeriesBacklog(title, date, TimePicker.Time);
@@ -222,33 +222,27 @@ namespace backlog.Views
             }
         }
 
-        private async Task CreateFilmBacklog(string title, string date, TimeSpan time)
+        private async Task SearchFilmBacklog(string title, string date, TimeSpan time)
         {
             try
             {
                 string response = await RestClient.GetFilmResponse(title);
                 await Logger.Info($"Trying to find film {title}. Response: {response}");
                 FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
-                FilmResponse filmResponse = filmResult.results[0];
-                string filmData = await RestClient.GetFilmDataResponse(filmResponse.id);
-                Film film = JsonConvert.DeserializeObject<Film>(filmData);
-                Backlog backlog = new Backlog
+                ObservableCollection<Models.SearchResult> results = new ObservableCollection<Models.SearchResult>();
+                foreach(var result in filmResult.results)
                 {
-                    id = Guid.NewGuid(),
-                    Name = film.fullTitle,
-                    Type = "Film",
-                    ReleaseDate = film.releaseDate,
-                    ImageURL = film.image,
-                    TargetDate = date,
-                    Description = film.plot,
-                    Length = film.runtimeMins,
-                    Director = film.directors,
-                    Progress = 0,
-                    Units = "Minutes",
-                    ShowProgress = true,
-                    NotifTime = time == null ? TimeSpan.Zero : time,
-                    UserRating = -1
-                };
+                    results.Add(new Models.SearchResult
+                    {
+                        Id = result.id,
+                        Name = result.title,
+                        Description = result.description,
+                        ImageURL = result.image
+                    });
+                }
+                ResultsListView.ItemsSource = results;
+                _ = await ResultsDialog.ShowAsync();
+                //FilmResponse filmResponse = filmResult.results[0
                 await Logger.Info("Succesfully created backlog");
             }
             catch (Exception e)
@@ -256,8 +250,6 @@ namespace backlog.Views
                 await Logger.Error("Failed to find film.", e);
             }
         }
-
-
         private async Task CreateMusicBacklog(string title, string date, TimeSpan time)
         {
             try
@@ -289,6 +281,7 @@ namespace backlog.Views
                     NotifTime = time,
                     UserRating = -1
                 };
+                await CreateBacklog(backlog);
                 await Logger.Info("Succesfully created backlog");
             }
             catch (Exception e)
@@ -330,6 +323,7 @@ namespace backlog.Views
                     NotifTime = time,
                     UserRating = -1
                 };
+                await CreateBacklog(backlog);
                 await Logger.Info("Succesfully created backlog");
             }
             catch (Exception e)
@@ -365,6 +359,7 @@ namespace backlog.Views
                     NotifTime = time,
                     UserRating = -1
                 };
+                await CreateBacklog(backlog);
                 await Logger.Info("Succesfully created backlog");
             }
             catch (Exception e)
@@ -415,8 +410,8 @@ namespace backlog.Views
                     NotifTime = time,
                     UserRating = -1
                 };
+                await CreateBacklog(backlog);
                 await Logger.Info("Succesfully created backlog");
-                
             }
             catch (Exception e)
             {
@@ -450,6 +445,48 @@ namespace backlog.Views
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(SettingsPage));
+        }
+
+        private async void ResultsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProgBar.Visibility = Visibility.Collapsed;
+            var selectedItem = ResultsListView.SelectedItem as Models.SearchResult;
+            if(selectedItem != null)
+            {
+                string date = DatePicker.SelectedDates.Count > 0 ? DatePicker.SelectedDates[0].ToString("d", CultureInfo.InvariantCulture) : "None";
+                var time = TimePicker.Time;
+                ResultsDialog.Hide();
+                switch (TypeComoBox.SelectedItem.ToString())
+                {
+                    case "Film":
+                        await CreateFilmBacklog(selectedItem, date, time);
+                        break;
+                }
+            }
+        }
+
+        private async Task CreateFilmBacklog(Models.SearchResult selectedItem, string date, TimeSpan time)
+        {
+            string filmData = await RestClient.GetFilmDataResponse(selectedItem.Id);
+            Film film = JsonConvert.DeserializeObject<Film>(filmData);
+            Backlog backlog = new Backlog
+            {
+                id = Guid.NewGuid(),
+                Name = film.fullTitle,
+                Type = "Film",
+                ReleaseDate = film.releaseDate,
+                ImageURL = film.image,
+                TargetDate = date,
+                Description = film.plot,
+                Length = film.runtimeMins,
+                Director = film.directors,
+                Progress = 0,
+                Units = "Minutes",
+                ShowProgress = true,
+                NotifTime = time == null ? TimeSpan.Zero : time,
+                UserRating = -1
+            };
+            await CreateBacklog(backlog);
         }
     }
 }
