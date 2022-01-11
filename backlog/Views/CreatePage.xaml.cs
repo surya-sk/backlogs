@@ -177,28 +177,32 @@ namespace backlog.Views
         private async Task CreateBacklog(string title)
         {
             ProgBar.Visibility = Visibility.Visible;
-            Backlog backlog = null;
             string date = DatePicker.SelectedDates.Count > 0 ? DatePicker.SelectedDates[0].ToString("d", CultureInfo.InvariantCulture) : "None";
             string type = TypeComoBox.SelectedItem.ToString();
             switch (type)
             {
                 case "Film":
-                    backlog = await CreateFilmBacklog(title, date, TimePicker.Time);
+                    await CreateFilmBacklog(title, date, TimePicker.Time);
                     break;
                 case "TV":
-                    backlog = await CreateSeriesBacklog(title, date, TimePicker.Time);
+                    await CreateSeriesBacklog(title, date, TimePicker.Time);
                     break;
                 case "Game":
-                    backlog = await CreateGameBacklog(NameInput.Text, date, TimePicker.Time);
+                    await CreateGameBacklog(NameInput.Text, date, TimePicker.Time);
                     break;
                 case "Book":
-                    backlog = await CreateBookBacklog(NameInput.Text, date, TimePicker.Time);
+                    await CreateBookBacklog(NameInput.Text, date, TimePicker.Time);
                     break;
                 case "Album":
-                    backlog = await CreateMusicBacklog(NameInput.Text, date, TimePicker.Time);
+                    await CreateMusicBacklog(NameInput.Text, date, TimePicker.Time);
                     break;
             }
-            if(backlog != null)
+            ProgBar.Visibility = Visibility.Collapsed;
+        }
+
+        private async Task CreateBacklog(Backlog backlog)
+        {
+            if (backlog != null)
             {
                 backlogs.Add(backlog);
                 SaveData.GetInstance().SaveSettings(backlogs);
@@ -214,12 +218,11 @@ namespace backlog.Views
             }
             else
             {
-                await ShowErrorDialog(title, type);
+                await ShowErrorDialog(NameInput.Text, TypeComoBox.SelectedItem.ToString());
             }
-            ProgBar.Visibility = Visibility.Collapsed;
         }
 
-        private async Task<Backlog> CreateFilmBacklog(string title, string date, TimeSpan time)
+        private async Task CreateFilmBacklog(string title, string date, TimeSpan time)
         {
             try
             {
@@ -247,17 +250,15 @@ namespace backlog.Views
                     UserRating = -1
                 };
                 await Logger.Info("Succesfully created backlog");
-                return backlog;
             }
             catch (Exception e)
             {
                 await Logger.Error("Failed to find film.", e);
-                return null;
             }
         }
 
 
-        private async Task<Backlog> CreateMusicBacklog(string title, string date, TimeSpan time)
+        private async Task CreateMusicBacklog(string title, string date, TimeSpan time)
         {
             try
             {
@@ -289,16 +290,14 @@ namespace backlog.Views
                     UserRating = -1
                 };
                 await Logger.Info("Succesfully created backlog");
-                return backlog;
             }
             catch (Exception e)
             {
                 await Logger.Error("Failed to create backlog", e);
-                return null;
             }
         }
 
-        private async Task<Backlog> CreateBookBacklog(string title, string date, TimeSpan time)
+        private async Task CreateBookBacklog(string title, string date, TimeSpan time)
         {
             try
             {
@@ -332,16 +331,14 @@ namespace backlog.Views
                     UserRating = -1
                 };
                 await Logger.Info("Succesfully created backlog");
-                return backlog;
             }
             catch (Exception e)
             {
                 await Logger.Error("Failed to create backlog", e);
-                return null;
             }
         }
 
-        private async Task<Backlog> CreateSeriesBacklog(string title, string date, TimeSpan time)
+        private async Task CreateSeriesBacklog(string title, string date, TimeSpan time)
         {
             try
             {
@@ -369,16 +366,14 @@ namespace backlog.Views
                     UserRating = -1
                 };
                 await Logger.Info("Succesfully created backlog");
-                return backlog;
             }
             catch (Exception e)
             {
                 await Logger.Error("Failed to create backlog", e);
-                return null;
             }
         }
 
-        private async Task<Backlog> CreateGameBacklog(string title, string date, TimeSpan time)
+        private async Task CreateGameBacklog(string title, string date, TimeSpan time)
         {
             try
             {
@@ -421,13 +416,11 @@ namespace backlog.Views
                     UserRating = -1
                 };
                 await Logger.Info("Succesfully created backlog");
-                return backlog;
                 
             }
             catch (Exception e)
             {
                 await Logger.Error("Failed to create backlog", e);
-                return null;
             }
         }
 
