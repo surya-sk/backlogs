@@ -297,33 +297,26 @@ namespace backlog.Views
                 string response = await RestClient.GetBookResponse(title);
                 await Logger.Info($"Trying to find book {title}. Response {response}");
                 var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
-                Book book = new Book
+                ObservableCollection<Models.SearchResult> searchResults = new ObservableCollection<Models.SearchResult>();
+                foreach(var item in bookData.items)
                 {
-                    name = bookData.items[0].volumeInfo.title,
-                    author = string.Concat(bookData.items[0].volumeInfo.authors),
-                    desciption = bookData.items[0].volumeInfo.description,
-                    releaseDate = bookData.items[0].volumeInfo.publishedDate,
-                    image = bookData.items[0].volumeInfo.imageLinks.thumbnail,
-                    length = bookData.items[0].volumeInfo.pageCount
-                };
-                Backlog backlog = new Backlog
-                {
-                    id = Guid.NewGuid(),
-                    Name = book.name,
-                    Type = "Book",
-                    ReleaseDate = book.releaseDate,
-                    ImageURL = book.image,
-                    TargetDate = date,
-                    Description = book.desciption,
-                    Director = book.author,
-                    Length = book.length,
-                    Progress = 0,
-                    Units = "Pages",
-                    ShowProgress = true,
-                    NotifTime = time,
-                    UserRating = -1
-                };
-                await CreateBacklog(backlog);
+                    try
+                    {
+                        searchResults.Add(new Models.SearchResult
+                        {
+                            Id = item.id,
+                            Name = item.volumeInfo.title,
+                            Description = item.volumeInfo.publishedDate,
+                            ImageURL = item.volumeInfo.imageLinks.thumbnail
+                        });
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                }
+                ResultsListView.ItemsSource = searchResults;
+                _ = await ResultsDialog.ShowAsync();
                 await Logger.Info("Succesfully created backlog");
             }
             catch (Exception e)
@@ -451,6 +444,9 @@ namespace backlog.Views
                     case "Game":
                         await CreateGameBacklog(selectedItem, date, time);
                         break;
+                    case "Book":
+                        await CreateBookBacklog(selectedItem, date, time);
+                        break;
                 }
             }
         }
@@ -537,6 +533,49 @@ namespace backlog.Views
                 Director = game.company,
                 Progress = 0,
                 ShowProgress = false,
+                NotifTime = time,
+                UserRating = -1
+            };
+            await CreateBacklog(backlog);
+        }
+
+        private async Task CreateBookBacklog(Models.SearchResult searchResult, string date, TimeSpan time)
+        {
+            var title = NameInput.Text;
+            string response = await RestClient.GetBookResponse(title);
+            await Logger.Info($"Trying to find book {title}. Response {response}");
+            var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
+            Item item = new Item();
+            foreach (var i in bookData.items)
+            {
+                if(i.id == searchResult.Id)
+                {
+                    item = i;
+                }
+            }
+            Book book = new Book
+            {
+                name = item.volumeInfo.title,
+                author = string.Concat(item.volumeInfo.authors),
+                desciption = item.volumeInfo.description,
+                releaseDate = item.volumeInfo.publishedDate,
+                image = item.volumeInfo.imageLinks.thumbnail,
+                length = item.volumeInfo.pageCount
+            };
+            Backlog backlog = new Backlog
+            {
+                id = Guid.NewGuid(),
+                Name = book.name,
+                Type = "Book",
+                ReleaseDate = book.releaseDate,
+                ImageURL = book.image,
+                TargetDate = date,
+                Description = book.desciption,
+                Director = book.author,
+                Length = book.length,
+                Progress = 0,
+                Units = "Pages",
+                ShowProgress = true,
                 NotifTime = time,
                 UserRating = -1
             };

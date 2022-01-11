@@ -171,7 +171,7 @@ namespace backlog.Utils
 
         public static async Task<string> GetBookResponse(string id)
         {
-            Uri queryURL = new Uri($"https://www.googleapis.com/books/v1/volumes?q={id}&maxResults=1");
+            Uri queryURL = new Uri($"https://www.googleapis.com/books/v1/volumes?q={id}&maxResults=30");
             HttpResponseMessage response = await client.GetAsync(queryURL);
             if (response.IsSuccessStatusCode)
             {
