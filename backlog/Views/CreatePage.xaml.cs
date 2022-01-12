@@ -208,6 +208,7 @@ namespace backlog.Views
         /// <returns></returns>
         private async Task CreateBacklogItem(Backlog backlog)
         {
+            ProgBar.Visibility = Visibility.Visible;
             if (backlog != null)
             {
                 backlogs.Add(backlog);
@@ -224,7 +225,8 @@ namespace backlog.Views
             }
             else
             {
-                await ShowErrorDialog(NameInput.Text, TypeComoBox.SelectedItem.ToString());
+                await ShowErrorDialog();
+                ProgBar.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -242,28 +244,34 @@ namespace backlog.Views
                 string response = await RestClient.GetFilmResponse(title);
                 await Logger.Info($"Trying to find film {title}. Response: {response}");
                 FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
-                ObservableCollection<Models.SearchResult> results = new ObservableCollection<Models.SearchResult>();
-                foreach(var result in filmResult.results)
+                if(filmResult.results.Length > 0)
                 {
-                    try
+                    ObservableCollection<Models.SearchResult> results = new ObservableCollection<Models.SearchResult>();
+                    foreach (var result in filmResult.results)
                     {
-                        results.Add(new Models.SearchResult
+                        try
                         {
-                            Id = result.id,
-                            Name = result.title,
-                            Description = result.description,
-                            ImageURL = result.image
-                        });
+                            results.Add(new Models.SearchResult
+                            {
+                                Id = result.id,
+                                Name = result.title,
+                                Description = result.description,
+                                ImageURL = result.image
+                            });
+                        }
+                        catch
+                        {
+                            continue;
+                        }
                     }
-                    catch
-                    {
-                        continue;
-                    }
+                    ResultsListView.ItemsSource = results;
+                    _ = await ResultsDialog.ShowAsync();
+                    await Logger.Info("Succesfully created backlog");
                 }
-                ResultsListView.ItemsSource = results;
-                _ = await ResultsDialog.ShowAsync();
-                //FilmResponse filmResponse = filmResult.results[0
-                await Logger.Info("Succesfully created backlog");
+                else
+                {
+                    await ShowNotFoundDialog();
+                }
             }
             catch (Exception e)
             {
@@ -309,35 +317,43 @@ namespace backlog.Views
                 string response = await RestClient.GetMusicResponse(title);
                 await Logger.Info($"Searching for album {title}. Response: {response}");
                 var musicData = JsonConvert.DeserializeObject<MusicData>(response);
-                Music music = new Music
+                if(musicData != null)
                 {
-                    name = musicData.album.name,
-                    artist = musicData.album.artist,
-                    description = musicData.album.wiki == null ? "No summary found" : musicData.album.wiki.summary,
-                    releaseDate = musicData.album.wiki == null ? "" : musicData.album.wiki.published,
-                    image = musicData.album.image[2].Text
-                };
-                Backlog backlog = new Backlog
+                    Music music = new Music
+                    {
+                        name = musicData.album.name,
+                        artist = musicData.album.artist,
+                        description = musicData.album.wiki == null ? "No summary found" : musicData.album.wiki.summary,
+                        releaseDate = musicData.album.wiki == null ? "" : musicData.album.wiki.published,
+                        image = musicData.album.image[2].Text
+                    };
+                    Backlog backlog = new Backlog
+                    {
+                        id = Guid.NewGuid(),
+                        Name = music.name,
+                        Type = "Album",
+                        ReleaseDate = music.releaseDate,
+                        ImageURL = music.image,
+                        TargetDate = date,
+                        Description = music.description,
+                        Director = music.artist,
+                        Progress = 0,
+                        Units = "Minutes",
+                        ShowProgress = false,
+                        NotifTime = time,
+                        UserRating = -1
+                    };
+                    await CreateBacklogItem(backlog);
+                    await Logger.Info("Succesfully created backlog");
+                }
+                else
                 {
-                    id = Guid.NewGuid(),
-                    Name = music.name,
-                    Type = "Album",
-                    ReleaseDate = music.releaseDate,
-                    ImageURL = music.image,
-                    TargetDate = date,
-                    Description = music.description,
-                    Director = music.artist,
-                    Progress = 0,
-                    Units = "Minutes",
-                    ShowProgress = false,
-                    NotifTime = time,
-                    UserRating = -1
-                };
-                await CreateBacklogItem(backlog);
-                await Logger.Info("Succesfully created backlog");
+                    await ShowNotFoundDialog();
+                }
             }
             catch (Exception e)
             {
+                await ShowErrorDialog();
                 await Logger.Error("Failed to create backlog", e);
             }
         }
@@ -356,27 +372,34 @@ namespace backlog.Views
                 string response = await RestClient.GetBookResponse(title);
                 await Logger.Info($"Trying to find book {title}. Response {response}");
                 var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
-                ObservableCollection<Models.SearchResult> searchResults = new ObservableCollection<Models.SearchResult>();
-                foreach(var item in bookData.items)
+                if(bookData.items.Count > 0)
                 {
-                    try
+                    ObservableCollection<Models.SearchResult> searchResults = new ObservableCollection<Models.SearchResult>();
+                    foreach (var item in bookData.items)
                     {
-                        searchResults.Add(new Models.SearchResult
+                        try
                         {
-                            Id = item.id,
-                            Name = item.volumeInfo.title,
-                            Description = item.volumeInfo.publishedDate,
-                            ImageURL = item.volumeInfo.imageLinks.thumbnail
-                        });
+                            searchResults.Add(new Models.SearchResult
+                            {
+                                Id = item.id,
+                                Name = item.volumeInfo.title,
+                                Description = item.volumeInfo.publishedDate,
+                                ImageURL = item.volumeInfo.imageLinks.thumbnail
+                            });
+                        }
+                        catch
+                        {
+                            continue;
+                        }
                     }
-                    catch
-                    {
-                        continue;
-                    }
+                    ResultsListView.ItemsSource = searchResults;
+                    _ = await ResultsDialog.ShowAsync();
+                    await Logger.Info("Succesfully created backlog");
                 }
-                ResultsListView.ItemsSource = searchResults;
-                _ = await ResultsDialog.ShowAsync();
-                await Logger.Info("Succesfully created backlog");
+                else
+                {
+                    await ShowNotFoundDialog();
+                }
             }
             catch (Exception e)
             {
@@ -441,28 +464,35 @@ namespace backlog.Views
                 string response = await RestClient.GetSeriesResponse(title);
                 await Logger.Info($"Trying to find series {title}. Response: {response}");
                 SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
-                ObservableCollection<Models.SearchResult> searchResults = new ObservableCollection<Models.SearchResult>();
-                foreach(var result in seriesResult.results)
+                if(seriesResult.results.Length > 0)
                 {
-                    try
+                    ObservableCollection<Models.SearchResult> searchResults = new ObservableCollection<Models.SearchResult>();
+                    foreach (var result in seriesResult.results)
                     {
-                        searchResults.Add(new Models.SearchResult
+                        try
                         {
-                            Id = result.id,
-                            Name = result.title,
-                            Description = result.description,
-                            ImageURL = result.image,
-                        });
+                            searchResults.Add(new Models.SearchResult
+                            {
+                                Id = result.id,
+                                Name = result.title,
+                                Description = result.description,
+                                ImageURL = result.image,
+                            });
+                        }
+                        catch
+                        {
+                            continue;
+                        }
                     }
-                    catch
-                    {
-                        continue;
-                    }
+                    ResultsListView.ItemsSource = searchResults;
+                    _ = await ResultsDialog.ShowAsync();
+                    // SeriesResponse seriesResponse = seriesResult.results[0
+                    await Logger.Info("Succesfully created backlog");
                 }
-                ResultsListView.ItemsSource = searchResults;
-                _ = await ResultsDialog.ShowAsync();
-                // SeriesResponse seriesResponse = seriesResult.results[0
-                await Logger.Info("Succesfully created backlog");
+                else
+                {
+                    await ShowNotFoundDialog();
+                }
             }
             catch (Exception e)
             {
@@ -508,41 +538,48 @@ namespace backlog.Views
                 string response = await RestClient.GetGameResponse(title);
                 await Logger.Info($"Trying to find game {title}. Response: {response}");
                 var result = JsonConvert.DeserializeObject<GameResponse[]>(response);
-                ObservableCollection<Models.SearchResult> results = new ObservableCollection<Models.SearchResult>();
-                foreach(var res in result)
+                if(result.Length > 0)
                 {
-                    string id = res.id.ToString();
-                    string gameResponse = await RestClient.GetGameResult(id);
-                    var gameResult = JsonConvert.DeserializeObject<GameResult[]>(gameResponse);
-                    var gameCoverResponse = await RestClient.GetGameCover(gameResult[0].cover.ToString());
-                    var gameCover = JsonConvert.DeserializeObject<GameCover[]>(gameCoverResponse);
-                    string releaseDateResponse = await RestClient.GetGameReleaseResponse(gameResult[0].release_dates[0].ToString());
-                    var releaseDateTimestamp = JsonConvert.DeserializeObject<GameReleaseDate[]>(releaseDateResponse);
-                    var releaseDate = DateTimeOffset.FromUnixTimeSeconds(releaseDateTimestamp[0].date);
-                   try
+                    ObservableCollection<Models.SearchResult> results = new ObservableCollection<Models.SearchResult>();
+                    foreach (var res in result)
                     {
-                        Game game = new Game
+                        string id = res.id.ToString();
+                        string gameResponse = await RestClient.GetGameResult(id);
+                        var gameResult = JsonConvert.DeserializeObject<GameResult[]>(gameResponse);
+                        var gameCoverResponse = await RestClient.GetGameCover(gameResult[0].cover.ToString());
+                        var gameCover = JsonConvert.DeserializeObject<GameCover[]>(gameCoverResponse);
+                        string releaseDateResponse = await RestClient.GetGameReleaseResponse(gameResult[0].release_dates[0].ToString());
+                        var releaseDateTimestamp = JsonConvert.DeserializeObject<GameReleaseDate[]>(releaseDateResponse);
+                        var releaseDate = DateTimeOffset.FromUnixTimeSeconds(releaseDateTimestamp[0].date);
+                        try
                         {
-                            name = gameResult[0].name + $" ({releaseDate.Year})",
-                            releaseDate = releaseDate.ToString("D"),
-                            image = "https:" + gameCover[0].url
-                        };
-                        results.Add(new Models.SearchResult
+                            Game game = new Game
+                            {
+                                name = gameResult[0].name + $" ({releaseDate.Year})",
+                                releaseDate = releaseDate.ToString("D"),
+                                image = "https:" + gameCover[0].url
+                            };
+                            results.Add(new Models.SearchResult
+                            {
+                                Id = res.id.ToString(),
+                                Name = game.name,
+                                Description = game.releaseDate,
+                                ImageURL = game.image
+                            });
+                        }
+                        catch
                         {
-                            Id = res.id.ToString(),
-                            Name = game.name,
-                            Description = game.releaseDate,
-                            ImageURL = game.image
-                        });
+                            continue;
+                        }
                     }
-                    catch
-                    {
-                        continue;
-                    }
+                    ResultsListView.ItemsSource = results;
+                    _ = await ResultsDialog.ShowAsync();
+                    await Logger.Info("Succesfully created backlog");
                 }
-                ResultsListView.ItemsSource = results;
-                _ = await ResultsDialog.ShowAsync();
-                await Logger.Info("Succesfully created backlog");
+                else
+                {
+                    await ShowNotFoundDialog();
+                }
             }
             catch (Exception e)
             {
@@ -590,12 +627,23 @@ namespace backlog.Views
             await CreateBacklogItem(backlog);
         }
 
-        private async Task ShowErrorDialog(string name, string type)
+        private async Task ShowNotFoundDialog()
         {
             ContentDialog contentDialog = new ContentDialog
             {
-                Title = $"Couldn't find {name}",
-                Content = $"Couldn't find {name}. Check if you've picked the right type or try entering the full title if you haven't done so. If that doesn't work, please go to \'Settings + more\' and send me the logs",
+                Title = $"Couldn't find any results for {NameInput.Text}",
+                Content = $"Check if you've picked the right type or try entering the full title if you haven't done so. If that doesn't work, please go to \'Settings + more\' and send me the logs",
+                CloseButtonText = "Ok"
+            };
+            _ = await contentDialog.ShowAsync();
+        }
+
+        private async Task ShowErrorDialog()
+        {
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = $"Couldn't find any results for {NameInput.Text}",
+                Content = $"Could not create Backlog. Please go to \'Settings + more\' and send me the logs",
                 CloseButtonText = "Ok"
             };
             _ = await contentDialog.ShowAsync();
