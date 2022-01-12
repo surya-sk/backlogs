@@ -34,9 +34,9 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <TextBlock Text="Create a new Backlog" FontSize="30" Margin="10,0,0,20" />
-                <TextBlock Text="The app will search various sources such as IMDB and Twitch for metadata, and will fail to create a Backlog if not found. Be sure to be specific when entering the name and always enter the full title"
+                <TextBlock Text="The app will search various sources such as IMDB and Twitch for metadata, and will fail to create a Backlog if not found. Except for music backlogs, search results will be shown."
                        Margin="10,0,0,20" TextWrapping="Wrap" />
-                <TextBlock Text="Please follow the hints given in the textbox when entering the name. Do NOT use special characters. Entering the year when searching for films is optional but it will help in getting accurate results"
+                <TextBlock Text="Please follow the hints given in the textbox when entering the name. Do NOT use special characters."
                        Foreground="Yellow" FontStyle="Italic" Margin="10,0,0,20" TextWrapping="Wrap" />
                 <ComboBox x:Name="TypeComoBox" Header="Type" SelectionChanged="TypeComoBox_SelectionChanged" PlaceholderText="Choose type" Margin="10,0,0,20">
                     <x:String>Film</x:String>
