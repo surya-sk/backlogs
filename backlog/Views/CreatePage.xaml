@@ -62,19 +62,19 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 
-                <TextBlock Text="The following results were found. Click on the one you want" />
+                <TextBlock x:Name="SearchResultsHeader" TextWrapping="Wrap" Margin="0,10,0,30" />
                 <ListView x:Name="ResultsListView" SelectionChanged="ResultsListView_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="data:SearchResult">
-                            <Grid>
+                            <Grid Margin="20">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Image Source="{x:Bind ImageURL}" MaxHeight="100" Stretch="Fill"/>
+                                <Image Source="{x:Bind ImageURL}" MaxHeight="100" MaxWidth="100" Stretch="Uniform"/>
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock Text="{x:Bind Name}" Margin="10"/>
+                                    <TextBlock Text="{x:Bind Name}" Margin="10" TextWrapping="Wrap"/>
                                     <TextBlock Text="{x:Bind Description}"  Margin="10"/>
                                 </StackPanel>
                             </Grid>
