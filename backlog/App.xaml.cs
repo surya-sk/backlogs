@@ -26,23 +26,12 @@ namespace backlog
     /// </summary>
     sealed partial class App : Application
     {
-        public static string ClientID = "c81b068d-ab10-4c00-a24d-08c3a1a6b7c6"; //msidentity-samples-testing tenant
-        public static IPublicClientApplication PCA = null;
-
-        public static string[] Scopes = { "User.Read" };
-        public static string Username = string.Empty;
-
-        /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App()
         {
             this.InitializeComponent();
-            PCA = PublicClientApplicationBuilder.Create(ClientID)
-                .WithRedirectUri($"msal{ClientID}://auth")
-                .WithIosKeychainSecurityGroup("com.microsoft.adalcache")
-                .Build();
             this.Suspending += OnSuspending;
         }
 

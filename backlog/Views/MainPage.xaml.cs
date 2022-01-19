@@ -20,6 +20,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Animation;
 using backlog.Logging;
 using Windows.Storage;
+using backlog.Auth;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -114,7 +115,7 @@ namespace backlog.Views
             if (isNetworkAvailable && signedIn)
             {
                 await Logger.Info("Signing in user....");
-                graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
+                graphServiceClient = await MSAL.GetGraphServiceClient();
                 await SetUserPhotoAsync();
                 TopSigninButton.Visibility = Visibility.Collapsed;
                 BottomSigninButton.Visibility = Visibility.Collapsed;
@@ -271,8 +272,7 @@ namespace backlog.Views
                 if (!signedIn)
                 {
                     await SaveData.GetInstance().DeleteLocalFileAsync();
-                    graphServiceClient = await SaveData.GetInstance().GetGraphServiceClient();
-                    Settings.IsSignedIn = true;
+                    graphServiceClient = await MSAL.GetGraphServiceClient();
                     Frame.Navigate(typeof(MainPage), "sync");
                 }
             }

@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using backlog.Saving;
 using backlog.Logging;
 using System.Text;
+using backlog.Auth;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -217,7 +218,7 @@ namespace backlog.Views
             ContentDialogResult result = await contentDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                await SaveData.GetInstance().SignOut();
+                await MSAL.SignOut();
                 Frame.Navigate(typeof(MainPage));
             }
         }

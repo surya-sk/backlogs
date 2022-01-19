@@ -14,6 +14,7 @@ using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 using backlog.Utils;
+using backlog.Auth;
 
 namespace backlog.Saving
 {
@@ -23,26 +24,6 @@ namespace backlog.Saving
         private ObservableCollection<Backlog> Backogs = null;
         StorageFolder localFolder = ApplicationData.Current.LocalFolder;
         string fileName = "backlogs.txt";
-        StorageFolder cacheFolder = ApplicationData.Current.LocalCacheFolder;
-        string accountPicFile = "profile.png";
-
-        private static string[] scopes = new string[]
-        {
-             "user.read",
-             "Files.Read",
-             "Files.Read.All",
-             "Files.ReadWrite",
-             "Files.ReadWrite.All"
-        };
-
-        private const string ClientId = "c81b068d-ab10-4c00-a24d-08c3a1a6b7c6";
-        private const string Tenant = "consumers";
-        private const string Authority = "https://login.microsoftonline.com/" + Tenant;
-
-        private static IPublicClientApplication PublicClientApp;
-
-        private static readonly string MSGraphURL = "https://graph.microsoft.com/v1.0/";
-        private static AuthenticationResult authResult;
         private static GraphServiceClient graphServiceClient = null;
 
         private SaveData()
@@ -54,119 +35,14 @@ namespace backlog.Saving
             return instance;
         }
 
-        /// <summary>
-        /// Sign the user in and return the access token
-        /// </summary>
-        /// <param name="scopes"></param>
-        /// <returns></returns>
-        private static async Task<string> SignInUserAndGetTokenUsingMSAL(string[] scopes)
+
+
+        private async Task DeleteLocalFiles()
         {
-            PublicClientApp = PublicClientApplicationBuilder.Create(ClientId)
-                 .WithAuthority(Authority)
-                 .WithUseCorporateNetwork(false)
-                 .WithRedirectUri("https://login.microsoftonline.com/common/oauth2/nativeclient")
-                 .WithLogging((level, message, containsPii) =>
-                 {
-                     Debug.WriteLine($"MSAL: {level} {message} ");
-                 }, LogLevel.Warning, enablePiiLogging: false, enableDefaultPlatformLogging: true)
-                 .Build();
-
-            var accounts = await PublicClientApp.GetAccountsAsync().ConfigureAwait(false);
-            var firstAccount = accounts.FirstOrDefault();
-
-            try
-            {
-                await Logging.Logger.Info("Getting auth result.....");
-                authResult = await PublicClientApp.AcquireTokenSilent(scopes, firstAccount).ExecuteAsync();
-            }
-            catch (MsalUiRequiredException ex)
-            {
-                await Logging.Logger.Warn("Could not acquite token silently");
-                await Logging.Logger.Warn(ex.Message);
-                // A MsalUiRequiredException happened on AcquireTokenSilentAsync. This indicates you need to call AcquireTokenAsync to acquire a token
-                Debug.WriteLine($"MsalUiRequiredException: {ex.Message}");
-                authResult = await PublicClientApp.AcquireTokenInteractive(scopes).ExecuteAsync().ConfigureAwait(false);
-
-            }
-            return authResult.AccessToken;
+            var file = await localFolder.GetFileAsync(fileName);
+            await file.DeleteAsync(StorageDeleteOption.Default);
         }
 
-        /// <summary>
-        /// Initialize graph service client 
-        /// </summary>
-        /// <param name="scopes"></param>
-        /// <returns></returns>
-        private async static Task<GraphServiceClient> SignInAndInitializeGraphServiceClient(string[] scopes)
-        {
-            GraphServiceClient graphClient = new GraphServiceClient(MSGraphURL,
-            new DelegateAuthenticationProvider(async (requestMessage) => {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", await SignInUserAndGetTokenUsingMSAL(scopes));
-            }));
-
-            return await Task.FromResult(graphClient);
-        }
-
-        /// <summary>
-        /// Sign out of MSA
-        /// </summary>
-        /// <returns></returns>
-        public async Task SignOut()
-        {
-            IEnumerable<IAccount> accounts = await PublicClientApp.GetAccountsAsync().ConfigureAwait(false);
-            IAccount firstAccount = accounts.FirstOrDefault();
-            try
-            {
-                await Logging.Logger.Info("Signing out user...");
-                await PublicClientApp.RemoveAsync(firstAccount).ConfigureAwait(false);
-                Settings.IsSignedIn = false;
-                var file = await localFolder.GetFileAsync(fileName);
-                await file.DeleteAsync(StorageDeleteOption.Default);
-            }
-            catch(Exception ex)
-            {
-                await Logging.Logger.Error("Failed to sign out user.", ex);
-            }
-        }
-
-        /// <summary>
-        /// Returns the service client, and signs the user in if they haven't
-        /// </summary>
-        /// <returns></returns>
-        public async Task<GraphServiceClient> GetGraphServiceClient()
-        {
-            if (graphServiceClient == null)
-            {
-                graphServiceClient = await SignInAndInitializeGraphServiceClient(scopes);
-                try
-                {
-                    await Logging.Logger.Info("Fetching graph service client.....");
-                    var user = await graphServiceClient.Me.Request().GetAsync();
-                    Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
-                    Settings.UserName = user.GivenName;
-                    if (photoresponse != null)
-                    {
-                        using (var randomAccessStream = photoresponse.AsRandomAccessStream())
-                        {
-                            BitmapImage image = new BitmapImage();
-                            randomAccessStream.Seek(0);
-                            await image.SetSourceAsync(randomAccessStream);
-
-                            BitmapDecoder decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
-                            SoftwareBitmap softwareBitmap = await decoder.GetSoftwareBitmapAsync();
-                            var storageFile = await cacheFolder.CreateFileAsync(accountPicFile, CreationCollisionOption.ReplaceExisting);
-                            BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, await storageFile.OpenAsync(FileAccessMode.ReadWrite));
-                            encoder.SetSoftwareBitmap(softwareBitmap);
-                            await encoder.FlushAsync();
-                        }
-                    }
-                }
-                catch(Exception ex)
-                {
-                    await Logging.Logger.Error("Failed to sign-in user or get user photo and name", ex);
-                }
-            }
-            return graphServiceClient;
-        }
 
         /// <summary>
         /// Write the backlog list in JSON format
@@ -177,6 +53,7 @@ namespace backlog.Saving
             string json = JsonConvert.SerializeObject(Backogs);
             StorageFile storageFile = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(storageFile, json);
+            graphServiceClient = await MSAL.GetGraphServiceClient();
             if(sync)
             {
                 if (graphServiceClient is null)
@@ -228,6 +105,7 @@ namespace backlog.Saving
         /// <returns></returns>
         private async Task<string> DownloadBacklogsJsonAsync()
         {
+            graphServiceClient = await MSAL.GetGraphServiceClient();
             var search = await graphServiceClient.Me.Drive.Root.Search(fileName).Request().GetAsync();
             if (search.Count == 0)
             {
