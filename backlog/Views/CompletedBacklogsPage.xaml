@@ -23,17 +23,17 @@
                     Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
 
         <controls:AdaptiveGridView x:Name="MainGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="250" Grid.Row="1"
-                                                       SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind FinishedBacklogs}" Margin="20">
+                                                       SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedBacklogs}" Margin="20">
             <controls:AdaptiveGridView.ItemTemplate>
                 <DataTemplate x:DataType="data:Backlog">
-                    <Grid x:Name="rootGrid">
+                    <Grid x:Name="connectedElement">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <Image Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch"/>
-                        <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Left">
+                        <RelativePanel x:Name="DetailsPanel" Grid.Row="1" Margin="16,6,0,0" HorizontalAlignment="Left">
                             <TextBlock
                         x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
                                     Style="{StaticResource BaseTextBlockStyle}"
@@ -50,5 +50,33 @@
                 </DataTemplate>
             </controls:AdaptiveGridView.ItemTemplate>
         </controls:AdaptiveGridView>
-    </Grid>
+
+        <ContentDialog x:Name="PopupOverlay" Title="Edit Backlog">
+            <Grid x:Name="destinationGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <RelativePanel x:Name="DetailsPanel" Grid.Row="1" Margin="16,6,0,0" HorizontalAlignment="Left">
+                    <Image x:Name="PopupImage" Height="150" Width="200" HorizontalAlignment="Stretch"/>
+                    <TextBlock
+                        x:Name="PopupTitle" MaxLines="2" TextTrimming="CharacterEllipsis" RelativePanel.Below="PopupImage"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    TextLineBounds="TrimToCapHeight"
+                                    TextWrapping="Wrap" />
+                    <TextBlock x:Name="PopupDirector" Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="PopupTitle" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                    <muxc:RatingControl x:Name="PopupRating" RelativePanel.Below="PopupDirector" IsReadOnly="True"/>
+                    <Slider x:Name="PopupSlider" RelativePanel.Below="PopupRating" ValueChanged="PopupSlider_ValueChanged" Maximum="5" Minimum="-1" StepFrequency="0.5" />
+                    <StackPanel Orientation="Horizontal" RelativePanel.Below="PopupSlider">
+                        <Button x:Name="SaveButton" Content="Save" Background="Green" Click="SaveButton_Click" Margin="10" />
+                        <Button x:Name="IncompleteButton" Content="Mark as Incomplete" Background="GreenYellow" Click="IncompleteButton_Click" Margin="10" />
+                        <Button x:Name="CloseButton" Content="Close" Background="Red" Click="CloseButton_Click" Margin="10" />
+                    </StackPanel>
+                </RelativePanel>
+            </Grid>
+        </ContentDialog>
+        </Grid>
 </Page>

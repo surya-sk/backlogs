@@ -1,12 +1,15 @@
 ﻿using backlog.Models;
 using backlog.Saving;
+using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Media.Imaging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -18,6 +21,7 @@ namespace backlog.Views
     public sealed partial class CompletedBacklogsPage : Page
     {
         private ObservableCollection<Backlog> FinishedBacklogs;
+        private Backlog SelectedBacklog;
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
@@ -45,6 +49,43 @@ namespace backlog.Views
                 Frame.Navigate(typeof(MainPage));
             }
             e.Handled = true;
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void IncompleteButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void MainGrid_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var selectedBacklog = e.ClickedItem as Backlog;
+
+            ConnectedAnimation connectedAnimation = MainGrid.PrepareConnectedAnimation("forwardAnimation", selectedBacklog, "connectedElement");
+            connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
+            connectedAnimation.TryStart(destinationGrid);
+
+            PopupImage.Source = new BitmapImage(new Uri(selectedBacklog.ImageURL));
+            PopupTitle.Text = selectedBacklog.Name;
+            PopupDirector.Text = selectedBacklog.Director;
+            PopupRating.Value = selectedBacklog.UserRating;
+            PopupSlider.Value = selectedBacklog.UserRating;
+
+            await PopupOverlay.ShowAsync();
+        }
+
+        private void PopupSlider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+        {
+
         }
     }
 }
