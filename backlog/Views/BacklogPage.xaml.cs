@@ -123,7 +123,6 @@ namespace backlog.Views
         private void NumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
         {
             edited = true;
-            BacklogProgressBar.Value = ProgressNumBox.Value;
         }
 
         private async void DoneButton_Click(object sender, RoutedEventArgs e)
@@ -179,7 +178,7 @@ namespace backlog.Views
 
         private void RatingSlider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            UserRating.Value = RatingSlider.Value;
+            backlog.UserRating = (float)RatingSlider.Value;
         }
     }
 }

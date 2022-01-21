@@ -103,12 +103,12 @@
                         <TextBlock Text="{x:Bind backlog.Length}" Margin="0,5,10,0" FontSize="15"/>
                         <TextBlock Text="{x:Bind backlog.Units}" Margin="0,5,10,0" FontSize="15" />
                     </StackPanel>
-                    <muxc:ProgressBar x:Name="BacklogProgressBar" Value="{x:Bind backlog.Progress}" Minimum="0" Maximum="{x:Bind backlog.Length}" IsIndeterminate="False" Margin="20"/>
+                    <muxc:ProgressBar x:Name="BacklogProgressBar" Value="{x:Bind backlog.Progress, Mode=TwoWay}" Minimum="0" Maximum="{x:Bind backlog.Length}" IsIndeterminate="False" Margin="20"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="3" Margin="30">
                     <TextBlock Text="Have you finished checking this out?" Margin="0,20,0,10"/>
-                    <muxc:RatingControl x:Name="UserRating" Value="{x:Bind backlog.UserRating}" IsClearEnabled="True"
+                    <muxc:RatingControl x:Name="UserRating" Value="{x:Bind backlog.UserRating, Mode=TwoWay}" IsClearEnabled="True"
                                         Margin="0,20,0,10" HorizontalAlignment="Left" IsEnabled="False"/>
                     <Slider x:Name="RatingSlider" Value="{x:Bind backlog.UserRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ValueChanged="RatingSlider_ValueChanged" 
                             Maximum="5" Minimum="-1" StepFrequency="0.5" />
