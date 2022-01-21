@@ -127,6 +127,7 @@ namespace backlog.Views
         {
             await Logger.Info("Marking backlog as complete");
             backlog.IsComplete = true;
+            backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
             await SaveBacklog();
             Frame.Navigate(typeof(MainPage));
         }
