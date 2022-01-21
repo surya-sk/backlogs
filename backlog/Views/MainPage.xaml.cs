@@ -335,9 +335,8 @@ namespace backlog.Views
             {
                 if(b.TargetDate != "None")
                 {
-                    ApplicationDataContainer notifSettings = ApplicationData.Current.LocalSettings;
-                    int? notifSent = (int?)notifSettings.Values[b.id.ToString()];
-                    if (notifSent != 1)
+                    var savedNotifTime = Settings.GetNotifTime(b.id.ToString());
+                    if(savedNotifTime == "" || savedNotifTime != b.NotifTime.ToString())
                     {
                         DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate, CultureInfo.InvariantCulture).Add(b.NotifTime);
                         int result = DateTimeOffset.Compare(date, DateTimeOffset.Now);
@@ -350,7 +349,7 @@ namespace backlog.Views
                             ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
                             ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
                         }
-                        notifSettings.Values[b.id.ToString()] = 1;
+                        Settings.SetNotifTime(b.id.ToString(), b.NotifTime.ToString());
                     }
                 }
                 string showLiveTile = ApplicationData.Current.LocalSettings.Values["LiveTileOn"]?.ToString();
