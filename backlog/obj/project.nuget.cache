@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "whlbtToFqjt0nlDZcPxRPq3mptcnB8GDxsV4FYQEJQhinCqHm6A0Ap4MSj90joIga/K8PPh34Ji2Pzvi8bxvsQ==",
+  "dgSpecHash": "pU/Fmn3MrWsM9prELU/wdLJ+dZPz2zimEeJArTl9gxXxSmvmBjwAr5qIfP6v4DCQ42vVLC5LxTlgMxQ0NqqmMw==",
   "success": true,
   "projectFilePath": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
   "expectedPackageFiles": [
@@ -12,7 +12,7 @@
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.graph\\1.15.0\\microsoft.graph.1.15.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.graph.core\\1.15.0\\microsoft.graph.core.1.15.0.nupkg.sha512",
-    "C:\\Users\\surya\\.nuget\\packages\\microsoft.identity.client\\4.36.1\\microsoft.identity.client.4.36.1.nupkg.sha512",
+    "C:\\Users\\surya\\.nuget\\packages\\microsoft.identity.client\\4.40.0\\microsoft.identity.client.4.40.0.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\microsoft.net.http\\2.2.22\\microsoft.net.http.2.2.22.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\microsoft.net.native.compiler\\1.7.6\\microsoft.net.native.compiler.1.7.6.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\microsoft.net.native.sharedlibrary-arm\\1.7.3\\microsoft.net.native.sharedlibrary-arm.1.7.3.nupkg.sha512",

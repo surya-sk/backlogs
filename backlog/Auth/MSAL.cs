@@ -138,7 +138,14 @@ namespace backlog.Auth
                 await Logger.Info("Signing out user...");
                 await PublicClientApplication.RemoveAsync(firstAccount).ConfigureAwait(false);
                 Settings.IsSignedIn = false;
-                await SaveData.GetInstance().DeleteLocalFileAsync();
+                try
+                {
+                    await SaveData.GetInstance().DeleteLocalFileAsync();
+                }
+                catch
+                {
+                    // : )
+                }
             }
             catch (Exception ex)
             {

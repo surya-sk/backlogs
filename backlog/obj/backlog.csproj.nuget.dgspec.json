@@ -49,7 +49,7 @@
             },
             "Microsoft.Identity.Client": {
               "target": "Package",
-              "version": "[4.36.1, )"
+              "version": "[4.40.0, )"
             },
             "Microsoft.NETCore.UniversalWindowsPlatform": {
               "target": "Package",

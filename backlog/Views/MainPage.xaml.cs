@@ -271,7 +271,7 @@ namespace backlog.Views
             {
                 if (!signedIn)
                 {
-                    await SaveData.GetInstance().DeleteLocalFileAsync();
+                     await SaveData.GetInstance().DeleteLocalFileAsync();
                     graphServiceClient = await MSAL.GetGraphServiceClient();
                     Frame.Navigate(typeof(MainPage), "sync");
                 }

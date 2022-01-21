@@ -99,7 +99,7 @@
           "lib/netstandard1.1/Microsoft.Graph.Core.dll": {}
         }
       },
-      "Microsoft.Identity.Client/4.36.1": {
+      "Microsoft.Identity.Client/4.40.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
@@ -2884,7 +2884,7 @@
           "lib/netstandard1.1/Microsoft.Graph.Core.dll": {}
         }
       },
-      "Microsoft.Identity.Client/4.36.1": {
+      "Microsoft.Identity.Client/4.40.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
@@ -5639,7 +5639,7 @@
           "lib/netstandard1.1/Microsoft.Graph.Core.dll": {}
         }
       },
-      "Microsoft.Identity.Client/4.36.1": {
+      "Microsoft.Identity.Client/4.40.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
@@ -8430,7 +8430,7 @@
           "lib/netstandard1.1/Microsoft.Graph.Core.dll": {}
         }
       },
-      "Microsoft.Identity.Client/4.36.1": {
+      "Microsoft.Identity.Client/4.40.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
@@ -11200,7 +11200,7 @@
           "lib/netstandard1.1/Microsoft.Graph.Core.dll": {}
         }
       },
-      "Microsoft.Identity.Client/4.36.1": {
+      "Microsoft.Identity.Client/4.40.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
@@ -13964,7 +13964,7 @@
           "lib/netstandard1.1/Microsoft.Graph.Core.dll": {}
         }
       },
-      "Microsoft.Identity.Client/4.36.1": {
+      "Microsoft.Identity.Client/4.40.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
@@ -16764,7 +16764,7 @@
           "lib/netstandard1.1/Microsoft.Graph.Core.dll": {}
         }
       },
-      "Microsoft.Identity.Client/4.36.1": {
+      "Microsoft.Identity.Client/4.40.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
@@ -19528,7 +19528,7 @@
           "lib/netstandard1.1/Microsoft.Graph.Core.dll": {}
         }
       },
-      "Microsoft.Identity.Client/4.36.1": {
+      "Microsoft.Identity.Client/4.40.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
@@ -22502,10 +22502,10 @@
         "microsoft.graph.core.nuspec"
       ]
     },
-    "Microsoft.Identity.Client/4.36.1": {
-      "sha512": "E7nlLZ4CSdzLM4+OWXLrjHUfwn7S+fr7vnowjsFqeA3ST1jlNO8C87boCzsqBfjMSLeXaHa7SsvsKXoKAMHJuw==",
+    "Microsoft.Identity.Client/4.40.0": {
+      "sha512": "MoVyFayLFI/NPzTENJtS3X8mdZyyTkihzQElGimOpiX0+O4jE8RftNLbPGEzn/xDWGqz9julxEbHuOV1tD7+6w==",
       "type": "package",
-      "path": "microsoft.identity.client/4.36.1",
+      "path": "microsoft.identity.client/4.40.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -22530,7 +22530,7 @@
         "lib/xamarinios10/Microsoft.Identity.Client.xml",
         "lib/xamarinmac20/Microsoft.Identity.Client.dll",
         "lib/xamarinmac20/Microsoft.Identity.Client.xml",
-        "microsoft.identity.client.4.36.1.nupkg.sha512",
+        "microsoft.identity.client.4.40.0.nupkg.sha512",
         "microsoft.identity.client.nuspec"
       ]
     },
@@ -33545,7 +33545,7 @@
     "UAP,Version=v10.0.15063": [
       "Microsoft.AspNet.WebApi.Client >= 5.2.7",
       "Microsoft.Graph >= 1.15.0",
-      "Microsoft.Identity.Client >= 4.36.1",
+      "Microsoft.Identity.Client >= 4.40.0",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 6.2.12",
       "Microsoft.Toolkit.Uwp >= 4.0.0",
       "Microsoft.Toolkit.Uwp.Notifications >= 7.0.0",
@@ -33605,7 +33605,7 @@
           },
           "Microsoft.Identity.Client": {
             "target": "Package",
-            "version": "[4.36.1, )"
+            "version": "[4.40.0, )"
           },
           "Microsoft.NETCore.UniversalWindowsPlatform": {
             "target": "Package",
