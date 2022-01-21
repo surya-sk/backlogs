@@ -298,7 +298,8 @@ namespace backlog.Views
                 Units = "Minutes",
                 ShowProgress = true,
                 NotifTime = time == null ? TimeSpan.Zero : time,
-                UserRating = -1
+                UserRating = -1,
+                CreatedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture)
             };
             await CreateBacklogItem(backlog);
         }
@@ -341,7 +342,8 @@ namespace backlog.Views
                         Units = "Minutes",
                         ShowProgress = false,
                         NotifTime = time,
-                        UserRating = -1
+                        UserRating = -1,
+                        CreatedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture)
                     };
                     await CreateBacklogItem(backlog);
                     await Logger.Info("Succesfully created backlog");
@@ -445,7 +447,8 @@ namespace backlog.Views
                 Units = "Pages",
                 ShowProgress = true,
                 NotifTime = time,
-                UserRating = -1
+                UserRating = -1,
+                CreatedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture)
             };
             await CreateBacklogItem(backlog);
         }
@@ -519,7 +522,8 @@ namespace backlog.Views
                 Units = "Season(s)",
                 ShowProgress = true,
                 NotifTime = time,
-                UserRating = -1
+                UserRating = -1,
+                CreatedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture)
             };
             await CreateBacklogItem(backlog);
         }
@@ -622,7 +626,8 @@ namespace backlog.Views
                 Progress = 0,
                 ShowProgress = false,
                 NotifTime = time,
-                UserRating = -1
+                UserRating = -1,
+                CreatedDate = DateTimeOffset.Now.Date.ToString("d" ,CultureInfo.InvariantCulture)
             };
             await CreateBacklogItem(backlog);
         }
