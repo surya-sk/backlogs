@@ -60,14 +60,14 @@ namespace backlog.Views
             {
                 if(backlog.id == SelectedBacklog.id)
                 {
-                    backlog.UserRating = (float)PopupRating.Value;
+                    backlog.UserRating = PopupRating.Value;
                 }
             }
             foreach (var backlog in FinishedBacklogs)
             {
                 if (backlog.id == SelectedBacklog.id)
                 {
-                    backlog.UserRating = (float)PopupRating.Value;
+                    backlog.UserRating = PopupRating.Value;
                 }
             }
             SaveData.GetInstance().SaveSettings(Backlogs);

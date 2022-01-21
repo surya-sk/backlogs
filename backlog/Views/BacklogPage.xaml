@@ -103,18 +103,45 @@
                         <TextBlock Text="{x:Bind backlog.Length}" Margin="0,5,10,0" FontSize="15"/>
                         <TextBlock Text="{x:Bind backlog.Units}" Margin="0,5,10,0" FontSize="15" />
                     </StackPanel>
-                    <muxc:ProgressBar x:Name="BacklogProgressBar" Value="{x:Bind backlog.Progress, Mode=TwoWay}" Minimum="0" Maximum="{x:Bind backlog.Length}" IsIndeterminate="False" Margin="20"/>
+                    <muxc:ProgressBar x:Name="BacklogProgressBar" Value="{x:Bind backlog.Progress, Mode=TwoWay}" Minimum="0" Maximum="{x:Bind backlog.Length}" 
+                                      IsIndeterminate="False" Margin="20"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="3" Margin="30">
-                    <TextBlock Text="Have you finished checking this out?" Margin="0,20,0,10"/>
-                    <muxc:RatingControl x:Name="UserRating" Value="{x:Bind backlog.UserRating, Mode=TwoWay}" IsClearEnabled="True"
-                                        Margin="0,20,0,10" HorizontalAlignment="Left" IsEnabled="False"/>
-                    <Slider x:Name="RatingSlider" Value="{x:Bind backlog.UserRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ValueChanged="RatingSlider_ValueChanged" 
-                            Maximum="5" Minimum="-1" StepFrequency="0.5" />
-                    <TextBlock Text="Move the slider to update the rating" Margin="0,0,0,10"/>
+                    <TextBlock Text="Have you finished checking this out?" Margin="0,20,0,10" />
                     <Button x:Name="FinishButton" Content="Mark As Complete" Background="Green" Click="FinishButton_Click" />
                 </StackPanel>
+
+                <ContentDialog x:Name="RatingDialog" Title="Are you done?">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="What did you think of" Margin="0,0,5,0" TextWrapping="Wrap" />
+                            <TextBlock Text="{x:Bind backlog.Name}" TextWrapping="Wrap"/>
+                            <TextBlock Text="?" />
+                        </StackPanel>
+
+                        <muxc:RatingControl x:Name="UserRating" Grid.Row="1" Value="{x:Bind backlog.UserRating}" IsClearEnabled="True"
+                                        Margin="0,20,0,10" HorizontalAlignment="Center" IsEnabled="False"/>
+
+                        <StackPanel Grid.Row="2">
+                            <Slider x:Name="RatingSlider" Value="{x:Bind backlog.UserRating}" ValueChanged="RatingSlider_ValueChanged"
+                                    Maximum="5" Minimum="-1" StepFrequency="0.5" Margin="10" />
+                            <TextBlock Text="Move the slider to update the rating" Margin="0,0,0,10"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="3">
+                            <Button x:Name="CompleteButton" Content="Done" Background="Green" Click="CompleteButton_Click" Margin="10" />
+                            <Button x:Name="CancelButton" Content="Cancel" Background="Red" Click="CancelButton_Click" />
+                        </StackPanel>
+                    </Grid>
+                </ContentDialog>
 
                 <RelativePanel Grid.Row="4" Margin="30">
                     <TextBlock x:Name="SourceText" Text="Metadata obtained from" Margin="0,0,5,0"/>

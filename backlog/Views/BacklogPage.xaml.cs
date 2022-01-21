@@ -152,11 +152,7 @@ namespace backlog.Views
         /// <param name="e"></param>
         private async void FinishButton_Click(object sender, RoutedEventArgs e)
         {
-            await Logger.Info("Marking backlog as complete");
-            backlog.IsComplete = true;
-            backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
-            await SaveBacklog();
-            Frame.Navigate(typeof(MainPage));
+            await RatingDialog.ShowAsync();
         }
 
         /// <summary>
@@ -176,9 +172,25 @@ namespace backlog.Views
             Frame.Navigate(typeof(SettingsPage));
         }
 
+        private async void CompleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Logger.Info("Marking backlog as complete");
+            backlog.IsComplete = true;
+            backlog.UserRating = UserRating.Value;
+            backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
+            await SaveBacklog();
+            RatingDialog.Hide();
+            Frame.Navigate(typeof(MainPage));
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            RatingDialog.Hide();
+        }
+
         private void RatingSlider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            backlog.UserRating = (float)RatingSlider.Value;
+            UserRating.Value = e.NewValue;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace backlog.Models
         private bool showProgress;
         private TimeSpan notifTime;
         private bool remindEveryday;
-        private float userRating;
+        private double userRating;
         private string createdDate;
         private string completedDate;
 
@@ -192,7 +192,7 @@ namespace backlog.Models
             }
         }
 
-        public float UserRating
+        public double UserRating
         {
             get => userRating;
             set
