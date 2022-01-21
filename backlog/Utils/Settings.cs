@@ -51,7 +51,7 @@ namespace backlog.Utils
             {
                 if (_settings.Values.TryGetValue(nameof(ShowLiveTile), out var showLiveTile))
                 {
-                    return (bool)ShowLiveTile;
+                    return (bool)showLiveTile;
                 }
                 return true;
             }
