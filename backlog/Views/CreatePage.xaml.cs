@@ -47,7 +47,7 @@ namespace backlog.Views
                 }
                 else
                 {
-                    Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
+                    await SaveData.GetInstance().ReadDataAsync();
                     backlogs = SaveData.GetInstance().GetBacklogs();
                 }
             }
