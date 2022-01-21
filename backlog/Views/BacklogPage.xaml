@@ -133,7 +133,7 @@
                         <StackPanel Grid.Row="2">
                             <Slider x:Name="RatingSlider" Value="{x:Bind backlog.UserRating}" ValueChanged="RatingSlider_ValueChanged"
                                     Maximum="5" Minimum="-1" StepFrequency="0.5" Margin="10" />
-                            <TextBlock Text="Move the slider to update the rating" Margin="0,0,0,10"/>
+                            <TextBlock Text="Move the slider to update the rating" Margin="0,0,0,10" HorizontalAlignment="Center"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="3">
