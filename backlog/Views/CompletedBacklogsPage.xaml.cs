@@ -1,4 +1,5 @@
-﻿using backlog.Models;
+﻿using backlog.Logging;
+using backlog.Models;
 using backlog.Saving;
 using backlog.Utils;
 using System;
@@ -24,6 +25,7 @@ namespace backlog.Views
         private ObservableCollection<Backlog> FinishedBacklogs;
         private ObservableCollection<Backlog> Backlogs;
         private Backlog SelectedBacklog;
+
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
@@ -97,17 +99,32 @@ namespace backlog.Views
         {
             ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
             PopupOverlay.Hide();
-            connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
-            await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
+            try
+            {
+                connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
+                await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
+            }
+            catch(Exception ex)
+            {
+                await Logger.Error("Error with connected animation", ex);
+            }
         }
 
         private async void MainGrid_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedBacklog = e.ClickedItem as Backlog;
             SelectedBacklog = selectedBacklog;
-            ConnectedAnimation connectedAnimation = MainGrid.PrepareConnectedAnimation("forwardAnimation", SelectedBacklog, "connectedElement");
-            connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
-            connectedAnimation.TryStart(destinationGrid);
+            try
+            {
+                ConnectedAnimation connectedAnimation = MainGrid.PrepareConnectedAnimation("forwardAnimation", SelectedBacklog, "connectedElement");
+                connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
+                connectedAnimation.TryStart(destinationGrid);
+            }
+            catch (Exception ex)
+            {
+                await Logger.Error("Error with connected animation", ex);
+                // ; )
+            }
 
             PopupImage.Source = new BitmapImage(new Uri(selectedBacklog.ImageURL));
             PopupTitle.Text = selectedBacklog.Name;
