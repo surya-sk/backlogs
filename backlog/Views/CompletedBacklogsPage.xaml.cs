@@ -88,7 +88,7 @@ namespace backlog.Views
 
         private void PopupSlider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-
+            PopupRating.Value = e.NewValue;
         }
     }
 }
