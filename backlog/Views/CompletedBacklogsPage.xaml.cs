@@ -76,9 +76,20 @@ namespace backlog.Views
             CloseButton_Click(sender, e);
         }
 
-        private void IncompleteButton_Click(object sender, RoutedEventArgs e)
+        private async void IncompleteButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ProgRing.IsActive = true;
+            foreach (var backlog in Backlogs)
+            {
+                if (backlog.id == SelectedBacklog.id)
+                {
+                    backlog.IsComplete = false;
+                }
+            }
+            SaveData.GetInstance().SaveSettings(Backlogs);
+            await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
+            PopupOverlay.Hide();
+            Frame.Navigate(typeof(CompletedBacklogsPage));
         }
 
         private async void CloseButton_Click(object sender, RoutedEventArgs e)
