@@ -130,7 +130,7 @@ namespace backlog.Views
                             await contentDialog.ShowAsync();
                             return;
                         }
-                        string date = DatePicker.SelectedDates[0].ToString("d", CultureInfo.InvariantCulture);
+                        string date = DatePicker.SelectedDates[0].ToString("D", CultureInfo.InvariantCulture);
                         DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
                         int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
                         if (diff < 0)
@@ -178,7 +178,7 @@ namespace backlog.Views
         private async Task SearchBacklog(string title)
         {
             ProgBar.Visibility = Visibility.Visible;
-            string date = DatePicker.SelectedDates.Count > 0 ? DatePicker.SelectedDates[0].ToString("d", CultureInfo.InvariantCulture) : "None";
+            string date = DatePicker.SelectedDates.Count > 0 ? DatePicker.SelectedDates[0].ToString("D", CultureInfo.InvariantCulture) : "None";
             string type = TypeComoBox.SelectedItem.ToString();
             switch (type)
             {
@@ -299,7 +299,7 @@ namespace backlog.Views
                 ShowProgress = true,
                 NotifTime = time == null ? TimeSpan.Zero : time,
                 UserRating = -1,
-                CreatedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture)
+                CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
             };
             await CreateBacklogItem(backlog);
         }
@@ -343,7 +343,7 @@ namespace backlog.Views
                         ShowProgress = false,
                         NotifTime = time,
                         UserRating = -1,
-                        CreatedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture)
+                        CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
                     };
                     await CreateBacklogItem(backlog);
                     await Logger.Info("Succesfully created backlog");
@@ -448,7 +448,7 @@ namespace backlog.Views
                 ShowProgress = true,
                 NotifTime = time,
                 UserRating = -1,
-                CreatedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture)
+                CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
             };
             await CreateBacklogItem(backlog);
         }
@@ -523,7 +523,7 @@ namespace backlog.Views
                 ShowProgress = true,
                 NotifTime = time,
                 UserRating = -1,
-                CreatedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture)
+                CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
             };
             await CreateBacklogItem(backlog);
         }
@@ -627,7 +627,7 @@ namespace backlog.Views
                 ShowProgress = false,
                 NotifTime = time,
                 UserRating = -1,
-                CreatedDate = DateTimeOffset.Now.Date.ToString("d" ,CultureInfo.InvariantCulture)
+                CreatedDate = DateTimeOffset.Now.Date.ToString("D" ,CultureInfo.InvariantCulture)
             };
             await CreateBacklogItem(backlog);
         }
@@ -677,7 +677,7 @@ namespace backlog.Views
             var selectedItem = ResultsListView.SelectedItem as Models.SearchResult;
             if(selectedItem != null)
             {
-                string date = DatePicker.SelectedDates.Count > 0 ? DatePicker.SelectedDates[0].ToString("d", CultureInfo.InvariantCulture) : "None";
+                string date = DatePicker.SelectedDates.Count > 0 ? DatePicker.SelectedDates[0].ToString("D", CultureInfo.InvariantCulture) : "None";
                 var time = TimePicker.Time;
                 ResultsDialog.Hide();
                 switch (TypeComoBox.SelectedItem.ToString())
