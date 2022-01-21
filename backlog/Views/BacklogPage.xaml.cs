@@ -204,6 +204,10 @@ namespace backlog.Views
             BottomEditButton.Visibility = Visibility.Collapsed;
             BottomSaveButton.Visibility = Visibility.Visible;
             BottomCancelButton.Visibility = Visibility.Visible;
+
+            CompletePanel.Visibility = Visibility.Collapsed;
+            NotifPanel.Visibility = Visibility.Visible;
+            DatesPanel.Visibility = Visibility.Collapsed;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -222,6 +226,10 @@ namespace backlog.Views
             BottomEditButton.Visibility = Visibility.Visible;
             BottomSaveButton.Visibility = Visibility.Collapsed;
             BottomCancelButton.Visibility = Visibility.Collapsed;
+
+            CompletePanel.Visibility = Visibility.Visible;
+            NotifPanel.Visibility = Visibility.Collapsed;
+            DatesPanel.Visibility = Visibility.Visible;
         }
     }
 }
