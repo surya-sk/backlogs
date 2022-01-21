@@ -30,6 +30,7 @@ namespace backlog.Models
         private bool remindEveryday;
         private float userRating;
         private string createdDate;
+        private string completedDate;
 
         public string Name
         {
@@ -208,6 +209,16 @@ namespace backlog.Models
             {
                 createdDate = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CreatedDate)));
+            }
+        }
+
+        public string CompletedDate
+        {
+            get => completedDate;
+            set
+            {
+                completedDate = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CompletedDate)));
             }
         }
 
