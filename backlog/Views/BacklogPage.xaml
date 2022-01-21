@@ -89,7 +89,7 @@
                     </StackPanel>
                     <StackPanel RelativePanel.RightOf="CreatedPanel"  Margin="30">
                         <TextBlock Text="Target Date" FontStyle="Oblique" />
-                        <TextBlock Text="{x:Bind backlog.TargetDate}" />
+                        <TextBlock Text="{x:Bind backlog.TargetDate, Mode=TwoWay}" />
                     </StackPanel>
                 </RelativePanel>
 
@@ -113,9 +113,9 @@
                 </StackPanel>
 
                 <StackPanel x:Name="NotifPanel" Grid.Row="3" Margin="30" Visibility="Collapsed">
-                    <TextBlock Text="When do you want to check this out? (optional)" Margin="10,0,0,20" />
+                    <TextBlock Text="When do you want to check this out?" Margin="10,0,0,20" />
                     <CalendarView x:Name="DatePicker" Margin="10,0,0,20" />
-                    <TimePicker x:Name="TimePicker" Header="When do you want to be notified? (optional)" Margin="10,0,0,20" Time="0" />
+                    <TimePicker x:Name="TimePicker" Header="When do you want to be notified?" Margin="10,0,0,20" Time="0" />
                 </StackPanel>
 
                 <ContentDialog x:Name="RatingDialog" Title="Are you done?">

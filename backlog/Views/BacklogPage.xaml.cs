@@ -210,9 +210,56 @@ namespace backlog.Views
             DatesPanel.Visibility = Visibility.Collapsed;
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (DatePicker.SelectedDates.Count > 0)
+            {
+                if (TimePicker.Time == TimeSpan.Zero)
+                {
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Invalid date and time",
+                        Content = "Please pick a time!",
+                        CloseButtonText = "Ok"
+                    };
+                    await contentDialog.ShowAsync();
+                    return;
+                }
+                string date = DatePicker.SelectedDates[0].ToString("D", CultureInfo.InvariantCulture);
+                DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
+                int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
+                if (diff < 0)
+                {
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Invalid date and time",
+                        Content = "The date and time you've chosen are in the past!",
+                        CloseButtonText = "Ok"
+                    };
+                    await contentDialog.ShowAsync();
+                    return;
+                }
+            }
+            else if (TimePicker.Time != TimeSpan.Zero)
+            {
+                if (DatePicker.SelectedDates.Count <= 0)
+                {
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Invalid date and time",
+                        Content = "Please pick a date!",
+                        CloseButtonText = "Ok"
+                    };
+                    await contentDialog.ShowAsync();
+                    return;
+                }
+            }
+            ProgBar.Visibility = Visibility.Visible;
+            backlog.TargetDate = DatePicker.SelectedDates[0].ToString("D", CultureInfo.InvariantCulture);
+            backlog.NotifTime = TimePicker.Time;
+            await SaveBacklog();
+            CmdCancelButton_Click(sender, e);
+            ProgBar.Visibility = Visibility.Collapsed;
         }
 
         private void CmdCancelButton_Click(object sender, RoutedEventArgs e)
