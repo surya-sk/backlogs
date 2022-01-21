@@ -352,8 +352,8 @@ namespace backlog.Views
                         Settings.SetNotifTime(b.id.ToString(), b.NotifTime.ToString());
                     }
                 }
-                string showLiveTile = ApplicationData.Current.LocalSettings.Values["LiveTileOn"]?.ToString();
-                if (showLiveTile == null || showLiveTile == "True")
+                bool showLiveTile = Settings.ShowLiveTile;
+                if (showLiveTile)
                     GenerateLiveTiles(b);
             }
         }

@@ -45,6 +45,19 @@ namespace backlog.Utils
             set => _settings.Values[nameof(UserName)] = value;
         }
 
+        public static bool ShowLiveTile
+        {
+            get
+            {
+                if (_settings.Values.TryGetValue(nameof(ShowLiveTile), out var showLiveTile))
+                {
+                    return (bool)ShowLiveTile;
+                }
+                return true;
+            }
+            set => _settings.Values[nameof(ShowLiveTile)] = value;
+        }
+
         public static string GetNotifTime(string id)
         {
             if(_settings.Values.TryGetValue("NotifTime", out var notifTime))
