@@ -61,16 +61,19 @@ namespace backlog.Views
 
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        private async void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
+            PopupOverlay.Hide();
+            connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
+            await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
         }
 
         private async void MainGrid_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedBacklog = e.ClickedItem as Backlog;
-
-            ConnectedAnimation connectedAnimation = MainGrid.PrepareConnectedAnimation("forwardAnimation", selectedBacklog, "connectedElement");
+            SelectedBacklog = selectedBacklog;
+            ConnectedAnimation connectedAnimation = MainGrid.PrepareConnectedAnimation("forwardAnimation", SelectedBacklog, "connectedElement");
             connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
             connectedAnimation.TryStart(destinationGrid);
 
