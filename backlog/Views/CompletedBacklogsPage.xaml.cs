@@ -84,6 +84,7 @@ namespace backlog.Views
                 if (backlog.id == SelectedBacklog.id)
                 {
                     backlog.IsComplete = false;
+                    backlog.CompletedDate = null;
                 }
             }
             SaveData.GetInstance().SaveSettings(Backlogs);
