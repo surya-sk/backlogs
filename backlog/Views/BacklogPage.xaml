@@ -45,6 +45,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -114,6 +115,11 @@
                     <TextBlock Text="Move the slider to update the rating" Margin="0,0,0,10"/>
                     <Button x:Name="FinishButton" Content="Mark As Complete" Background="Green" Click="FinishButton_Click" />
                 </StackPanel>
+
+                <RelativePanel Grid.Row="4" Margin="30">
+                    <TextBlock x:Name="SourceText" Text="Metadata obtained from" Margin="0,0,5,0"/>
+                    <HyperlinkButton Name="SourceLinkButton" RelativePanel.RightOf="SourceText" Padding="0,0,0,8"/>
+                </RelativePanel>
             </Grid>
         </ScrollViewer>
 

@@ -26,6 +26,8 @@ namespace backlog.Views
         private int backlogIndex;
         private bool edited;
         bool signedIn;
+        string source;
+        Uri sourceLink;
         public BacklogPage()
         {
             this.InitializeComponent();
@@ -43,9 +45,34 @@ namespace backlog.Views
                 if (selectedId == b.id)
                 {
                     backlog = b;
+                    switch(backlog.Type)
+                    {
+                        case "Film":
+                            source = "IMdB";
+                            sourceLink = new Uri("https://www.imdb.com/");
+                            break;
+                        case "Album":
+                            source = "LastFM";
+                            sourceLink = new Uri("https://www.last.fm/");
+                            break;
+                        case "TV":
+                            source = "IMdB";
+                            sourceLink = new Uri("https://www.imbd.com");
+                            break;
+                        case "Game":
+                            source = "IGDB";
+                            sourceLink = new Uri("https://www.igdb.com/discover");
+                            break;
+                        case "Book":
+                            source = "Google Books";
+                            sourceLink = new Uri("https://books.google.com/");
+                            break;
+                    }
                     backlogIndex = backlogs.IndexOf(b);
                 }
             }
+            SourceLinkButton.Content = source;
+            SourceLinkButton.NavigateUri = sourceLink;
             base.OnNavigatedTo(e);
             ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
             imageAnimation?.TryStart(img);
