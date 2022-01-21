@@ -155,6 +155,9 @@
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopDoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
+            <AppBarButton x:Name="TopEditButton" Label="Edit" Icon="Edit" Click="EditButton_Click" />
+            <AppBarButton x:Name="TopSaveButton" Label="Save" Icon="Save" Click="SaveButton_Click" Visibility="Collapsed" />
+            <AppBarButton x:Name="TopCancelButton" Label="Cancel" Icon="Cancel" Click="CmdCancelButton_Click" Visibility="Collapsed" />
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="TopDeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
                 <AppBarButton x:Name="TopSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
@@ -164,6 +167,9 @@
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
             <AppBarButton x:Name="BottomDoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
+            <AppBarButton x:Name="BottomEditButton" Label="Edit" Icon="Edit" Click="EditButton_Click" />
+            <AppBarButton x:Name="BottomSaveButton" Label="Save" Icon="Save" Click="SaveButton_Click" Visibility="Collapsed" />
+            <AppBarButton x:Name="BottomCancelButton" Label="Cancel" Icon="Cancel" Click="CmdCancelButton_Click" Visibility="Collapsed" />
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="BottomDeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
                 <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />

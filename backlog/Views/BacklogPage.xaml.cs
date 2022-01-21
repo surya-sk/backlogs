@@ -192,5 +192,36 @@ namespace backlog.Views
         {
             UserRating.Value = e.NewValue;
         }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            TopDoneButton.Visibility = Visibility.Collapsed;
+            TopEditButton.Visibility = Visibility.Collapsed;
+            TopSaveButton.Visibility = Visibility.Visible;
+            TopCancelButton.Visibility = Visibility.Visible;
+
+            BottomDoneButton.Visibility = Visibility.Collapsed;
+            BottomEditButton.Visibility = Visibility.Collapsed;
+            BottomSaveButton.Visibility = Visibility.Visible;
+            BottomCancelButton.Visibility = Visibility.Visible;
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CmdCancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            TopDoneButton.Visibility = Visibility.Visible;
+            TopEditButton.Visibility = Visibility.Visible;
+            TopSaveButton.Visibility = Visibility.Collapsed;
+            TopCancelButton.Visibility = Visibility.Collapsed;
+
+            BottomDoneButton.Visibility = Visibility.Visible;
+            BottomEditButton.Visibility = Visibility.Visible;
+            BottomSaveButton.Visibility = Visibility.Collapsed;
+            BottomCancelButton.Visibility = Visibility.Collapsed;
+        }
     }
 }
