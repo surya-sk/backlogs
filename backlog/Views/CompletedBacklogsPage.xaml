@@ -74,9 +74,9 @@
                 <Slider x:Name="PopupSlider" RelativePanel.Below="PopupRating" ValueChanged="PopupSlider_ValueChanged" Grid.Row="4"
                         Maximum="5" Minimum="-1" StepFrequency="0.5" />
                 <StackPanel Orientation="Horizontal" RelativePanel.Below="PopupSlider" Grid.Row="5">
-                    <Button x:Name="SaveButton" Content="Save" Background="Green" Click="SaveButton_Click" Margin="20" />
-                    <Button x:Name="IncompleteButton" Content="Mark as Incomplete" Background="GreenYellow" Click="IncompleteButton_Click" Margin="20" />
-                    <Button x:Name="CloseButton" Content="Close" Background="Red" Click="CloseButton_Click" />
+                    <Button x:Name="SaveButton" Content="Save" Background="Green" Click="SaveButton_Click" Margin="10" />
+                    <Button x:Name="IncompleteButton" Content="Mark as Incomplete" Background="GreenYellow" Click="IncompleteButton_Click" Margin="10" />
+                    <Button x:Name="CloseButton" Content="Close" Background="Red" Click="CloseButton_Click" Margin="10" />
                 </StackPanel>
             </Grid>
         </ContentDialog>
