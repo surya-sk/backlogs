@@ -1,5 +1,6 @@
 ﻿using backlog.Models;
 using backlog.Saving;
+using backlog.Utils;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -21,13 +22,14 @@ namespace backlog.Views
     public sealed partial class CompletedBacklogsPage : Page
     {
         private ObservableCollection<Backlog> FinishedBacklogs;
+        private ObservableCollection<Backlog> Backlogs;
         private Backlog SelectedBacklog;
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
-            var _readBacklogs = SaveData.GetInstance().GetBacklogs();
-            FinishedBacklogs = new ObservableCollection<Backlog>(_readBacklogs.Where(b => b.IsComplete));
+            Backlogs = SaveData.GetInstance().GetBacklogs();
+            FinishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete));
             if(FinishedBacklogs.Count < 1)
             {
                 EmptyText.Visibility = Visibility.Visible;
@@ -51,9 +53,27 @@ namespace backlog.Views
             e.Handled = true;
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ProgRing.IsActive = true;
+            foreach(var backlog in Backlogs)
+            {
+                if(backlog.id == SelectedBacklog.id)
+                {
+                    backlog.UserRating = (float)PopupRating.Value;
+                }
+            }
+            foreach (var backlog in FinishedBacklogs)
+            {
+                if (backlog.id == SelectedBacklog.id)
+                {
+                    backlog.UserRating = (float)PopupRating.Value;
+                }
+            }
+            SaveData.GetInstance().SaveSettings(Backlogs);
+            await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
+            ProgRing.IsActive = false;
+            CloseButton_Click(sender, e);
         }
 
         private void IncompleteButton_Click(object sender, RoutedEventArgs e)

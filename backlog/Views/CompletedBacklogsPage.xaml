@@ -44,7 +44,7 @@
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
                                                 Text="{x:Bind Director}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
-                            <muxc:RatingControl RelativePanel.Below="DirectorText" Value="{x:Bind UserRating}" IsReadOnly="True"/>
+                            <muxc:RatingControl RelativePanel.Below="DirectorText" Value="{x:Bind UserRating, Mode=TwoWay}" IsReadOnly="True"/>
                         </RelativePanel>
                     </Grid>
                 </DataTemplate>
@@ -78,6 +78,7 @@
                     <Button x:Name="IncompleteButton" Content="Mark as Incomplete" Background="GreenYellow" Click="IncompleteButton_Click" Margin="10" />
                     <Button x:Name="CloseButton" Content="Close" Background="Red" Click="CloseButton_Click" Margin="10" />
                 </StackPanel>
+                <ProgressRing x:Name="ProgRing" IsActive="False" />
             </Grid>
         </ContentDialog>
      </Grid>
