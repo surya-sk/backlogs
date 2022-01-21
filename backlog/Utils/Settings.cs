@@ -44,5 +44,25 @@ namespace backlog.Utils
             }
             set => _settings.Values[nameof(UserName)] = value;
         }
+
+        public static string GetNotifTime(string id)
+        {
+            if(_settings.Values.TryGetValue("NotifTime", out var notifTime))
+            {
+                var notifTimes = (ApplicationDataCompositeValue)notifTime;
+                return notifTimes[id].ToString();
+            }
+            return "";
+        }
+
+        public static void SetNotifTime(string id, string notifTime)
+        {
+            var notifTimes = (ApplicationDataCompositeValue)_settings.Values["NotifTime"];
+            if(notifTimes == null)
+            {
+                notifTimes = new ApplicationDataCompositeValue();
+            }
+            notifTimes[id] = notifTime;
+        }
     }
 }
