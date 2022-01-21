@@ -49,7 +49,6 @@
                 </Grid.RowDefinitions>
 
                 <Grid>
-                    <!-- Blur the cover image in the background -->
                     <Grid.Background>
                         <ImageBrush ImageSource="{x:Bind backlog.ImageURL}" Stretch="UniformToFill" />
                     </Grid.Background>
@@ -82,10 +81,16 @@
                     </RelativePanel>
                 </Grid>
 
-                <StackPanel Grid.Row="1" Margin="30">
-                    <TextBlock Text="Target Date" FontStyle="Oblique" />
-                    <TextBlock Text="{x:Bind backlog.TargetDate}" />
-                </StackPanel>
+                <RelativePanel Grid.Row="1">
+                    <StackPanel x:Name="CreatedPanel" Margin="30" >
+                        <TextBlock Text="Created Date" FontStyle="Oblique" />
+                        <TextBlock Text="{x:Bind backlog.CreatedDate}" />
+                    </StackPanel>
+                    <StackPanel RelativePanel.RightOf="CreatedPanel"  Margin="30">
+                        <TextBlock Text="Target Date" FontStyle="Oblique" />
+                        <TextBlock Text="{x:Bind backlog.TargetDate}" />
+                    </StackPanel>
+                </RelativePanel>
 
                 <StackPanel Grid.Row="2" Margin="30" Visibility="{x:Bind backlog.ShowProgress, Converter={StaticResource BoolToVis}}">
                     <TextBlock Text="Progress" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,10" />
