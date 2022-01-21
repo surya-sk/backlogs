@@ -27,7 +27,7 @@ namespace backlog.Views
         ObservableCollection<Backlog> backlogs { get; set; }
         bool signedIn;
         bool isNetworkAvailable = false;
-        GraphServiceClient graphServiceClient;
+
         public CreatePage()
         {
             this.InitializeComponent();
