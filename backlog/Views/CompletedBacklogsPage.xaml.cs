@@ -23,6 +23,11 @@ namespace backlog.Views
     public sealed partial class CompletedBacklogsPage : Page
     {
         private ObservableCollection<Backlog> FinishedBacklogs;
+        private ObservableCollection<Backlog> FinishedFilmBacklogs;
+        private ObservableCollection<Backlog> FinishedTVBacklogs;
+        private ObservableCollection<Backlog> FinishedMusicBacklogs;
+        private ObservableCollection<Backlog> FinishedGameBacklogs;
+        private ObservableCollection<Backlog> FinishedBookBacklogs;
         private ObservableCollection<Backlog> Backlogs;
         private Backlog SelectedBacklog;
 
@@ -32,7 +37,12 @@ namespace backlog.Views
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             Backlogs = SaveData.GetInstance().GetBacklogs();
             FinishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete));
-            if(FinishedBacklogs.Count < 1)
+            FinishedBookBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Book.ToString()));
+            FinishedFilmBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Film.ToString()));
+            FinishedGameBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Game.ToString()));
+            FinishedMusicBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Album.ToString()));
+            FinishedTVBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.TV.ToString()));
+            if (FinishedBacklogs.Count < 1)
             {
                 EmptyText.Visibility = Visibility.Visible;
                 MainGrid.Visibility = Visibility.Collapsed; 

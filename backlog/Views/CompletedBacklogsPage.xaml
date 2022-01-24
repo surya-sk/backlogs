@@ -77,6 +77,10 @@
             </controls:AdaptiveGridView.ItemTemplate>
         </controls:AdaptiveGridView>
 
+        <Pivot Grid.Row="1">
+            
+        </Pivot>
+
         <ContentDialog x:Name="PopupOverlay" Title="Edit Backlog">
             <Grid x:Name="destinationGrid">
                 <Grid.RowDefinitions>
