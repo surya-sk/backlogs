@@ -501,5 +501,20 @@ namespace backlog.Views
                 }
             }
         }
+
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            await SearchDialog.ShowAsync();
+        }
+
+        private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+
+        }
+
+        private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+
+        }
     }
 }
