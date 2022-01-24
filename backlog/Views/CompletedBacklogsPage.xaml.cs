@@ -107,15 +107,16 @@ namespace backlog.Views
 
         private async void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
-            PopupOverlay.Hide();
             try
             {
+                ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
+                PopupOverlay.Hide();
                 connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
                 await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
             }
             catch(Exception ex)
             {
+                PopupOverlay.Hide();
                 await Logger.Error("Error with connected animation", ex);
             }
         }

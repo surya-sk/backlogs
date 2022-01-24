@@ -44,41 +44,35 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="completed backlogs" FontSize="30" Margin="30"/>
-        
+
         <TextBlock  x:Name="EmptyText" Text="you haven't completed any of your backlogs yet :(" TextWrapping="Wrap" Grid.Row="1" Visibility="Collapsed"
                     Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
 
-        <controls:AdaptiveGridView x:Name="MainGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="250" Grid.Row="1"
-                                                       SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedBacklogs}" Margin="20">
-            <controls:AdaptiveGridView.ItemTemplate>
-                <DataTemplate x:DataType="data:Backlog">
-                    <Grid x:Name="connectedElement">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
-                        <Image Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch"/>
-                        <RelativePanel x:Name="DetailsPanel" Grid.Row="1" Margin="16,6,0,0" HorizontalAlignment="Left">
-                            <TextBlock
-                        x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
-                                    Style="{StaticResource BaseTextBlockStyle}"
-                                    Text="{x:Bind Name}"
-                                    TextLineBounds="TrimToCapHeight"
-                                    TextWrapping="Wrap" />
-                            <TextBlock x:Name="DirectorText" Style="{StaticResource CaptionTextBlockStyle}"
-                                                Margin="0,2,8,0"
-                                                RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Director}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
-                            <muxc:RatingControl RelativePanel.Below="DirectorText" Value="{x:Bind UserRating, Mode=TwoWay}" IsReadOnly="True"/>
-                        </RelativePanel>
-                    </Grid>
-                </DataTemplate>
-            </controls:AdaptiveGridView.ItemTemplate>
-        </controls:AdaptiveGridView>
-
         <Pivot Grid.Row="1">
-            
+            <PivotItem Header="all">
+                <controls:AdaptiveGridView x:Name="MainGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="250" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedBacklogs}" Margin="20" />
+            </PivotItem>
+            <PivotItem Header="films">
+                <controls:AdaptiveGridView x:Name="FilmGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="250" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedFilmBacklogs}" Margin="20" />
+            </PivotItem>
+            <PivotItem Header="tv">
+                <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="250" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedTVBacklogs}" Margin="20" />
+            </PivotItem>
+            <PivotItem Header="albums">
+                <controls:AdaptiveGridView x:Name="MusicGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="250" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedMusicBacklogs}" Margin="20" />
+            </PivotItem>
+            <PivotItem Header="games">
+                <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="250" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedGameBacklogs}" Margin="20" />
+            </PivotItem>
+            <PivotItem Header="books">
+                <controls:AdaptiveGridView x:Name="BooksGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="250" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedBookBacklogs}" Margin="20" />
+            </PivotItem>
         </Pivot>
 
         <ContentDialog x:Name="PopupOverlay" Title="Edit Backlog">
