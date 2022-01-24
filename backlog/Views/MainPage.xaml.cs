@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Media.Animation;
 using backlog.Logging;
 using Windows.Storage;
 using backlog.Auth;
+using System.Collections.Generic;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -509,7 +510,28 @@ namespace backlog.Views
 
         private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
+            if(args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                List<string> suggestions = new List<string>();
+                var splitText = sender.Text.ToLower().Split(' ');
+                foreach (var backlog in backlogs)
+                {
+                    var found = splitText.All((key) =>
+                    {
+                        return backlog.Name.ToLower().Contains(key);
+                    });
+                    if (found)
+                    {
+                        suggestions.Add(backlog.Name);
+                    }
+                }
+                if (suggestions.Count == 0)
+                {
+                    suggestions.Add("No results found");
+                }
+                sender.ItemsSource = suggestions;
 
+            }
         }
 
         private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
