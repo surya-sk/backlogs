@@ -22,6 +22,7 @@ using backlog.Logging;
 using Windows.Storage;
 using backlog.Auth;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -536,7 +537,9 @@ namespace backlog.Views
 
         private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-
+            var selectedBacklog = backlogs.FirstOrDefault(b => b.Name == SearchBox.Text);
+            SearchDialog.Hide();
+            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, null);
         }
     }
 }
