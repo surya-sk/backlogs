@@ -89,14 +89,16 @@
                 <TextBlock x:Name="WelcomeText" Margin="30" FontSize="30" />
 
                 <RelativePanel Grid.Row="1" Margin="30">
-                    <TextBlock x:Name="HeadingText" Text="Recently Added" FontSize="20" Margin="0,0,0,20"/>
+                    <TextBlock x:Name="HeadingText" Text="Recently Added" FontSize="20" Margin="0,0,20,20"/>
+                    <Button x:Name="AllAddedButton" Content="See all" Click="AllAddedButton_Click" RelativePanel.RightOf="HeadingText" />
                     <controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind recentlyAdded}" ItemClick="AddedBacklogsGrid_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="HeadingText" Loaded="AddedBacklogsGrid_Loaded" />
                 </RelativePanel>
 
                 <RelativePanel Grid.Row="2" Margin="30">
-                    <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="0,0,0,20" />
+                    <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="0,0,20,20" />
+                    <Button x:Name="AllCompletedButton" Content="See all" Click="AllCompletedButton_Click" RelativePanel.RightOf="CompletedHeadingText" />
                     <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind recentlyCompleted}"
                                                        ItemTemplate="{StaticResource CompletedBacklogTemplate}" RelativePanel.Below="CompletedHeadingText" />

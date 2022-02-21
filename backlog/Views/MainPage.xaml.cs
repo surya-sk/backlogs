@@ -417,5 +417,15 @@ namespace backlog.Views
                 }
             }
         }
+
+        private void AllAddedButton_Click(object sender, RoutedEventArgs e)
+        {
+            BacklogsButton_Click(sender, e);
+        }
+
+        private void AllCompletedButton_Click(object sender, RoutedEventArgs e)
+        {
+            CompletedBacklogsButton_Click(sender, e);
+        }
     }
 }
