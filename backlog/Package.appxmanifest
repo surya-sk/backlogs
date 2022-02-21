@@ -9,7 +9,7 @@
   <Identity
     Name="37533SuryaKashyap.Backlogs"
     Publisher="CN=7115D965-9BEF-4D32-9397-2F0F733B3D6D"
-    Version="0.8.12.0" />
+    Version="0.8.13.0" />
 
   <mp:PhoneIdentity PhoneProductId="af8238ee-b880-4e0d-9580-215f87474c52" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -37,7 +37,13 @@
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="backlog"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="Backlogs">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square310x310Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\SplashScreen.png"  BackgroundColor="transparent"/>
         <uap:InitialRotationPreference>
           <uap:Rotation Preference="landscape"/>
