@@ -101,7 +101,7 @@ namespace backlog.Views
                 if(sync)
                 {
                 }
-                BuildNotifactionQueue();
+                //BuildNotifactionQueue();
             }
             ShowTeachingTips();
             ProgBar.Visibility = Visibility.Collapsed;
@@ -365,7 +365,7 @@ namespace backlog.Views
 
         private void BacklogsButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(BacklogsPage));
+            Frame.Navigate(typeof(BacklogsPage), "sync");
         }
     }
 }
