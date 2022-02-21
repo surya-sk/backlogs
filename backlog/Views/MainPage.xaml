@@ -157,6 +157,7 @@
     </Frame>
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
+            <AppBarButton x:Name="BacklogsButton" Label="Backlogs" Icon="List" Click="BacklogsButton_Click" />
             <AppBarButton x:Name="TopSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
             <AppBarButton x:Name="TopSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
             <AppBarButton x:Name="TopCreateButton" Label="New" Icon="Add" Click="CreateButton_Click" />

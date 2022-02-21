@@ -549,5 +549,10 @@ namespace backlog.Views
             SearchDialog.Hide();
             Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, null);
         }
+
+        private void BacklogsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(BacklogsPage));
+        }
     }
 }
