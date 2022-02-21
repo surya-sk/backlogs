@@ -116,10 +116,9 @@ namespace backlog.Views
                 connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
                 await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
             }
-            catch(Exception ex)
+            catch
             {
                 PopupOverlay.Hide();
-                await Logger.Error("Error with connected animation", ex);
             }
         }
 
