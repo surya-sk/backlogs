@@ -89,13 +89,20 @@ namespace backlog.Views
             string userName = ApplicationData.Current.LocalSettings.Values["UserName"]?.ToString();
             UserNameText.Text = $"Hey there, {userName}! You are all synced.";
             var cacheFolder = ApplicationData.Current.LocalCacheFolder;
-            var accountPicFile = await cacheFolder.GetFileAsync("profile.png");
-            using (IRandomAccessStream stream = await accountPicFile.OpenAsync(FileAccessMode.Read))
+            try
             {
-                BitmapImage image = new BitmapImage();
-                stream.Seek(0);
-                await image.SetSourceAsync(stream);
-                AccountPic.ProfilePicture = image;
+                var accountPicFile = await cacheFolder.GetFileAsync("profile.png");
+                using (IRandomAccessStream stream = await accountPicFile.OpenAsync(FileAccessMode.Read))
+                {
+                    BitmapImage image = new BitmapImage();
+                    stream.Seek(0);
+                    await image.SetSourceAsync(stream);
+                    AccountPic.ProfilePicture = image;
+                }
+            }
+            catch
+            {
+                // No image set
             }
         }
 

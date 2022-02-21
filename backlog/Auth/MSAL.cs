@@ -98,23 +98,30 @@ namespace backlog.Auth
                 {
                     await Logger.Info("Fetching graph service client.....");
                     var user = await graphServiceClient.Me.Request().GetAsync();
-                    Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
                     Settings.UserName = user.GivenName;
-                    if (photoresponse != null)
+                    try
                     {
-                        using (var randomAccessStream = photoresponse.AsRandomAccessStream())
+                        Stream photoresponse = await graphServiceClient.Me.Photo.Content.Request().GetAsync();
+                        if (photoresponse != null)
                         {
-                            BitmapImage image = new BitmapImage();
-                            randomAccessStream.Seek(0);
-                            await image.SetSourceAsync(randomAccessStream);
+                            using (var randomAccessStream = photoresponse.AsRandomAccessStream())
+                            {
+                                BitmapImage image = new BitmapImage();
+                                randomAccessStream.Seek(0);
+                                await image.SetSourceAsync(randomAccessStream);
 
-                            BitmapDecoder decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
-                            SoftwareBitmap softwareBitmap = await decoder.GetSoftwareBitmapAsync();
-                            var storageFile = await cacheFolder.CreateFileAsync(accountPicFile, CreationCollisionOption.ReplaceExisting);
-                            BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, await storageFile.OpenAsync(FileAccessMode.ReadWrite));
-                            encoder.SetSoftwareBitmap(softwareBitmap);
-                            await encoder.FlushAsync();
+                                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
+                                SoftwareBitmap softwareBitmap = await decoder.GetSoftwareBitmapAsync();
+                                var storageFile = await cacheFolder.CreateFileAsync(accountPicFile, CreationCollisionOption.ReplaceExisting);
+                                BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, await storageFile.OpenAsync(FileAccessMode.ReadWrite));
+                                encoder.SetSoftwareBitmap(softwareBitmap);
+                                await encoder.FlushAsync();
+                            }
                         }
+                    }
+                    catch (ServiceException ex)
+                    {
+                        await Logger.Error("Failed to fetch user photo", ex);
                     }
                 }
                 catch (Exception ex)

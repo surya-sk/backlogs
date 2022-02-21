@@ -146,15 +146,23 @@ namespace backlog.Views
             TopProfileButton.Label = userName;
             BottomProfileButton.Label = userName;
             var cacheFolder = ApplicationData.Current.LocalCacheFolder;
-            var accountPicFile = await cacheFolder.GetFileAsync("profile.png");
-            using(IRandomAccessStream stream = await accountPicFile.OpenAsync(FileAccessMode.Read))
+            try
             {
-                BitmapImage image = new BitmapImage();
-                stream.Seek(0);
-                await image.SetSourceAsync(stream);
-                TopAccountPic.ProfilePicture = image;
-                BottomAccountPic.ProfilePicture = image;
+                var accountPicFile = await cacheFolder.GetFileAsync("profile.png");
+                using (IRandomAccessStream stream = await accountPicFile.OpenAsync(FileAccessMode.Read))
+                {
+                    BitmapImage image = new BitmapImage();
+                    stream.Seek(0);
+                    await image.SetSourceAsync(stream);
+                    TopAccountPic.ProfilePicture = image;
+                    BottomAccountPic.ProfilePicture = image;
+                }
             }
+            catch (Exception ex)
+            {
+                await Logger.Error("Error settings", ex);
+            }
+            
         }
 
         /// <summary>
