@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using backlog.Logging;
 using Windows.UI.Xaml.Media.Animation;
+using System.Linq;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -656,13 +657,14 @@ namespace backlog.Views
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            PageStackEntry prevPage = Frame.BackStack.Last();
             try
             {
-                Frame.Navigate(typeof(MainPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom});
+                Frame.Navigate(prevPage?.SourcePageType, null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom});
             }
             catch
             {
-                Frame.Navigate(typeof(MainPage));
+                Frame.Navigate(prevPage?.SourcePageType);
             }
         }
 
