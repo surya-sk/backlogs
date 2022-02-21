@@ -12,6 +12,31 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <DataTemplate x:DataType="data:Backlog" x:Key="BacklogTemplate">
+            <Grid x:Name="rootGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Image x:Name="coverImage" Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch"/>
+                <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Left">
+                    <TextBlock
+                        x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="{x:Bind Name}"
+                                    TextLineBounds="TrimToCapHeight"
+                                    TextWrapping="Wrap" />
+                    <TextBlock x:Name="TypeText" Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="TitleText"
+                                                Text="{x:Bind Type}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                </RelativePanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
     <Frame x:Name="rootFrame">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="LayoutVisualStates">
@@ -32,24 +57,44 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <Grid x:Name="mainGrid">
+        <ScrollViewer>
+            <Grid x:Name="mainGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
+                <TextBlock x:Name="WelcomeText" Margin="30" FontSize="30" />
 
+                <RelativePanel Grid.Row="1" Margin="30">
+                    <TextBlock x:Name="HeadingText" Text="Recently Added" FontSize="20" Margin="0,0,0,20"/>
+                    <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="200"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind recentlyAdded}"
+                                                       ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="HeadingText" />
+                </RelativePanel>
 
-            <muxc:ProgressBar x:Name="CreationProgBar" IsIndeterminate="True" Visibility="Collapsed" />
+                <RelativePanel Grid.Row="2" Margin="30">
+                    <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="0,0,0,20" />
+                    <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="200"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind recentlyCompleted}"
+                                                       ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="CompletedHeadingText"/>
+                </RelativePanel>
 
-            <muxc:TeachingTip x:Name="NavigationTeachingTip" Title="Moving around" Subtitle="To move around different sections, swipe using your finger or trackpad" />
-            <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind TopSigninButton}"
+                <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
+
+                <muxc:TeachingTip x:Name="NavigationTeachingTip" Title="Moving around" Subtitle="To move around different sections, swipe using your finger or trackpad" />
+                <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind TopSigninButton}"
                               Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!" />
-            <muxc:TeachingTip x:Name="BottomSigninTeachingTip" Target="{x:Bind BottomSigninButton}"
+                <muxc:TeachingTip x:Name="BottomSigninTeachingTip" Target="{x:Bind BottomSigninButton}"
                               Title="Sign-in using your MS account" Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!" />
 
-        </Grid>
+            </Grid>
+        </ScrollViewer>
     </Frame>
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
-            <AppBarButton x:Name="BacklogsButton" Label="Backlogs" Icon="List" Click="BacklogsButton_Click" />
+            <AppBarButton x:Name="TopBacklogsButton" Label="All Backlogs" Icon="List" Click="BacklogsButton_Click" />
             <AppBarButton x:Name="TopSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
             <AppBarButton x:Name="TopCreateButton" Label="New" Icon="Add" Click="CreateButton_Click" />
             <AppBarButton x:Name="TopSigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
@@ -71,6 +116,7 @@
     </Page.TopAppBar>
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
+            <AppBarButton x:Name="BottomBacklogsButton" Label="All Backlogs" Icon="List" Click="BacklogsButton_Click" />
             <AppBarButton x:Name="BottomSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
             <AppBarButton x:Name="BottomCreateButton" Label="New" Icon="Add" Click="CreateButton_Click" />
             <AppBarButton x:Name="BottomSigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />

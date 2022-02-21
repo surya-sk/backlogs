@@ -35,6 +35,9 @@ namespace backlog.Views
     {
         private ObservableCollection<Backlog> allBacklogs { get; set; }
         private ObservableCollection<Backlog> backlogs { get; set; }
+
+        private ObservableCollection<Backlog> recentlyAdded { get; set; }
+        private ObservableCollection <Backlog> recentlyCompleted { get; set; }
         GraphServiceClient graphServiceClient;
 
         bool isNetworkAvailable = false;
@@ -47,6 +50,11 @@ namespace backlog.Views
             this.InitializeComponent();
             isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
+            WelcomeText.Text = $"Welcome to Backlogs, {Settings.UserName}!";
+            Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
+            recentlyAdded = new ObservableCollection<Backlog>();
+            recentlyCompleted = new ObservableCollection<Backlog>();
+            LoadBacklogs();
         }
 
         /// <summary>
@@ -98,13 +106,30 @@ namespace backlog.Views
                 BottomSigninButton.Visibility = Visibility.Collapsed;
                 TopProfileButton.Visibility = Visibility.Visible;
                 BottomProfileButton.Visibility = Visibility.Visible;
-                if(sync)
+                await SaveData.GetInstance().ReadDataAsync(sync);
+                LoadBacklogs();
+                if (sync)
                 {
                 }
                 //BuildNotifactionQueue();
             }
             ShowTeachingTips();
             ProgBar.Visibility = Visibility.Collapsed;
+        }
+
+        private void LoadBacklogs()
+        {
+            recentlyAdded.Clear();
+            recentlyCompleted.Clear();
+            backlogs = SaveData.GetInstance().GetBacklogs();
+            foreach (var backlog in backlogs.Where(b => !b.IsComplete).OrderByDescending(b => b.CreatedDate).Skip(1).Take(5))
+            {
+                recentlyAdded.Add(backlog);
+            }
+            foreach (var backlog in backlogs.Where(b => b.IsComplete).OrderByDescending(b => b.CompletedDate).Skip(1).Take(5))
+            {
+                recentlyCompleted.Add(backlog);
+            }
         }
 
         /// <summary>
