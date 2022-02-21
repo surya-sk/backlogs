@@ -35,7 +35,28 @@
                 </RelativePanel>
             </Grid>
         </DataTemplate>
+
+        <DataTemplate x:DataType="data:Backlog" x:Key="CompletedBacklogTemplate">
+            <Grid x:Name="rootGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Image x:Name="coverImage" Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch"/>
+                <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Left">
+                    <TextBlock
+                        x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="{x:Bind Name}"
+                                    TextLineBounds="TrimToCapHeight"
+                                    TextWrapping="Wrap" />
+                    <muxc:RatingControl Value="{x:Bind UserRating}" IsReadOnly="True" RelativePanel.Below="TitleText"/>
+                </RelativePanel>
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
+    
 
     <Frame x:Name="rootFrame">
         <VisualStateManager.VisualStateGroups>
@@ -78,7 +99,7 @@
                     <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="0,0,0,20" />
                     <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="200"
                                                        SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind recentlyCompleted}"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="CompletedHeadingText" />
+                                                       ItemTemplate="{StaticResource CompletedBacklogTemplate}" RelativePanel.Below="CompletedHeadingText" />
                 </RelativePanel>
 
                 <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
