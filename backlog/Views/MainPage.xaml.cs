@@ -394,5 +394,28 @@ namespace backlog.Views
         {
             Frame.Navigate(typeof(BacklogsPage), "sync");
         }
+
+        private void AddedBacklogsGrid_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var selectedBacklog = (Backlog)e.ClickedItem;
+            AddedBacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, new SuppressNavigationTransitionInfo());
+        }
+
+        private async void AddedBacklogsGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (backlogIndex != -1)
+            {
+                ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
+                try
+                {
+                    await AddedBacklogsGrid.TryStartConnectedAnimationAsync(animation, backlogs[backlogIndex], "coverImage");
+                }
+                catch
+                {
+                    // : )
+                }
+            }
+        }
     }
 }
