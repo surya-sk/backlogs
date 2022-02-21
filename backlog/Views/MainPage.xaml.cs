@@ -545,7 +545,7 @@ namespace backlog.Views
 
         private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            var selectedBacklog = backlogs.FirstOrDefault(b => b.Name == SearchBox.Text);
+            var selectedBacklog = backlogs.FirstOrDefault(b => b.Name == args.ChosenSuggestion.ToString());
             SearchDialog.Hide();
             Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, null);
         }
