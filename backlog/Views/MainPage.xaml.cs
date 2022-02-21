@@ -55,6 +55,8 @@ namespace backlog.Views
             recentlyAdded = new ObservableCollection<Backlog>();
             recentlyCompleted = new ObservableCollection<Backlog>();
             LoadBacklogs();
+            var view = SystemNavigationManager.GetForCurrentView();
+            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }
 
         /// <summary>

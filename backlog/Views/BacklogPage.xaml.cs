@@ -12,6 +12,7 @@ using backlog.Logging;
 using backlog.Utils;
 using System.Globalization;
 using System.Linq;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -37,6 +38,8 @@ namespace backlog.Views
             backlogs = SaveData.GetInstance().GetBacklogs();
             signedIn = Settings.IsSignedIn;
             edited = false;
+            var view = SystemNavigationManager.GetForCurrentView();
+            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
