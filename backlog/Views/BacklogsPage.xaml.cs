@@ -287,7 +287,7 @@ namespace backlog.Views
         /// <param name="e"></param>
         private void SyncButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage), "sync");
+            Frame.Navigate(typeof(BacklogsPage), "sync");
         }
 
         private void CompletedBacklogsButton_Click(object sender, RoutedEventArgs e)
