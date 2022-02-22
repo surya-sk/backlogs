@@ -113,7 +113,7 @@ namespace backlog.Views
                 if (sync)
                 {
                 }
-                //BuildNotifactionQueue();
+                BuildNotifactionQueue();
             }
             ShowTeachingTips();
             ProgBar.Visibility = Visibility.Collapsed;
