@@ -579,5 +579,20 @@ namespace backlog.Views
             };
             await contentDialog.ShowAsync();
         }
+
+        private async void ImportButton_Click(object sender, RoutedEventArgs e)
+        {
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
+            picker.FileTypeFilter.Add(".bklg");
+
+            StorageFile file = await picker.PickSingleFileAsync();
+            StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
+            await tempFolder.CreateFileAsync(file.Name, CreationCollisionOption.ReplaceExisting);
+            string json = await FileIO.ReadTextAsync(file);
+            await FileIO.WriteTextAsync(file, json);
+            Frame.Navigate(typeof(ImportBacklog), json, null);
+        }
     }
 }

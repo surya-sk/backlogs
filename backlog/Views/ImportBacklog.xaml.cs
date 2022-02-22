@@ -21,6 +21,7 @@ using backlog.Saving;
 using System.Globalization;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -51,12 +52,14 @@ namespace backlog.Views
                 ProgBar.Visibility = Visibility.Visible;
                 if (isNetworkAvailable)
                 {
-                    await SaveData.GetInstance().ReadDataAsync(signedIn);
-                    backlogs = SaveData.GetInstance().GetBacklogs();
-                    StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
-                    StorageFile file = await tempFolder.GetFileAsync(fileName);
-                    string json = await FileIO.ReadTextAsync(file);
+                    //await SaveData.GetInstance().ReadDataAsync(signedIn);
+                    //backlogs = SaveData.GetInstance().GetBacklogs();
+                    //StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
+                    //StorageFile file = await tempFolder.GetFileAsync(fileName);
+                    //string json = await FileIO.ReadTextAsync(file);
+                    string json = fileName;
                     importedBacklog = JsonConvert.DeserializeObject<Backlog>(json);
+                    Debug.WriteLine(json);
                     titleText.Text = importedBacklog.Name;
                     directorText.Text = importedBacklog.Director;
                     typeText.Text = importedBacklog.Type;

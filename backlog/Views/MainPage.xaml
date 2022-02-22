@@ -221,6 +221,7 @@
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="TopCompletedBacklogsButton" Label="Completed backlogs" Icon="List" Click="CompletedBacklogsButton_Click" />
                 <AppBarButton x:Name="TopSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+                <AppBarButton x:Name="TopImportButton" Label="Import backlog" Icon="Import" Click="ImportButton_Click" />
                 <AppBarButton x:Name="TopRateButton" Label="Rate and Review on the Store" Icon="Like" Click="RateButton_Click" />
                 <AppBarButton x:Name="TopSupportButton" Label="Support developer"  Click="SupportButton_Click" >
                     <FontIcon Glyph="" />
@@ -243,6 +244,7 @@
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="BottomCompletedBacklogsButton" Label="Completed backlogs" Icon="List" Click="CompletedBacklogsButton_Click" />
                 <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+                <AppBarButton x:Name="BottomImportButton" Label="Import backlog" Icon="Import" Click="ImportButton_Click" />
                 <AppBarButton x:Name="BottomRateButton" Label="Rate and Review on the Store" Icon="Like" Click="RateButton_Click" />
                 <AppBarButton x:Name="BottomSupportButton" Label="Support developer"  Click="SupportButton_Click" >
                     <FontIcon Glyph="" />
