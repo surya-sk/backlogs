@@ -61,7 +61,7 @@ namespace backlog.Views
             this.InitializeComponent();
             isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
-            WelcomeText.Text = $"Welcome to Backlogs, {Settings.UserName}!";
+            WelcomeText.Text = Settings.IsSignedIn ? $"Welcome to Backlogs, {Settings.UserName}!" : "Welcome to Backlogs, stranger!";
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             recentlyAdded = new ObservableCollection<Backlog>();
             recentlyCompleted = new ObservableCollection<Backlog>();
@@ -168,7 +168,7 @@ namespace backlog.Views
                 {
                     recentlyCompleted.Add(backlog);
                 }
-                if (completedBacklogs.Count < 0)
+                if (completedBacklogs.Count <= 0)
                 {
                     EmptyCompletedText.Visibility = Visibility.Visible;
                     CompletedBacklogsGrid.Visibility = Visibility.Collapsed;
@@ -491,12 +491,12 @@ namespace backlog.Views
             GenerateRandomBacklog();
         }
 
-        private void GenerateRandomBacklog()
+        private async void GenerateRandomBacklog()
         {
             var type = TypeComoBox.SelectedItem.ToString();
             Random random = new Random();
             Backlog randomBacklog = new Backlog();
-            Debug.WriteLine(incompleteBacklogs.Count);
+            bool error = false;
             switch(type.ToLower())
             {
                 case "any":
@@ -504,33 +504,77 @@ namespace backlog.Views
                     break;
                 case "film":
                     var filmBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Film"));
+                    if(filmBacklogs.Count <= 0)
+                    {
+                        await ShowErrorMessage("Add more films to see suggestions");
+                        error = true;
+                        break;
+                    }
                     randomBacklog = filmBacklogs[random.Next(0, filmBacklogs.Count)];
                     break;
                 case "album":
                     var musicBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Album"));
+                    if(musicBacklogs.Count <= 0)
+                    {
+                        await ShowErrorMessage("Add more albums to see suggestions");
+                        error = true;
+                        break;
+                    }
                     randomBacklog = musicBacklogs[random.Next(0, musicBacklogs.Count)];
                     break;
                 case "game":
                     var gameBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Game"));
+                    if(gameBacklogs.Count <= 0)
+                    {
+                        await ShowErrorMessage("Add more games to see suggestions");
+                        error = true;
+                        break;
+                    }    
                     randomBacklog = gameBacklogs[random.Next(0, gameBacklogs.Count)];
                     break;
                 case "book":
                     var bookBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Book"));
+                    if(bookBacklogs.Count <= 0)
+                    {
+                        await ShowErrorMessage("Add more books to see suggestions");
+                        error = true;
+                        break;
+                    }
                     randomBacklog = bookBacklogs[random.Next(0, bookBacklogs.Count)];
                     break;
                 case "tv":
                     var tvBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "TV"));
+                    if(tvBacklogs.Count <= 0)
+                    {
+                        await ShowErrorMessage("Add more series to see suggestions");
+                        error = true;
+                        break;
+                    }
                     randomBacklog = tvBacklogs[random.Next(0, tvBacklogs.Count)];
                     break;
             }
-            RunName.Text = randomBacklog.Name;
-            suggestionCover.Source = new BitmapImage(new Uri(randomBacklog.ImageURL));
-            randomBacklogId = randomBacklog.id;
+            if (!error)
+            {
+                RunName.Text = randomBacklog.Name;
+                suggestionCover.Source = new BitmapImage(new Uri(randomBacklog.ImageURL));
+                randomBacklogId = randomBacklog.id;
+            }
         }
 
         private void Hyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
         {
             Frame.Navigate(typeof(BacklogPage), randomBacklogId, null);
+        }
+
+        private async Task ShowErrorMessage(string message)
+        {
+            ContentDialog contentDialog = new ContentDialog()
+            {
+                Title = "Not enough Backlogs",
+                Content = message,
+                CloseButtonText = "Ok"
+            };
+            await contentDialog.ShowAsync();
         }
     }
 }

@@ -95,7 +95,7 @@
                 <RelativePanel Grid.Row="1"  Margin="10,0,0,30">
                     <TextBlock x:Name="HeadingText" Text="Recently Added" FontSize="20" Margin="20,20,20,20"/>
                     <Button x:Name="AllAddedButton" Content="See all" Click="AllAddedButton_Click" RelativePanel.RightOf="HeadingText" Margin="0,20,20,20" />
-                    <TextBlock x:Name="EmptyBackogsText" Text="You haven't added any Backlogs yet" Visibility="Collapsed" RelativePanel.Below="HeadingText"/>
+                    <TextBlock x:Name="EmptyBackogsText" Text="You haven't added any Backlogs yet" Visibility="Collapsed" RelativePanel.Below="HeadingText" Margin="20" TextWrapping="Wrap"/>
                     <controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind recentlyAdded}" ItemClick="AddedBacklogsGrid_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="HeadingText" Loaded="AddedBacklogsGrid_Loaded"/>
@@ -104,7 +104,7 @@
                 <RelativePanel Grid.Row="2" Margin="10,0,0,30">
                     <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="20,20,20,20" />
                     <Button x:Name="AllCompletedButton" Content="See all" Click="AllCompletedButton_Click" RelativePanel.RightOf="CompletedHeadingText" Margin="0,20,20,20" />
-                    <TextBlock x:Name="EmptyCompletedText" Text="You haven't completed any Backlogs" Visibility="Collapsed" RelativePanel.Below="CompletedHeadingText" />
+                    <TextBlock x:Name="EmptyCompletedText" Text="You haven't completed any Backlogs" Visibility="Collapsed" RelativePanel.Below="CompletedHeadingText" Margin="20" TextWrapping="Wrap" />
                     <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
                                                        SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind recentlyCompleted}"
                                                        ItemTemplate="{StaticResource CompletedBacklogTemplate}" RelativePanel.Below="CompletedHeadingText"/>
