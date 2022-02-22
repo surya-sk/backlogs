@@ -226,6 +226,7 @@ namespace backlog.Views
             if (result == ContentDialogResult.Primary)
             {
                 await MSAL.SignOut();
+                Settings.IsSignedIn = false;
                 Frame.Navigate(typeof(MainPage));
             }
         }
