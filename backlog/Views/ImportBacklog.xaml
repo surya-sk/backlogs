@@ -39,10 +39,10 @@
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
 
         <ScrollViewer>
-            <StackPanel Grid.Row="1" Margin="30">
-                <Image x:Name="coverImg"  Height="150" Width="200" VerticalAlignment="Center" />
-                <TextBlock x:Name="titleText" FontSize="20" MaxLines="2" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
-                <TextBlock x:Name="directorText" FontSize="15" MaxLines="1" TextTrimming="CharacterEllipsis" />
+            <StackPanel Grid.Row="1" Margin="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image x:Name="coverImg"  Height="150" Width="200" VerticalAlignment="Center" Margin="10" />
+                <TextBlock x:Name="titleText" FontSize="20" MaxLines="2" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" Margin="10" />
+                <TextBlock x:Name="directorText" FontSize="15" MaxLines="1" TextTrimming="CharacterEllipsis" Margin="10" />
                 <TextBlock x:Name="typeText" FontSize="12" />
 
                 <TextBlock Text="When do you want to check this out? (optional)" Margin="10,0,0,20" />
@@ -55,7 +55,7 @@
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopImportButton" Icon="Accept" Label="Import" Click="ImportButton_Click" />
-            <AppBarButton x:Name="BottomCancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
+            <AppBarButton x:Name="TopCancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
         </CommandBar>
     </Page.TopAppBar>
     <Page.BottomAppBar>
