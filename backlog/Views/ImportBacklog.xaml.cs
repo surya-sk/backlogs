@@ -73,6 +73,17 @@ namespace backlog.Views
         private async void ImportButton_Click(object sender, RoutedEventArgs e)
         {
             ProgBar.Visibility=Visibility.Visible;
+            if(!isNetworkAvailable && signedIn)
+            {
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "No internet",
+                    Content = "You need to be connected to the internet for this!",
+                    CloseButtonText = "Ok"
+                };
+                await contentDialog.ShowAsync();
+                return;
+            }
             if (datePicker.SelectedDates.Count > 0)
             {
                 if (timePicker.Time == TimeSpan.Zero)
