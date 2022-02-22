@@ -39,6 +39,9 @@ namespace backlog.Views
         private ObservableCollection<Backlog> recentlyAdded { get; set; }
         private ObservableCollection <Backlog> recentlyCompleted { get; set; }
 
+        ObservableCollection<Backlog> completedBacklogs;
+        ObservableCollection<Backlog> incompleteBacklogs;
+
         private int backlogCount;
         private int completedBacklogsCount;
         private int incompleteBacklogsCount;
@@ -60,6 +63,8 @@ namespace backlog.Views
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             recentlyAdded = new ObservableCollection<Backlog>();
             recentlyCompleted = new ObservableCollection<Backlog>();
+            completedBacklogs = new ObservableCollection<Backlog>();
+            incompleteBacklogs = new ObservableCollection<Backlog>();
             LoadBacklogs();
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
@@ -126,12 +131,12 @@ namespace backlog.Views
         {
             recentlyAdded.Clear();
             recentlyCompleted.Clear();
+            completedBacklogs.Clear();
+            incompleteBacklogs.Clear();
             completedBacklogsCount = 0;
             incompleteBacklogsCount = 0;
             completedPercent = 0.0f;
             backlogs = SaveData.GetInstance().GetBacklogs();
-            ObservableCollection<Backlog> completedBacklogs = new ObservableCollection<Backlog>();
-            ObservableCollection<Backlog> incompleteBacklogs = new ObservableCollection<Backlog>();
             foreach (var backlog in backlogs)
             {
                 if(!backlog.IsComplete)
@@ -163,6 +168,7 @@ namespace backlog.Views
             incompleteBacklogsCount = backlogs.Where(b => !b.IsComplete).Count();
             backlogCount = backlogs.Count;
             completedPercent = (Convert.ToDouble(completedBacklogsCount) / backlogCount) * 100;
+            GenerateRandomBacklog();
         }
 
         /// <summary>
@@ -461,7 +467,43 @@ namespace backlog.Views
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
         {
+            GenerateRandomBacklog();
+        }
 
+        private void GenerateRandomBacklog()
+        {
+            var type = TypeComoBox.SelectedItem.ToString();
+            Random random = new Random();
+            Backlog randomBacklog = new Backlog();
+            switch(type.ToLower())
+            {
+                case "any":
+                    randomBacklog = incompleteBacklogs[random.Next(0, incompleteBacklogsCount)];
+                    break;
+                case "film":
+                    var filmBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Film"));
+                    randomBacklog = filmBacklogs[random.Next(0, filmBacklogs.Count)];
+                    break;
+                case "album":
+                    var musicBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Album"));
+                    randomBacklog = musicBacklogs[random.Next(0, musicBacklogs.Count)];
+                    break;
+                case "game":
+                    var gameBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Game"));
+                    randomBacklog = gameBacklogs[random.Next(0, gameBacklogs.Count)];
+                    break;
+                case "book":
+                    var bookBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Book"));
+                    randomBacklog = bookBacklogs[random.Next(0, bookBacklogs.Count)];
+                    break;
+                case "tv":
+                    var tvBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "TV"));
+                    randomBacklog = tvBacklogs[random.Next(0, tvBacklogs.Count)];
+                    break;
+            }
+            TitleText.Text = randomBacklog.Name;
+            DirectorText.Text = randomBacklog.Director;
+            coverImage.Source = new BitmapImage(new Uri(randomBacklog.ImageURL));
         }
     }
 }
