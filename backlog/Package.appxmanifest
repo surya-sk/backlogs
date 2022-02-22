@@ -49,6 +49,18 @@
           <uap:Rotation Preference="landscape"/>
           <uap:Rotation Preference="portrait"/></uap:InitialRotationPreference>
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="bklg">
+            <uap:SupportedFileTypes>
+              <uap:FileType>.bklg</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>bklg</uap:DisplayName>
+            <uap:InfoTip>A Backlog item</uap:InfoTip>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
 
