@@ -179,12 +179,32 @@ namespace backlog
             // TODO: Handle file activation
             // The number of files received is args.Files.Count
             // The name of the first file is args.Files[0].Name
-            if(args.Files.Count > 0)
+            if (args.Files.Count > 0)
             {
                 StorageFile storageFile = args.Files[0] as StorageFile;
+                StorageFolder storageFolder = ApplicationData.Current.TemporaryFolder;
+                await storageFolder.CreateFileAsync(storageFile.Name, CreationCollisionOption.ReplaceExisting);
                 string json = await FileIO.ReadTextAsync(storageFile);
-                Frame rootFrame = GetRootFrame();
-                rootFrame.Navigate(typeof(ImportBacklog), json, null);
+                var file = await storageFolder.GetFileAsync(storageFile.Name);
+                await FileIO.WriteTextAsync(file, json);
+                Frame rootFrame = Window.Current.Content as Frame;
+
+                // Do not repeat app initialization when the Window already has content,
+                // just ensure that the window is active
+                if (rootFrame == null)
+                {
+                    // Create a Frame to act as the navigation context and navigate to the first page
+                    rootFrame = new Frame();
+
+                    rootFrame.NavigationFailed += OnNavigationFailed;
+                    // Place the frame in the current Window
+                    Window.Current.Content = rootFrame;
+                }
+
+
+                rootFrame.Navigate(typeof(ImportBacklog), file.Name);
+                // Ensure the current window is active
+                Window.Current.Activate();
             }
         }
     }
