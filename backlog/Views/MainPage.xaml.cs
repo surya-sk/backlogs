@@ -38,6 +38,12 @@ namespace backlog.Views
 
         private ObservableCollection<Backlog> recentlyAdded { get; set; }
         private ObservableCollection <Backlog> recentlyCompleted { get; set; }
+
+        private int backlogCount;
+        private int completedBacklogsCount;
+        private int incompleteBacklogsCount;
+        private double completedPercent;
+
         GraphServiceClient graphServiceClient;
 
         bool isNetworkAvailable = false;
@@ -123,7 +129,11 @@ namespace backlog.Views
         {
             recentlyAdded.Clear();
             recentlyCompleted.Clear();
+            completedBacklogsCount = 0;
+            incompleteBacklogsCount = 0;
+            completedPercent = 0.0f;
             backlogs = SaveData.GetInstance().GetBacklogs();
+            backlogCount = backlogs.Count;
             foreach (var backlog in backlogs.Where(b => !b.IsComplete).OrderByDescending(b => b.CreatedDate).Skip(1).Take(5))
             {
                 recentlyAdded.Add(backlog);
@@ -132,6 +142,9 @@ namespace backlog.Views
             {
                 recentlyCompleted.Add(backlog);
             }
+            completedBacklogsCount = backlogs.Where(b => b.IsComplete).Count();
+            incompleteBacklogsCount = backlogs.Where(b => !b.IsComplete).Count();
+            completedPercent = (Convert.ToDouble(completedBacklogsCount) / backlogCount) * 100;
         }
 
         /// <summary>

@@ -84,6 +84,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <TextBlock x:Name="WelcomeText" Margin="30" FontSize="30" />
@@ -103,6 +104,38 @@
                                                        SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind recentlyCompleted}"
                                                        ItemTemplate="{StaticResource CompletedBacklogTemplate}" RelativePanel.Below="CompletedHeadingText"/>
                 </RelativePanel>
+
+                <Grid x:Name="StatsGrid" Grid.Row="3" Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Stats" FontSize="20" />
+
+                    <StackPanel Grid.Row="1">
+                        <StackPanel Orientation="Horizontal" Margin="20">
+                            <TextBlock Text="Total number of backlogs: " FontSize="15" Margin="0,0,10,0" />
+                            <TextBlock Text="{x:Bind backlogCount}" FontSize="15" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="20">
+                            <TextBlock Text="Completed backlogs: " FontSize="15" Margin="0,0,10,0" />
+                            <TextBlock Text="{x:Bind completedBacklogsCount}" FontSize="15" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="20">
+                            <TextBlock Text="Incomplete backogs: " FontSize="15" Margin="0,0,10,0"/>
+                            <TextBlock Text="{x:Bind incompleteBacklogsCount}" FontSize="15" FontWeight="Bold" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <controls:RadialProgressBar x:Name="RadialProgressBarControl" Grid.Column="1" Minimum="0" Maximum="100" Thickness="4" Outline="Gray" 
+                                                Foreground="Red" Value="{x:Bind completedPercent}" Grid.Row="1" Margin="20" MaxWidth="250" />
+                </Grid>
 
                 <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
 
