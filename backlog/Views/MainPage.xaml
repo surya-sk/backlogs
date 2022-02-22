@@ -107,46 +107,90 @@
                                                        ItemTemplate="{StaticResource CompletedBacklogTemplate}" RelativePanel.Below="CompletedHeadingText"/>
                 </RelativePanel>
 
-                <Grid x:Name="StatsGrid" Grid.Row="3">
-
+                <Grid x:Name="StatsAndSuggestionsGrid" Grid.Row="3">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Stats" FontSize="20" Margin="20" />
-
-                    <Grid Grid.Row="1" Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="20,0,0,30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="2*" />
-                        </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <Grid x:Name="StatsGrid">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="20">
-                                <TextBlock Text="Total number of backlogs: " FontSize="15" Margin="0,0,10,0" />
-                                <TextBlock Text="{x:Bind backlogCount}" FontSize="15" FontWeight="Bold" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="20">
-                                <TextBlock Text="Completed backlogs: " FontSize="15" Margin="0,0,10,0" />
-                                <TextBlock Text="{x:Bind completedBacklogsCount}" FontSize="15" FontWeight="Bold" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="20">
-                                <TextBlock Text="Incomplete backogs: " FontSize="15" Margin="0,0,10,0"/>
-                                <TextBlock Text="{x:Bind incompleteBacklogsCount}" FontSize="15" FontWeight="Bold" />
-                            </StackPanel>
-                        </StackPanel>
 
-                        <controls:RadialProgressBar x:Name="PercentBar" Grid.Column="1" Minimum="0" Maximum="100" Thickness="4" Outline="Gray" 
+                        <TextBlock Text="Stats" FontSize="20" Margin="20" />
+
+                        <Grid Grid.Row="1" Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="20,0,0,30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20">
+                                    <TextBlock Text="Total number of backlogs: " FontSize="15" Margin="0,0,10,0" />
+                                    <TextBlock Text="{x:Bind backlogCount}" FontSize="15" FontWeight="Bold" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20">
+                                    <TextBlock Text="Completed backlogs: " FontSize="15" Margin="0,0,10,0" />
+                                    <TextBlock Text="{x:Bind completedBacklogsCount}" FontSize="15" FontWeight="Bold" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20">
+                                    <TextBlock Text="Incomplete backogs: " FontSize="15" Margin="0,0,10,0"/>
+                                    <TextBlock Text="{x:Bind incompleteBacklogsCount}" FontSize="15" FontWeight="Bold" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <controls:RadialProgressBar x:Name="PercentBar" Grid.Column="1" Minimum="0" Maximum="100" Thickness="4" Outline="Gray" 
                                                 Foreground="{ThemeResource SystemColorControlAccentBrush}" Value="{x:Bind completedPercent}" Margin="20" Width="200" />
+                        </Grid>
                     </Grid>
+
+                    <RelativePanel Margin="30,0,0,0" Grid.Column="1">
+                        <TextBlock x:Name="SuggestionHeadingText" Text="Suggestion" FontSize="20" Margin="20" />
+                        <StackPanel x:Name="InputPanel" RelativePanel.Below="SuggestionHeadingText" Margin="20" >
+                            <ComboBox x:Name="TypeComoBox" Margin="10,0,0,20" SelectedIndex="0">
+                                <x:String>Any</x:String>
+                                <x:String>Film</x:String>
+                                <x:String>TV</x:String>
+                                <x:String>Album</x:String>
+                                <x:String>Game</x:String>
+                                <x:String>Book</x:String>
+                            </ComboBox>
+                            <Button x:Name="GoButton" Content="Go" Margin="10,0,0,0" Click="GoButton_Click" />
+                        </StackPanel>
+                        <Grid x:Name="rootGrid"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="0,0,10,10" RelativePanel.RightOf="InputPanel" RelativePanel.Below="SuggestionHeadingText">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Image x:Name="coverImage" Height="150" Width="200" HorizontalAlignment="Stretch" Margin="0,10,0,0"/>
+                            <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Left">
+                                <TextBlock
+                        x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="{x:Bind Name}"
+                                    TextLineBounds="TrimToCapHeight"
+                                    TextWrapping="Wrap" />
+                                <TextBlock x:Name="DirectorText" Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="TitleText" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                            </RelativePanel>
+                        </Grid>
+                    </RelativePanel>
                 </Grid>
 
                 <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
-
                 <muxc:TeachingTip x:Name="NavigationTeachingTip" Title="Moving around" Subtitle="To move around different sections, swipe using your finger or trackpad" />
                 <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind TopSigninButton}"
                               Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!" />

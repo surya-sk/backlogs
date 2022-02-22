@@ -134,11 +134,32 @@ namespace backlog.Views
             completedPercent = 0.0f;
             backlogs = SaveData.GetInstance().GetBacklogs();
             backlogCount = backlogs.Count;
-            foreach (var backlog in backlogs.Where(b => !b.IsComplete).OrderByDescending(b => b.CreatedDate).Skip(1).Take(5))
+            ObservableCollection<Backlog> completedBacklogs = new ObservableCollection<Backlog>();
+            ObservableCollection<Backlog> incompleteBacklogs = new ObservableCollection<Backlog>();
+            foreach (var backlog in backlogs)
+            {
+                if(!backlog.IsComplete)
+                {
+                    if (backlog.CreatedDate == "None" || backlog.CreatedDate == null)
+                    {
+                        backlog.CreatedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                    }
+                    incompleteBacklogs.Add(backlog);
+                }
+                else
+                {
+                    if (backlog.CompletedDate == null)
+                    {
+                        backlog.CompletedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                    }
+                    completedBacklogs.Add(backlog);
+                }
+            }
+            foreach (var backlog in incompleteBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CreatedDate, CultureInfo.InvariantCulture)).Skip(1).Take(5))
             {
                 recentlyAdded.Add(backlog);
             }
-            foreach (var backlog in backlogs.Where(b => b.IsComplete).OrderByDescending(b => b.CompletedDate).Skip(1).Take(5))
+            foreach (var backlog in completedBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CompletedDate, CultureInfo.InvariantCulture)).Skip(1).Take(5))
             {
                 recentlyCompleted.Add(backlog);
             }
@@ -439,6 +460,11 @@ namespace backlog.Views
         private void AllCompletedButton_Click(object sender, RoutedEventArgs e)
         {
             CompletedBacklogsButton_Click(sender, e);
+        }
+
+        private void GoButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
