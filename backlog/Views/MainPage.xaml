@@ -77,6 +77,9 @@
                         <Setter Target="SuggestionPanel.(Grid.Column)" Value="0" />
                         <Setter Target="SuggestionPanel.(Grid.Row)" Value="1" />
                         <Setter Target="SuggestionPanel.HorizontalAlignment" Value="Left" />
+                        <Setter Target="WelcomeText.FontSize" Value="20" />
+                        <Setter Target="PercentBar.Width" Value="100" />
+                        <Setter Target="PercentBar.Height" Value="100" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -154,7 +157,7 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <controls:RadialProgressBar x:Name="PercentBar" Grid.Column="1" Minimum="0" Maximum="100" Thickness="4" Outline="Gray" 
+                                <controls:RadialProgressBar x:Name="PercentBar" Grid.Column="1" Minimum="0" Maximum="100" Thickness="8" Outline="Gray" 
                                                 Foreground="{ThemeResource SystemColorControlAccentBrush}" Value="{x:Bind completedPercent}" Margin="20" Width="150" />
                             </Grid>
                         </Grid>
