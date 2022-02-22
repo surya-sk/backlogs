@@ -13,6 +13,10 @@ using backlog.Utils;
 using System.Globalization;
 using System.Linq;
 using Windows.UI.Core;
+using Windows.ApplicationModel.DataTransfer;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -31,6 +35,7 @@ namespace backlog.Views
         string source;
         Uri sourceLink;
         PageStackEntry prevPage;
+        StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
         public BacklogPage()
         {
             this.InitializeComponent();
@@ -283,6 +288,29 @@ namespace backlog.Views
             CompletePanel.Visibility = Visibility.Visible;
             NotifPanel.Visibility = Visibility.Collapsed;
             DatesPanel.Visibility = Visibility.Visible;
+        }
+
+        private async void ShareButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProgBar.Visibility = Visibility.Visible;
+            StorageFile backlogFile = await tempFolder.CreateFileAsync($"{backlog.Name}.bklg", CreationCollisionOption.ReplaceExisting);
+            string json = JsonConvert.SerializeObject(backlog);
+            await FileIO.WriteTextAsync(backlogFile, json);
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+            DataTransferManager.ShowShareUI();
+            ProgBar.Visibility = Visibility.Collapsed;
+        }
+
+        private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            DataRequest dataRequest = args.Request;
+            dataRequest.Data.Properties.Title = $"Share {backlog.Name} backlog";
+            dataRequest.Data.Properties.Description = "Your contacts with the Backlogs app installed can open this file and add it to their backlog";
+            var fileToShare = await tempFolder.GetFileAsync($"{backlog.Name}.bklg");
+            List<IStorageItem> list = new List<IStorageItem>();
+            list.Add(fileToShare);
+            dataRequest.Data.SetStorageItems(list);
         }
     }
 }
