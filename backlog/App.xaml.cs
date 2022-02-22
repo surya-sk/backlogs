@@ -18,6 +18,7 @@ using backlog.Views;
 using backlog.Utils;
 using System.Reflection;
 using Microsoft.Identity.Client;
+using Windows.Storage;
 
 namespace backlog
 {
@@ -173,14 +174,20 @@ namespace backlog
             return rootFrame;
         }
 
-        protected override void OnFileActivated(FileActivatedEventArgs args)
+        protected async override void OnFileActivated(FileActivatedEventArgs args)
         {
             // TODO: Handle file activation
             // The number of files received is args.Files.Count
             // The name of the first file is args.Files[0].Name
             if(args.Files.Count > 0)
             {
-
+                StorageFile storageFile = args.Files[0] as StorageFile;
+                StorageFolder storageFolder = ApplicationData.Current.TemporaryFolder;
+                await storageFolder.CreateFileAsync(storageFile.Name, CreationCollisionOption.ReplaceExisting);
+                string json = await FileIO.ReadTextAsync(storageFile);
+                await FileIO.WriteTextAsync(storageFile, json);
+                Frame rootFrame = GetRootFrame();
+                rootFrame.Navigate(typeof(ImportBacklog), storageFile.Name, null);
             }
         }
     }
