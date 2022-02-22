@@ -164,8 +164,8 @@
                     </ScrollViewer>
 
                     <RelativePanel x:Name="SuggestionPanel" Margin="0,0,90,0" Grid.Column="1" HorizontalAlignment="Right">
-                        <TextBlock x:Name="SuggestionHeadingText" Text="Suggestion" FontSize="20" Margin="20" />
-                        <TextBlock x:Name="EmptySuggestionsText" Text="Add backlogs to get suggestions" Visibility="Collapsed" TextWrapping="Wrap" RelativePanel.Below="SuggestionHeadingText" />
+                        <TextBlock x:Name="SuggestionHeadingText" Text="Random Pick" FontSize="20" Margin="20" />
+                        <TextBlock x:Name="EmptySuggestionsText" Text="Add backlogs to get picks" Visibility="Collapsed" TextWrapping="Wrap" RelativePanel.Below="SuggestionHeadingText" />
                         <StackPanel x:Name="InputPanel" RelativePanel.Below="SuggestionHeadingText" Margin="20" >
                             <ComboBox x:Name="TypeComoBox" Margin="10,0,0,20" SelectedIndex="0">
                                 <x:String>Any</x:String>
