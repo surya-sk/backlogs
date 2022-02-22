@@ -46,20 +46,13 @@ namespace backlog.Views
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            string fileName = e.Parameter as string;
-            if (fileName != null && fileName != "")
+            string json = e.Parameter as string;
+            if (json != null && json != "")
             {
                 ProgBar.Visibility = Visibility.Visible;
                 if (isNetworkAvailable)
                 {
-                    //await SaveData.GetInstance().ReadDataAsync(signedIn);
-                    //backlogs = SaveData.GetInstance().GetBacklogs();
-                    //StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
-                    //StorageFile file = await tempFolder.GetFileAsync(fileName);
-                    //string json = await FileIO.ReadTextAsync(file);
-                    string json = fileName;
                     importedBacklog = JsonConvert.DeserializeObject<Backlog>(json);
-                    Debug.WriteLine(json);
                     titleText.Text = importedBacklog.Name;
                     directorText.Text = importedBacklog.Director;
                     typeText.Text = importedBacklog.Type;

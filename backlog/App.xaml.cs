@@ -182,12 +182,9 @@ namespace backlog
             if(args.Files.Count > 0)
             {
                 StorageFile storageFile = args.Files[0] as StorageFile;
-                StorageFolder storageFolder = ApplicationData.Current.TemporaryFolder;
-                await storageFolder.CreateFileAsync(storageFile.Name, CreationCollisionOption.ReplaceExisting);
                 string json = await FileIO.ReadTextAsync(storageFile);
-                await FileIO.WriteTextAsync(storageFile, json);
                 Frame rootFrame = GetRootFrame();
-                rootFrame.Navigate(typeof(ImportBacklog), storageFile.Name, null);
+                rootFrame.Navigate(typeof(ImportBacklog), json, null);
             }
         }
     }

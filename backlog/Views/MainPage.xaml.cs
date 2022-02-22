@@ -588,10 +588,7 @@ namespace backlog.Views
             picker.FileTypeFilter.Add(".bklg");
 
             StorageFile file = await picker.PickSingleFileAsync();
-            StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
-            await tempFolder.CreateFileAsync(file.Name, CreationCollisionOption.ReplaceExisting);
             string json = await FileIO.ReadTextAsync(file);
-            await FileIO.WriteTextAsync(file, json);
             Frame.Navigate(typeof(ImportBacklog), json, null);
         }
     }
