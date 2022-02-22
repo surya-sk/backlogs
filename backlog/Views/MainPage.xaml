@@ -95,6 +95,7 @@
                 <RelativePanel Grid.Row="1"  Margin="10,0,0,30">
                     <TextBlock x:Name="HeadingText" Text="Recently Added" FontSize="20" Margin="20,20,20,20"/>
                     <Button x:Name="AllAddedButton" Content="See all" Click="AllAddedButton_Click" RelativePanel.RightOf="HeadingText" Margin="0,20,20,20" />
+                    <TextBlock x:Name="EmptyBackogsText" Text="You haven't added any Backlogs yet" Visibility="Collapsed" RelativePanel.Below="HeadingText"/>
                     <controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind recentlyAdded}" ItemClick="AddedBacklogsGrid_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="HeadingText" Loaded="AddedBacklogsGrid_Loaded"/>
@@ -103,6 +104,7 @@
                 <RelativePanel Grid.Row="2" Margin="10,0,0,30">
                     <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="20,20,20,20" />
                     <Button x:Name="AllCompletedButton" Content="See all" Click="AllCompletedButton_Click" RelativePanel.RightOf="CompletedHeadingText" Margin="0,20,20,20" />
+                    <TextBlock x:Name="EmptyCompletedText" Text="You haven't completed any Backlogs" Visibility="Collapsed" RelativePanel.Below="CompletedHeadingText" />
                     <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
                                                        SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind recentlyCompleted}"
                                                        ItemTemplate="{StaticResource CompletedBacklogTemplate}" RelativePanel.Below="CompletedHeadingText"/>
@@ -160,6 +162,7 @@
 
                     <RelativePanel x:Name="SuggestionPanel" Margin="0,0,90,0" Grid.Column="1" HorizontalAlignment="Right">
                         <TextBlock x:Name="SuggestionHeadingText" Text="Suggestion" FontSize="20" Margin="20" />
+                        <TextBlock x:Name="EmptySuggestionsText" Text="Add backlogs to get suggestions" Visibility="Collapsed" TextWrapping="Wrap" RelativePanel.Below="SuggestionHeadingText" />
                         <StackPanel x:Name="InputPanel" RelativePanel.Below="SuggestionHeadingText" Margin="20" >
                             <ComboBox x:Name="TypeComoBox" Margin="10,0,0,20" SelectedIndex="0">
                                 <x:String>Any</x:String>
@@ -171,7 +174,7 @@
                             </ComboBox>
                             <Button x:Name="GoButton" Content="Go" Margin="10,0,0,0" Click="GoButton_Click" />
                         </StackPanel>
-                        <Grid x:Name="rootGrid"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="0,0,10,10" RelativePanel.RightOf="InputPanel" RelativePanel.Below="SuggestionHeadingText">
+                        <Grid x:Name="suggestionsGrid"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="0,0,10,10" RelativePanel.RightOf="InputPanel" RelativePanel.Below="SuggestionHeadingText">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />

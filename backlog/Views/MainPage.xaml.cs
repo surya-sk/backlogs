@@ -168,13 +168,28 @@ namespace backlog.Views
                 {
                     recentlyCompleted.Add(backlog);
                 }
+                if (completedBacklogs.Count < 0)
+                {
+                    EmptyCompletedText.Visibility = Visibility.Visible;
+                    CompletedBacklogsGrid.Visibility = Visibility.Collapsed;
+                }
                 completedBacklogsCount = backlogs.Where(b => b.IsComplete).Count();
                 incompleteBacklogsCount = backlogs.Where(b => !b.IsComplete).Count();
                 backlogCount = backlogs.Count;
                 completedPercent = (Convert.ToDouble(completedBacklogsCount) / backlogCount) * 100;
                 GenerateRandomBacklog();
             }
-            
+
+            else
+            {
+                EmptyBackogsText.Visibility = Visibility.Visible;
+                EmptySuggestionsText.Visibility = Visibility.Visible;
+                EmptyCompletedText.Visibility = Visibility.Visible;
+                AddedBacklogsGrid.Visibility = Visibility.Collapsed;
+                CompletedBacklogsGrid.Visibility = Visibility.Collapsed;
+                suggestionsGrid.Visibility = Visibility.Collapsed;
+                InputPanel.Visibility = Visibility.Collapsed;
+            }
         }
 
         /// <summary>
