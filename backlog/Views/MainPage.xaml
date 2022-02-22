@@ -88,7 +88,7 @@
 
                 <TextBlock x:Name="WelcomeText" Margin="30" FontSize="30" />
 
-                <RelativePanel Grid.Row="1"  Margin="0,0,0,30">
+                <RelativePanel Grid.Row="1"  Margin="10,0,0,30">
                     <TextBlock x:Name="HeadingText" Text="Recently Added" FontSize="20" Margin="20,20,20,20"/>
                     <Button x:Name="AllAddedButton" Content="See all" Click="AllAddedButton_Click" RelativePanel.RightOf="HeadingText" Margin="0,20,20,20" />
                     <controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
@@ -96,7 +96,7 @@
                                                        ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="HeadingText" Loaded="AddedBacklogsGrid_Loaded"/>
                 </RelativePanel>
 
-                <RelativePanel Grid.Row="2">
+                <RelativePanel Grid.Row="2" Margin="10,0,0,0">
                     <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="20,20,20,20" />
                     <Button x:Name="AllCompletedButton" Content="See all" Click="AllCompletedButton_Click" RelativePanel.RightOf="CompletedHeadingText" Margin="0,20,20,20" />
                     <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
