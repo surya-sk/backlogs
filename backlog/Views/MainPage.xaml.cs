@@ -139,7 +139,7 @@ namespace backlog.Views
             incompleteBacklogsCount = 0;
             completedPercent = 0.0f;
             backlogs = SaveData.GetInstance().GetBacklogs();
-            if(backlogs.Count > 0)
+            if(backlogs != null && backlogs.Count > 0)
             {
                 foreach (var backlog in backlogs)
                 {
@@ -298,30 +298,33 @@ namespace backlog.Views
         /// </summary>
         private void BuildNotifactionQueue()
         {
-            foreach (var b in new ObservableCollection<Backlog>(backlogs.OrderByDescending(b => b.TargetDate)))
+            if(backlogs != null)
             {
-                if(b.TargetDate != "None")
+                foreach (var b in new ObservableCollection<Backlog>(backlogs.OrderByDescending(b => b.TargetDate)))
                 {
-                    var savedNotifTime = Settings.GetNotifTime(b.id.ToString());
-                    if(savedNotifTime == "" || savedNotifTime != b.NotifTime.ToString())
+                    if (b.TargetDate != "None")
                     {
-                        DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate, CultureInfo.InvariantCulture).Add(b.NotifTime);
-                        int result = DateTimeOffset.Compare(date, DateTimeOffset.Now);
-                        if (result > 0)
+                        var savedNotifTime = Settings.GetNotifTime(b.id.ToString());
+                        if (savedNotifTime == "" || savedNotifTime != b.NotifTime.ToString())
                         {
-                            var builder = new ToastContentBuilder()
-                            .AddText($"Hey there!", hintMaxLines: 1)
-                            .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
-                            .AddHeroImage(new Uri(b.ImageURL));
-                            ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
-                            ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+                            DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate, CultureInfo.InvariantCulture).Add(b.NotifTime);
+                            int result = DateTimeOffset.Compare(date, DateTimeOffset.Now);
+                            if (result > 0)
+                            {
+                                var builder = new ToastContentBuilder()
+                                .AddText($"Hey there!", hintMaxLines: 1)
+                                .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
+                                .AddHeroImage(new Uri(b.ImageURL));
+                                ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
+                                ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+                            }
+                            Settings.SetNotifTime(b.id.ToString(), b.NotifTime.ToString());
                         }
-                        Settings.SetNotifTime(b.id.ToString(), b.NotifTime.ToString());
                     }
+                    bool showLiveTile = Settings.ShowLiveTile;
+                    if (showLiveTile)
+                        GenerateLiveTiles(b);
                 }
-                bool showLiveTile = Settings.ShowLiveTile;
-                if (showLiveTile)
-                    GenerateLiveTiles(b);
             }
         }
 
