@@ -76,6 +76,7 @@
                         <Setter Target="TopBar.Visibility" Value="Collapsed" />
                         <Setter Target="SuggestionPanel.(Grid.Column)" Value="0" />
                         <Setter Target="SuggestionPanel.(Grid.Row)" Value="1" />
+                        <Setter Target="SuggestionPanel.HorizontalAlignment" Value="Left" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
