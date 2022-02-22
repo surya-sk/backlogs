@@ -116,9 +116,6 @@ namespace backlog.Views
                 BottomProfileButton.Visibility = Visibility.Visible;
                 await SaveData.GetInstance().ReadDataAsync(sync);
                 LoadBacklogs();
-                if (sync)
-                {
-                }
                 BuildNotifactionQueue();
             }
             ShowTeachingTips();
@@ -135,7 +132,6 @@ namespace backlog.Views
             backlogs = SaveData.GetInstance().GetBacklogs();
             ObservableCollection<Backlog> completedBacklogs = new ObservableCollection<Backlog>();
             ObservableCollection<Backlog> incompleteBacklogs = new ObservableCollection<Backlog>();
-            backlogCount = backlogs.Count;
             foreach (var backlog in backlogs)
             {
                 if(!backlog.IsComplete)
@@ -165,6 +161,7 @@ namespace backlog.Views
             }
             completedBacklogsCount = backlogs.Where(b => b.IsComplete).Count();
             incompleteBacklogsCount = backlogs.Where(b => !b.IsComplete).Count();
+            backlogCount = backlogs.Count;
             completedPercent = (Convert.ToDouble(completedBacklogsCount) / backlogCount) * 100;
         }
 
