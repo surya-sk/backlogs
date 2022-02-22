@@ -35,11 +35,18 @@ namespace backlog.Views
     {
         private ObservableCollection<Backlog> allBacklogs { get; set; }
         private ObservableCollection<Backlog> backlogs { get; set; }
-        private ObservableCollection<Backlog> filmBacklogs { get; set; }
-        private ObservableCollection<Backlog> tvBacklogs { get; set; }
-        private ObservableCollection<Backlog> gameBacklogs { get; set; }
-        private ObservableCollection<Backlog> musicBacklogs { get; set; }
-        private ObservableCollection<Backlog> bookBacklogs { get; set; }
+
+        private ObservableCollection<Backlog> recentlyAdded { get; set; }
+        private ObservableCollection <Backlog> recentlyCompleted { get; set; }
+
+        ObservableCollection<Backlog> completedBacklogs;
+        ObservableCollection<Backlog> incompleteBacklogs;
+
+        private int backlogCount;
+        private int completedBacklogsCount;
+        private int incompleteBacklogsCount;
+        private double completedPercent;
+
         GraphServiceClient graphServiceClient;
 
         bool isNetworkAvailable = false;
@@ -47,29 +54,20 @@ namespace backlog.Views
         int backlogIndex = -1;
         bool sync = false;
 
+        Guid randomBacklogId = new Guid();
+
         public MainPage()
         {
             this.InitializeComponent();
             isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
-            Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
-            InitBacklogs();
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
-        }
-
-        /// <summary>
-        /// Initalize backlogs
-        /// </summary>
-        private void InitBacklogs()
-        {
-            allBacklogs = SaveData.GetInstance().GetBacklogs();
-            var readBacklogs = new ObservableCollection<Backlog>(allBacklogs.Where(b => b.IsComplete == false));
-            backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.CreatedDate));
-            filmBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
-            tvBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
-            gameBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
-            musicBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Album.ToString()));
-            bookBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Book.ToString()));
-            ShowEmptyMessage();
+            WelcomeText.Text = Settings.IsSignedIn ? $"Welcome to Backlogs, {Settings.UserName}!" : "Welcome to Backlogs, stranger!";
+            Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
+            recentlyAdded = new ObservableCollection<Backlog>();
+            recentlyCompleted = new ObservableCollection<Backlog>();
+            completedBacklogs = new ObservableCollection<Backlog>();
+            incompleteBacklogs = new ObservableCollection<Backlog>();
+            LoadBacklogs();
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }
@@ -123,16 +121,75 @@ namespace backlog.Views
                 BottomSigninButton.Visibility = Visibility.Collapsed;
                 TopProfileButton.Visibility = Visibility.Visible;
                 BottomProfileButton.Visibility = Visibility.Visible;
-                if(sync)
-                {
-                    await Logger.Info("Syncing backlogs....");
-                    await SaveData.GetInstance().ReadDataAsync(true);
-                    PopulateBacklogs();
-                }
+                await SaveData.GetInstance().ReadDataAsync(sync);
+                LoadBacklogs();
                 BuildNotifactionQueue();
             }
             ShowTeachingTips();
             ProgBar.Visibility = Visibility.Collapsed;
+        }
+
+        private void LoadBacklogs()
+        {
+            recentlyAdded.Clear();
+            recentlyCompleted.Clear();
+            completedBacklogs.Clear();
+            incompleteBacklogs.Clear();
+            completedBacklogsCount = 0;
+            incompleteBacklogsCount = 0;
+            completedPercent = 0.0f;
+            backlogs = SaveData.GetInstance().GetBacklogs();
+            if(backlogs.Count > 0)
+            {
+                foreach (var backlog in backlogs)
+                {
+                    if (!backlog.IsComplete)
+                    {
+                        if (backlog.CreatedDate == "None" || backlog.CreatedDate == null)
+                        {
+                            backlog.CreatedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                        }
+                        incompleteBacklogs.Add(backlog);
+                    }
+                    else
+                    {
+                        if (backlog.CompletedDate == null)
+                        {
+                            backlog.CompletedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                        }
+                        completedBacklogs.Add(backlog);
+                    }
+                }
+                foreach (var backlog in incompleteBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CreatedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
+                {
+                    recentlyAdded.Add(backlog);
+                }
+                foreach (var backlog in completedBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CompletedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
+                {
+                    recentlyCompleted.Add(backlog);
+                }
+                if (completedBacklogs.Count <= 0)
+                {
+                    EmptyCompletedText.Visibility = Visibility.Visible;
+                    CompletedBacklogsGrid.Visibility = Visibility.Collapsed;
+                }
+                completedBacklogsCount = backlogs.Where(b => b.IsComplete).Count();
+                incompleteBacklogsCount = backlogs.Where(b => !b.IsComplete).Count();
+                backlogCount = backlogs.Count;
+                completedPercent = (Convert.ToDouble(completedBacklogsCount) / backlogCount) * 100;
+                GenerateRandomBacklog();
+            }
+
+            else
+            {
+                EmptyBackogsText.Visibility = Visibility.Visible;
+                EmptySuggestionsText.Visibility = Visibility.Visible;
+                EmptyCompletedText.Visibility = Visibility.Visible;
+                AddedBacklogsGrid.Visibility = Visibility.Collapsed;
+                CompletedBacklogsGrid.Visibility = Visibility.Collapsed;
+                suggestionsGrid.Visibility = Visibility.Collapsed;
+                InputPanel.Visibility = Visibility.Collapsed;
+            }
         }
 
         /// <summary>
@@ -165,106 +222,6 @@ namespace backlog.Views
             
         }
 
-        /// <summary>
-        /// Populate the backlogs list with up-to-date backlogs
-        /// </summary>
-        private void PopulateBacklogs()
-        {
-            var readBacklogs = SaveData.GetInstance().GetBacklogs().Where(b => b.IsComplete == false);
-            var _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.CreatedDate)); // sort by last created
-            var _filmBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
-            var _tvBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
-            var _gameBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
-            var _musicBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Album.ToString()));
-            var _bookBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Book.ToString()));
-            backlogs.Clear();
-            filmBacklogs.Clear();
-            tvBacklogs.Clear();
-            gameBacklogs.Clear();
-            musicBacklogs.Clear();
-            bookBacklogs.Clear();
-            EmptyListText.Visibility = Visibility.Collapsed;
-            foreach (var b in _backlogs)
-            {
-                backlogs.Add(b);
-            }
-            foreach (var b in _bookBacklogs)
-            {
-                bookBacklogs.Add(b);
-            }
-            foreach (var b in _filmBacklogs)
-            {
-                filmBacklogs.Add(b);
-            }
-            foreach (var b in _gameBacklogs)
-            {
-                gameBacklogs.Add(b);
-            }
-            foreach (var b in _tvBacklogs)
-            {
-                tvBacklogs.Add(b);
-            }
-            foreach (var b in _musicBacklogs)
-            {
-                musicBacklogs.Add(b);
-            }
-            ShowEmptyMessage();
-        }
-
-        private void ShowEmptyMessage()
-        {
-            ObservableCollection<Backlog>[] _backlogs = { backlogs, filmBacklogs, tvBacklogs, gameBacklogs, musicBacklogs, bookBacklogs };
-            TextBlock[] textBlocks = { EmptyListText, EmptyFilmsText, EmptyTVText, EmptyGamesText, EmptyMusicText, EmptyBooksText };
-            for (int i = 0; i < _backlogs.Length; i++)
-            {
-                if(_backlogs[i].Count <=0)
-                {
-                    textBlocks[i].Visibility = Visibility.Visible;
-                    if(i > 0)
-                    {
-                        textBlocks[i].Text = $"Nothing to see here. Add some!";
-                    }
-                }
-                else
-                {
-                    textBlocks[i].Visibility = Visibility.Collapsed;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Opens the Backlog details page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BacklogView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var selectedBacklog = (Backlog)e.ClickedItem;
-            PivotItem pivotItem = (PivotItem)mainPivot.SelectedItem;
-            // Prepare connected animation based on which section the user is on
-            switch(pivotItem.Header.ToString())
-            {
-                default:
-                    BacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
-                    break;
-                case "films":
-                    FilmsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
-                    break ;
-                case "tv":
-                    TVGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
-                    break;
-                case "books":
-                    BooksGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
-                    break;
-                case "games":
-                    GamesGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
-                    break;
-                case "albums":
-                    AlbumsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
-                    break;
-            }
-            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, new SuppressNavigationTransitionInfo());
-        }
 
         /// <summary>
         /// Signs the user in if connected to the internet
@@ -409,7 +366,7 @@ namespace backlog.Views
                     TileWide = new TileBinding()
                     {
                         Branding = TileBranding.NameAndLogo,
-                        DisplayName = "Backlogs",
+                        DisplayName = "Backlogs (Beta)",
                         Content = new TileBindingContentAdaptive()
                         {
                             PeekImage = new TilePeekImage()
@@ -491,19 +448,26 @@ namespace backlog.Views
             }
         }
 
-        /// <summary>
-        /// Finish connected animation
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void BacklogsGrid_Loaded(object sender, RoutedEventArgs e)
+        private void BacklogsButton_Click(object sender, RoutedEventArgs e)
         {
-            if(backlogIndex != -1)
+            Frame.Navigate(typeof(BacklogsPage), "sync");
+        }
+
+        private void AddedBacklogsGrid_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var selectedBacklog = (Backlog)e.ClickedItem;
+            AddedBacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, new SuppressNavigationTransitionInfo());
+        }
+
+        private async void AddedBacklogsGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (backlogIndex != -1)
             {
                 ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
                 try
                 {
-                    await BacklogsGrid.TryStartConnectedAnimationAsync(animation, allBacklogs[backlogIndex], "coverImage");
+                    await AddedBacklogsGrid.TryStartConnectedAnimationAsync(animation, backlogs[backlogIndex], "coverImage");
                 }
                 catch
                 {
@@ -512,42 +476,105 @@ namespace backlog.Views
             }
         }
 
-        private async void SearchButton_Click(object sender, RoutedEventArgs e)
+        private void AllAddedButton_Click(object sender, RoutedEventArgs e)
         {
-            await SearchDialog.ShowAsync();
+            BacklogsButton_Click(sender, e);
         }
 
-        private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        private void AllCompletedButton_Click(object sender, RoutedEventArgs e)
         {
-            if(args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
-            {
-                List<string> suggestions = new List<string>();
-                var splitText = sender.Text.ToLower().Split(' ');
-                foreach (var backlog in backlogs)
-                {
-                    var found = splitText.All((key) =>
-                    {
-                        return backlog.Name.ToLower().Contains(key);
-                    });
-                    if (found)
-                    {
-                        suggestions.Add(backlog.Name);
-                    }
-                }
-                if (suggestions.Count == 0)
-                {
-                    suggestions.Add("No results found");
-                }
-                sender.ItemsSource = suggestions;
+            CompletedBacklogsButton_Click(sender, e);
+        }
 
+        private void GoButton_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateRandomBacklog();
+        }
+
+        private async void GenerateRandomBacklog()
+        {
+            var type = TypeComoBox.SelectedItem.ToString();
+            Random random = new Random();
+            Backlog randomBacklog = new Backlog();
+            bool error = false;
+            switch(type.ToLower())
+            {
+                case "any":
+                    randomBacklog = incompleteBacklogs[random.Next(0, incompleteBacklogsCount)];
+                    break;
+                case "film":
+                    var filmBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Film"));
+                    if(filmBacklogs.Count <= 0)
+                    {
+                        await ShowErrorMessage("Add more films to see suggestions");
+                        error = true;
+                        break;
+                    }
+                    randomBacklog = filmBacklogs[random.Next(0, filmBacklogs.Count)];
+                    break;
+                case "album":
+                    var musicBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Album"));
+                    if(musicBacklogs.Count <= 0)
+                    {
+                        await ShowErrorMessage("Add more albums to see suggestions");
+                        error = true;
+                        break;
+                    }
+                    randomBacklog = musicBacklogs[random.Next(0, musicBacklogs.Count)];
+                    break;
+                case "game":
+                    var gameBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Game"));
+                    if(gameBacklogs.Count <= 0)
+                    {
+                        await ShowErrorMessage("Add more games to see suggestions");
+                        error = true;
+                        break;
+                    }    
+                    randomBacklog = gameBacklogs[random.Next(0, gameBacklogs.Count)];
+                    break;
+                case "book":
+                    var bookBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Book"));
+                    if(bookBacklogs.Count <= 0)
+                    {
+                        await ShowErrorMessage("Add more books to see suggestions");
+                        error = true;
+                        break;
+                    }
+                    randomBacklog = bookBacklogs[random.Next(0, bookBacklogs.Count)];
+                    break;
+                case "tv":
+                    var tvBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "TV"));
+                    if(tvBacklogs.Count <= 0)
+                    {
+                        await ShowErrorMessage("Add more series to see suggestions");
+                        error = true;
+                        break;
+                    }
+                    randomBacklog = tvBacklogs[random.Next(0, tvBacklogs.Count)];
+                    break;
+            }
+            if (!error)
+            {
+                RunName.Text = randomBacklog.Name;
+                suggestionCover.Source = new BitmapImage(new Uri(randomBacklog.ImageURL));
+                randomBacklogId = randomBacklog.id;
             }
         }
 
-        private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private void Hyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
         {
-            var selectedBacklog = backlogs.FirstOrDefault(b => b.Name == args.ChosenSuggestion.ToString());
-            SearchDialog.Hide();
-            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, null);
+            Frame.Navigate(typeof(BacklogPage), randomBacklogId, null);
+        }
+
+        private async Task ShowErrorMessage(string message)
+        {
+            ContentDialog contentDialog = new ContentDialog()
+            {
+                Title = "Not enough Backlogs",
+                Content = message,
+                CloseButtonText = "Ok"
+            };
+            await contentDialog.ShowAsync();
         }
     }
 }

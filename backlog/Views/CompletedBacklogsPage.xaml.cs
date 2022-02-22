@@ -12,6 +12,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -54,13 +55,14 @@ namespace backlog.Views
 
         private void View_BackRequested(object sender, BackRequestedEventArgs e)
         {
+            PageStackEntry prevPage = Frame.BackStack.Last();
             try
             {
-                Frame.Navigate(typeof(MainPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                Frame.Navigate(prevPage?.SourcePageType, null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
             }
             catch
             {
-                Frame.Navigate(typeof(MainPage));
+                Frame.Navigate(prevPage?.SourcePageType);
             }
             e.Handled = true;
         }
@@ -114,10 +116,9 @@ namespace backlog.Views
                 connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
                 await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
             }
-            catch(Exception ex)
+            catch
             {
                 PopupOverlay.Hide();
-                await Logger.Error("Error with connected animation", ex);
             }
         }
 

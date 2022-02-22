@@ -11,6 +11,8 @@ using Windows.UI.Xaml.Media.Animation;
 using backlog.Logging;
 using backlog.Utils;
 using System.Globalization;
+using System.Linq;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -28,6 +30,7 @@ namespace backlog.Views
         bool signedIn;
         string source;
         Uri sourceLink;
+        PageStackEntry prevPage;
         public BacklogPage()
         {
             this.InitializeComponent();
@@ -35,6 +38,8 @@ namespace backlog.Views
             backlogs = SaveData.GetInstance().GetBacklogs();
             signedIn = Settings.IsSignedIn;
             edited = false;
+            var view = SystemNavigationManager.GetForCurrentView();
+            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -74,6 +79,7 @@ namespace backlog.Views
             SourceLinkButton.Content = source;
             SourceLinkButton.NavigateUri = sourceLink;
             base.OnNavigatedTo(e);
+            prevPage = Frame.BackStack.Last();
             ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
             imageAnimation?.TryStart(img);
         }
@@ -117,7 +123,7 @@ namespace backlog.Views
             backlogs.Remove(backlog);
             SaveData.GetInstance().SaveSettings(backlogs);
             await SaveData.GetInstance().WriteDataAsync(signedIn);
-            Frame.Navigate(typeof(MainPage));
+            Frame.Navigate(prevPage?.SourcePageType);
         }
 
         private void NumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
@@ -139,7 +145,7 @@ namespace backlog.Views
             }
             finally
             {
-                Frame.Navigate(typeof(MainPage), backlogIndex, new SuppressNavigationTransitionInfo());
+                Frame.Navigate(prevPage?.SourcePageType, backlogIndex, new SuppressNavigationTransitionInfo());
             }
             if (edited)
                 await SaveBacklog();
@@ -177,7 +183,7 @@ namespace backlog.Views
             await Logger.Info("Marking backlog as complete");
             backlog.IsComplete = true;
             backlog.UserRating = UserRating.Value;
-            backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture);
+            backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
             await SaveBacklog();
             RatingDialog.Hide();
             Frame.Navigate(typeof(MainPage));

@@ -14,13 +14,13 @@
 
     <Page.Resources>
         <DataTemplate x:DataType="data:Backlog" x:Key="BacklogTemplate">
-            <Grid x:Name="rootGrid">
+            <Grid x:Name="rootGrid" Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="0,0,10,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                
-                <Image x:Name="coverImage" Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch"/>
+
+                <Image x:Name="coverImage" Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch" Margin="0,10,0,0"/>
                 <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Left">
                     <TextBlock
                         x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
@@ -28,14 +28,35 @@
                                     Text="{x:Bind Name}"
                                     TextLineBounds="TrimToCapHeight"
                                     TextWrapping="Wrap" />
-                    <TextBlock x:Name="DirectorText" Style="{StaticResource CaptionTextBlockStyle}"
+                    <TextBlock x:Name="TypeText" Style="{StaticResource CaptionTextBlockStyle}"
                                                 Margin="0,2,8,0"
                                                 RelativePanel.Below="TitleText"
-                                                Text="{x:Bind Director}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                                                Text="{x:Bind Type}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                </RelativePanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:DataType="data:Backlog" x:Key="CompletedBacklogTemplate">
+            <Grid x:Name="rootGrid"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="0,0,10,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Image x:Name="coverImage" Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch" Margin="0,10,0,0"/>
+                <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Left">
+                    <TextBlock
+                        x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="{x:Bind Name}"
+                                    TextLineBounds="TrimToCapHeight"
+                                    TextWrapping="Wrap" />
+                    <muxc:RatingControl Value="{x:Bind UserRating}" IsReadOnly="True" RelativePanel.Below="TitleText"/>
                 </RelativePanel>
             </Grid>
         </DataTemplate>
     </Page.Resources>
+    
 
     <Frame x:Name="rootFrame">
         <VisualStateManager.VisualStateGroups>
@@ -53,111 +74,141 @@
                     <VisualState.Setters>
                         <Setter Target="BottomBar.Visibility" Value="Visible" />
                         <Setter Target="TopBar.Visibility" Value="Collapsed" />
+                        <Setter Target="SuggestionPanel.(Grid.Column)" Value="0" />
+                        <Setter Target="SuggestionPanel.(Grid.Row)" Value="1" />
+                        <Setter Target="SuggestionPanel.HorizontalAlignment" Value="Left" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <Grid x:Name="mainGrid">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid x:Name="mainGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
+                <TextBlock x:Name="WelcomeText" Margin="30" FontSize="30" />
 
-            <Pivot x:Name="mainPivot">
-                <PivotItem Header="all">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyListText" Text="Thank you for trying Backlogs. Sign-in for cross-device syncing and data backups! This is pre-release software, so use at your peril " Visibility="Collapsed"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind backlogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}" Loaded="BacklogsGrid_Loaded"
-                                                       animations:ReorderGridAnimation.Duration="200"/>
-                        </StackPanel>
+                <RelativePanel Grid.Row="1"  Margin="10,0,0,30">
+                    <TextBlock x:Name="HeadingText" Text="Recently Added" FontSize="20" Margin="20,20,20,20"/>
+                    <Button x:Name="AllAddedButton" Content="See all" Click="AllAddedButton_Click" RelativePanel.RightOf="HeadingText" Margin="0,20,20,20" />
+                    <TextBlock x:Name="EmptyBackogsText" Text="You haven't added any Backlogs yet" Visibility="Collapsed" RelativePanel.Below="HeadingText" Margin="20" TextWrapping="Wrap"/>
+                    <controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind recentlyAdded}" ItemClick="AddedBacklogsGrid_ItemClick"
+                                                       ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="HeadingText" Loaded="AddedBacklogsGrid_Loaded"/>
+                </RelativePanel>
+
+                <RelativePanel Grid.Row="2" Margin="10,0,0,30">
+                    <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="20,20,20,20" />
+                    <Button x:Name="AllCompletedButton" Content="See all" Click="AllCompletedButton_Click" RelativePanel.RightOf="CompletedHeadingText" Margin="0,20,20,20" />
+                    <TextBlock x:Name="EmptyCompletedText" Text="You haven't completed any Backlogs" Visibility="Collapsed" RelativePanel.Below="CompletedHeadingText" Margin="20" TextWrapping="Wrap" />
+                    <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
+                                                       SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind recentlyCompleted}"
+                                                       ItemTemplate="{StaticResource CompletedBacklogTemplate}" RelativePanel.Below="CompletedHeadingText"/>
+                </RelativePanel>
+
+                <Grid x:Name="StatsAndSuggestionsGrid" Grid.Row="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ScrollViewer  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <Grid x:Name="StatsGrid" Margin="0,0,30,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Stats" FontSize="20" Margin="20" />
+
+                            <Grid Grid.Row="1" Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="20,0,0,30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="20">
+                                        <TextBlock Text="Total number of backlogs: " FontSize="15" Margin="0,0,10,0" />
+                                        <TextBlock Text="{x:Bind backlogCount}" FontSize="15" FontWeight="Bold" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="20">
+                                        <TextBlock Text="Completed backlogs: " FontSize="15" Margin="0,0,10,0" />
+                                        <TextBlock Text="{x:Bind completedBacklogsCount}" FontSize="15" FontWeight="Bold" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="20">
+                                        <TextBlock Text="Incomplete backogs: " FontSize="15" Margin="0,0,10,0"/>
+                                        <TextBlock Text="{x:Bind incompleteBacklogsCount}" FontSize="15" FontWeight="Bold" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <controls:RadialProgressBar x:Name="PercentBar" Grid.Column="1" Minimum="0" Maximum="100" Thickness="4" Outline="Gray" 
+                                                Foreground="{ThemeResource SystemColorControlAccentBrush}" Value="{x:Bind completedPercent}" Margin="20" Width="150" />
+                            </Grid>
+                        </Grid>
                     </ScrollViewer>
-                </PivotItem>
 
-                <PivotItem Header="films">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyFilmsText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="FilmsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind filmBacklogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}"
-                                                       animations:ReorderGridAnimation.Duration="200"/>
+                    <RelativePanel x:Name="SuggestionPanel" Margin="0,0,90,0" Grid.Column="1" HorizontalAlignment="Right">
+                        <TextBlock x:Name="SuggestionHeadingText" Text="Suggestion" FontSize="20" Margin="20" />
+                        <TextBlock x:Name="EmptySuggestionsText" Text="Add backlogs to get suggestions" Visibility="Collapsed" TextWrapping="Wrap" RelativePanel.Below="SuggestionHeadingText" />
+                        <StackPanel x:Name="InputPanel" RelativePanel.Below="SuggestionHeadingText" Margin="20" >
+                            <ComboBox x:Name="TypeComoBox" Margin="10,0,0,20" SelectedIndex="0">
+                                <x:String>Any</x:String>
+                                <x:String>Film</x:String>
+                                <x:String>TV</x:String>
+                                <x:String>Album</x:String>
+                                <x:String>Game</x:String>
+                                <x:String>Book</x:String>
+                            </ComboBox>
+                            <Button x:Name="GoButton" Content="Go" Margin="10,0,0,0" Click="GoButton_Click" />
                         </StackPanel>
-                    </ScrollViewer>
-                </PivotItem>
+                        <Grid x:Name="suggestionsGrid"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="0,0,10,10" RelativePanel.RightOf="InputPanel" RelativePanel.Below="SuggestionHeadingText">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
 
-                <PivotItem Header="albums">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyMusicText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="AlbumsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind musicBacklogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}"
-                                                       animations:ReorderGridAnimation.Duration="200"/>
-                        </StackPanel>
-                    </ScrollViewer>
-                </PivotItem>
+                            <Image x:Name="suggestionCover" Height="150" Width="200" HorizontalAlignment="Stretch" Margin="0,10,0,0"/>
+                            <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Center">
+                                <TextBlock
+                        x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    TextLineBounds="TrimToCapHeight"
+                                    TextWrapping="Wrap">
+                                    <Hyperlink Click="Hyperlink_Click">
+                                        <Run x:Name="RunName" />
+                                    </Hyperlink>
+                                </TextBlock>
+                            </RelativePanel>
+                        </Grid>
+                    </RelativePanel>
+                </Grid>
 
-                <PivotItem Header="tv">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyTVText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind tvBacklogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}"
-                                                       animations:ReorderGridAnimation.Duration="200"/>
-                        </StackPanel>
-                    </ScrollViewer>
-                </PivotItem>
-
-                <PivotItem Header="games">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyGamesText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="200"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind gameBacklogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}"
-                                                       animations:ReorderGridAnimation.Duration="200"/>
-                        </StackPanel>
-                    </ScrollViewer>
-                </PivotItem>
-
-                <PivotItem Header="books">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyBooksText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="BooksGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="200"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind bookBacklogs}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}" 
-                                                       animations:ReorderGridAnimation.Duration="200"/>
-                        </StackPanel>
-                    </ScrollViewer>
-                </PivotItem>
-            </Pivot>
-
-            <muxc:ProgressBar x:Name="CreationProgBar" IsIndeterminate="True" Visibility="Collapsed" />
-
-            <muxc:TeachingTip x:Name="NavigationTeachingTip" Title="Moving around" Subtitle="To move around different sections, swipe using your finger or trackpad" />
-            <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind TopSigninButton}"
+                <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
+                <muxc:TeachingTip x:Name="NavigationTeachingTip" Title="Moving around" Subtitle="To move around different sections, swipe using your finger or trackpad" />
+                <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind TopSigninButton}"
                               Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!" />
-            <muxc:TeachingTip x:Name="BottomSigninTeachingTip" Target="{x:Bind BottomSigninButton}"
+                <muxc:TeachingTip x:Name="BottomSigninTeachingTip" Target="{x:Bind BottomSigninButton}"
                               Title="Sign-in using your MS account" Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!" />
 
-            <ContentDialog x:Name="SearchDialog" CloseButtonText="Close">
-                <AutoSuggestBox x:Name="SearchBox" TextChanged="SearchBox_TextChanged" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" />
-            </ContentDialog>
-            
-        </Grid>
+            </Grid>
+        </ScrollViewer>
     </Frame>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
-            <AppBarButton x:Name="TopSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
+        <CommandBar x:Name="TopBar" Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" >
+            <AppBarButton x:Name="TopBacklogsButton" Label="All Backlogs" Icon="List" Click="BacklogsButton_Click" />
             <AppBarButton x:Name="TopSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
             <AppBarButton x:Name="TopCreateButton" Label="New" Icon="Add" Click="CreateButton_Click" />
             <AppBarButton x:Name="TopSigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
@@ -179,7 +230,7 @@
     </Page.TopAppBar>
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
-            <AppBarButton x:Name="BottomSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
+            <AppBarButton x:Name="BottomBacklogsButton" Label="All Backlogs" Icon="List" Click="BacklogsButton_Click" />
             <AppBarButton x:Name="BottomSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
             <AppBarButton x:Name="BottomCreateButton" Label="New" Icon="Add" Click="CreateButton_Click" />
             <AppBarButton x:Name="BottomSigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
