@@ -54,6 +54,8 @@ namespace backlog.Views
         int backlogIndex = -1;
         bool sync = false;
 
+        Guid randomBacklogId = new Guid();
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -137,38 +139,42 @@ namespace backlog.Views
             incompleteBacklogsCount = 0;
             completedPercent = 0.0f;
             backlogs = SaveData.GetInstance().GetBacklogs();
-            foreach (var backlog in backlogs)
+            if(backlogs.Count > 0)
             {
-                if(!backlog.IsComplete)
+                foreach (var backlog in backlogs)
                 {
-                    if (backlog.CreatedDate == "None" || backlog.CreatedDate == null)
+                    if (!backlog.IsComplete)
                     {
-                        backlog.CreatedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                        if (backlog.CreatedDate == "None" || backlog.CreatedDate == null)
+                        {
+                            backlog.CreatedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                        }
+                        incompleteBacklogs.Add(backlog);
                     }
-                    incompleteBacklogs.Add(backlog);
+                    else
+                    {
+                        if (backlog.CompletedDate == null)
+                        {
+                            backlog.CompletedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                        }
+                        completedBacklogs.Add(backlog);
+                    }
                 }
-                else
+                foreach (var backlog in incompleteBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CreatedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
                 {
-                    if (backlog.CompletedDate == null)
-                    {
-                        backlog.CompletedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
-                    }
-                    completedBacklogs.Add(backlog);
+                    recentlyAdded.Add(backlog);
                 }
+                foreach (var backlog in completedBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CompletedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
+                {
+                    recentlyCompleted.Add(backlog);
+                }
+                completedBacklogsCount = backlogs.Where(b => b.IsComplete).Count();
+                incompleteBacklogsCount = backlogs.Where(b => !b.IsComplete).Count();
+                backlogCount = backlogs.Count;
+                completedPercent = (Convert.ToDouble(completedBacklogsCount) / backlogCount) * 100;
+                GenerateRandomBacklog();
             }
-            foreach (var backlog in incompleteBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CreatedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
-            {
-                recentlyAdded.Add(backlog);
-            }
-            foreach (var backlog in completedBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CompletedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
-            {
-                recentlyCompleted.Add(backlog);
-            }
-            completedBacklogsCount = backlogs.Where(b => b.IsComplete).Count();
-            incompleteBacklogsCount = backlogs.Where(b => !b.IsComplete).Count();
-            backlogCount = backlogs.Count;
-            completedPercent = (Convert.ToDouble(completedBacklogsCount) / backlogCount) * 100;
-            GenerateRandomBacklog();
+            
         }
 
         /// <summary>
@@ -475,6 +481,7 @@ namespace backlog.Views
             var type = TypeComoBox.SelectedItem.ToString();
             Random random = new Random();
             Backlog randomBacklog = new Backlog();
+            Debug.WriteLine(incompleteBacklogs.Count);
             switch(type.ToLower())
             {
                 case "any":
@@ -501,9 +508,14 @@ namespace backlog.Views
                     randomBacklog = tvBacklogs[random.Next(0, tvBacklogs.Count)];
                     break;
             }
-            TitleText.Text = randomBacklog.Name;
-            DirectorText.Text = randomBacklog.Director;
-            coverImage.Source = new BitmapImage(new Uri(randomBacklog.ImageURL));
+            RunName.Text = randomBacklog.Name;
+            suggestionCover.Source = new BitmapImage(new Uri(randomBacklog.ImageURL));
+            randomBacklogId = randomBacklog.id;
+        }
+
+        private void Hyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        {
+            Frame.Navigate(typeof(BacklogPage), randomBacklogId, null);
         }
     }
 }

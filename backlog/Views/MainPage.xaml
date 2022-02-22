@@ -174,16 +174,17 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <Image x:Name="coverImage" Height="150" Width="200" HorizontalAlignment="Stretch" Margin="0,10,0,0"/>
+                            <Image x:Name="suggestionCover" Height="150" Width="200" HorizontalAlignment="Stretch" Margin="0,10,0,0"/>
                             <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Center">
                                 <TextBlock
                         x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
                                     Style="{StaticResource BaseTextBlockStyle}"
                                     TextLineBounds="TrimToCapHeight"
-                                    TextWrapping="Wrap" />
-                                <TextBlock x:Name="DirectorText" Style="{StaticResource CaptionTextBlockStyle}"
-                                                Margin="0,2,8,0"
-                                                RelativePanel.Below="TitleText" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                                    TextWrapping="Wrap">
+                                    <Hyperlink Click="Hyperlink_Click">
+                                        <Run x:Name="RunName" />
+                                    </Hyperlink>
+                                </TextBlock>
                             </RelativePanel>
                         </Grid>
                     </RelativePanel>
