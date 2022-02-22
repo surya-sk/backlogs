@@ -183,7 +183,7 @@ namespace backlog.Views
             await Logger.Info("Marking backlog as complete");
             backlog.IsComplete = true;
             backlog.UserRating = UserRating.Value;
-            backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture);
+            backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
             await SaveBacklog();
             RatingDialog.Hide();
             Frame.Navigate(typeof(MainPage));
