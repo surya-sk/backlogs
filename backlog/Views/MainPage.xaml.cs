@@ -240,6 +240,7 @@ namespace backlog.Views
                 {
                      await SaveData.GetInstance().DeleteLocalFileAsync();
                     graphServiceClient = await MSAL.GetGraphServiceClient();
+                    Settings.IsSignedIn = true;
                     Frame.Navigate(typeof(MainPage), "sync");
                 }
             }
