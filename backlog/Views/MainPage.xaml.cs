@@ -308,7 +308,7 @@ namespace backlog.Views
                     TileWide = new TileBinding()
                     {
                         Branding = TileBranding.NameAndLogo,
-                        DisplayName = "Backlogs",
+                        DisplayName = "Backlogs (Beta)",
                         Content = new TileBindingContentAdaptive()
                         {
                             PeekImage = new TilePeekImage()
