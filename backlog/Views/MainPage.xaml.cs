@@ -133,9 +133,9 @@ namespace backlog.Views
             incompleteBacklogsCount = 0;
             completedPercent = 0.0f;
             backlogs = SaveData.GetInstance().GetBacklogs();
-            backlogCount = backlogs.Count;
             ObservableCollection<Backlog> completedBacklogs = new ObservableCollection<Backlog>();
             ObservableCollection<Backlog> incompleteBacklogs = new ObservableCollection<Backlog>();
+            backlogCount = backlogs.Count;
             foreach (var backlog in backlogs)
             {
                 if(!backlog.IsComplete)
@@ -155,11 +155,11 @@ namespace backlog.Views
                     completedBacklogs.Add(backlog);
                 }
             }
-            foreach (var backlog in incompleteBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CreatedDate, CultureInfo.InvariantCulture)).Skip(1).Take(5))
+            foreach (var backlog in incompleteBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CreatedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
             {
                 recentlyAdded.Add(backlog);
             }
-            foreach (var backlog in completedBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CompletedDate, CultureInfo.InvariantCulture)).Skip(1).Take(5))
+            foreach (var backlog in completedBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CompletedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
             {
                 recentlyCompleted.Add(backlog);
             }

@@ -74,8 +74,8 @@
                     <VisualState.Setters>
                         <Setter Target="BottomBar.Visibility" Value="Visible" />
                         <Setter Target="TopBar.Visibility" Value="Collapsed" />
-                        <Setter Target="PercentBar.(Grid.Column)" Value="0" />
-                        <Setter Target="PercentBar.(Grid.Row)" Value="1" />
+                        <Setter Target="SuggestionPanel.(Grid.Column)" Value="0" />
+                        <Setter Target="SuggestionPanel.(Grid.Row)" Value="1" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -155,7 +155,7 @@
                         </Grid>
                     </Grid>
 
-                    <RelativePanel Margin="30,0,0,0" Grid.Column="1">
+                    <RelativePanel x:Name="SuggestionPanel" Margin="0,0,0,0" Grid.Column="1">
                         <TextBlock x:Name="SuggestionHeadingText" Text="Suggestion" FontSize="20" Margin="20" />
                         <StackPanel x:Name="InputPanel" RelativePanel.Below="SuggestionHeadingText" Margin="20" >
                             <ComboBox x:Name="TypeComoBox" Margin="10,0,0,20" SelectedIndex="0">
