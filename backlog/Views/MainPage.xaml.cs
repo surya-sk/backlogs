@@ -98,9 +98,9 @@ namespace backlog.Views
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if(e.Parameter != null && e.Parameter.ToString() != "")
+            if (e.Parameter != null && e.Parameter.ToString() != "")
             {
-                if(e.Parameter.ToString() == "sync")
+                if (e.Parameter.ToString() == "sync")
                 {
                     sync = true;
                 }
@@ -123,7 +123,7 @@ namespace backlog.Views
                 BottomProfileButton.Visibility = Visibility.Visible;
                 await SaveData.GetInstance().ReadDataAsync(sync);
                 LoadBacklogs();
-                BuildNotifactionQueue();
+                //BuildNotifactionQueue();
             }
             ShowTeachingTips();
             ProgBar.Visibility = Visibility.Collapsed;
