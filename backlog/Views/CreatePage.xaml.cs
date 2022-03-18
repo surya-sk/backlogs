@@ -553,11 +553,11 @@ namespace backlog.Views
                         var gameResult = JsonConvert.DeserializeObject<GameResult[]>(gameResponse);
                         var gameCoverResponse = await RestClient.GetGameCover(gameResult[0].cover.ToString());
                         var gameCover = JsonConvert.DeserializeObject<GameCover[]>(gameCoverResponse);
-                        string releaseDateResponse = await RestClient.GetGameReleaseResponse(gameResult[0].release_dates[0].ToString());
-                        var releaseDateTimestamp = JsonConvert.DeserializeObject<GameReleaseDate[]>(releaseDateResponse);
-                        var releaseDate = DateTimeOffset.FromUnixTimeSeconds(releaseDateTimestamp[0].date);
                         try
                         {
+                            string releaseDateResponse = await RestClient.GetGameReleaseResponse(gameResult[0].release_dates[0].ToString());
+                            var releaseDateTimestamp = JsonConvert.DeserializeObject<GameReleaseDate[]>(releaseDateResponse);
+                            var releaseDate = DateTimeOffset.FromUnixTimeSeconds(releaseDateTimestamp[0].date);
                             Game game = new Game
                             {
                                 name = gameResult[0].name + $" ({releaseDate.Year})",
