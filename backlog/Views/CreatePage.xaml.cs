@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Navigation;
 using backlog.Logging;
 using Windows.UI.Xaml.Media.Animation;
 using System.Linq;
+using Microsoft.Toolkit.Uwp.Notifications;
+using Windows.UI.Notifications;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -214,6 +216,16 @@ namespace backlog.Views
             {
                 backlogs.Add(backlog);
                 SaveData.GetInstance().SaveSettings(backlogs);
+                if (backlog.TargetDate != "None")
+                {
+                    var notifTime = DateTimeOffset.Parse(backlog.TargetDate, CultureInfo.InvariantCulture).Add(backlog.NotifTime);
+                    var builder = new ToastContentBuilder()
+                        .AddText($"It's {backlog.Name} time!")
+                        .AddText($"You wanted to check out {backlog.Name} by {backlog.Director} today. Get to it!")
+                        .AddHeroImage(new Uri(backlog.ImageURL));
+                    ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), notifTime);
+                    ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+                }
                 await SaveData.GetInstance().WriteDataAsync(signedIn);
                 try
                 {
