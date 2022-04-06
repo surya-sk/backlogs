@@ -196,11 +196,12 @@ namespace backlog.Views
                     EmptyCompletedText.Visibility = Visibility.Visible;
                     CompletedBacklogsGrid.Visibility = Visibility.Collapsed;
                 }
-                completedBacklogsCount = backlogs.Where(b => b.IsComplete).Count();
-                incompleteBacklogsCount = backlogs.Where(b => !b.IsComplete).Count();
+                completedBacklogsCount = completedBacklogs.Count;
+                incompleteBacklogsCount = incompleteBacklogs.Count;
                 backlogCount = backlogs.Count;
                 await Logger.Info($"{backlogCount} backlog(s) found");
                 completedPercent = (Convert.ToDouble(completedBacklogsCount) / backlogCount) * 100;
+                PercentBar.Value = completedPercent;
                 GenerateRandomBacklog();
             }
 

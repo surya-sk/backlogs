@@ -225,7 +225,7 @@
                                     </StackPanel>
 
                                     <controls:RadialProgressBar x:Name="PercentBar" Grid.Column="1" Minimum="0" Maximum="100" Thickness="8" Outline="Gray" 
-                                                Foreground="{ThemeResource SystemColorControlAccentBrush}" Value="{x:Bind completedPercent}" Margin="20" Width="150" />
+                                                Foreground="{ThemeResource SystemColorControlAccentBrush}" Margin="20" Width="150" />
                                 </Grid>
                             </Grid>
                         </ScrollViewer>
