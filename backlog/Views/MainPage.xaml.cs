@@ -196,6 +196,11 @@ namespace backlog.Views
                     EmptyCompletedText.Visibility = Visibility.Visible;
                     CompletedBacklogsGrid.Visibility = Visibility.Collapsed;
                 }
+                if(inProgress.Count <= 0)
+                {
+                    EmptyProgressBackogsText.Visibility = Visibility.Visible;
+                    InProgressBacklogsGrid.Visibility = Visibility.Collapsed;
+                }
                 completedBacklogsCount = completedBacklogs.Count;
                 incompleteBacklogsCount = incompleteBacklogs.Count;
                 backlogCount = backlogs.Count;

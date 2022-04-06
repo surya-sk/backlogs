@@ -34,7 +34,7 @@ namespace backlog.Views
             "\u2022 The Backlogs page now has an option to random generate a pick based on which type of Backlog you are currently viewing\n" +
             "\u2022 Fixed a crash caused when no file is selected when importing a backlog\n" +
             "\u2022 Changed order of sections in the Setting page\n" +
-            "\u2022 Improving logging and logs can now be viewed directly instead of opening the logs folder\n" +
+            "\u2022 Logs can now be viewed directly instead of opening the logs folder\n" +
             "\u2022 Settings page now shows a changelog :)";
         
         public string Version
