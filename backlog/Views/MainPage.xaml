@@ -154,20 +154,20 @@
                         </Grid.RowDefinitions>
 
                         <RelativePanel Margin="10,0,0,30">
-                            <TextBlock x:Name="HeadingText" Text="In Progress" FontSize="20" Margin="20,20,20,20"/>
-                            <TextBlock x:Name="EmptyProgressBackogsText" Text="You have no Backlogs in progress" Visibility="Collapsed" RelativePanel.Below="HeadingText" Margin="20" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="InProgressBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind inProgress}" ItemClick="InProgressBacklogsGrid_ItemClick"
-                                                       ItemTemplate="{StaticResource InProgressBacklogTemplate}" RelativePanel.Below="HeadingText" Loaded="InProgressBacklogsGrid_Loaded"/>
-                        </RelativePanel>
-
-                        <RelativePanel Grid.Row="1" Margin="10,0,0,30">
                             <TextBlock x:Name="RecentsHeadingText" Text="Recently Added" FontSize="20" Margin="20,20,20,20"/>
                             <Button x:Name="AllAddedButton" Content="See all" Click="AllAddedButton_Click" RelativePanel.RightOf="RecentsHeadingText" Margin="0,20,20,20" />
                             <TextBlock x:Name="EmptyBackogsText" Text="You haven't added any Backlogs yet" Visibility="Collapsed" RelativePanel.Below="RecentsHeadingText" Margin="20" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind recentlyAdded}" ItemClick="AddedBacklogsGrid_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="RecentsHeadingText" Loaded="AddedBacklogsGrid_Loaded"/>
+                        </RelativePanel>
+                        
+                        <RelativePanel Margin="10,0,0,30" Grid.Row="1">
+                            <TextBlock x:Name="HeadingText" Text="In Progress" FontSize="20" Margin="20,20,20,20"/>
+                            <TextBlock x:Name="EmptyProgressBackogsText" Text="You have no Backlogs in progress" Visibility="Collapsed" RelativePanel.Below="HeadingText" Margin="20" TextWrapping="Wrap"/>
+                            <controls:AdaptiveGridView x:Name="InProgressBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind inProgress}" ItemClick="InProgressBacklogsGrid_ItemClick"
+                                                       ItemTemplate="{StaticResource InProgressBacklogTemplate}" RelativePanel.Below="HeadingText" Loaded="InProgressBacklogsGrid_Loaded"/>
                         </RelativePanel>
 
                         <RelativePanel Grid.Row="2" Margin="10,0,0,30">
