@@ -617,12 +617,15 @@ namespace backlog.Views
             picker.FileTypeFilter.Add(".bklg");
 
             StorageFile file = await picker.PickSingleFileAsync();
-            StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
-            await tempFolder.CreateFileAsync(file.Name, CreationCollisionOption.ReplaceExisting);
-            string json = await FileIO.ReadTextAsync(file);
-            var stFile = await tempFolder.GetFileAsync(file.Name);
-            await FileIO.WriteTextAsync(stFile, json);
-            Frame.Navigate(typeof(ImportBacklog), stFile.Name, null);
+            if(file != null)
+            {
+                StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
+                await tempFolder.CreateFileAsync(file.Name, CreationCollisionOption.ReplaceExisting);
+                string json = await FileIO.ReadTextAsync(file);
+                var stFile = await tempFolder.GetFileAsync(file.Name);
+                await FileIO.WriteTextAsync(stFile, json);
+                Frame.Navigate(typeof(ImportBacklog), stFile.Name, null);
+            }
         }
     }
 }
