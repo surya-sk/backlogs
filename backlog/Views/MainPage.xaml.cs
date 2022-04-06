@@ -39,8 +39,11 @@ namespace backlog.Views
         private ObservableCollection<Backlog> recentlyAdded { get; set; }
         private ObservableCollection <Backlog> recentlyCompleted { get; set; }
 
+        private ObservableCollection<Backlog> inProgress { get; set; }
+
         ObservableCollection<Backlog> completedBacklogs;
         ObservableCollection<Backlog> incompleteBacklogs;
+        ObservableCollection<Backlog> inProgressBacklogs;
 
         private int backlogCount;
         private int completedBacklogsCount;
@@ -65,8 +68,10 @@ namespace backlog.Views
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             recentlyAdded = new ObservableCollection<Backlog>();
             recentlyCompleted = new ObservableCollection<Backlog>();
+            inProgress = new ObservableCollection<Backlog>();
             completedBacklogs = new ObservableCollection<Backlog>();
             incompleteBacklogs = new ObservableCollection<Backlog>();
+            inProgressBacklogs = new ObservableCollection<Backlog>();
             LoadBacklogs();
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
@@ -141,6 +146,8 @@ namespace backlog.Views
             recentlyCompleted.Clear();
             completedBacklogs.Clear();
             incompleteBacklogs.Clear();
+            inProgressBacklogs.Clear();
+            inProgress.Clear();
             completedBacklogsCount = 0;
             incompleteBacklogsCount = 0;
             completedPercent = 0.0f;
@@ -156,6 +163,10 @@ namespace backlog.Views
                             backlog.CreatedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
                         }
                         incompleteBacklogs.Add(backlog);
+                        if(backlog.progress > 0)
+                        {
+                            inProgressBacklogs.Add(backlog);
+                        }
                     }
                     else
                     {
@@ -174,6 +185,10 @@ namespace backlog.Views
                 {
                     recentlyCompleted.Add(backlog);
                 }
+                foreach(var backlog in inProgressBacklogs.OrderByDescending(b => b.progress).Skip(0).Take(6))
+                {
+                    inProgress.Add(backlog);
+                }
                 if (completedBacklogs.Count <= 0)
                 {
                     EmptyCompletedText.Visibility = Visibility.Visible;
@@ -191,6 +206,8 @@ namespace backlog.Views
                 EmptyBackogsText.Visibility = Visibility.Visible;
                 EmptySuggestionsText.Visibility = Visibility.Visible;
                 EmptyCompletedText.Visibility = Visibility.Visible;
+                EmptyProgressBackogsText.Visibility = Visibility.Visible;
+                InProgressBacklogsGrid.Visibility = Visibility.Collapsed;
                 AddedBacklogsGrid.Visibility = Visibility.Collapsed;
                 CompletedBacklogsGrid.Visibility = Visibility.Collapsed;
                 suggestionsGrid.Visibility = Visibility.Collapsed;
@@ -460,6 +477,29 @@ namespace backlog.Views
                 try
                 {
                     await AddedBacklogsGrid.TryStartConnectedAnimationAsync(animation, backlogs[backlogIndex], "coverImage");
+                }
+                catch
+                {
+                    // : )
+                }
+            }
+        }
+
+        private void InProgressBacklogsGrid_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var selectedBacklog = (Backlog)e.ClickedItem;
+            InProgressBacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, new SuppressNavigationTransitionInfo());
+        }
+
+        private async void InProgressBacklogsGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (backlogIndex != -1)
+            {
+                ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
+                try
+                {
+                    await InProgressBacklogsGrid.TryStartConnectedAnimationAsync(animation, backlogs[backlogIndex], "coverImage");
                 }
                 catch
                 {
