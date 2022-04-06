@@ -262,11 +262,11 @@ namespace backlog.Views
         {
             try
             {
-                Frame.Navigate(typeof(CreatePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom });
+                Frame.Navigate(typeof(CreatePage), mainPivot.SelectedIndex, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom });
             }
             catch
             {
-                Frame.Navigate(typeof(CreatePage));
+                Frame.Navigate(typeof(CreatePage), mainPivot.SelectedIndex);
             }
         }
 

@@ -30,6 +30,7 @@ namespace backlog.Views
         ObservableCollection<Backlog> backlogs { get; set; }
         bool signedIn;
         bool isNetworkAvailable = false;
+        int typeIndex = 0;
 
         public CreatePage()
         {
@@ -40,6 +41,14 @@ namespace backlog.Views
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             signedIn = Settings.IsSignedIn;
+            if(e.Parameter != null)
+            {
+                typeIndex = (int)e.Parameter;
+                if(typeIndex > 0)
+                {
+                    TypeComoBox.SelectedIndex = typeIndex-1;
+                }
+            }
             if(isNetworkAvailable)
             {
                 await Logger.Info("Fetching backlogs...");

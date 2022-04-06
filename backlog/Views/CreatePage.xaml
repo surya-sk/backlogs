@@ -40,8 +40,8 @@
                        Foreground="Yellow" FontStyle="Italic" Margin="10,0,0,20" TextWrapping="Wrap" />
                 <ComboBox x:Name="TypeComoBox" Header="Type" SelectionChanged="TypeComoBox_SelectionChanged" PlaceholderText="Choose type" Margin="10,0,0,20">
                     <x:String>Film</x:String>
-                    <x:String>TV</x:String>
                     <x:String>Album</x:String>
+                    <x:String>TV</x:String>
                     <x:String>Game</x:String>
                     <x:String>Book</x:String>
                 </ComboBox>
