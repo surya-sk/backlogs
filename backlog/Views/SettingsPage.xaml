@@ -87,50 +87,6 @@
                 </ScrollViewer>
             </PivotItem>
 
-            <PivotItem Header="help and feedback">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <StackPanel MaxWidth="600" HorizontalAlignment="Left" >
-                            <TextBlock Text="If the app is crashing or you're unable to create Backlogs, or if anything odd is happening, sending me the logs will help me identify and fix the issue." 
-                                   Margin="0,10,0,10" TextWrapping="Wrap" FontSize="15" />
-                            <StackPanel Orientation="Horizontal">
-                                <Button x:Name="SendLogsButton" Content="Send logs" Click="SendLogsButton_Click" Margin="0,10,0,10" />
-                                <Button x:Name="OpenLogsButton" Content="Open logs folder" Click="OpenLogsButton_Click" Margin="10,10,0,10" />
-                            </StackPanel>
-                            <TextBlock Text="Have feedback? Want to report bugs or request a new feature? That's brilliant!" Margin="0,10,0,10" TextWrapping="Wrap" />
-                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10" >
-                            <Hyperlink NavigateUri="https://github.com/surya-sk/backlogs/issues/new">
-                                <Run Text="Create an issue on Github (preferred)" />
-                            </Hyperlink>
-                            </TextBlock>
-                            <TextBlock Text="OR"  Margin="20,20,0,20" />
-                            <TextBlock Text="Send me an email" Margin="0,10,0,10" />
-                            <ComboBox x:Name="IssueTypeComboBox" Margin="0,10,0,10" Header="Type" PlaceholderText="Pick a type" >
-                                <x:String>Bug</x:String>
-                                <x:String>Feature Request</x:String>
-                                <x:String>Feedback</x:String>
-                            </ComboBox>
-                            <TextBox x:Name="MessageBox" PlaceholderText="Enter a description of your issue/feature" TextWrapping="Wrap"
-                                     MinHeight="80" Margin="0,10,0,10" />
-                            <Button x:Name="SendButton" Content="Send" Click="SendButton_Click" />
-                        </StackPanel>
-
-                        <StackPanel x:Name="StoreLink" HorizontalAlignment="Right" Margin="0,20,20,0" >
-                            <TextBlock Text="Additional links" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
-                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
-                            <Hyperlink NavigateUri="ms-windows-store://review/?ProductId=	9N2H8CM2KWVZ">
-                                <Run Text="Rate and Review on the Store" />
-                            </Hyperlink>
-                            </TextBlock>
-                        </StackPanel>
-                    </Grid>
-                </ScrollViewer>
-            </PivotItem>
-
             <PivotItem Header="about">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
@@ -153,6 +109,9 @@
                              This app is licensed under GNU General Public License 3.0.
                             </TextBlock>
 
+                            <TextBlock Margin="0,20,0,10" Text="Changelog" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
+                            <TextBlock x:Name="Changelog" Margin="0,10,0,10" TextWrapping="Wrap" FontSize="15" />
+
                             <TextBlock Text="Useful Links" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
                             <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
                         <Hyperlink NavigateUri="https://github.com/surya-sk/backlogs">
@@ -170,7 +129,7 @@
                         </Hyperlink>
                             </TextBlock>
 
-                            <TextBlock Text="About me" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
+                            <TextBlock Text="About Me" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
                             <TextBlock Margin="0,10,0,10" Style="{StaticResource BodyTextBlockStyle}" FontSize="15" TextWrapping="Wrap">
                             Hi, I'm Surya. I am a Computer Science student. I live in Canada. I like making apps and video games.
                             Check out my profiles and other projects below, if you like :).
@@ -218,6 +177,51 @@
                     </Grid>
                 </ScrollViewer>
             </PivotItem>
+            
+            <PivotItem Header="help and feedback">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel MaxWidth="600" HorizontalAlignment="Left" >
+                            <TextBlock Text="If the app is crashing or you're unable to create Backlogs, or if anything odd is happening, sending me the logs will help me identify and fix the issue." 
+                                   Margin="0,10,0,10" TextWrapping="Wrap" FontSize="15" />
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="SendLogsButton" Content="Send logs" Click="SendLogsButton_Click" Margin="0,10,0,10" />
+                                <Button x:Name="OpenLogsButton" Content="Open logs folder" Click="OpenLogsButton_Click" Margin="10,10,0,10" />
+                            </StackPanel>
+                            <TextBlock Text="Have feedback? Want to report bugs or request a new feature? That's brilliant!" Margin="0,10,0,10" TextWrapping="Wrap" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10" >
+                            <Hyperlink NavigateUri="https://github.com/surya-sk/backlogs/issues/new">
+                                <Run Text="Create an issue on Github (preferred)" />
+                            </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Text="OR"  Margin="20,20,0,20" />
+                            <TextBlock Text="Send me an email" Margin="0,10,0,10" />
+                            <ComboBox x:Name="IssueTypeComboBox" Margin="0,10,0,10" Header="Type" PlaceholderText="Pick a type" >
+                                <x:String>Bug</x:String>
+                                <x:String>Feature Request</x:String>
+                                <x:String>Feedback</x:String>
+                            </ComboBox>
+                            <TextBox x:Name="MessageBox" PlaceholderText="Enter a description of your issue/feature" TextWrapping="Wrap"
+                                     MinHeight="80" Margin="0,10,0,10" />
+                            <Button x:Name="SendButton" Content="Send" Click="SendButton_Click" />
+                        </StackPanel>
+
+                        <StackPanel x:Name="StoreLink" HorizontalAlignment="Right" Margin="0,20,20,0" >
+                            <TextBlock Text="Additional links" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                            <Hyperlink NavigateUri="ms-windows-store://review/?ProductId=	9N2H8CM2KWVZ">
+                                <Run Text="Rate and Review on the Store" />
+                            </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </PivotItem>
+
             <PivotItem Header="licenses">
                 <ScrollViewer>
                     <StackPanel>
