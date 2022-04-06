@@ -61,6 +61,17 @@
     <Frame x:Name="rootFrame">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="LargeLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1500" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SuggestionPanel.(Grid.Column)" Value="0" />
+                        <Setter Target="SuggestionPanel.(Grid.Row)" Value="1" />
+                        <Setter Target="StatsAndSuggestionsGrid.(Grid.Column)" Value="1" />
+                        <Setter Target="StatsAndSuggestionsGrid.(Grid.Row)" Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
                 <VisualState x:Name="WideLayout">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
@@ -84,6 +95,8 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+        
+        
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <Grid x:Name="mainGrid">
                 <Grid.RowDefinitions>
@@ -93,25 +106,37 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
                 <TextBlock x:Name="WelcomeText" Margin="30" FontSize="30" />
 
-                <RelativePanel Grid.Row="1"  Margin="10,0,0,30">
-                    <TextBlock x:Name="HeadingText" Text="Recently Added" FontSize="20" Margin="20,20,20,20"/>
-                    <Button x:Name="AllAddedButton" Content="See all" Click="AllAddedButton_Click" RelativePanel.RightOf="HeadingText" Margin="0,20,20,20" />
-                    <TextBlock x:Name="EmptyBackogsText" Text="You haven't added any Backlogs yet" Visibility="Collapsed" RelativePanel.Below="HeadingText" Margin="20" TextWrapping="Wrap"/>
-                    <controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <RelativePanel Margin="10,0,0,30">
+                        <TextBlock x:Name="HeadingText" Text="Recently Added" FontSize="20" Margin="20,20,20,20"/>
+                        <Button x:Name="AllAddedButton" Content="See all" Click="AllAddedButton_Click" RelativePanel.RightOf="HeadingText" Margin="0,20,20,20" />
+                        <TextBlock x:Name="EmptyBackogsText" Text="You haven't added any Backlogs yet" Visibility="Collapsed" RelativePanel.Below="HeadingText" Margin="20" TextWrapping="Wrap"/>
+                        <controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind recentlyAdded}" ItemClick="AddedBacklogsGrid_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="HeadingText" Loaded="AddedBacklogsGrid_Loaded"/>
-                </RelativePanel>
+                    </RelativePanel>
 
-                <RelativePanel Grid.Row="2" Margin="10,0,0,30">
-                    <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="20,20,20,20" />
-                    <Button x:Name="AllCompletedButton" Content="See all" Click="AllCompletedButton_Click" RelativePanel.RightOf="CompletedHeadingText" Margin="0,20,20,20" />
-                    <TextBlock x:Name="EmptyCompletedText" Text="You haven't completed any Backlogs" Visibility="Collapsed" RelativePanel.Below="CompletedHeadingText" Margin="20" TextWrapping="Wrap" />
-                    <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
+                    <RelativePanel Grid.Row="1" Margin="10,0,0,30">
+                        <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="20,20,20,20" />
+                        <Button x:Name="AllCompletedButton" Content="See all" Click="AllCompletedButton_Click" RelativePanel.RightOf="CompletedHeadingText" Margin="0,20,20,20" />
+                        <TextBlock x:Name="EmptyCompletedText" Text="You haven't completed any Backlogs" Visibility="Collapsed" RelativePanel.Below="CompletedHeadingText" Margin="20" TextWrapping="Wrap" />
+                        <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
                                                        SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind recentlyCompleted}"
                                                        ItemTemplate="{StaticResource CompletedBacklogTemplate}" RelativePanel.Below="CompletedHeadingText"/>
-                </RelativePanel>
+                    </RelativePanel>
+                </Grid>
 
                 <Grid x:Name="StatsAndSuggestionsGrid" Grid.Row="3">
                     <Grid.RowDefinitions>
@@ -124,7 +149,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <ScrollViewer  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <Grid x:Name="StatsGrid" Margin="0,0,30,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -133,7 +158,7 @@
 
                             <TextBlock Text="Stats" FontSize="20" Margin="20" />
 
-                            <Grid Grid.Row="1" Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="20,0,0,30">
+                            <Grid Grid.Row="1" Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="20,0,0,30" Height="230">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="2*" />
@@ -163,7 +188,7 @@
                         </Grid>
                     </ScrollViewer>
 
-                    <RelativePanel x:Name="SuggestionPanel" Margin="0,0,90,0" Grid.Column="1" HorizontalAlignment="Right">
+                    <RelativePanel x:Name="SuggestionPanel" Margin="0,0,90,0" Grid.Column="1" HorizontalAlignment="Left">
                         <TextBlock x:Name="SuggestionHeadingText" Text="Random Pick" FontSize="20" Margin="20" />
                         <TextBlock x:Name="EmptySuggestionsText" Text="Add backlogs to get picks" Visibility="Collapsed" TextWrapping="Wrap" RelativePanel.Below="SuggestionHeadingText" />
                         <StackPanel x:Name="InputPanel" RelativePanel.Below="SuggestionHeadingText" Margin="20" >
