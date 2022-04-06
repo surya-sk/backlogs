@@ -359,5 +359,112 @@ namespace backlog.Views
             SearchDialog.Hide();
             Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, null);
         }
+
+        private async void RandomButton_Click(object sender, RoutedEventArgs e)
+        {
+            await GenerateRandomBacklog();
+
+        }
+
+        private async Task GenerateRandomBacklog()
+        {
+            Backlog randomBacklog = new Backlog();
+            Random random = new Random();
+            bool error = false;
+            switch (mainPivot.SelectedIndex)
+            {
+                case 0:
+                    if (backlogs.Count < 2)
+                    {
+                        await ShowErrorMessage("Add backlogs to get random picks");
+                        error = true;
+                        break;
+                    }
+                    randomBacklog = backlogs[random.Next(0, backlogs.Count)];
+                    break;
+                case 1:
+                    if (filmBacklogs.Count < 2)
+                    {
+                        await ShowErrorMessage("Add backlogs to get random picks");
+                        error = true;
+                        break;
+                    }
+                    randomBacklog = filmBacklogs[random.Next(0, filmBacklogs.Count)];
+                    break;
+                case 2:
+                    if (musicBacklogs.Count < 2)
+                    {
+                        await ShowErrorMessage("Add backlogs to get random picks");
+                        error = true;
+                        break;
+                    }
+                    randomBacklog = musicBacklogs[random.Next(0, musicBacklogs.Count)];
+                    break;
+                case 3:
+                    if (tvBacklogs.Count < 2)
+                    {
+                        await ShowErrorMessage("Add backlogs to get random picks");
+                        error = true;
+                        break;
+                    }
+                    randomBacklog = tvBacklogs[random.Next(0, tvBacklogs.Count)];
+                    break;
+                case 4:
+                    if (gameBacklogs.Count < 2)
+                    {
+                        await ShowErrorMessage("Add backlogs to get random picks");
+                        error = true;
+                        break;
+                    }
+                    randomBacklog = gameBacklogs[random.Next(0, gameBacklogs.Count)];
+                    break;
+                case 5:
+                    if (bookBacklogs.Count < 2)
+                    {
+                        await ShowErrorMessage("Add backlogs to get random picks");
+                        error = true;
+                        break;
+                    }
+                    randomBacklog = bookBacklogs[random.Next(0, bookBacklogs.Count)];
+                    break;
+            }
+
+            if (!error)
+            {
+                await ShowRandomPick(randomBacklog);
+            }
+        }
+
+        private async Task ShowErrorMessage(string message)
+        {
+            ContentDialog contentDialog = new ContentDialog()
+            {
+                Title = "Not enough Backlogs",
+                Content = message,
+                CloseButtonText = "Ok"
+            };
+            await contentDialog.ShowAsync();
+        }
+
+        private async Task ShowRandomPick(Backlog backlog)
+        {
+            ContentDialog contentDialog = new ContentDialog()
+            {
+                Title = "Your Pick",
+                Content = $"Your current pick is {backlog.Name} by {backlog.Director}",
+                CloseButtonText = "Ok",
+                PrimaryButtonText = "Go again",
+                SecondaryButtonText = "Open"
+            };
+            var result = await contentDialog.ShowAsync();
+            if(result == ContentDialogResult.Primary)
+            {
+                await GenerateRandomBacklog();
+            }
+            else if(result == ContentDialogResult.Secondary)
+            {
+                Frame.Navigate(typeof(BacklogPage), backlog.id, null);
+            }
+        }
     }
 }
