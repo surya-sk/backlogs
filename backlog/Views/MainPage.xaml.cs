@@ -125,13 +125,16 @@ namespace backlog.Views
                 {
                     await SaveData.GetInstance().ReadDataAsync(true);
                 }
-                ShowLiveTiles();
                 LoadBacklogs();
             }
+            ShowLiveTiles();
             ShowTeachingTips();
             ProgBar.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Update backlog list according to the latest copy
+        /// </summary>
         private void LoadBacklogs()
         {
             recentlyAdded.Clear();
