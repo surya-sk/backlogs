@@ -121,12 +121,12 @@ namespace backlog.Views
                 BottomSigninButton.Visibility = Visibility.Collapsed;
                 TopProfileButton.Visibility = Visibility.Visible;
                 BottomProfileButton.Visibility = Visibility.Visible;
-                LoadBacklogs();
                 if(sync)
                 {
                     await SaveData.GetInstance().ReadDataAsync(true);
-                    BuildNotifactionQueue();
                 }
+                ShowLiveTiles();
+                LoadBacklogs();
             }
             ShowTeachingTips();
             ProgBar.Visibility = Visibility.Collapsed;
@@ -244,6 +244,7 @@ namespace backlog.Views
                      await SaveData.GetInstance().DeleteLocalFileAsync();
                     graphServiceClient = await MSAL.GetGraphServiceClient();
                     Settings.IsSignedIn = true;
+                    await SaveData.GetInstance().ReadDataAsync(true);
                     Frame.Navigate(typeof(MainPage), "sync");
                 }
             }
@@ -298,33 +299,14 @@ namespace backlog.Views
         }
 
         /// <summary>
-        /// Build the notif queue based on whether backlogs have notif time
+        /// Build the live tile queue
         /// </summary>
-        private void BuildNotifactionQueue()
+        private void ShowLiveTiles()
         {
             if(recentlyAdded != null)
             {
                 foreach (var b in recentlyAdded.Take(5))
                 {
-                    //if (b.TargetDate != "None")
-                    //{
-                    //    var savedNotifTime = Settings.GetNotifTime(b.id.ToString());
-                    //    if (savedNotifTime == "" || savedNotifTime != b.NotifTime.ToString())
-                    //    {
-                    //        DateTimeOffset date = DateTimeOffset.Parse(b.TargetDate, CultureInfo.InvariantCulture).Add(b.NotifTime);
-                    //        int result = DateTimeOffset.Compare(date, DateTimeOffset.Now);
-                    //        if (result > 0)
-                    //        {
-                    //            var builder = new ToastContentBuilder()
-                    //            .AddText($"Hey there!", hintMaxLines: 1)
-                    //            .AddText($"You wanted to check out {b.Name} by {b.Director} today. Here's your reminder!", hintMaxLines: 2)
-                    //            .AddHeroImage(new Uri(b.ImageURL));
-                    //            ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), date);
-                    //            ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
-                    //        }
-                    //        Settings.SetNotifTime(b.id.ToString(), b.NotifTime.ToString());
-                    //    }
-                    //}
                     bool showLiveTile = Settings.ShowLiveTile;
                     if (showLiveTile)
                         GenerateLiveTiles(b);
