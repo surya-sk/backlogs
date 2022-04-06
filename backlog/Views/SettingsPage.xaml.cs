@@ -168,7 +168,14 @@ namespace backlog.Views
 
         private async void OpenLogsButton_Click(object sender, RoutedEventArgs e)
         {
-            await Logger.OpenLogFolderAsync();
+            var logs = await Logger.GetLogsAsync();
+            ContentDialog contentDialog = new ContentDialog()
+            {
+                Title = "Logs",
+                Content = logs,
+                CloseButtonText = "Close"
+            };
+            await contentDialog.ShowAsync();
         }
 
         private void TileToggle_Toggled(object sender, RoutedEventArgs e)

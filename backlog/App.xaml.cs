@@ -34,6 +34,7 @@ namespace backlog
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            App.Current.UnhandledException += OnUnHandledException;
         }
 
         public static TEnum GetEnum<TEnum>(string text) where TEnum : struct
@@ -172,6 +173,11 @@ namespace backlog
             }
 
             return rootFrame;
+        }
+
+        private async void OnUnHandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
+        {
+            await Logging.Logger.Error("Unhandled Exception", unhandledExceptionEventArgs.Exception);
         }
 
         protected async override void OnFileActivated(FileActivatedEventArgs args)
