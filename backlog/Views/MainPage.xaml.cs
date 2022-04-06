@@ -108,6 +108,7 @@ namespace backlog.Views
                 if (e.Parameter.ToString() == "sync")
                 {
                     sync = true;
+                    await Logger.Info("Syncing backlogs");
                 }
                 else
                 {
@@ -119,6 +120,7 @@ namespace backlog.Views
             signedIn = Settings.IsSignedIn;
             if (isNetworkAvailable && signedIn)
             {
+                await Logger.Info("Internet access");
                 await Logger.Info("Signing in user....");
                 graphServiceClient = await MSAL.GetGraphServiceClient();
                 await SetUserPhotoAsync();
@@ -140,7 +142,7 @@ namespace backlog.Views
         /// <summary>
         /// Update backlog list according to the latest copy
         /// </summary>
-        private void LoadBacklogs()
+        private async void LoadBacklogs()
         {
             recentlyAdded.Clear();
             recentlyCompleted.Clear();
@@ -197,6 +199,7 @@ namespace backlog.Views
                 completedBacklogsCount = backlogs.Where(b => b.IsComplete).Count();
                 incompleteBacklogsCount = backlogs.Where(b => !b.IsComplete).Count();
                 backlogCount = backlogs.Count;
+                await Logger.Info($"{backlogCount} backlog(s) found");
                 completedPercent = (Convert.ToDouble(completedBacklogsCount) / backlogCount) * 100;
                 GenerateRandomBacklog();
             }
@@ -261,7 +264,8 @@ namespace backlog.Views
             {
                 if (!signedIn)
                 {
-                     await SaveData.GetInstance().DeleteLocalFileAsync();
+                    await Logger.Info("Signing in...");
+                    await SaveData.GetInstance().DeleteLocalFileAsync();
                     graphServiceClient = await MSAL.GetGraphServiceClient();
                     Settings.IsSignedIn = true;
                     await SaveData.GetInstance().ReadDataAsync(true);
@@ -431,6 +435,7 @@ namespace backlog.Views
 
         private async void SupportButton_Click(object sender, RoutedEventArgs e)
         {
+            await Logger.Info("Opening Paypal link...");
             var ratingUri = new Uri(@"https://paypal.me/surya4822?locale.x=en_US");
             await Windows.System.Launcher.LaunchUriAsync(ratingUri);
         }
@@ -525,6 +530,7 @@ namespace backlog.Views
 
         private async void GenerateRandomBacklog()
         {
+            await Logger.Info("Generating random backlog...");
             var type = TypeComoBox.SelectedItem.ToString();
             Random random = new Random();
             Backlog randomBacklog = new Backlog();

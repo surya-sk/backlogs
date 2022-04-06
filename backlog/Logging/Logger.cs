@@ -35,9 +35,9 @@ namespace backlog.Logging
             {
                 var logFile = await _logsFolder.GetFileAsync("backlogs.log");
                 if(ex !=null)
-                    await FileIO.WriteTextAsync(logFile, $"[{DateTime.Now}] - {message}\nException: {ex.Message}");
+                    await FileIO.AppendTextAsync(logFile, $"[{DateTime.Now}] - {message}\nException: {ex.Message}\n\n");
                 else
-                    await FileIO.WriteTextAsync(logFile, $"[{DateTime.Now}] - {message}");
+                    await FileIO.AppendTextAsync(logFile, $"[{DateTime.Now}] - {message}\n\n");
             }
             catch
             {
