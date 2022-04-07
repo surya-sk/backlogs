@@ -108,7 +108,11 @@ namespace backlog.Views
                 if (e.Parameter.ToString() == "sync")
                 {
                     sync = true;
-                    await Logger.Info("Syncing backlogs");
+                    try
+                    {
+                        await Logger.Info("Syncing backlogs");
+                    }
+                    catch { }
                 }
                 else
                 {
@@ -120,8 +124,12 @@ namespace backlog.Views
             signedIn = Settings.IsSignedIn;
             if (isNetworkAvailable && signedIn)
             {
-                await Logger.Info("Internet access");
-                await Logger.Info("Signing in user....");
+                try
+                {
+                    await Logger.Info("Internet access");
+                    await Logger.Info("Signing in user....");
+                }
+                catch { }
                 graphServiceClient = await MSAL.GetGraphServiceClient();
                 await SetUserPhotoAsync();
                 TopSigninButton.Visibility = Visibility.Collapsed;
@@ -204,7 +212,11 @@ namespace backlog.Views
                 completedBacklogsCount = completedBacklogs.Count;
                 incompleteBacklogsCount = incompleteBacklogs.Count;
                 backlogCount = backlogs.Count;
-                await Logger.Info($"{backlogCount} backlog(s) found");
+                try
+                {
+                    await Logger.Info($"{backlogCount} backlog(s) found");
+                }
+                catch { }
                 completedPercent = (Convert.ToDouble(completedBacklogsCount) / backlogCount) * 100;
                 PercentBar.Value = completedPercent;
                 GenerateRandomBacklog();
@@ -230,7 +242,11 @@ namespace backlog.Views
         /// <returns></returns>
         private async Task SetUserPhotoAsync()
         {
-            await Logger.Info("Setting user photo....");
+            try
+            {
+                await Logger.Info("Setting user photo....");
+            }
+            catch { }
             string userName = Settings.UserName;
             TopProfileButton.Label = userName;
             BottomProfileButton.Label = userName;
@@ -249,7 +265,11 @@ namespace backlog.Views
             }
             catch (Exception ex)
             {
-                await Logger.Error("Error settings", ex);
+                try
+                {
+                    await Logger.Error("Error settings", ex);
+                }
+                catch { }
             }
             
         }
@@ -270,7 +290,11 @@ namespace backlog.Views
             {
                 if (!signedIn)
                 {
-                    await Logger.Info("Signing in...");
+                    try
+                    {
+                        await Logger.Info("Signing in...");
+                    }
+                    catch { }
                     await SaveData.GetInstance().DeleteLocalFileAsync();
                     graphServiceClient = await MSAL.GetGraphServiceClient();
                     Settings.IsSignedIn = true;
@@ -441,7 +465,11 @@ namespace backlog.Views
 
         private async void SupportButton_Click(object sender, RoutedEventArgs e)
         {
-            await Logger.Info("Opening Paypal link...");
+            try
+            {
+                await Logger.Info("Opening Paypal link...");
+            }
+            catch { }
             var ratingUri = new Uri(@"https://paypal.me/surya4822?locale.x=en_US");
             await Windows.System.Launcher.LaunchUriAsync(ratingUri);
         }
@@ -536,7 +564,11 @@ namespace backlog.Views
 
         private async void GenerateRandomBacklog()
         {
-            await Logger.Info("Generating random backlog...");
+            try
+            {
+                await Logger.Info("Generating random backlog...");
+            }
+            catch { }
             var type = TypeComoBox.SelectedItem.ToString();
             Random random = new Random();
             Backlog randomBacklog = new Backlog();

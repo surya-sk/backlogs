@@ -28,6 +28,7 @@ namespace backlog.Views
         static string GNU_LICENSE = "This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. \n\nYou should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/";
         static string CHANGE_LOG = "\u2022 Notifications are now working again\n" +
             "\u2022 Fixed vertical scrolling not working on the homepage\n" +
+            "\u2022 Improved stability\n" +
             "\u2022 The Create page will now automatically select Backlog type based on what section the user was in\n";
         
         public string Version

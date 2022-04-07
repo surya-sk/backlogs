@@ -103,7 +103,10 @@ namespace backlog.Views
         }
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            await Logger.Info("Deleting backlog.....");
+            try
+            {
+                await Logger.Info("Deleting backlog.....");
+            } catch { }
             ContentDialog deleteDialog = new ContentDialog
             {
                 Title = "Delete backlog?",
@@ -116,7 +119,10 @@ namespace backlog.Views
             {
                 await DeleteConfirmation_Click();
             }
-            await Logger.Info("Deleted backlog");
+            try
+            {
+                await Logger.Info("Deleted backlog");
+            }catch { }
         }
 
         /// <summary>
@@ -147,8 +153,12 @@ namespace backlog.Views
             }
             catch (Exception ex)
             {
-                await Logger.Warn("Error occured during navigation:");
-                await Logger.Trace(ex.StackTrace);
+                try
+                {
+                    await Logger.Warn("Error occured during navigation:");
+                    await Logger.Trace(ex.StackTrace);
+                }
+                catch { }
             }
             finally
             {
@@ -174,7 +184,10 @@ namespace backlog.Views
         /// <returns></returns>
         private async Task SaveBacklog()
         {
-            await Logger.Info("Saving backlog....");
+            try
+            {
+                await Logger.Info("Saving backlog....");
+            }catch { }
             backlogs[backlogIndex] = backlog;
             SaveData.GetInstance().SaveSettings(backlogs);
             await SaveData.GetInstance().WriteDataAsync(signedIn);
@@ -187,7 +200,11 @@ namespace backlog.Views
 
         private async void CompleteButton_Click(object sender, RoutedEventArgs e)
         {
-            await Logger.Info("Marking backlog as complete");
+            try
+            {
+                await Logger.Info("Marking backlog as complete");
+            }
+            catch { }
             backlog.IsComplete = true;
             backlog.UserRating = UserRating.Value;
             backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);

@@ -76,14 +76,17 @@ namespace backlog.Views
             signedIn = Settings.IsSignedIn;
             if (isNetworkAvailable && signedIn)
             {
-                await Logger.Info("Signing in user....");
                 graphServiceClient = await MSAL.GetGraphServiceClient();
                 await SetUserPhotoAsync();
                 TopProfileButton.Visibility = Visibility.Visible;
                 BottomProfileButton.Visibility = Visibility.Visible;
                 if (sync)
                 {
-                    await Logger.Info("Syncing backlogs....");
+                    try
+                    {
+                        await Logger.Info("Syncing backlogs....");
+                    }
+                    catch { }
                     await SaveData.GetInstance().ReadDataAsync(true);
                     PopulateBacklogs();
                 }
@@ -196,7 +199,6 @@ namespace backlog.Views
         /// <returns></returns>
         private async Task SetUserPhotoAsync()
         {
-            await Logger.Info("Setting user photo....");
             string userName = Settings.UserName;
             TopProfileButton.Label = userName;
             BottomProfileButton.Label = userName;
