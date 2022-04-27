@@ -31,7 +31,8 @@ namespace backlog.Views
             "\u2022 Reduced load times when loading All Backlogs page" +
             "\u2022 Improved icons and placement of Completed Backlogs page button\n" +
             "\u2022 The Create page will navigate to whatever page the user was in after creation\n" +
-            "\u2022 The homepage now has a link to the web app in the menu";
+            "\u2022 The homepage now has a link to the web app in the menu\n" +
+            "\u2022 About section now shows third-party APIs";
         
         public string Version
         {
