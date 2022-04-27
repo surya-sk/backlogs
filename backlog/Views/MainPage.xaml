@@ -292,6 +292,7 @@
                 <AppBarButton x:Name="TopShareButton" Label="Share this app" Click="ShareButton_Click" >
                     <FontIcon Glyph="" />
                 </AppBarButton>
+                <AppBarButton x:Name="TopWebAppButton" Label="Open web app" Icon="Link" Click="WebAppButton_Click" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>
@@ -317,6 +318,7 @@
                 <AppBarButton x:Name="BottomShareButton" Label="Share this app" Click="ShareButton_Click" >
                     <FontIcon Glyph="" />
                 </AppBarButton>
+                <AppBarButton x:Name="BottomWebAppButton" Label="Open web app" Icon="Link" Click="WebAppButton_Click" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

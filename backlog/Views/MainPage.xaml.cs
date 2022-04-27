@@ -470,8 +470,8 @@ namespace backlog.Views
                 await Logger.Info("Opening Paypal link...");
             }
             catch { }
-            var ratingUri = new Uri(@"https://paypal.me/surya4822?locale.x=en_US");
-            await Windows.System.Launcher.LaunchUriAsync(ratingUri);
+            var paypalUri = new Uri(@"https://paypal.me/surya4822?locale.x=en_US");
+            await Windows.System.Launcher.LaunchUriAsync(paypalUri);
         }
 
         /// <summary>
@@ -670,6 +670,12 @@ namespace backlog.Views
                 await FileIO.WriteTextAsync(stFile, json);
                 Frame.Navigate(typeof(ImportBacklog), stFile.Name, null);
             }
+        }
+
+        private async void WebAppButton_Click(object sender, RoutedEventArgs e)
+        {
+            var webAppUri = new Uri(@"https://backlogs.azurewebsites.net/");
+            await Windows.System.Launcher.LaunchUriAsync(webAppUri);
         }
     }
 }
