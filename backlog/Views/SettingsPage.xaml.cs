@@ -155,7 +155,11 @@ namespace backlog.Views
             body.AppendLine("*Enter a brief description of your issue here*");
             body.AppendLine("\n\n\n");
             body.AppendLine("Logs:");
-            body.AppendLine(await Logger.GetLogsAsync());
+            var logList = await Logger.GetLogsAsync();
+            foreach(var log in logList)
+            {
+                body.AppendLine(log.ToString());
+            }
             emailMessage.Body = body.ToString();
             await EmailManager.ShowComposeNewEmailAsync(emailMessage);
             ProgRing.IsActive = false;
@@ -167,7 +171,12 @@ namespace backlog.Views
             ContentDialog contentDialog = new ContentDialog()
             {
                 Title = "Logs",
-                Content = logs,
+                Content = new ListView()
+                {
+                    ItemsSource = logs,
+                    IsItemClickEnabled = false,
+                    SelectionMode = ListViewSelectionMode.None
+                },
                 CloseButtonText = "Close"
             };
             await contentDialog.ShowAsync();

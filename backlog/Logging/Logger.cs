@@ -97,12 +97,18 @@ namespace backlog.Logging
         /// Returns the logs
         /// </summary>
         /// <returns>An async task</returns>
-        public static async Task<string> GetLogsAsync()
+        public static async Task<List<string>> GetLogsAsync()
         {
             var folder = await GetLogFolderAsync();
             var path = Path.Combine(folder.Path, "backlogs.log");
             var logFile = await StorageFile.GetFileFromPathAsync(path);
-            return await FileIO.ReadTextAsync(logFile);
+            var lines = await FileIO.ReadLinesAsync(logFile);
+            var logList = new List<string>();
+            foreach(var line in lines)
+            {
+                logList.Add(line);
+            }
+            return logList;
         }
     }
 }

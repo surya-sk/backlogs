@@ -71,7 +71,7 @@
                             <TextBlock x:Name="SignInText" Text="For the best experience, sign-in with your Microsoft Account. This will sync backlogs using OneDrive so you can access them on all of your Windows devices."
                                    FontStyle="Italic" Margin="0,20,0,0" TextWrapping="Wrap" />
 
-                            <TextBlock x:Name="WarningText" Text="Backlogs are stored in your root OneDrive folder in a file named backlogs.txt. DO NOT modify or delete the file, as it can lead to your concepts being lost forever."
+                            <TextBlock x:Name="WarningText" Text="Backlogs are stored in your root OneDrive folder in a file named backlogs.txt. DO NOT modify or delete the file, as it can lead to your backlogs being lost forever."
                                    Foreground="Red" Margin="0,20,0,0" TextWrapping="Wrap" FontSize="20" Visibility="Collapsed" />
                         </StackPanel>
 
