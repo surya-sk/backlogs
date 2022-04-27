@@ -236,13 +236,14 @@ namespace backlog.Views
                     ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
                 }
                 await SaveData.GetInstance().WriteDataAsync(signedIn);
+                PageStackEntry prevPage = Frame.BackStack.Last();
                 try
                 {
-                    Frame.Navigate(typeof(MainPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom });
+                    Frame.Navigate(prevPage?.SourcePageType, null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom });
                 }
                 catch
                 {
-                    Frame.Navigate(typeof(MainPage));
+                    Frame.Navigate(prevPage?.SourcePageType);
                 }
             }
             else

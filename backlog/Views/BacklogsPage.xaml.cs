@@ -87,7 +87,7 @@ namespace backlog.Views
                         await Logger.Info("Syncing backlogs....");
                     }
                     catch { }
-                    await SaveData.GetInstance().ReadDataAsync(true);
+                    //await SaveData.GetInstance().ReadDataAsync(true);
                     PopulateBacklogs();
                 }
             }
