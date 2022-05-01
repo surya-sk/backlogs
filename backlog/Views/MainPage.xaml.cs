@@ -84,7 +84,6 @@ namespace backlog.Views
         {
             if(Settings.IsFirstRun)
             {
-                NavigationTeachingTip.IsOpen = true;
                 Settings.IsFirstRun = false;
             }
             if(!Settings.IsSignedIn)

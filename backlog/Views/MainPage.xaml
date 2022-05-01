@@ -123,7 +123,6 @@
             </Grid.RowDefinitions>
 
             <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
-            <muxc:TeachingTip x:Name="NavigationTeachingTip" Title="Moving around" Subtitle="To move around different sections, swipe using your finger or trackpad" />
             <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind TopSigninButton}"
                               Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!" />
             <muxc:TeachingTip x:Name="BottomSigninTeachingTip" Target="{x:Bind BottomSigninButton}"
