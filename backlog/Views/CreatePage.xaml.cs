@@ -231,7 +231,7 @@ namespace backlog.Views
             {
                 backlogs.Add(backlog);
                 SaveData.GetInstance().SaveSettings(backlogs);
-                if (backlog.TargetDate != "None")
+                if (backlog.TargetDate != "None" && backlog.NotifTime != TimeSpan.Zero)
                 {
                     var notifTime = DateTimeOffset.Parse(backlog.TargetDate, CultureInfo.InvariantCulture).Add(backlog.NotifTime);
                     var builder = new ToastContentBuilder()

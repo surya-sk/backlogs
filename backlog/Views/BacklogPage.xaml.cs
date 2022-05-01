@@ -242,58 +242,67 @@ namespace backlog.Views
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (DatePicker.SelectedDates.Count > 0)
+            if (DatePicker.SelectedDate != null)
             {
-                if (TimePicker.Time == TimeSpan.Zero)
+                var chosenDate = DatePicker.SelectedDate.Value.DateTime;
+                string date = chosenDate.ToString("D", CultureInfo.InvariantCulture);
+                if (NotifyToggle.IsOn)
                 {
-                    ContentDialog contentDialog = new ContentDialog
+                    if (TimePicker.Time == TimeSpan.Zero)
                     {
-                        Title = "Invalid date and time",
-                        Content = "Please pick a time!",
-                        CloseButtonText = "Ok"
-                    };
-                    await contentDialog.ShowAsync();
-                    return;
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Invalid date and time",
+                            Content = "Please pick a time!",
+                            CloseButtonText = "Ok"
+                        };
+                        await contentDialog.ShowAsync();
+                        return;
+                    }
+                    DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
+                    int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
+                    if (diff < 0)
+                    {
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Invalid time",
+                            Content = "The date and time you've chosen are in the past!",
+                            CloseButtonText = "Ok"
+                        };
+                        await contentDialog.ShowAsync();
+                        return;
+                    }
                 }
-                string date = DatePicker.SelectedDates[0].ToString("D", CultureInfo.InvariantCulture);
-                DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
-                int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
-                if (diff < 0)
+                else
                 {
-                    ContentDialog contentDialog = new ContentDialog
+                    DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture);
+                    int diff = DateTime.Compare(DateTime.Today, chosenDate);
+                    if (diff > 0)
                     {
-                        Title = "Invalid date and time",
-                        Content = "The date and time you've chosen are in the past!",
-                        CloseButtonText = "Ok"
-                    };
-                    await contentDialog.ShowAsync();
-                    return;
-                }
-            }
-            else if (TimePicker.Time != TimeSpan.Zero)
-            {
-                if (DatePicker.SelectedDates.Count <= 0)
-                {
-                    ContentDialog contentDialog = new ContentDialog
-                    {
-                        Title = "Invalid date and time",
-                        Content = "Please pick a date!",
-                        CloseButtonText = "Ok"
-                    };
-                    await contentDialog.ShowAsync();
-                    return;
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Invalid date and time",
+                            Content = "The date and time you've chosen are in the past!",
+                            CloseButtonText = "Ok"
+                        };
+                        await contentDialog.ShowAsync();
+                        return;
+                    }
                 }
             }
             ProgBar.Visibility = Visibility.Visible;
-            backlog.TargetDate = DatePicker.SelectedDates[0].ToString("D", CultureInfo.InvariantCulture);
+            backlog.TargetDate = DatePicker.SelectedDate.Value.ToString("D", CultureInfo.InvariantCulture);
             backlog.NotifTime = TimePicker.Time;
-            var notifTime = DateTimeOffset.Parse(backlog.TargetDate, CultureInfo.InvariantCulture).Add(backlog.NotifTime);
-            var builder = new ToastContentBuilder()
-                .AddText($"It's {backlog.Name} time!")
-                .AddText($"You wanted to check out {backlog.Name} by {backlog.Director} today. Get to it!")
-                .AddHeroImage(new Uri(backlog.ImageURL));
-            ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), notifTime);
-            ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+            if(backlog.NotifTime != TimeSpan.Zero)
+            {
+                var notifTime = DateTimeOffset.Parse(backlog.TargetDate, CultureInfo.InvariantCulture).Add(backlog.NotifTime);
+                var builder = new ToastContentBuilder()
+                    .AddText($"It's {backlog.Name} time!")
+                    .AddText($"You wanted to check out {backlog.Name} by {backlog.Director} today. Get to it!")
+                    .AddHeroImage(new Uri(backlog.ImageURL));
+                ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), notifTime);
+                ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+            }
             await SaveBacklog();
             CmdCancelButton_Click(sender, e);
             ProgBar.Visibility = Visibility.Collapsed;
@@ -337,6 +346,23 @@ namespace backlog.Views
             List<IStorageItem> list = new List<IStorageItem>();
             list.Add(fileToShare);
             dataRequest.Data.SetStorageItems(list);
+        }
+
+        private void NotifyToggle_Toggled(object sender, RoutedEventArgs e)
+        {
+            if(NotifyToggle.IsOn)
+            {
+                TimePicker.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                TimePicker.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
+        {
+            NotifyToggle.IsEnabled = true;
         }
     }
 }
