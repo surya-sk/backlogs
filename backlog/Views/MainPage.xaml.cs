@@ -21,8 +21,6 @@ using Windows.UI.Xaml.Media.Animation;
 using backlog.Logging;
 using Windows.Storage;
 using backlog.Auth;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 

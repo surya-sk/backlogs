@@ -129,23 +129,25 @@ namespace backlog.Views
                 }
                 else
                 {
-                    if (DatePicker.SelectedDates.Count > 0)
+                    if (DatePicker.SelectedDate != null)
                     {
-                        if (TimePicker.Time == TimeSpan.Zero)
-                        {
-                            ContentDialog contentDialog = new ContentDialog
-                            {
-                                Title = "Invalid date and time",
-                                Content = "Please pick a time!",
-                                CloseButtonText = "Ok"
-                            };
-                            await contentDialog.ShowAsync();
-                            return;
-                        }
-                        string date = DatePicker.SelectedDates[0].ToString("D", CultureInfo.InvariantCulture);
-                        DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
-                        int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
-                        if (diff < 0)
+                        //if (TimePicker.Time == TimeSpan.Zero)
+                        //{
+                        //    ContentDialog contentDialog = new ContentDialog
+                        //    {
+                        //        Title = "Invalid date and time",
+                        //        Content = "Please pick a time!",
+                        //        CloseButtonText = "Ok"
+                        //    };
+                        //    await contentDialog.ShowAsync();
+                        //    return;
+                        //}
+                        var chosenDate = DatePicker.SelectedDate.Value.DateTime;
+                        string date = chosenDate.ToString("D", CultureInfo.InvariantCulture);
+                        DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture);
+                        int diff = DateTime.Compare(DateTime.Today, chosenDate);
+                        Debug.WriteLine(diff);
+                        if (diff > 0)
                         {
                             ContentDialog contentDialog = new ContentDialog
                             {
@@ -157,20 +159,20 @@ namespace backlog.Views
                             return;
                         }
                     }
-                    else if (TimePicker.Time != TimeSpan.Zero)
-                    {
-                        if (DatePicker.SelectedDates.Count <= 0)
-                        {
-                            ContentDialog contentDialog = new ContentDialog
-                            {
-                                Title = "Invalid date and time",
-                                Content = "Please pick a date!",
-                                CloseButtonText = "Ok"
-                            };
-                            await contentDialog.ShowAsync();
-                            return;
-                        }
-                    }
+                    //else if (TimePicker.Time != TimeSpan.Zero)
+                    //{
+                    //    if (DatePicker.SelectedDate == null)
+                    //    {
+                    //        ContentDialog contentDialog = new ContentDialog
+                    //        {
+                    //            Title = "Invalid date",
+                    //            Content = "Please pick a date!",
+                    //            CloseButtonText = "Ok"
+                    //        };
+                    //        await contentDialog.ShowAsync();
+                    //        return;
+                    //    }
+                    //}
                     SearchResultsHeader.Text = $"Showing results for \"{NameInput.Text}\". Click the one you'd like to add";
                     await SearchBacklog(title);
                 }
@@ -190,7 +192,7 @@ namespace backlog.Views
         private async Task SearchBacklog(string title)
         {
             ProgBar.Visibility = Visibility.Visible;
-            string date = DatePicker.SelectedDates.Count > 0 ? DatePicker.SelectedDates[0].ToString("D", CultureInfo.InvariantCulture) : "None";
+            string date = DatePicker.SelectedDate != null ? DatePicker.SelectedDate.Value.ToString("D", CultureInfo.InvariantCulture) : "None";
             string type = TypeComoBox.SelectedItem.ToString();
             switch (type)
             {
@@ -701,7 +703,7 @@ namespace backlog.Views
             var selectedItem = ResultsListView.SelectedItem as Models.SearchResult;
             if(selectedItem != null)
             {
-                string date = DatePicker.SelectedDates.Count > 0 ? DatePicker.SelectedDates[0].ToString("D", CultureInfo.InvariantCulture) : "None";
+                string date = DatePicker.SelectedDate != null ? DatePicker.SelectedDate.Value.ToString("D", CultureInfo.InvariantCulture) : "None";
                 var time = TimePicker.Time;
                 ResultsDialog.Hide();
                 switch (TypeComoBox.SelectedItem.ToString())
@@ -720,6 +722,28 @@ namespace backlog.Views
                         break;
                 }
             }
+        }
+
+        private void DatePicker_SelectedDateChanged(DatePicker sender, DatePickerSelectedValueChangedEventArgs args)
+        {
+
+        }
+
+        private void NotifySwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if(NotifySwitch.IsOn)
+            {
+                TimePicker.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                TimePicker.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
+        {
+            NotifySwitch.IsEnabled = true;
         }
     }
 }

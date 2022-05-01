@@ -48,8 +48,11 @@
                 <TextBlock Text="Name" Margin="10,0,0,20" />
                 <TextBox x:Name="NameInput" PlaceholderText="Enter the name" Margin="10,0,0,20" />
                 <TextBlock Text="When do you want to check this out? (optional)" Margin="10,0,0,20" />
-                <CalendarView x:Name="DatePicker" Margin="10,0,0,20" />
-                <TimePicker x:Name="TimePicker" Header="When do you want to be notified? (optional)" Margin="10,0,0,20" Time="0" />
+                <DatePicker x:Name="DatePicker" Margin="10,0,0,20" DateChanged="DatePicker_DateChanged" />
+                <ToggleSwitch x:Name="NotifySwitch" Header="Notify me on this date" Margin="10,0,0,20" Toggled="NotifySwitch_Toggled"
+                              OffContent="No" OnContent="Yes" IsEnabled="False" />
+                <TimePicker x:Name="TimePicker" Header="When do you want to be notified? (optional)" 
+                            Margin="10,0,0,20" Time="0" Visibility="Collapsed" />
             </StackPanel>
         </ScrollViewer>
 
