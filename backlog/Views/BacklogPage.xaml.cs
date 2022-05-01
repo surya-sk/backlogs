@@ -379,7 +379,7 @@ namespace backlog.Views
             if(ProgressSwitch.IsOn)
             {
                 backlog.Progress = 1;
-                backlog.Length = 0;
+                backlog.Length = 1;
             }
             else
             {
