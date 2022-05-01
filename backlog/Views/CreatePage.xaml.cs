@@ -131,48 +131,52 @@ namespace backlog.Views
                 {
                     if (DatePicker.SelectedDate != null)
                     {
-                        //if (TimePicker.Time == TimeSpan.Zero)
-                        //{
-                        //    ContentDialog contentDialog = new ContentDialog
-                        //    {
-                        //        Title = "Invalid date and time",
-                        //        Content = "Please pick a time!",
-                        //        CloseButtonText = "Ok"
-                        //    };
-                        //    await contentDialog.ShowAsync();
-                        //    return;
-                        //}
                         var chosenDate = DatePicker.SelectedDate.Value.DateTime;
                         string date = chosenDate.ToString("D", CultureInfo.InvariantCulture);
-                        DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture);
-                        int diff = DateTime.Compare(DateTime.Today, chosenDate);
-                        Debug.WriteLine(diff);
-                        if (diff > 0)
+                        if (NotifySwitch.IsOn)
                         {
-                            ContentDialog contentDialog = new ContentDialog
+                            if (TimePicker.Time == TimeSpan.Zero)
                             {
-                                Title = "Invalid date and time",
-                                Content = "The date and time you've chosen are in the past!",
-                                CloseButtonText = "Ok"
-                            };
-                            await contentDialog.ShowAsync();
-                            return;
+                                ContentDialog contentDialog = new ContentDialog
+                                {
+                                    Title = "Invalid date and time",
+                                    Content = "Please pick a time!",
+                                    CloseButtonText = "Ok"
+                                };
+                                await contentDialog.ShowAsync();
+                                return;
+                            }
+                            DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
+                            int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
+                            if (diff < 0)
+                            {
+                                ContentDialog contentDialog = new ContentDialog
+                                {
+                                    Title = "Invalid time",
+                                    Content = "The date and time you've chosen are in the past!",
+                                    CloseButtonText = "Ok"
+                                };
+                                await contentDialog.ShowAsync();
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture);
+                            int diff = DateTime.Compare(DateTime.Today, chosenDate);
+                            if (diff > 0)
+                            {
+                                ContentDialog contentDialog = new ContentDialog
+                                {
+                                    Title = "Invalid date and time",
+                                    Content = "The date and time you've chosen are in the past!",
+                                    CloseButtonText = "Ok"
+                                };
+                                await contentDialog.ShowAsync();
+                                return;
+                            }
                         }
                     }
-                    //else if (TimePicker.Time != TimeSpan.Zero)
-                    //{
-                    //    if (DatePicker.SelectedDate == null)
-                    //    {
-                    //        ContentDialog contentDialog = new ContentDialog
-                    //        {
-                    //            Title = "Invalid date",
-                    //            Content = "Please pick a date!",
-                    //            CloseButtonText = "Ok"
-                    //        };
-                    //        await contentDialog.ShowAsync();
-                    //        return;
-                    //    }
-                    //}
                     SearchResultsHeader.Text = $"Showing results for \"{NameInput.Text}\". Click the one you'd like to add";
                     await SearchBacklog(title);
                 }
