@@ -29,7 +29,8 @@ namespace backlog.Views
         static string CHANGE_LOG = "\u2022 Setting a notification time is no longer required when setting a target date\n" +
             "\u2022 Music and game backlogs can now be set to In Progress\n" +
             "\u2022 Setting target date now has a compact date picker rather than a calendar picker\n" +
-            "\u2022 Change New button text to Create\n";
+            "\u2022 Change New button text to Create\n" +
+            "\u2022 GitHub issue link in Settings page is now update to open the Choose Template page\n";
         
         public string Version
         {

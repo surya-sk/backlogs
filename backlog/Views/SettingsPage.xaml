@@ -216,7 +216,7 @@
                             </StackPanel>
                             <TextBlock Text="Have feedback? Want to report bugs or request a new feature? That's brilliant!" Margin="0,10,0,10" TextWrapping="Wrap" />
                             <TextBlock TextWrapping="Wrap" Margin="0,10,0,10" >
-                            <Hyperlink NavigateUri="https://github.com/surya-sk/backlogs/issues/new">
+                            <Hyperlink NavigateUri="https://github.com/surya-sk/backlogs/issues/new/choose">
                                 <Run Text="Create an issue on Github (preferred)" />
                             </Hyperlink>
                             </TextBlock>
