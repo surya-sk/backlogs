@@ -51,7 +51,7 @@
                 <DatePicker x:Name="DatePicker" Margin="10,0,0,20" DateChanged="DatePicker_DateChanged" />
                 <ToggleSwitch x:Name="NotifySwitch" Header="Notify me on this date" Margin="10,0,0,20" Toggled="NotifySwitch_Toggled"
                               OffContent="No" OnContent="Yes" IsEnabled="False" />
-                <TimePicker x:Name="TimePicker" Header="When do you want to be notified? (optional)" 
+                <TimePicker x:Name="TimePicker" Header="When do you want to be notified?" 
                             Margin="10,0,0,20" Time="0" Visibility="Collapsed" />
             </StackPanel>
         </ScrollViewer>
