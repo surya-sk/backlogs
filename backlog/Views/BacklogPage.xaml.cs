@@ -83,6 +83,14 @@ namespace backlog.Views
                     backlogIndex = backlogs.IndexOf(b);
                 }
             }
+            if(!backlog.ShowProgress)
+            {
+                ProgressSwitch.Visibility = Visibility.Visible;
+                if(backlog.Progress > 0)
+                {
+                    ProgressSwitch.IsOn = true;
+                }
+            }
             SourceLinkButton.Content = source;
             SourceLinkButton.NavigateUri = sourceLink;
             base.OnNavigatedTo(e);
@@ -146,6 +154,8 @@ namespace backlog.Views
 
         private async void DoneButton_Click(object sender, RoutedEventArgs e)
         {
+            if (edited)
+                await SaveBacklog();
             try
             {
                 ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backAnimation", img);
@@ -164,8 +174,6 @@ namespace backlog.Views
             {
                 Frame.Navigate(prevPage?.SourcePageType, backlogIndex, new SuppressNavigationTransitionInfo());
             }
-            if (edited)
-                await SaveBacklog();
         }
 
         /// <summary>
@@ -363,6 +371,20 @@ namespace backlog.Views
         private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
         {
             NotifyToggle.IsEnabled = true;
+        }
+
+        private void ProgressSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            edited = true;
+            if(ProgressSwitch.IsOn)
+            {
+                backlog.Progress = 1;
+                backlog.Length = 0;
+            }
+            else
+            {
+                backlog.Progress = 0;
+            }
         }
     }
 }
