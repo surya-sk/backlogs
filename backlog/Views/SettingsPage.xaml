@@ -29,8 +29,6 @@
                         <Setter Target="RefLinks.HorizontalAlignment" Value="Left" />
                         <Setter Target="StoreLink.(Grid.Row)" Value="1" />
                         <Setter Target="StoreLink.HorizontalAlignment" Value="Left" />
-                        <Setter Target="BottomBar.Visibility" Value="Visible" />
-                        <Setter Target="TopBar.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -199,7 +197,7 @@
                     </Grid>
                 </ScrollViewer>
             </PivotItem>
-            
+
             <PivotItem Header="help and feedback">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
@@ -276,16 +274,4 @@
             </PivotItem>
         </Pivot>
     </Grid>
-    
-    <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right">
-            <AppBarButton x:Name="TopHomeButton" Icon="Home" Label="Home" Click="HomeButton_Click" />
-        </CommandBar>
-    </Page.TopAppBar>
-
-    <Page.BottomAppBar>
-        <CommandBar x:Name="BottomBar" Visibility="Collapsed">
-            <AppBarButton x:Name="ButtonHomeButton" Icon="Home" Label="Home" Click="HomeButton_Click" />
-        </CommandBar>
-    </Page.BottomAppBar>
 </Page>
