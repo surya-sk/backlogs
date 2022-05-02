@@ -172,6 +172,7 @@ namespace backlog.Views
                 Content = new ListView()
                 {
                     ItemsSource = logs,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
                     IsItemClickEnabled = false,
                     SelectionMode = ListViewSelectionMode.None
                 },
@@ -197,6 +198,10 @@ namespace backlog.Views
             }
         }
 
+        /// <summary>
+        /// Show error dialog
+        /// </summary>
+        /// <returns></returns>
         private async Task ShowError()
         {
             ContentDialog contentDialog = new ContentDialog
