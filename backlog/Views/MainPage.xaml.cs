@@ -674,5 +674,23 @@ namespace backlog.Views
             var webAppUri = new Uri(@"https://backlogs.azurewebsites.net/");
             await Windows.System.Launcher.LaunchUriAsync(webAppUri);
         }
+
+        private async void SignOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = "Sign out?",
+                Content = "You will no longer have access to your backlogs, and new ones will no longer be synced",
+                PrimaryButtonText = "Yes",
+                CloseButtonText = "No"
+            };
+            ContentDialogResult result = await contentDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                await MSAL.SignOut();
+                Settings.IsSignedIn = false;
+                Frame.Navigate(typeof(MainPage));
+            }
+        }
     }
 }
