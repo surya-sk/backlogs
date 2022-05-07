@@ -58,24 +58,18 @@ namespace backlog.Utils
             set => _settings.Values[nameof(ShowLiveTile)] = value;
         }
 
-        public static string GetNotifTime(string id)
+        public static string SortOrder
         {
-            if(_settings.Values.TryGetValue("NotifTime", out var notifTime))
+            get
             {
-                var notifTimes = (ApplicationDataCompositeValue)notifTime;
-                return notifTimes[id].ToString();
+                if(_settings.Values.TryGetValue(nameof(SortOrder), out var sortOrder))
+                {
+                    return (string)sortOrder;
+                }
+                return "Name";
             }
-            return "";
+            set => _settings.Values[nameof(SortOrder)] = value;
         }
-
-        public static void SetNotifTime(string id, string notifTime)
-        {
-            var notifTimes = (ApplicationDataCompositeValue)_settings.Values["NotifTime"];
-            if(notifTimes == null)
-            {
-                notifTimes = new ApplicationDataCompositeValue();
-            }
-            notifTimes[id] = notifTime;
-        }
+        
     }
 }

@@ -150,6 +150,22 @@
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
+            <AppBarButton x:Name="TopSortButton" Label="{x:Bind sortOrder}" Icon="Sort">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="SortByName" Text="Name" Click="SortByName_Click" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="SortByCreatedDateAsc" Text="Created Date Ascending" Click="SortByCreatedDateAsc_Click" />
+                        <MenuFlyoutItem x:Name="SortByCreatedDateDsc" Text="Created Date Descending" Click="SortByCreatedDateDsc_Click" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="SortByTargetDateAsc" Text="Target Date Ascending" Click="SortByTargetDateAsc_Click" />
+                        <MenuFlyoutItem x:Name="SortByTargetDateDsc" Text="Target Date Descending" Click="SortByTargetDateDsc_Click" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="SortByProgressAsc" Text="Progress Ascending" Click="SortByProgressAsc_Click"/>
+                        <MenuFlyoutItem x:Name="SortByProgressDsc" Text="Progress Descending" Click="SortByProgressDsc_Click" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
             <AppBarButton x:Name="TopRandomButton" Label="Random" Icon="Shuffle" Click="RandomButton_Click" />
             <AppBarButton x:Name="TopCreateButton" Label="New" Icon="Add" Click="CreateButton_Click" />
             <AppBarButton x:Name="TopCompletedBacklogsButton" Label="Completed backlogs" Click="CompletedBacklogsButton_Click">
@@ -167,6 +183,22 @@
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
             <AppBarButton x:Name="BottomSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
+            <AppBarButton x:Name="BottomSortButton" Label="{x:Bind sortOrder}" Icon="Sort">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="BSortByName" Text="Name" Click="SortByName_Click" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="BSortByCreatedDateAsc" Text="Created Date Ascending" Click="SortByCreatedDateAsc_Click" />
+                        <MenuFlyoutItem x:Name="BSortByCreatedDateDsc" Text="Created Date Descending" Click="SortByCreatedDateDsc_Click" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="BSortByTargetDateAsc" Text="Target Date Ascending" Click="SortByTargetDateAsc_Click" />
+                        <MenuFlyoutItem x:Name="BSortByTargetDateDsc" Text="Target Date Descending" Click="SortByTargetDateDsc_Click" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="BSortByProgressAsc" Text="Progress Ascending" Click="SortByProgressAsc_Click"/>
+                        <MenuFlyoutItem x:Name="BSortByProgressDsc" Text="Progress Descending" Click="SortByProgressDsc_Click" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
             <AppBarButton x:Name="BottomRandomButton" Label="Random" Icon="Shuffle" Click="RandomButton_Click" />
             <AppBarButton x:Name="BottomCreateButton" Label="New" Icon="Add" Click="CreateButton_Click" />
             <AppBarButton x:Name="BottomCompletedBacklogsButton" Label="Completed backlogs" Click="CompletedBacklogsButton_Click">

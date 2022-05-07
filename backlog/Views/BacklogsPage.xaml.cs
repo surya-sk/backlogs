@@ -45,6 +45,8 @@ namespace backlog.Views
         private ObservableCollection<Backlog> bookBacklogs { get; set; }
         GraphServiceClient graphServiceClient;
 
+        string sortOrder { get; set; }
+
         bool isNetworkAvailable = false;
         bool signedIn;
         int backlogIndex = -1;
@@ -53,6 +55,7 @@ namespace backlog.Views
         {
             this.InitializeComponent();
             isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
+            sortOrder = Settings.SortOrder;
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             InitBacklogs();
         }
@@ -467,6 +470,41 @@ namespace backlog.Views
             {
                 Frame.Navigate(typeof(BacklogPage), backlog.id, null);
             }
+        }
+
+        private void SortByName_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByCreatedDateAsc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByCreatedDateDsc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByTargetDateAsc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByTargetDateDsc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByProgressAsc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByProgressDsc_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -728,11 +728,6 @@ namespace backlog.Views
             }
         }
 
-        private void DatePicker_SelectedDateChanged(DatePicker sender, DatePickerSelectedValueChangedEventArgs args)
-        {
-
-        }
-
         private void NotifySwitch_Toggled(object sender, RoutedEventArgs e)
         {
             if(NotifySwitch.IsOn)
