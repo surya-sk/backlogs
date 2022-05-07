@@ -365,7 +365,29 @@ namespace backlog.Views
             {
                 List<string> suggestions = new List<string>();
                 var splitText = sender.Text.ToLower().Split(' ');
-                foreach (var backlog in backlogs)
+                ObservableCollection<Backlog> backlogsToSearch = null;
+                switch (mainPivot.SelectedIndex)
+                {
+                    case 0:
+                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs);
+                        break;
+                    case 1:
+                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == "Film"));
+                        break;
+                    case 2:
+                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == "Album"));
+                        break;
+                    case 3:
+                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == "TV"));
+                        break;
+                    case 4:
+                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == "Game"));
+                        break;
+                    case 5:
+                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == "Book"));
+                        break;
+                }
+                foreach (var backlog in backlogsToSearch)
                 {
                     var found = splitText.All((key) =>
                     {
@@ -395,7 +417,6 @@ namespace backlog.Views
         private async void RandomButton_Click(object sender, RoutedEventArgs e)
         {
             await GenerateRandomBacklog();
-
         }
 
         private async Task GenerateRandomBacklog()
