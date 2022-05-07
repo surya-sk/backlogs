@@ -89,7 +89,7 @@
     </Grid>
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
-            <AppBarButton x:Name="TopCreateButton" Icon="Accept" Label="Create" Click="CreateButton_Click" />
+            <AppBarButton x:Name="TopCreateButton" Icon="Find" Label="Search" Click="CreateButton_Click" />
             <AppBarButton x:Name="TopCancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="TopSettingsButton" Icon="Setting" Label="Settings + more" Click="SettingsButton_Click" />
@@ -98,7 +98,7 @@
     </Page.TopAppBar>
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed" >
-            <AppBarButton x:Name="BottomCreateButton" Icon="Accept" Label="Create" Click="CreateButton_Click" />
+            <AppBarButton x:Name="BottomCreateButton" Icon="Find" Label="Search" Click="CreateButton_Click" />
             <AppBarButton x:Name="BottomCancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="BottomSettingsButton" Icon="Setting" Label="Settings + more" Click="SettingsButton_Click" />
