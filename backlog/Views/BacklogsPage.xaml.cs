@@ -135,7 +135,34 @@ namespace backlog.Views
         private void PopulateBacklogs()
         {
             var readBacklogs = SaveData.GetInstance().GetBacklogs().Where(b => b.IsComplete == false);
-            var _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.CreatedDate)); // sort by last created
+            ObservableCollection<Backlog> _backlogs = null;
+            sortOrder = Settings.SortOrder;
+            TopSortButton.Label = sortOrder;
+            BottomSortButton.Label = sortOrder;
+            switch(sortOrder)
+            {
+                case "Name":
+                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.Name));
+                    break;
+                case "Created Date Asc.":
+                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.CreatedDate));
+                    break;
+                case "Created Date Dsc.":
+                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.CreatedDate));
+                    break;
+                case "Target Date Asc.":
+                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.TargetDate));
+                    break;
+                case "Target Date Dsc.":
+                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.TargetDate));
+                    break;
+                case "Progress Asc.":
+                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.Progress));
+                    break;
+                case "Progress Dsc.":
+                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.Progress));
+                    break;
+            }
             var _filmBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
             var _tvBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
             var _gameBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
@@ -474,37 +501,44 @@ namespace backlog.Views
 
         private void SortByName_Click(object sender, RoutedEventArgs e)
         {
-
+            Settings.SortOrder = "Name";
+            PopulateBacklogs();
         }
 
         private void SortByCreatedDateAsc_Click(object sender, RoutedEventArgs e)
         {
-
+            Settings.SortOrder = "Created Date Asc.";
+            PopulateBacklogs();
         }
 
         private void SortByCreatedDateDsc_Click(object sender, RoutedEventArgs e)
         {
-
+            Settings.SortOrder = "Created Date Dsc.";
+            PopulateBacklogs();
         }
 
         private void SortByTargetDateAsc_Click(object sender, RoutedEventArgs e)
         {
-
+            Settings.SortOrder = "Target Date Asc.";
+            PopulateBacklogs();
         }
 
         private void SortByTargetDateDsc_Click(object sender, RoutedEventArgs e)
         {
-
+            Settings.SortOrder = "Target Date Dsc.";
+            PopulateBacklogs();
         }
 
         private void SortByProgressAsc_Click(object sender, RoutedEventArgs e)
         {
-
+            Settings.SortOrder = "Progress Asc.";
+            PopulateBacklogs();
         }
 
         private void SortByProgressDsc_Click(object sender, RoutedEventArgs e)
         {
-
+            Settings.SortOrder = "Progress Dsc.";
+            PopulateBacklogs();
         }
     }
 }

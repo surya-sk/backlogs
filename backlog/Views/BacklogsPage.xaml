@@ -155,14 +155,14 @@
                     <MenuFlyout>
                         <MenuFlyoutItem x:Name="SortByName" Text="Name" Click="SortByName_Click" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="SortByCreatedDateAsc" Text="Created Date Ascending" Click="SortByCreatedDateAsc_Click" />
-                        <MenuFlyoutItem x:Name="SortByCreatedDateDsc" Text="Created Date Descending" Click="SortByCreatedDateDsc_Click" />
+                        <MenuFlyoutItem x:Name="SortByCreatedDateAsc" Text="Created Date Asc." Click="SortByCreatedDateAsc_Click" />
+                        <MenuFlyoutItem x:Name="SortByCreatedDateDsc" Text="Created Date Dsc." Click="SortByCreatedDateDsc_Click" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="SortByTargetDateAsc" Text="Target Date Ascending" Click="SortByTargetDateAsc_Click" />
-                        <MenuFlyoutItem x:Name="SortByTargetDateDsc" Text="Target Date Descending" Click="SortByTargetDateDsc_Click" />
+                        <MenuFlyoutItem x:Name="SortByTargetDateAsc" Text="Target Date Asc." Click="SortByTargetDateAsc_Click" />
+                        <MenuFlyoutItem x:Name="SortByTargetDateDsc" Text="Target Date Dsc." Click="SortByTargetDateDsc_Click" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="SortByProgressAsc" Text="Progress Ascending" Click="SortByProgressAsc_Click"/>
-                        <MenuFlyoutItem x:Name="SortByProgressDsc" Text="Progress Descending" Click="SortByProgressDsc_Click" />
+                        <MenuFlyoutItem x:Name="SortByProgressAsc" Text="Progress Asc." Click="SortByProgressAsc_Click"/>
+                        <MenuFlyoutItem x:Name="SortByProgressDsc" Text="Progress Dsc." Click="SortByProgressDsc_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -188,14 +188,14 @@
                     <MenuFlyout>
                         <MenuFlyoutItem x:Name="BSortByName" Text="Name" Click="SortByName_Click" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="BSortByCreatedDateAsc" Text="Created Date Ascending" Click="SortByCreatedDateAsc_Click" />
-                        <MenuFlyoutItem x:Name="BSortByCreatedDateDsc" Text="Created Date Descending" Click="SortByCreatedDateDsc_Click" />
+                        <MenuFlyoutItem x:Name="BSortByCreatedDateAsc" Text="Created Date Asc." Click="SortByCreatedDateAsc_Click" />
+                        <MenuFlyoutItem x:Name="BSortByCreatedDateDsc" Text="Created Date Dsc." Click="SortByCreatedDateDsc_Click" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="BSortByTargetDateAsc" Text="Target Date Ascending" Click="SortByTargetDateAsc_Click" />
-                        <MenuFlyoutItem x:Name="BSortByTargetDateDsc" Text="Target Date Descending" Click="SortByTargetDateDsc_Click" />
+                        <MenuFlyoutItem x:Name="BSortByTargetDateAsc" Text="Target Date Asc." Click="SortByTargetDateAsc_Click" />
+                        <MenuFlyoutItem x:Name="BSortByTargetDateDsc" Text="Target Date Dsc." Click="SortByTargetDateDsc_Click" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="BSortByProgressAsc" Text="Progress Ascending" Click="SortByProgressAsc_Click"/>
-                        <MenuFlyoutItem x:Name="BSortByProgressDsc" Text="Progress Descending" Click="SortByProgressDsc_Click" />
+                        <MenuFlyoutItem x:Name="BSortByProgressAsc" Text="Progress Asc." Click="SortByProgressAsc_Click"/>
+                        <MenuFlyoutItem x:Name="BSortByProgressDsc" Text="Progress Dsc." Click="SortByProgressDsc_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
