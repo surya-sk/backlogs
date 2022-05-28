@@ -41,10 +41,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*"/> 
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <TextBlock Text="completed backlogs" FontSize="30" Margin="30"/>
 
         <TextBlock  x:Name="EmptyText" Text="you haven't completed any of your backlogs yet :(" TextWrapping="Wrap" Grid.Row="1" Visibility="Collapsed"
                     Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
@@ -107,4 +105,56 @@
             </Grid>
         </ContentDialog>
      </Grid>
+
+
+    <Page.TopAppBar>
+        <CommandBar x:Name="TopBar"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" >
+            <AppBarButton x:Name="TopSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click"/>
+            <AppBarButton x:Name="TopSortButton" Label="{x:Bind sortOrder}" Icon="Sort">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="SortByName" Text="Name" Click="SortByName_Click" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="SortByCompletedDateAsc" Text="Completed Date Asc." Click="SortByCompletedDateAsc_Click" />
+                        <MenuFlyoutItem x:Name="SortByCompletedDateDsc" Text="Completed Date Dsc." Click="SortByCompletedDateDsc_Click" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="SortByRatingAsc" Text="Rating Asc." Click="SortByRatingAsc_Click" />
+                        <MenuFlyoutItem x:Name="SortByRatingDsc" Text="Rating Dsc." Click="SortByRatingDsc_Click" />
+                        <MenuFlyoutSeparator />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="TopProfileButton" Label="Signed-in" Visibility="Collapsed">
+                    <muxc:PersonPicture x:Name="TopAccountPic" Height="30" Width="30"/>
+                </AppBarButton>
+                <AppBarButton x:Name="TopSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.TopAppBar>
+    <Page.BottomAppBar>
+        <CommandBar x:Name="BottomBar" Visibility="Collapsed">
+            <AppBarButton x:Name="BottomSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
+            <AppBarButton x:Name="BottomSortButton" Label="{x:Bind sortOrder}" Icon="Sort">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem x:Name="BSortByName" Text="Name" Click="SortByName_Click" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="BSortByCompletedDateAsc" Text="Completed Date Asc." Click="SortByCompletedDateAsc_Click" />
+                        <MenuFlyoutItem x:Name="BSortByCompletedDateDsc" Text="Completed Date Dsc." Click="SortByCompletedDateDsc_Click" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Name="BSortByRatingAsc" Text="Rating Asc." Click="SortByRatingAsc_Click" />
+                        <MenuFlyoutItem x:Name="BSortByRatingDsc" Text="Rating Dsc." Click="SortByRatingDsc_Click" />
+                        <MenuFlyoutSeparator />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="BottomProfileButton" Label="Signed-in" Visibility="Collapsed">
+                    <muxc:PersonPicture x:Name="BottomAccountPic" Height="30" Width="30"/>
+                </AppBarButton>
+                <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

@@ -31,10 +31,12 @@ namespace backlog.Views
         private ObservableCollection<Backlog> FinishedBookBacklogs;
         private ObservableCollection<Backlog> Backlogs;
         private Backlog SelectedBacklog;
+        private string sortOrder { get; set; }
 
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
+            sortOrder = Settings.CompletedSortOrder;
             Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             Backlogs = SaveData.GetInstance().GetBacklogs();
             FinishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete));
@@ -150,6 +152,41 @@ namespace backlog.Views
         private void PopupSlider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
             PopupRating.Value = e.NewValue;
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByName_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByCompletedDateAsc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByCompletedDateDsc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByRatingAsc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByRatingDsc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

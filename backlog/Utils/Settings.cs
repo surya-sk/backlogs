@@ -70,6 +70,19 @@ namespace backlog.Utils
             }
             set => _settings.Values[nameof(SortOrder)] = value;
         }
+
+        public static string CompletedSortOrder
+        {
+            get
+            {
+                if(_settings.Values.TryGetValue(nameof(CompletedSortOrder), out var completedSortOrder))
+                {
+                    return (string)completedSortOrder;
+                }
+                return "Name";
+            }
+            set => _settings.Values[nameof(CompletedSortOrder)] = value;
+        }
         
     }
 }
