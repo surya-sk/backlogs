@@ -122,8 +122,8 @@
                         <MenuFlyoutItem x:Name="SortByCompletedDateAsc" Text="Completed Date Asc." Click="SortByCompletedDateAsc_Click" />
                         <MenuFlyoutItem x:Name="SortByCompletedDateDsc" Text="Completed Date Dsc." Click="SortByCompletedDateDsc_Click" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="SortByRatingAsc" Text="Rating Asc." Click="SortByRatingAsc_Click" />
-                        <MenuFlyoutItem x:Name="SortByRatingDsc" Text="Rating Dsc." Click="SortByRatingDsc_Click" />
+                        <MenuFlyoutItem x:Name="SortByRatingAsc" Text="Lowest Rating" Click="SortByRatingAsc_Click" />
+                        <MenuFlyoutItem x:Name="SortByRatingDsc" Text="Highest Rating" Click="SortByRatingDsc_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -146,8 +146,8 @@
                         <MenuFlyoutItem x:Name="BSortByCompletedDateAsc" Text="Completed Date Asc." Click="SortByCompletedDateAsc_Click" />
                         <MenuFlyoutItem x:Name="BSortByCompletedDateDsc" Text="Completed Date Dsc." Click="SortByCompletedDateDsc_Click" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="BSortByRatingAsc" Text="Rating Asc." Click="SortByRatingAsc_Click" />
-                        <MenuFlyoutItem x:Name="BSortByRatingDsc" Text="Rating Dsc." Click="SortByRatingDsc_Click" />
+                        <MenuFlyoutItem x:Name="BSortByRatingAsc" Text="Lowest Rating" Click="SortByRatingAsc_Click" />
+                        <MenuFlyoutItem x:Name="BSortByRatingDsc" Text="Highest Rating" Click="SortByRatingDsc_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
