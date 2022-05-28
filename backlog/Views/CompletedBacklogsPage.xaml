@@ -47,7 +47,7 @@
         <TextBlock  x:Name="EmptyText" Text="you haven't completed any of your backlogs yet :(" TextWrapping="Wrap" Grid.Row="1" Visibility="Collapsed"
                     Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
 
-        <Pivot Grid.Row="1">
+        <Pivot x:Name="mainPivot" Grid.Row="1">
             <PivotItem Header="all">
                 <controls:AdaptiveGridView x:Name="MainGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                            SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedBacklogs}" Margin="20" />
@@ -56,13 +56,13 @@
                 <controls:AdaptiveGridView x:Name="FilmGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                            SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedFilmBacklogs}" Margin="20" />
             </PivotItem>
-            <PivotItem Header="tv">
-                <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
-                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedTVBacklogs}" Margin="20" />
-            </PivotItem>
             <PivotItem Header="albums">
                 <controls:AdaptiveGridView x:Name="MusicGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                            SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedMusicBacklogs}" Margin="20" />
+            </PivotItem>
+            <PivotItem Header="tv">
+                <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedTVBacklogs}" Margin="20" />
             </PivotItem>
             <PivotItem Header="games">
                 <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
@@ -104,7 +104,11 @@
                 <ProgressRing x:Name="ProgRing" IsActive="False" />
             </Grid>
         </ContentDialog>
-     </Grid>
+
+        <ContentDialog x:Name="SearchDialog" CloseButtonText="Close">
+            <AutoSuggestBox x:Name="SearchBox" TextChanged="SearchBox_TextChanged" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" />
+        </ContentDialog>
+    </Grid>
 
 
     <Page.TopAppBar>
@@ -120,7 +124,6 @@
                         <MenuFlyoutSeparator />
                         <MenuFlyoutItem x:Name="SortByRatingAsc" Text="Rating Asc." Click="SortByRatingAsc_Click" />
                         <MenuFlyoutItem x:Name="SortByRatingDsc" Text="Rating Dsc." Click="SortByRatingDsc_Click" />
-                        <MenuFlyoutSeparator />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -145,7 +148,6 @@
                         <MenuFlyoutSeparator />
                         <MenuFlyoutItem x:Name="BSortByRatingAsc" Text="Rating Asc." Click="SortByRatingAsc_Click" />
                         <MenuFlyoutItem x:Name="BSortByRatingDsc" Text="Rating Dsc." Click="SortByRatingDsc_Click" />
-                        <MenuFlyoutSeparator />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

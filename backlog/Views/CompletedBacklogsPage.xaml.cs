@@ -3,6 +3,7 @@ using backlog.Models;
 using backlog.Saving;
 using backlog.Utils;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -154,9 +155,9 @@ namespace backlog.Views
             PopupRating.Value = e.NewValue;
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-
+            await SearchDialog.ShowAsync();
         }
 
         private void SortByName_Click(object sender, RoutedEventArgs e)
@@ -187,6 +188,62 @@ namespace backlog.Views
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                List<string> suggestions = new List<string>();
+                var splitText = sender.Text.ToLower().Split(' ');
+                ObservableCollection<Backlog> backlogsToSearch = null;
+                switch (mainPivot.SelectedIndex)
+                {
+                    case 0:
+                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedBacklogs);
+                        break;
+                    case 1:
+                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedFilmBacklogs);
+                        break;
+                    case 2:
+                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedMusicBacklogs);
+                        break;
+                    case 3:
+                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedTVBacklogs);
+                        break;
+                    case 4:
+                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedGameBacklogs);
+                        break;
+                    case 5:
+                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedBookBacklogs);
+                        break;
+                }
+                foreach (var backlog in backlogsToSearch)
+                {
+                    var found = splitText.All((key) =>
+                    {
+                        return backlog.Name.ToLower().Contains(key);
+                    });
+                    if (found)
+                    {
+                        suggestions.Add(backlog.Name);
+                    }
+                }
+                if (suggestions.Count == 0)
+                {
+                    suggestions.Add("No results found");
+                }
+                sender.ItemsSource = suggestions;
+            }
+        }
+
+        private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            mainPivot.SelectedIndex = 0;
+            SearchDialog.Hide();
+            var selectedBacklog = FinishedBacklogs.FirstOrDefault(b => b.Name == args.ChosenSuggestion.ToString());
+            MainGrid.SelectedItem = selectedBacklog;
+            MainGrid.ScrollIntoView(selectedBacklog);
         }
     }
 }
