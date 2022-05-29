@@ -55,11 +55,13 @@
                                 <TextBlock Text="Live tile" Margin="0,20,0,0" FontSize="15"/>
                                 <TextBlock Text="Pin the app to start to see a live tile. Available on Windows 10 only." FontStyle="Italic" 
                                        FontWeight="ExtraLight" TextWrapping="Wrap"/>
-                                <muxc:RadioButtons x:Name="TileStyleRadioButtons" SelectedIndex="0" MaxColumns="2"
+                                <muxc:RadioButtons x:Name="TileStyleRadioButtons" MaxColumns="2"
                                                    Header="Live tile style" Margin="0,20,0,0" SelectionChanged="TileStyleRadioButtons_SelectionChanged">
                                     <x:String>Peek Image</x:String>
                                     <x:String>Background Image</x:String>
                                 </muxc:RadioButtons>
+                                <Image x:Name="TileStyleImage" Source="{x:Bind TileImageSource}" MaxHeight="100" 
+                                       Stretch="Uniform" HorizontalAlignment="Left" />
                             </StackPanel>
 
                             <StackPanel x:Name="AccountPanel" Visibility="Collapsed">

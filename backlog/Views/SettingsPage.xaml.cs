@@ -32,7 +32,9 @@ namespace backlog.Views
             "\u2022 Fixed invalid license link in the About section\n" +
             "\u2022 Increased opacity of blurred background in the selected backlog page";
 
+        public string TileImageSource = "ms-appx:///Assets/peeking-tile.png"; 
         public string Version = Settings.Version;
+
         public SettingsPage()
         {
             this.InitializeComponent();
@@ -61,10 +63,19 @@ namespace backlog.Views
                         break;
                 }
             }
+            SetTileStyleImage();
             // show back button
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += View_BackRequested;
+        }
+
+        private void SetTileStyleImage()
+        {
+            TileStyleRadioButtons.SelectedIndex = Settings.TileStyle == "Peeking" ? 0 : 1;
+            TileImageSource = TileStyleRadioButtons.SelectedIndex == 0 ? "ms-appx:///Assets/peeking-tile.png" :
+                "ms-appx:///Assets/background-tile.png";
+            TileStyleImage.Source = new BitmapImage(new Uri(TileImageSource));
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -254,6 +265,7 @@ namespace backlog.Views
         private void TileStyleRadioButtons_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Settings.TileStyle = TileStyleRadioButtons.SelectedIndex == 0 ? "Peeking" : "Background";
+            SetTileStyleImage();
         }
     }
 }

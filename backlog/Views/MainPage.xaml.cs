@@ -363,62 +363,94 @@ namespace backlog.Views
             {
                 foreach (var b in recentlyAdded.Take(5))
                 {
-                    bool showLiveTile = Settings.ShowLiveTile;
-                    if (showLiveTile)
-                        GenerateLiveTiles(b);
+                    GenerateLiveTiles(b);
                 }
             }
         }
 
         private void GenerateLiveTiles(Backlog b)
         {
-            var tileContent = new TileContent()
+            TileContent tileContent = null;
+            if(Settings.TileStyle == "Peeking")
             {
-                Visual = new TileVisual()
+                tileContent = new TileContent()
                 {
-
-                    TileMedium = new TileBinding()
+                    Visual = new TileVisual()
                     {
-                        Branding = TileBranding.Name,
-                        DisplayName = "Backlogs",
-                        Content = new TileBindingContentAdaptive()
+
+                        TileMedium = new TileBinding()
                         {
-                            BackgroundImage = new TileBackgroundImage()
+                            Branding = TileBranding.Name,
+                            DisplayName = "Backlogs",
+                            Content = new TileBindingContentAdaptive()
                             {
-                                Source = b.ImageURL,
-                            },
-                            Children =
-                            {
-                                new AdaptiveText()
+                                PeekImage = new TilePeekImage()
                                 {
-                                    Text = b.Name,
-                                    HintWrap = true,
-                                    HintMaxLines = 2
+                                    Source = b.ImageURL,
                                 },
-                                new AdaptiveText()
+                                Children =
                                 {
-                                    Text = b.Type,
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
-                                },
-                                new AdaptiveText()
-                                {
-                                    Text = b.TargetDate,
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name,
+                                        HintWrap = true,
+                                        HintMaxLines = 2
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Type,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.TargetDate,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    }
                                 }
                             }
-                        }
-                    },
-                    TileWide = new TileBinding()
-                    {
-                        Branding = TileBranding.NameAndLogo,
-                        DisplayName = "Backlogs (Beta)",
-                        Content = new TileBindingContentAdaptive()
+                        },
+                        TileWide = new TileBinding()
                         {
-                            PeekImage = new TilePeekImage()
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
                             {
-                                Source = b.ImageURL
-                            },
-                            Children =
+                                PeekImage = new TilePeekImage()
+                                {
+                                    Source = b.ImageURL
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Type} - {b.Director}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Description,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    }
+                                }
+                            }
+                        },
+                        TileLarge = new TileBinding()
+                        {
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                PeekImage = new TilePeekImage()
+                                {
+                                    Source = b.ImageURL
+                                },
+                                Children =
                             {
                                 new AdaptiveText()
                                 {
@@ -435,12 +467,131 @@ namespace backlog.Views
                                     Text = b.Description,
                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                     HintWrap = true
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = b.TargetDate,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = false
+                                }
+                            }
+                            }
+                        }
+                    }
+                };
+            }
+            else
+            {
+                tileContent = new TileContent()
+                {
+                    Visual = new TileVisual()
+                    {
+
+                        TileMedium = new TileBinding()
+                        {
+                            Branding = TileBranding.Name,
+                            DisplayName = "Backlogs",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                BackgroundImage = new TileBackgroundImage()
+                                {
+                                    Source = b.ImageURL,
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name,
+                                        HintWrap = true,
+                                        HintMaxLines = 2
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Type,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.TargetDate,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    }
+                                }
+                            }
+                        },
+                        TileWide = new TileBinding()
+                        {
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                BackgroundImage = new TileBackgroundImage()
+                                {
+                                    Source = b.ImageURL,
+                                    HintOverlay = 50
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Type} - {b.Director}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Description,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    }
+                                }
+                            }
+                        },
+                        TileLarge = new TileBinding()
+                        {
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                BackgroundImage= new TileBackgroundImage()
+                                {
+                                    Source = b.ImageURL,
+                                    HintOverlay = 50
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Type} - {b.Director}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Description,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.TargetDate,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = false
+                                    }
                                 }
                             }
                         }
-                    },
-                }
-            };
+                    }
+                };
+            }
+            
 
             // Create the tile notification
             var tileNotif = new TileNotification(tileContent.GetXml());
