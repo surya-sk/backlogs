@@ -27,7 +27,7 @@ namespace backlog.Utils
                 {
                     return (bool)showWhatsNew;
                 }
-                return true;
+                return false;
             }
             set => _settings.Values[nameof(ShowWhatsNew)] = value;
         }

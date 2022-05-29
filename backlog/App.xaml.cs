@@ -82,8 +82,16 @@ namespace backlog
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
+
+
                     var version = Package.Current.Id.Version;
-                    Settings.Version = string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+                    string currVer = string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+                    if(Settings.Version == null || Settings.Version != currVer)
+                    {
+                        Settings.ShowWhatsNew = true;
+                    }
+                    Settings.Version = currVer;
+
                     Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
                     rootFrame.Navigate(typeof(MainPage), "sync");
                 }
