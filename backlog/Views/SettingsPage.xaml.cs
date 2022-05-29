@@ -29,15 +29,8 @@ namespace backlog.Views
         static string CHANGE_LOG = "\u2022 You can now sort backlogs by created date, target date and progress\n" +
             "\u2022 Search results will now depend on which type of Backogs you are currently looking at\n" +
             "\u2022 Create page now has the search icon instead of Create\n";
-        
-        public string Version
-        {
-            get
-            {
-                var version = Windows.ApplicationModel.Package.Current.Id.Version;
-                return string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
-            }
-        }
+
+        public string Version = Settings.Version;
         public SettingsPage()
         {
             this.InitializeComponent();

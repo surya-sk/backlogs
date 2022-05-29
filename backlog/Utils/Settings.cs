@@ -19,6 +19,32 @@ namespace backlog.Utils
             set => _settings.Values[nameof(IsFirstRun)] = value;
         }
 
+        public static bool ShowWhatsNew
+        {
+            get
+            {
+                if(_settings.Values.TryGetValue(nameof(ShowWhatsNew), out var showWhatsNew))
+                {
+                    return (bool)showWhatsNew;
+                }
+                return true;
+            }
+            set => _settings.Values[nameof(ShowWhatsNew)] = value;
+        }
+
+        public static string Version
+        {
+            get
+            {
+                if(_settings.Values.TryGetValue(nameof(Version), out var version))
+                {
+                    return (string)version;
+                }
+                return null;
+            }
+            set => _settings.Values[nameof(Version)] = value;
+        }
+
         public static bool IsSignedIn
         {
             get
@@ -36,7 +62,7 @@ namespace backlog.Utils
         {
             get
             {
-                if(_settings.Values.TryGetValue(nameof(UserName), out var userName))
+                if (_settings.Values.TryGetValue(nameof(UserName), out var userName))
                 {
                     return (string)userName;
                 }
