@@ -51,8 +51,8 @@
                                 <x:String>Light</x:String>
                             </ComboBox>
 
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="Live tile" Margin="0,20,0,0" FontSize="15"/>
+                            <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                                <TextBlock Text="Live tile" Margin="0,20,0,0" FontSize="18"/>
                                 <TextBlock Text="Pin the app to start to see a live tile. Available on Windows 10 only." FontStyle="Italic" 
                                        FontWeight="ExtraLight" TextWrapping="Wrap"/>
                                 <muxc:RadioButtons x:Name="TileStyleRadioButtons" MaxColumns="2"
@@ -64,8 +64,8 @@
                                        Stretch="Uniform" HorizontalAlignment="Left" />
                             </StackPanel>
 
-                            <StackPanel x:Name="AccountPanel" Visibility="Collapsed">
-                                <TextBlock Text="Account" Margin="0,20,0,0" FontSize="15" />
+                            <StackPanel x:Name="AccountPanel" Visibility="Collapsed" Margin="0,20,0,0">
+                                <TextBlock Text="Account" Margin="0,20,0,0" FontSize="18" />
                                 <TextBlock x:Name="UserNameText" Margin="0,10,0,20" FontStyle="Italic" />
                                 <muxc:PersonPicture x:Name="AccountPic" Margin="0,10,0,20" HorizontalAlignment="Left" />
                                 <Button x:Name="SignOutButton" Content="Sign out" Background="Red" Click="SignOutButton_Click" />
@@ -75,7 +75,7 @@
                                    FontStyle="Italic" Margin="0,20,0,0" TextWrapping="Wrap" />
 
                             <TextBlock x:Name="WarningText" Text="Backlogs are stored in your root OneDrive folder in a file named backlogs.txt. DO NOT modify or delete the file, as it can lead to your backlogs being lost forever."
-                                   Foreground="Red" Margin="0,20,0,0" TextWrapping="Wrap" FontSize="20" Visibility="Collapsed" />
+                                   Foreground="Red" Margin="0,20,0,0" TextWrapping="Wrap" FontSize="15" Visibility="Collapsed" />
                         </StackPanel>
 
                         <StackPanel x:Name="RelatedPanel" HorizontalAlignment="Right" Margin="0,20,20,0" >
