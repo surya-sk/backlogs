@@ -127,6 +127,11 @@ namespace backlog.Views
             e.Handled = true;
         }
 
+        /// <summary>
+        /// Saves backlogs
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             ProgRing.IsActive = true;
@@ -150,6 +155,11 @@ namespace backlog.Views
             CloseButton_Click(sender, e);
         }
 
+        /// <summary>
+        /// Sends the selected backlog back to Backlogs
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void IncompleteButton_Click(object sender, RoutedEventArgs e)
         {
             ProgRing.IsActive = true;

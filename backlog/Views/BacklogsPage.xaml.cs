@@ -418,6 +418,10 @@ namespace backlog.Views
             await GenerateRandomBacklog();
         }
 
+        /// <summary>
+        /// Generates a random backlog of the selected type
+        /// </summary>
+        /// <returns></returns>
         private async Task GenerateRandomBacklog()
         {
             Backlog randomBacklog = new Backlog();
