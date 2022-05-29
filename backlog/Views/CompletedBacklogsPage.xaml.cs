@@ -103,7 +103,7 @@ namespace backlog.Views
             {
                 FinishedGameBacklogs.Add(backlog);
             }
-            foreach (var backlog in FinishedMusicBacklogs)
+            foreach (var backlog in _finishedMusicBacklogs)
             {
                 FinishedMusicBacklogs.Add(backlog);
             }
