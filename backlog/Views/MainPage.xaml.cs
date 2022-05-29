@@ -95,6 +95,11 @@ namespace backlog.Views
                     BottomSigninTeachingTip.IsOpen = true;
                 }
             }
+            if(Settings.ShowWhatsNew)
+            {
+                WhatsNewTip.IsOpen = true;
+                Settings.ShowWhatsNew = false;
+            }
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -691,6 +696,11 @@ namespace backlog.Views
                 Settings.IsSignedIn = false;
                 Frame.Navigate(typeof(MainPage));
             }
+        }
+
+        private void WhatsNewTip_ActionButtonClick(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args)
+        {
+            Frame.Navigate(typeof(SettingsPage), 1);
         }
     }
 }

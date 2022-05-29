@@ -68,6 +68,10 @@ namespace backlog.Views
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             signedIn = Settings.IsSignedIn;
+            if(e.Parameter != null)
+            {
+                mainPivot.SelectedIndex = (int)e.Parameter;
+            }
             if(signedIn)
             {
                 AccountPanel.Visibility = Visibility.Visible;

@@ -35,7 +35,7 @@
         </VisualStateManager.VisualStateGroups>
 
         <ProgressRing x:Name="ProgRing" IsActive="False" />
-        <Pivot>
+        <Pivot x:Name="mainPivot">
             <PivotItem Header="settings">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
