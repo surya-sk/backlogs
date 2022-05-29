@@ -63,7 +63,7 @@ namespace backlog.Views
             isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
             WelcomeText.Text = Settings.IsSignedIn ? $"Welcome to Backlogs, {Settings.UserName}!" : "Welcome to Backlogs, stranger!";
-            Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
+            
             recentlyAdded = new ObservableCollection<Backlog>();
             recentlyCompleted = new ObservableCollection<Backlog>();
             inProgress = new ObservableCollection<Backlog>();
@@ -495,7 +495,7 @@ namespace backlog.Views
 
         private void BacklogsButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(BacklogsPage), "sync");
+            Frame.Navigate(typeof(BacklogsPage));
         }
 
         private void AddedBacklogsGrid_ItemClick(object sender, ItemClickEventArgs e)

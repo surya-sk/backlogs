@@ -19,6 +19,8 @@ using backlog.Utils;
 using System.Reflection;
 using Microsoft.Identity.Client;
 using Windows.Storage;
+using System.Threading.Tasks;
+using backlog.Saving;
 
 namespace backlog
 {
@@ -80,6 +82,7 @@ namespace backlog
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
+                    Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
                     rootFrame.Navigate(typeof(MainPage), "sync");
                 }
                 // Ensure the current window is active
