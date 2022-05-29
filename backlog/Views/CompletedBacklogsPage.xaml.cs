@@ -37,7 +37,6 @@ namespace backlog.Views
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
-            Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             Backlogs = SaveData.GetInstance().GetBacklogs();
             FinishedBacklogs = new ObservableCollection<Backlog>();
             FinishedBookBacklogs = new ObservableCollection<Backlog>();

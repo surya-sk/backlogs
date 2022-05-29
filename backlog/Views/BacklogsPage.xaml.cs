@@ -56,8 +56,8 @@ namespace backlog.Views
             this.InitializeComponent();
             isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             sortOrder = Settings.SortOrder;
-            Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
             InitBacklogs();
+            PopulateBacklogs();
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -79,12 +79,12 @@ namespace backlog.Views
             signedIn = Settings.IsSignedIn;
             if (isNetworkAvailable && signedIn)
             {
-                graphServiceClient = await MSAL.GetGraphServiceClient();
-                await SetUserPhotoAsync();
-                TopProfileButton.Visibility = Visibility.Visible;
-                BottomProfileButton.Visibility = Visibility.Visible;
                 if (sync)
                 {
+                    graphServiceClient = await MSAL.GetGraphServiceClient();
+                    await SetUserPhotoAsync();
+                    TopProfileButton.Visibility = Visibility.Visible;
+                    BottomProfileButton.Visibility = Visibility.Visible;
                     try
                     {
                         await Logger.Info("Syncing backlogs....");
@@ -104,13 +104,12 @@ namespace backlog.Views
         {
             allBacklogs = SaveData.GetInstance().GetBacklogs();
             var readBacklogs = new ObservableCollection<Backlog>(allBacklogs.Where(b => b.IsComplete == false));
-            backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.CreatedDate));
-            filmBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
-            tvBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
-            gameBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
-            musicBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Album.ToString()));
-            bookBacklogs = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == BacklogType.Book.ToString()));
-            ShowEmptyMessage();
+            backlogs = new ObservableCollection<Backlog>();
+            filmBacklogs = new ObservableCollection<Backlog>();
+            tvBacklogs = new ObservableCollection<Backlog>();
+            gameBacklogs = new ObservableCollection<Backlog>();
+            musicBacklogs = new ObservableCollection<Backlog>();
+            bookBacklogs = new ObservableCollection<Backlog>();
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += View_BackRequested;
