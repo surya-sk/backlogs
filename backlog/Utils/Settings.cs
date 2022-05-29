@@ -109,6 +109,19 @@ namespace backlog.Utils
             }
             set => _settings.Values[nameof(CompletedSortOrder)] = value;
         }
+
+        public static string TileStyle
+        {
+            get
+            {
+                if(_settings.Values.TryGetValue(nameof(TileStyle), out var tileStyle))
+                {
+                    return (string)tileStyle;
+                }
+                return "Peeking";
+            }
+            set => _settings.Values[nameof(TileStyle)] = value;
+        }
         
     }
 }

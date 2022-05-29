@@ -26,9 +26,11 @@ namespace backlog.Views
         bool signedIn;
         static string MIT_LICENSE = "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n\nTHE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
         static string GNU_LICENSE = "This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. \n\nYou should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/";
-        static string CHANGE_LOG = "\u2022 You can now sort backlogs by created date, target date and progress\n" +
-            "\u2022 Search results will now depend on which type of Backogs you are currently looking at\n" +
-            "\u2022 Create page now has the search icon instead of Create\n";
+        static string CHANGE_LOG = "\u2022 Completed backlogs can now be searched and filtered by date, rating and name\n" +
+            "\u2022 Huge performance improvements. Load times should now significantly lower\n" +
+            "\u2022 The app will now show a flyout after updating to a new version highlighting new features\n" +
+            "\u2022 Fixed invalid license link in the About section\n" +
+            "\u2022 Increased opacity of blurred background in the selected backlog page";
 
         public string Version = Settings.Version;
         public SettingsPage()
@@ -179,11 +181,6 @@ namespace backlog.Views
             await contentDialog.ShowAsync();
         }
 
-        private void TileToggle_Toggled(object sender, RoutedEventArgs e)
-        {
-            Settings.ShowLiveTile = TileToggle.IsOn;
-        }
-
         private async void SendButton_Click(object sender, RoutedEventArgs e)
         {
             if(IssueTypeComboBox.SelectedIndex < 0 || MessageBox.Text == "")
@@ -252,6 +249,11 @@ namespace backlog.Views
                 Settings.IsSignedIn = false;
                 Frame.Navigate(typeof(MainPage));
             }
+        }
+
+        private void TileStyleRadioButtons_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Settings.TileStyle = TileStyleRadioButtons.SelectedIndex == 0 ? "Peeking" : "Background";
         }
     }
 }
