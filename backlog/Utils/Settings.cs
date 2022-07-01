@@ -123,5 +123,17 @@ namespace backlog.Utils
             set => _settings.Values[nameof(TileStyle)] = value;
         }
         
+        public static string TileContent
+        {
+            get
+            {
+                if(_settings.Values.TryGetValue(nameof(TileContent), out var tileContent))
+                {
+                    return (string)tileContent;
+                }
+                return "Recently Created";
+            }
+            set => _settings.Values[nameof(TileContent)] = value;
+        }
     }
 }
