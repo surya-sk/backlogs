@@ -112,6 +112,15 @@ namespace backlog.Views
         /// <param name="e"></param>
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
+            await TrySearchBacklog();
+        }
+
+        /// <summary>
+        /// Try and search for backlog
+        /// </summary>
+        /// <returns></returns>
+        private async Task TrySearchBacklog()
+        {
             try
             {
                 await Logger.Info("Creating backlog.....");
@@ -121,7 +130,7 @@ namespace backlog.Views
                 await Logger.Error("Error", ex);
             }
 
-           try
+            try
             {
                 string title = NameInput.Text;
 
@@ -758,6 +767,14 @@ namespace backlog.Views
         private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
         {
             NotifySwitch.IsEnabled = true;
+        }
+
+        private async void NameInput_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if(e.Key == Windows.System.VirtualKey.Enter)
+            {
+                await TrySearchBacklog();
+            }
         }
     }
 }
