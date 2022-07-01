@@ -112,9 +112,17 @@ namespace backlog.Views
         /// <param name="e"></param>
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-           try
+            try
             {
                 await Logger.Info("Creating backlog.....");
+            }
+            catch (Exception ex)
+            {
+                await Logger.Error("Error", ex);
+            }
+
+           try
+            {
                 string title = NameInput.Text;
 
                 if (title == "" || TypeComoBox.SelectedIndex < 0)
@@ -308,6 +316,13 @@ namespace backlog.Views
             }
         }
 
+        /// <summary>
+        /// Create a film backlog
+        /// </summary>
+        /// <param name="selectedItem"></param>
+        /// <param name="date"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         private async Task CreateFilmBacklog(Models.SearchResult selectedItem, string date, TimeSpan time)
         {
             string filmData = await RestClient.GetFilmDataResponse(selectedItem.Id);
