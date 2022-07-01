@@ -7,6 +7,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:data="using:backlog.Models"
     mc:Ignorable="d"
