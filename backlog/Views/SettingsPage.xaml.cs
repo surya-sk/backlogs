@@ -65,6 +65,7 @@ namespace backlog.Views
                 }
             }
             SetTileStyleImage();
+            TileContentButtons.SelectedValue = Settings.TileContent;
             // show back button
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
@@ -267,6 +268,11 @@ namespace backlog.Views
         {
             Settings.TileStyle = TileStyleRadioButtons.SelectedIndex == 0 ? "Peeking" : "Background";
             SetTileStyleImage();
+        }
+
+        private void TileContentButtons_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Settings.TileContent = TileContentButtons.SelectedValue.ToString();
         }
     }
 }
