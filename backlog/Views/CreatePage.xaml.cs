@@ -88,7 +88,7 @@ namespace backlog.Views
             switch (value)
             {
                 case "Film":
-                    NameInput.PlaceholderText = "Inception 2010";
+                    NameInput.PlaceholderText = "Evil Dead";
                     break;
                 case "TV":
                     NameInput.PlaceholderText = "Hannibal";
