@@ -359,16 +359,45 @@ namespace backlog.Views
         /// </summary>
         private void ShowLiveTiles()
         {
-            if(recentlyAdded != null)
+            switch(Settings.TileContent)
             {
-                foreach (var b in recentlyAdded.Take(5))
-                {
-                    GenerateLiveTiles(b);
-                }
+                case "Recently Created":
+                    {
+                        if (recentlyAdded != null)
+                        {
+                            foreach (var b in recentlyAdded.Take(5))
+                            {
+                                GenerateRecentlyAddedLiveTile(b);
+                            }
+                        }
+                    }
+                    break;
+                case "Recently Completed":
+                    {
+                        if (recentlyCompleted != null)
+                        {
+                            foreach (var b in recentlyCompleted.Take(5))
+                            {
+                                GenerateRecentlyCompletedLiveTile(b);
+                            }
+                        }
+                    }
+                    break;
+                case "In Progress":
+                    {
+                        if (inProgress != null)
+                        {
+                            foreach (var b in inProgress.Take(5))
+                            {
+                                GenerateInProgressLiveTile(b);
+                            }
+                        }
+                    }
+                    break;
             }
         }
 
-        private void GenerateLiveTiles(Backlog b)
+        private void GenerateRecentlyAddedLiveTile(Backlog b)
         {
             TileContent tileContent = null;
             if(Settings.TileStyle == "Peeking")
@@ -592,6 +621,470 @@ namespace backlog.Views
                 };
             }
             
+
+            // Create the tile notification
+            var tileNotif = new TileNotification(tileContent.GetXml());
+
+            // And send the notification to the primary tile
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotif);
+        }
+
+        private void GenerateRecentlyCompletedLiveTile(Backlog b)
+        {
+            TileContent tileContent = null;
+            if (Settings.TileStyle == "Peeking")
+            {
+                tileContent = new TileContent()
+                {
+                    Visual = new TileVisual()
+                    {
+
+                        TileMedium = new TileBinding()
+                        {
+                            Branding = TileBranding.Name,
+                            DisplayName = "Backlogs",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                PeekImage = new TilePeekImage()
+                                {
+                                    Source = b.ImageURL,
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name,
+                                        HintWrap = true,
+                                        HintMaxLines = 2
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Type,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.UserRating} / 5",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    }
+                                }
+                            }
+                        },
+                        TileWide = new TileBinding()
+                        {
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                PeekImage = new TilePeekImage()
+                                {
+                                    Source = b.ImageURL
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Type} - {b.Director}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"Rating: {b.UserRating}/5",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    }
+                                }
+                            }
+                        },
+                        TileLarge = new TileBinding()
+                        {
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                PeekImage = new TilePeekImage()
+                                {
+                                    Source = b.ImageURL
+                                },
+                                Children =
+                            {
+                                new AdaptiveText()
+                                {
+                                    Text = b.Name
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = $"{b.Type} - {b.Director}",
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = b.Description,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = $"Rating: {b.UserRating} / 5",
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = false
+                                }
+                            }
+                          }
+                        }
+                    }
+                };
+            }
+            else
+            {
+                tileContent = new TileContent()
+                {
+                    Visual = new TileVisual()
+                    {
+
+                        TileMedium = new TileBinding()
+                        {
+                            Branding = TileBranding.Name,
+                            DisplayName = "Backlogs",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                BackgroundImage = new TileBackgroundImage()
+                                {
+                                    Source = b.ImageURL,
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name,
+                                        HintWrap = true,
+                                        HintMaxLines = 2
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Type,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.UserRating} / 5",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    }
+                                }
+                            }
+                        },
+                        TileWide = new TileBinding()
+                        {
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                BackgroundImage = new TileBackgroundImage()
+                                {
+                                    Source = b.ImageURL,
+                                    HintOverlay = 50
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Type} - {b.Director}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"Rating: {b.UserRating}/5",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    }
+                                }
+                            }
+                        },
+                        TileLarge = new TileBinding()
+                        {
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                BackgroundImage = new TileBackgroundImage()
+                                {
+                                    Source = b.ImageURL,
+                                    HintOverlay = 50
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Type} - {b.Director}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Description,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"Rating: {b.UserRating} / 5",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+
+
+            // Create the tile notification
+            var tileNotif = new TileNotification(tileContent.GetXml());
+
+            // And send the notification to the primary tile
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotif);
+        }
+
+        private void GenerateInProgressLiveTile(Backlog b)
+        {
+            TileContent tileContent = null;
+            if (Settings.TileStyle == "Peeking")
+            {
+                tileContent = new TileContent()
+                {
+                    Visual = new TileVisual()
+                    {
+
+                        TileMedium = new TileBinding()
+                        {
+                            Branding = TileBranding.Name,
+                            DisplayName = "Backlogs",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                PeekImage = new TilePeekImage()
+                                {
+                                    Source = b.ImageURL,
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name,
+                                        HintWrap = true,
+                                        HintMaxLines = 2
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Type,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Progress} {b.Units}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    }
+                                }
+                            }
+                        },
+                        TileWide = new TileBinding()
+                        {
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                PeekImage = new TilePeekImage()
+                                {
+                                    Source = b.ImageURL
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Type} - {b.Director}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Progress} of {b.Length} {b.Units}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    }
+                                }
+                            }
+                        },
+                        TileLarge = new TileBinding()
+                        {
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                PeekImage = new TilePeekImage()
+                                {
+                                    Source = b.ImageURL
+                                },
+                                Children =
+                            {
+                                new AdaptiveText()
+                                {
+                                    Text = b.Name
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = $"{b.Type} - {b.Director}",
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = b.Description,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = $"{b.Progress} of {b.Length} {b.Units}",
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                }
+                            }
+                            }
+                        }
+                    }
+                };
+            }
+            else
+            {
+                tileContent = new TileContent()
+                {
+                    Visual = new TileVisual()
+                    {
+
+                        TileMedium = new TileBinding()
+                        {
+                            Branding = TileBranding.Name,
+                            DisplayName = "Backlogs",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                BackgroundImage = new TileBackgroundImage()
+                                {
+                                    Source = b.ImageURL,
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name,
+                                        HintWrap = true,
+                                        HintMaxLines = 2
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Type,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Progress} {b.Units}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    }
+                                }
+                            }
+                        },
+                        TileWide = new TileBinding()
+                        {
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                BackgroundImage = new TileBackgroundImage()
+                                {
+                                    Source = b.ImageURL,
+                                    HintOverlay = 50
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Type} - {b.Director}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Progress} of {b.Length} {b.Units}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    }
+                                }
+                            }
+                        },
+                        TileLarge = new TileBinding()
+                        {
+                            Branding = TileBranding.NameAndLogo,
+                            DisplayName = "Backlogs (Beta)",
+                            Content = new TileBindingContentAdaptive()
+                            {
+                                BackgroundImage = new TileBackgroundImage()
+                                {
+                                    Source = b.ImageURL,
+                                    HintOverlay = 50
+                                },
+                                Children =
+                                {
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Name
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Type} - {b.Director}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = b.Description,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = $"{b.Progress} of {b.Length} {b.Units}",
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                        HintWrap = true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+
 
             // Create the tile notification
             var tileNotif = new TileNotification(tileContent.GetXml());
