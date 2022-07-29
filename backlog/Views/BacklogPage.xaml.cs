@@ -250,9 +250,9 @@ namespace backlog.Views
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (DatePicker.SelectedDate != null)
+            if (DatePicker.Date != null)
             {
-                var chosenDate = DatePicker.SelectedDate.Value.DateTime;
+                var chosenDate = DatePicker.Date.Value.DateTime;
                 string date = chosenDate.ToString("D", CultureInfo.InvariantCulture);
                 if (NotifyToggle.IsOn)
                 {
@@ -299,7 +299,7 @@ namespace backlog.Views
                 }
             }
             ProgBar.Visibility = Visibility.Visible;
-            backlog.TargetDate = DatePicker.SelectedDate.Value.ToString("D", CultureInfo.InvariantCulture);
+            backlog.TargetDate = DatePicker.Date.Value.ToString("D", CultureInfo.InvariantCulture);
             backlog.NotifTime = TimePicker.Time;
             if(backlog.NotifTime != TimeSpan.Zero)
             {
@@ -368,7 +368,7 @@ namespace backlog.Views
             }
         }
 
-        private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
+        private void DatePicker_DateChanged(object sender, CalendarDatePickerDateChangedEventArgs e)
         {
             NotifyToggle.IsEnabled = true;
         }

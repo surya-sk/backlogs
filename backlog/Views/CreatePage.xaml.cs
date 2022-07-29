@@ -146,9 +146,9 @@ namespace backlog.Views
                 }
                 else
                 {
-                    if (DatePicker.SelectedDate != null)
+                    if (DatePicker.Date != null)
                     {
-                        var chosenDate = DatePicker.SelectedDate.Value.DateTime;
+                        var chosenDate = DatePicker.Date.Value.DateTime;
                         string date = chosenDate.ToString("D", CultureInfo.InvariantCulture);
                         if (NotifySwitch.IsOn)
                         {
@@ -213,7 +213,7 @@ namespace backlog.Views
         private async Task SearchBacklog(string title)
         {
             ProgBar.Visibility = Visibility.Visible;
-            string date = DatePicker.SelectedDate != null ? DatePicker.SelectedDate.Value.ToString("D", CultureInfo.InvariantCulture) : "None";
+            string date = DatePicker.Date != null ? DatePicker.Date.Value.ToString("D", CultureInfo.InvariantCulture) : "None";
             string type = TypeComoBox.SelectedItem.ToString();
             switch (type)
             {
@@ -731,7 +731,7 @@ namespace backlog.Views
             var selectedItem = ResultsListView.SelectedItem as Models.SearchResult;
             if(selectedItem != null)
             {
-                string date = DatePicker.SelectedDate != null ? DatePicker.SelectedDate.Value.ToString("D", CultureInfo.InvariantCulture) : "None";
+                string date = DatePicker.Date != null ? DatePicker.Date.Value.ToString("D", CultureInfo.InvariantCulture) : "None";
                 var time = TimePicker.Time;
                 ResultsDialog.Hide();
                 switch (TypeComoBox.SelectedItem.ToString())
@@ -764,7 +764,7 @@ namespace backlog.Views
             }
         }
 
-        private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
+        private void DatePicker_DateChanged(object sender, CalendarDatePickerDateChangedEventArgs e)
         {
             NotifySwitch.IsEnabled = true;
         }

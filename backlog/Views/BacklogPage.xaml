@@ -117,7 +117,7 @@
 
                 <StackPanel x:Name="NotifPanel" Grid.Row="3" Margin="30" Visibility="Collapsed">
                     <TextBlock Text="When do you want to check this out?" Margin="10,0,0,20" />
-                    <DatePicker x:Name="DatePicker" Margin="10,0,0,20" DateChanged="DatePicker_DateChanged" />
+                    <CalendarDatePicker x:Name="DatePicker" Margin="10,0,0,20" DateChanged="DatePicker_DateChanged" />
                     <ToggleSwitch x:Name="NotifyToggle" OffContent="No" OnContent="Yes" Header="Notify me on this date"
                                   IsEnabled="False" Toggled="NotifyToggle_Toggled" Margin="10,0,0,20" />
                     <TimePicker x:Name="TimePicker" Header="When do you want to be notified?" Margin="10,0,0,20" Time="0" Visibility="Collapsed" />
