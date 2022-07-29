@@ -25,7 +25,7 @@ namespace backlog.Logging
         /// <returns>Returns the "Logs" folder.</returns>
         public static IAsyncOperation<StorageFolder> GetLogFolderAsync()
         {
-            return ApplicationData.Current.LocalFolder.CreateFolderAsync("Logs", CreationCollisionOption.OpenIfExists);
+            return ApplicationData.Current.LocalCacheFolder.CreateFolderAsync("Logs", CreationCollisionOption.OpenIfExists);
         }
 
         private static async Task WriteLog(string message, Exception ex = null)
