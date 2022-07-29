@@ -188,9 +188,10 @@ namespace backlog
             return rootFrame;
         }
 
-        private async void OnUnHandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
+        private void OnUnHandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
         {
-            await Logging.Logger.Error("Unhandled Exception", unhandledExceptionEventArgs.Exception);
+            var localSettings = ApplicationData.Current.LocalSettings;
+            localSettings.Values["LastCrashLog"] = unhandledExceptionEventArgs.Exception;
         }
 
         protected async override void OnFileActivated(FileActivatedEventArgs args)

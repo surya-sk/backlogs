@@ -28,7 +28,8 @@ namespace backlog.Views
         static string GNU_LICENSE = "This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. \n\nYou should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/";
         static string CHANGE_LOG = "\u2022 Fixed sorting by dates in Backlogs and CompletedBacklogs page.\n" +
             "\u2022 Fixed crashing on mobile when searching for Backlogs.\n" +
-            "\u2022 Logs are now stored in the Local Cache folder.\n";
+            "\u2022 Logs are now stored in the Local Cache folder.\n" +
+            "\u2022 When the app crashes, the next launch will show a dalog with the error.";
 
         public string TileImageSource = "ms-appx:///Assets/peeking-tile.png"; 
         public string Version = Settings.Version;

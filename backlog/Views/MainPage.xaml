@@ -121,6 +121,9 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
+            <ContentDialog x:Name="CrashDialog" Title="Oops.." PrimaryButtonText="Send to Developer" PrimaryButtonClick="CrashDialog_PrimaryButtonClick"
+                           CloseButtonText="Close" />
+
             <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
             <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind TopSigninButton}"
                               Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!" />

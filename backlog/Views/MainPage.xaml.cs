@@ -21,6 +21,8 @@ using Windows.UI.Xaml.Media.Animation;
 using backlog.Logging;
 using Windows.Storage;
 using backlog.Auth;
+using Windows.ApplicationModel.Email;
+using System.Text;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -54,6 +56,7 @@ namespace backlog.Views
         bool signedIn;
         int backlogIndex = -1;
         bool sync = false;
+        string crashLog;
 
         Guid randomBacklogId = new Guid();
 
@@ -73,6 +76,20 @@ namespace backlog.Views
             LoadBacklogs();
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
+        }
+
+        private async Task ShowCrashLog()
+        {
+            var localSettings = ApplicationData.Current.LocalSettings;
+            var lastCrashLog = localSettings.Values["LastCrashLog"] as string;
+
+            if(lastCrashLog != null)
+            {
+                CrashDialog.Content = $"It seems the application crashed the last time, with the following error: {lastCrashLog}";
+                await CrashDialog.ShowAsync();
+                crashLog = lastCrashLog;
+                localSettings.Values["LastCrashLog"] = null;
+            }
         }
 
         /// <summary>
@@ -123,6 +140,7 @@ namespace backlog.Views
                 }
             }
             ProgBar.Visibility = Visibility.Visible;
+            await ShowCrashLog();
             signedIn = Settings.IsSignedIn;
             if (isNetworkAvailable && signedIn)
             {
@@ -1345,6 +1363,21 @@ namespace backlog.Views
         private void WhatsNewTip_ActionButtonClick(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args)
         {
             Frame.Navigate(typeof(SettingsPage), 1);
+        }
+
+        private async void CrashDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            ProgBar.Visibility = Visibility.Visible;
+            EmailMessage emailMessage = new EmailMessage();
+            emailMessage.To.Add(new EmailRecipient("surya.sk05@outlook.com"));
+            emailMessage.Subject = "Crash Dump from Backlogs";
+            StringBuilder body = new StringBuilder();
+            body.AppendLine("*Enter additional info such as what may have caused the crash*");
+            body.AppendLine("\n\n\n");
+            body.AppendLine(crashLog);
+            emailMessage.Body = body.ToString();
+            await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+            ProgBar.Visibility = Visibility.Collapsed;
         }
     }
 }
