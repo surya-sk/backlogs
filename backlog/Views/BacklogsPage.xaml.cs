@@ -7,6 +7,7 @@ using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -144,16 +145,16 @@ namespace backlog.Views
                     _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.Name));
                     break;
                 case "Created Date Asc.":
-                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.CreatedDate));
+                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => Convert.ToDateTime(b.CreatedDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Created Date Dsc.":
-                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.CreatedDate));
+                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => Convert.ToDateTime(b.CreatedDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Target Date Asc.":
-                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.TargetDate));
+                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => Convert.ToDateTime(b.TargetDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Target Date Dsc.":
-                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.TargetDate));
+                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => Convert.ToDateTime(b.TargetDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Progress Asc.":
                     _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.Progress));

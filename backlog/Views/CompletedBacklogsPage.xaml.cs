@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Core;
@@ -62,10 +63,10 @@ namespace backlog.Views
                     _finishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete).OrderBy(b => b.Name));
                     break;
                 case "Completed Date Asc.":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete).OrderBy(b => b.CompletedDate));
+                    _finishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete).OrderBy(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Completed Date Dsc.":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete).OrderByDescending(b => b.CompletedDate));
+                    _finishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete).OrderByDescending(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Lowest Rating":
                     _finishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete).OrderBy(b => b.UserRating));
