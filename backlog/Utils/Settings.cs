@@ -135,5 +135,18 @@ namespace backlog.Utils
             }
             set => _settings.Values[nameof(TileContent)] = value;
         }
+
+        public static int AutoplayVideos
+        {
+            get
+            {
+                if(_settings.Values.TryGetValue(nameof(AutoplayVideos), out var autoplayVideos))
+                {
+                    return (int)autoplayVideos;
+                }
+                return 0;
+            }
+            set => _settings.Values[nameof(AutoplayVideos)] = value;
+        }
     }
 }

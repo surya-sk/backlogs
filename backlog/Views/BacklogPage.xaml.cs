@@ -417,7 +417,7 @@ namespace backlog.Views
             }
             
             trailerDialog.CornerRadius = new CornerRadius(0); // Without this, for some fucking reason, buttons inside the WebView do not work
-            webView.NavigateToString($"<iframe width=\"500\" height=\"400\" src=\"https://www.youtube.com/embed/{videos[0]}?autoplay=1\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
+            webView.NavigateToString($"<iframe width=\"500\" height=\"400\" src=\"https://www.youtube.com/embed/{videos[0]}?autoplay={Settings.AutoplayVideos}\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
             await trailerDialog.ShowAsync();
         }
 

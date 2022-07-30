@@ -64,6 +64,7 @@ namespace backlog.Views
                         break;
                 }
             }
+            AutoplaySwitch.IsOn = Settings.AutoplayVideos == 1;
             SetTileStyleImage();
             TileContentButtons.SelectedValue = Settings.TileContent;
             // show back button
@@ -273,6 +274,11 @@ namespace backlog.Views
         private void TileContentButtons_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Settings.TileContent = TileContentButtons.SelectedValue.ToString();
+        }
+
+        private void AutoplaySwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            Settings.AutoplayVideos = AutoplaySwitch.IsOn ? 1 : 0;
         }
     }
 }
