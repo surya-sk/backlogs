@@ -60,6 +60,7 @@
                                     <x:String>Recently Created</x:String>
                                     <x:String>Recently Completed</x:String>
                                     <x:String>In Progress</x:String>
+                                    <x:String>Upcoming</x:String>
                                 </ComboBox>
                                 <muxc:RadioButtons x:Name="TileStyleRadioButtons" MaxColumns="2"
                                                    Header="Live tile style" Margin="0,20,0,0" SelectionChanged="TileStyleRadioButtons_SelectionChanged">
