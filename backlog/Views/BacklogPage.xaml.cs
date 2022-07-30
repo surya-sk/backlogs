@@ -386,5 +386,10 @@ namespace backlog.Views
                 backlog.Progress = 0;
             }
         }
+
+        private void PlayTrailerButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
