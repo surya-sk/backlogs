@@ -28,7 +28,7 @@ namespace backlog.Views
         static string GNU_LICENSE = "This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. \n\nYou should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/";
         static string CHANGE_LOG = "\u2022 Film, TV and game backlogs now have a button to play the trailer.\n" +
             "\u2022 There is now a button that opens web results for the backlog.\n" +
-            "\u2022 Logs are now stored in the Local Cache folder.\n" +
+            "\u2022 Today's date is now the minimum date when picking target date.\n" +
             "\u2022 When the app crashes, the next launch will show a dialog with the error.\n" +
             "\u2022 The Store page and this section now shows the update date.\n";
         string ChangelogTitle = "New this version - 29 July, 2022";
