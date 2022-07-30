@@ -113,6 +113,12 @@ namespace backlog.Views
             };
             await contentDialog.ShowAsync();
         }
+
+        /// <summary>
+        /// Delete the backlog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -156,6 +162,11 @@ namespace backlog.Views
             edited = true;
         }
 
+        /// <summary>
+        /// Close the backlog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void DoneButton_Click(object sender, RoutedEventArgs e)
         {
             if (edited)
@@ -210,6 +221,11 @@ namespace backlog.Views
             Frame.Navigate(typeof(SettingsPage));
         }
 
+        /// <summary>
+        /// Mark backlog as complete
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void CompleteButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -235,6 +251,11 @@ namespace backlog.Views
             UserRating.Value = e.NewValue;
         }
 
+        /// <summary>
+        /// Enable editing of date and notification time
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             TopDoneButton.Visibility = Visibility.Collapsed;
@@ -252,6 +273,11 @@ namespace backlog.Views
             DatesPanel.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Save changes made to the backlog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (DatePicker.Date != null)
@@ -320,6 +346,11 @@ namespace backlog.Views
             ProgBar.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Stop editing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmdCancelButton_Click(object sender, RoutedEventArgs e)
         {
             TopDoneButton.Visibility = Visibility.Visible;
