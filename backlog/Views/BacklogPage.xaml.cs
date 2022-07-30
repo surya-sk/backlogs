@@ -19,6 +19,8 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
+using Google.Apis.YouTube.v3;
+using Google.Apis.Services;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -387,9 +389,27 @@ namespace backlog.Views
             }
         }
 
-        private void PlayTrailerButton_Click(object sender, RoutedEventArgs e)
+        private async void PlayTrailerButton_Click(object sender, RoutedEventArgs e)
         {
+            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            {
+                ApiKey = Keys.YOUTUBE_KEY,
+                ApplicationName = "Backlogs"
+            });
+            var searchListRequest = youtubeService.Search.List("snippet");
+            searchListRequest.Q = backlog.Name + " offical trailer";
+            searchListRequest.MaxResults = 1;
 
+            var searchListResponse = await searchListRequest.ExecuteAsync();
+
+            List<string> videos = new List<string>();
+
+            foreach(var searchResult in searchListResponse.Items)
+            {
+                videos.Add(searchResult.Id.VideoId);
+            }
+
+            
         }
     }
 }
