@@ -38,12 +38,13 @@ namespace backlog.Views
 
         private ObservableCollection<Backlog> recentlyAdded { get; set; }
         private ObservableCollection <Backlog> recentlyCompleted { get; set; }
-
         private ObservableCollection<Backlog> inProgress { get; set; }
+        private ObservableCollection<Backlog> comingUp { get; set; }
 
         ObservableCollection<Backlog> completedBacklogs;
         ObservableCollection<Backlog> incompleteBacklogs;
         ObservableCollection<Backlog> inProgressBacklogs;
+        ObservableCollection<Backlog> comingUpBacklogs;
 
         private int backlogCount;
         private int completedBacklogsCount;
@@ -70,14 +71,20 @@ namespace backlog.Views
             recentlyAdded = new ObservableCollection<Backlog>();
             recentlyCompleted = new ObservableCollection<Backlog>();
             inProgress = new ObservableCollection<Backlog>();
+            comingUp = new ObservableCollection<Backlog>();
             completedBacklogs = new ObservableCollection<Backlog>();
             incompleteBacklogs = new ObservableCollection<Backlog>();
             inProgressBacklogs = new ObservableCollection<Backlog>();
+            comingUpBacklogs = new ObservableCollection<Backlog>();
             LoadBacklogs();
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }
 
+        /// <summary>
+        /// Show a content dialog with the reason for crash
+        /// </summary>
+        /// <returns></returns>
         private async Task ShowCrashLog()
         {
             var localSettings = ApplicationData.Current.LocalSettings;
@@ -175,8 +182,10 @@ namespace backlog.Views
             recentlyAdded.Clear();
             recentlyCompleted.Clear();
             completedBacklogs.Clear();
+            comingUpBacklogs.Clear();
             incompleteBacklogs.Clear();
             inProgressBacklogs.Clear();
+            comingUp.Clear();
             inProgress.Clear();
             completedBacklogsCount = 0;
             incompleteBacklogsCount = 0;
@@ -193,9 +202,20 @@ namespace backlog.Views
                             backlog.CreatedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
                         }
                         incompleteBacklogs.Add(backlog);
-                        if(backlog.progress > 0)
+                        if (backlog.progress > 0)
                         {
                             inProgressBacklogs.Add(backlog);
+                        }
+                        try
+                        {
+                            if (DateTime.Parse(backlog.TargetDate) >= DateTime.Today)
+                            {
+                                comingUpBacklogs.Add(backlog);
+                            }
+                        }
+                        catch
+                        {
+                            continue;
                         }
                     }
                     else
@@ -219,6 +239,10 @@ namespace backlog.Views
                 {
                     inProgress.Add(backlog);
                 }
+                foreach (var backlog in comingUpBacklogs.OrderBy(b => DateTimeOffset.Parse(b.TargetDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
+                {
+                    comingUp.Add(backlog);
+                }
                 if (completedBacklogs.Count <= 0)
                 {
                     EmptyCompletedText.Visibility = Visibility.Visible;
@@ -228,6 +252,11 @@ namespace backlog.Views
                 {
                     EmptyProgressBackogsText.Visibility = Visibility.Visible;
                     InProgressBacklogsGrid.Visibility = Visibility.Collapsed;
+                }
+                if(comingUp.Count <= 0)
+                {
+                    EmptyUpcomingText.Visibility = Visibility.Visible;
+                    UpcomingBacklogsGrid.Visibility = Visibility.Collapsed;
                 }
                 completedBacklogsCount = completedBacklogs.Count;
                 incompleteBacklogsCount = incompleteBacklogs.Count;
@@ -248,11 +277,13 @@ namespace backlog.Views
                 EmptySuggestionsText.Visibility = Visibility.Visible;
                 EmptyCompletedText.Visibility = Visibility.Visible;
                 EmptyProgressBackogsText.Visibility = Visibility.Visible;
+                EmptyUpcomingText.Visibility = Visibility.Visible;
                 InProgressBacklogsGrid.Visibility = Visibility.Collapsed;
                 AddedBacklogsGrid.Visibility = Visibility.Collapsed;
                 CompletedBacklogsGrid.Visibility = Visibility.Collapsed;
                 suggestionsGrid.Visibility = Visibility.Collapsed;
                 InputPanel.Visibility = Visibility.Collapsed;
+                UpcomingBacklogsGrid.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -1180,6 +1211,29 @@ namespace backlog.Views
                 try
                 {
                     await AddedBacklogsGrid.TryStartConnectedAnimationAsync(animation, backlogs[backlogIndex], "coverImage");
+                }
+                catch
+                {
+                    // : )
+                }
+            }
+        }
+
+        private void UpcomingBacklogsGrid_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var selectedBacklog = (Backlog)e.ClickedItem;
+            UpcomingBacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, new SuppressNavigationTransitionInfo());
+        }
+
+        private async void UpcomingBacklogsGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(backlogIndex != -1)
+            {
+                ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
+                try
+                {
+                    await UpcomingBacklogsGrid.TryStartConnectedAnimationAsync(animation, backlogs[backlogIndex], "coveerImage");
                 }
                 catch
                 {
