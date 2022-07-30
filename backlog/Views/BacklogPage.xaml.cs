@@ -68,6 +68,7 @@ namespace backlog.Views
                         case "Album":
                             source = "LastFM";
                             sourceLink = new Uri("https://www.last.fm/");
+                            PlayTrailerButton.Visibility = Visibility.Collapsed;
                             break;
                         case "TV":
                             source = "IMdB";
@@ -80,6 +81,7 @@ namespace backlog.Views
                         case "Book":
                             source = "Google Books";
                             sourceLink = new Uri("https://books.google.com/");
+                            PlayTrailerButton.Visibility = Visibility.Collapsed;
                             break;
                     }
                     backlogIndex = backlogs.IndexOf(b);
