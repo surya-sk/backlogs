@@ -461,5 +461,22 @@ namespace backlog.Views
         {
             webView.Navigate(new Uri("about:blank"));
         }
+
+        /// <summary>
+        /// Launch default browser to show Bing results
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void bingSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchTerm = backlog.Name;
+            if(backlog.Type == "Album" || backlog.Type == "Book")
+            {
+                searchTerm += $" {backlog.Director}";
+            }
+            var searchQuery = searchTerm.Replace(" ", "+");
+            var searchUri = new Uri($"https://www.bing.com/search?q={searchQuery}");
+            await Windows.System.Launcher.LaunchUriAsync(searchUri);
+        }
     }
 }
