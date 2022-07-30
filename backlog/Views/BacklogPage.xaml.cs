@@ -389,6 +389,11 @@ namespace backlog.Views
             }
         }
 
+        /// <summary>
+        /// Plays the first Youtube result found for "*Name* Offical Trailer"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void PlayTrailerButton_Click(object sender, RoutedEventArgs e)
         {
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
@@ -410,10 +415,15 @@ namespace backlog.Views
             }
             
             trailerDialog.CornerRadius = new CornerRadius(0); // Without this, for some fucking reason, buttons inside the WebView do not work
-            webView.NavigateToString($"<iframe width=\"500\" height=\"400\" src=\"https://www.youtube.com/embed/{videos[0]}?autoplay=1\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>");
+            webView.NavigateToString($"<iframe width=\"500\" height=\"400\" src=\"https://www.youtube.com/embed/{videos[0]}?autoplay=1\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
             await trailerDialog.ShowAsync();
         }
 
+        /// <summary>
+        /// Navigate to a blank page because audio keeps playing after closing the WebView for some reason
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void trailerDialog_CloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             webView.Navigate(new Uri("about:blank"));
