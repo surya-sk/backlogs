@@ -152,7 +152,7 @@
                               Title="Sign-in using your MS account" Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!" />
 
             <muxc:TeachingTip x:Name="WhatsNewTip" Title="New this version" 
-                              Subtitle="More live tile customization, layout improvements and more"
+                              Subtitle="Trailers, upcoming backlogs, Bing search and more"
                               PreferredPlacement="BottomRight"
                               PlacementMargin="20"
                               IsLightDismissEnabled="False"
