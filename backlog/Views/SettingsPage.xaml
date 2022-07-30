@@ -212,6 +212,11 @@
                                     <Run Text="LastFM" />
                                 </Hyperlink>
                             </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                                <Hyperlink NavigateUri="https://developers.google.com/api-client-library/dotnet/">
+                                    <Run Text="Google APIs" />
+                                </Hyperlink>
+                            </TextBlock>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
