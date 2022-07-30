@@ -38,6 +38,12 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
+        <ContentDialog x:Name="trailerDialog" CloseButtonText="Close" CloseButtonClick="trailerDialog_CloseButtonClick">
+            <Grid Width="600" Height="400">
+                <WebView x:Name="webView" />
+            </Grid>
+        </ContentDialog>
+
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <Grid x:Name="rootGrid">
                 <Grid.RowDefinitions>
