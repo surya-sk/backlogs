@@ -40,6 +40,7 @@ namespace backlog.Views
         Uri sourceLink;
         PageStackEntry prevPage;
         StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
+        DateTime today = DateTime.Today;
         public BacklogPage()
         {
             this.InitializeComponent();

@@ -31,6 +31,7 @@ namespace backlog.Views
         bool signedIn;
         bool isNetworkAvailable = false;
         int typeIndex = 0;
+        DateTime today = DateTime.Today;
 
         public CreatePage()
         {
