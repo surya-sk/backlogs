@@ -21,6 +21,7 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
 using Google.Apis.YouTube.v3;
 using Google.Apis.Services;
+using Windows.System.Profile;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -455,7 +456,10 @@ namespace backlog.Views
             {
 
             }
-            webView.NavigateToString($"<iframe width=\"600\" height=\"100%\" src=\"https://www.youtube.com/embed/{videos[0]}?autoplay={Settings.AutoplayVideos}\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
+            string width = AnalyticsInfo.VersionInfo.DeviceFamily == "Window.Mobile" ? "600" : "500";
+            string height = AnalyticsInfo.VersionInfo.DeviceFamily == "Window.Mobile" ? "100%" : "400";
+            webView.NavigateToString($"<iframe width=\"{width}\" height=\"{height}\" src=\"https://www.youtube.com/embed/{videos[0]}?autoplay={Settings.AutoplayVideos}\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
+
             await trailerDialog.ShowAsync();
         }
 
