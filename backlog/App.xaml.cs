@@ -191,7 +191,7 @@ namespace backlog
         private void OnUnHandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
         {
             var localSettings = ApplicationData.Current.LocalSettings;
-            localSettings.Values["LastCrashLog"] = unhandledExceptionEventArgs.Exception;
+            localSettings.Values["LastCrashLog"] = unhandledExceptionEventArgs.Exception.ToString();
         }
 
         protected async override void OnFileActivated(FileActivatedEventArgs args)

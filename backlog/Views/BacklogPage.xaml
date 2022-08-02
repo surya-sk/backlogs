@@ -68,25 +68,25 @@
                     <RelativePanel>
                         <Image x:Name="img" Source="{x:Bind backlog.ImageURL}" Height="200" Width="200" HorizontalAlignment="Center" Margin="30,30,30,0"/>
                         <Button x:Name="PlayTrailerButton" Click="PlayTrailerButton_Click" Margin="80,10,0,10" Content="Play trailer" RelativePanel.Below="img"
-                                Width="100" HorizontalAlignment="Center" Background="{StaticResource SystemAccentColor}" />
+                                Width="100" HorizontalAlignment="Center"  />
                         <Grid x:Name="detailsGrid" RelativePanel.RightOf="img" Height="200" Margin="30">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <TextBlock Text="{x:Bind backlog.Name}" FontSize="25" Margin="0,0,0,10" TextWrapping="Wrap" Foreground="{StaticResource SystemAccentColor}"/>
-                            <TextBlock x:Name="ArtistText" Text="{x:Bind backlog.Director}" FontSize="20" Margin="0,0,0,10" Grid.Row="1" Foreground="{StaticResource SystemAccentColor}" />
+                            <TextBlock Text="{x:Bind backlog.Name}" FontSize="25" Margin="0,0,0,10" TextWrapping="Wrap" />
+                            <TextBlock x:Name="ArtistText" Text="{x:Bind backlog.Director}" FontSize="20" Margin="0,0,0,10" Grid.Row="1" Foreground="{ThemeResource SystemAccentColor}" />
                             <RelativePanel Margin="0,0,0,20" Grid.Row="2">
                                 <TextBlock x:Name="descText" Text="{x:Bind backlog.Description}" TextTrimming="WordEllipsis" MaxLines="4" TextWrapping="Wrap" FontSize="15"
-                                                    Margin="0,0,0,10" Foreground="{StaticResource SystemAccentColor}"/>
+                                                    Margin="0,0,0,10" />
                                 <TextBlock x:Name="ReadMoreLink" RelativePanel.Below="descText" Margin="0,10,0,0">
                                             <Hyperlink Click="Hyperlink_Click">
                                                 <Run Text="Read full" />
                                             </Hyperlink>
                                 </TextBlock>
                                 <Button x:Name="bingSearchButton" RelativePanel.RightOf="ReadMoreLink" Margin="10,0,0,0" Click="bingSearchButton_Click"
-                                        Content="More info" Background="{StaticResource SystemAccentColor}" RelativePanel.Below="descText" />
+                                        Content="More info"  RelativePanel.Below="descText" />
                             </RelativePanel>
                         </Grid>
                     </RelativePanel>
