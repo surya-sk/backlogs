@@ -456,8 +456,8 @@ namespace backlog.Views
             {
 
             }
-            string width = AnalyticsInfo.VersionInfo.DeviceFamily == "Window.Mobile" ? "600" : "500";
-            string height = AnalyticsInfo.VersionInfo.DeviceFamily == "Window.Mobile" ? "100%" : "400";
+            string width = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "600" : "500";
+            string height = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "100%" : "400";
             webView.NavigateToString($"<iframe width=\"{width}\" height=\"{height}\" src=\"https://www.youtube.com/embed/{videos[0]}?autoplay={Settings.AutoplayVideos}\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
 
             await trailerDialog.ShowAsync();
