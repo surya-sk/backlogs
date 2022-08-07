@@ -227,11 +227,11 @@ namespace backlog.Views
                         completedBacklogs.Add(backlog);
                     }
                 }
-                foreach (var backlog in incompleteBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CreatedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
+                foreach (var backlog in incompleteBacklogs.OrderByDescending(b => DateTime.Parse(b.CreatedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
                 {
                     recentlyAdded.Add(backlog);
                 }
-                foreach (var backlog in completedBacklogs.OrderByDescending(b => DateTimeOffset.Parse(b.CompletedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
+                foreach (var backlog in completedBacklogs.OrderByDescending(b => DateTime.Parse(b.CompletedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
                 {
                     recentlyCompleted.Add(backlog);
                 }

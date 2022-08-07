@@ -9,7 +9,7 @@
   <Identity
     Name="37533SuryaKashyap.Backlogs"
     Publisher="CN=7115D965-9BEF-4D32-9397-2F0F733B3D6D"
-    Version="0.10.1.0" />
+    Version="0.10.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="af8238ee-b880-4e0d-9580-215f87474c52" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
