@@ -148,5 +148,18 @@ namespace backlog.Utils
             }
             set => _settings.Values[nameof(AutoplayVideos)] = value;
         }
+
+        public static string AppTheme
+        {
+            get
+            {
+                if(_settings.Values.TryGetValue(nameof(AppTheme), out var appTheme))
+                {
+                    return (string)appTheme;
+                }
+                return "System";
+            }
+            set => _settings.Values[nameof(AppTheme)] = value;
+        }
     }
 }

@@ -44,8 +44,8 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" MaxWidth="700">
-                            <ComboBox x:Name="ThemeInput" SelectionChanged="ThemeInput_SelectionChanged" Header="Application Theme" Margin="0,20,0,20"
-                                  MinWidth="30" FontSize="15">
+                            <ComboBox x:Name="ThemeInput"  Header="Application Theme" Margin="0,20,0,20"
+                                  MinWidth="30" FontSize="15" SelectedValue="{Binding SelectedTheme, Mode=TwoWay}">
                                 <x:String>System</x:String>
                                 <x:String>Dark</x:String>
                                 <x:String>Light</x:String>
