@@ -50,6 +50,8 @@ namespace backlog.Views
 
         public ICommand SendLogs { get; }
 
+        public ICommand OpenLogs { get; }
+
         public string SelectedTheme
         {
             get => selectedTheme;
@@ -99,6 +101,7 @@ namespace backlog.Views
             DataContext = this;
 
             SendLogs = new AsyncCommand(SendAppLogs);
+            OpenLogs = new AsyncCommand(ShowLogs);
 
             MyLicense.Text = GNU_LICENSE;
             WCTLicense.Text = MIT_LICENSE;
@@ -212,7 +215,11 @@ namespace backlog.Views
             ShowProgress = false;
         }
 
-        private async void OpenLogsButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Opens a content dialog that shows logs
+        /// </summary>
+        /// <returns></returns>
+        private async Task ShowLogs()
         {
             var logs = await Logger.GetLogsAsync();
             ContentDialog contentDialog = new ContentDialog()
