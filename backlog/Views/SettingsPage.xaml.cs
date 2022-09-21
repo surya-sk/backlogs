@@ -334,11 +334,6 @@ namespace backlog.Views
             Settings.TileStyle = selectedTileStyleIndex == 0 ? "Peeking" : "Background";
         }
 
-        private void TileContentButtons_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Settings.TileContent = TileContentButtons.SelectedValue.ToString();
-        }
-
         private void AutoplaySwitch_Toggled(object sender, RoutedEventArgs e)
         {
             Settings.AutoplayVideos = AutoplaySwitch.IsOn ? 1 : 0;
