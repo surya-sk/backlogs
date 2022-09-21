@@ -14,7 +14,6 @@ using backlog.Logging;
 using System.Text;
 using backlog.Auth;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
 using Windows.UI.Xaml.Controls.Primitives;
 using MvvmHelpers.Commands;
 using System.ComponentModel;

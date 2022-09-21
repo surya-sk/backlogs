@@ -79,10 +79,6 @@
               "target": "Package",
               "version": "[2.4.3, )"
             },
-            "MvvmLight": {
-              "target": "Package",
-              "version": "[5.4.1.1, )"
-            },
             "Refractored.MvvmHelpers": {
               "target": "Package",
               "version": "[1.6.2, )"
