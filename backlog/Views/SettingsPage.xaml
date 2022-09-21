@@ -63,11 +63,11 @@
                                     <x:String>Upcoming</x:String>
                                 </ComboBox>
                                 <muxc:RadioButtons x:Name="TileStyleRadioButtons" MaxColumns="2"
-                                                   Header="Live tile style" Margin="0,20,0,0" SelectionChanged="TileStyleRadioButtons_SelectionChanged">
+                                                   Header="Live tile style" Margin="0,20,0,0" SelectedIndex="{x:Bind SelectedTileStyleIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <x:String>Peek Image</x:String>
                                     <x:String>Background Image</x:String>
                                 </muxc:RadioButtons>
-                                <Image x:Name="TileStyleImage" Source="{x:Bind TileImageSource}" MaxHeight="100" 
+                                <Image x:Name="TileStyleImage" Source="{x:Bind TileStylePreviewImage, Mode=OneWay}" MaxHeight="100" 
                                        Stretch="Uniform" HorizontalAlignment="Left" />
                             </StackPanel>
 

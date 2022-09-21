@@ -39,11 +39,12 @@ namespace backlog.Views
             "\u2022 The homepage now shows upcoming backlogs.\n" +
             "\u2022 The app can now show upcoming backlogs in the live tile.\n";
         string ChangelogTitle = "New this version - 30 July, 2022";
-
-        public string TileImageSource = "ms-appx:///Assets/peeking-tile.png"; 
         public string Version = Settings.Version;
 
         private string selectedTheme = Settings.AppTheme;
+        private int selectedTileStyleIndex = Settings.TileStyle == "Peeking" ? 0 : 1;
+        private string tileStylePreviewImage = Settings.TileStyle == "Peeking" ? "ms-appx:///Assets/peeking-tile.png" :
+                "ms-appx:///Assets/background-tile.png";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -58,34 +59,44 @@ namespace backlog.Views
             }
         }
 
+        public int SelectedTileStyleIndex
+        {
+            get => selectedTileStyleIndex;
+            set
+            {
+                selectedTileStyleIndex = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileStyleIndex)));
+                ChangeTileStyle();
+            }
+        }
+
+        public string TileStylePreviewImage
+        {
+            get => tileStylePreviewImage;
+            set
+            {
+                tileStylePreviewImage = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TileStylePreviewImage)));
+            }
+        }
+
 
         public SettingsPage()
         {
             this.InitializeComponent();
             DataContext = this;
+
             MyLicense.Text = GNU_LICENSE;
             WCTLicense.Text = MIT_LICENSE;
             WinUILicense.Text = MIT_LICENSE;
             NewtonsoftLicense.Text = MIT_LICENSE;
             Changelog.Text = CHANGE_LOG;
             AutoplaySwitch.IsOn = Settings.AutoplayVideos == 1;
-            SetTileStyleImage();
             TileContentButtons.SelectedValue = Settings.TileContent;
             // show back button
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += View_BackRequested;
-        }
-
-        /// <summary>
-        /// Sets the example image to preview tile style
-        /// </summary>
-        private void SetTileStyleImage()
-        {
-            TileStyleRadioButtons.SelectedIndex = Settings.TileStyle == "Peeking" ? 0 : 1;
-            TileImageSource = TileStyleRadioButtons.SelectedIndex == 0 ? "ms-appx:///Assets/peeking-tile.png" :
-                "ms-appx:///Assets/background-tile.png";
-            TileStyleImage.Source = new BitmapImage(new Uri(TileImageSource));
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -147,23 +158,8 @@ namespace backlog.Views
         }
 
         /// <summary>
-        /// Change app theme on the fly and save it 
+        /// Change app theme on the fly and save it
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ThemeInput_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var selectedTheme = e.AddedItems[0].ToString();
-            if (selectedTheme != null)
-            {
-                if (selectedTheme == "System")
-                {
-                    selectedTheme = "Default";
-                }
-                ThemeHelper.RootTheme = App.GetEnum<ElementTheme>(selectedTheme);
-            }
-        }
-
         private void ChangeAppTheme()
         {
             var _selectedTheme = SelectedTheme;
@@ -263,11 +259,6 @@ namespace backlog.Views
             ProgRing.IsActive = false;
         }
 
-        private void HomeButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(MainPage));
-        }
-
         /// <summary>
         /// Signs the user out
         /// </summary>
@@ -291,10 +282,16 @@ namespace backlog.Views
             }
         }
 
-        private void TileStyleRadioButtons_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// Change tile style
+        /// </summary>
+        private void ChangeTileStyle()
         {
-            Settings.TileStyle = TileStyleRadioButtons.SelectedIndex == 0 ? "Peeking" : "Background";
-            SetTileStyleImage();
+            TileStylePreviewImage = selectedTileStyleIndex == 0 ? "ms-appx:///Assets/peeking-tile.png" :
+    "ms-appx:///Assets/background-tile.png";
+            Debug.WriteLine(TileStylePreviewImage);
+            Settings.TileStyle = selectedTileStyleIndex == 0 ? "Peeking" : "Background";
+            // SetTileStyleImage();
         }
 
         private void TileContentButtons_SelectionChanged(object sender, SelectionChangedEventArgs e)
