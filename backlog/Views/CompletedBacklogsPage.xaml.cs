@@ -2,13 +2,16 @@
 using backlog.Models;
 using backlog.Saving;
 using backlog.Utils;
+using MvvmHelpers.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -23,7 +26,7 @@ namespace backlog.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CompletedBacklogsPage : Page
+    public sealed partial class CompletedBacklogsPage : Page, INotifyPropertyChanged
     {
         private ObservableCollection<Backlog> FinishedBacklogs;
         private ObservableCollection<Backlog> FinishedFilmBacklogs;
@@ -34,10 +37,33 @@ namespace backlog.Views
         private ObservableCollection<Backlog> Backlogs;
         private Backlog SelectedBacklog;
         private string sortOrder { get; set; }
+        private bool _loading = false;
+
+        public delegate Task CloseBacklogFunc();
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public CloseBacklogFunc CloseBacklog;
+        public ICommand SaveBacklog { get; }
+
+
+        public bool IsLoading
+        {
+            get => _loading;
+            set
+            {
+                _loading = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));
+            }
+        }
+
+
 
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
+            SaveBacklog = new AsyncCommand(SaveBacklogAsync);
+            CloseBacklog = CloseBacklogAsync;
+
             Backlogs = SaveData.GetInstance().GetBacklogs();
             FinishedBacklogs = new ObservableCollection<Backlog>();
             FinishedBookBacklogs = new ObservableCollection<Backlog>();
@@ -129,16 +155,15 @@ namespace backlog.Views
         }
 
         /// <summary>
-        /// Saves backlogs
+        /// Saves the backlog
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void SaveButton_Click(object sender, RoutedEventArgs e)
+        /// <returns></returns>
+        private async Task SaveBacklogAsync()
         {
-            ProgRing.IsActive = true;
-            foreach(var backlog in Backlogs)
+            IsLoading = true;
+            foreach (var backlog in Backlogs)
             {
-                if(backlog.id == SelectedBacklog.id)
+                if (backlog.id == SelectedBacklog.id)
                 {
                     backlog.UserRating = PopupRating.Value;
                 }
@@ -152,8 +177,9 @@ namespace backlog.Views
             }
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
-            ProgRing.IsActive = false;
-            CloseButton_Click(sender, e);
+            IsLoading = false;
+            Debug.WriteLine("Save complete");
+            await CloseBacklog();
         }
 
         /// <summary>
@@ -180,6 +206,22 @@ namespace backlog.Views
 
         private async void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
+                PopupOverlay.Hide();
+                connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
+                await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
+            }
+            catch
+            {
+                PopupOverlay.Hide();
+            }
+        }
+
+        private async Task CloseBacklogAsync()
+        {
+            Debug.WriteLine("Hey");
             try
             {
                 ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
