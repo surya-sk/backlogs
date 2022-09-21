@@ -106,8 +106,8 @@ namespace backlog.Views
             this.InitializeComponent();
             DataContext = this;
 
-            SendLogs = new AsyncCommand(SendAppLogs);
-            OpenLogs = new AsyncCommand(ShowLogs);
+            SendLogs = new AsyncCommand(SendLogsAsync);
+            OpenLogs = new AsyncCommand(ShowLogsAsync);
             SendFeedback = new AsyncCommand(SendFeedbackAsync);
 
             MyLicense.Text = GNU_LICENSE;
@@ -202,7 +202,7 @@ namespace backlog.Views
         /// Opens email client to send logs
         /// </summary>
         /// <returns></returns>
-        private async Task SendAppLogs()
+        private async Task SendLogsAsync()
         {
             ShowProgress = true;
             EmailMessage emailMessage = new EmailMessage();
@@ -226,7 +226,7 @@ namespace backlog.Views
         /// Opens a content dialog that shows logs
         /// </summary>
         /// <returns></returns>
-        private async Task ShowLogs()
+        private async Task ShowLogsAsync()
         {
             var logs = await Logger.GetLogsAsync();
             ContentDialog contentDialog = new ContentDialog()
@@ -244,15 +244,19 @@ namespace backlog.Views
             await contentDialog.ShowAsync();
         }
 
+        /// <summary>
+        /// Send user typed feedback
+        /// </summary>
+        /// <returns></returns>
         private async Task SendFeedbackAsync()
         {
             if(string.IsNullOrEmpty(SelectedFeedbackType) || string.IsNullOrEmpty(FeedbackText))
             {
-                await ShowError();
+                await ShowFeedbackInputErrorAsync();
             }
             else
             {
-                await SendEmail();
+                await SendFeedbackEmailAsync();
             }
         }
 
@@ -260,7 +264,7 @@ namespace backlog.Views
         /// Show error dialog
         /// </summary>
         /// <returns></returns>
-        private async Task ShowError()
+        private async Task ShowFeedbackInputErrorAsync()
         {
             ContentDialog contentDialog = new ContentDialog
             {
@@ -275,7 +279,7 @@ namespace backlog.Views
         /// Open the user's default email client
         /// </summary>
         /// <returns></returns>
-        private async Task SendEmail()
+        private async Task SendFeedbackEmailAsync()
         {
             ShowProgress = true;
             EmailMessage emailMessage = new EmailMessage();
