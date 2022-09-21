@@ -40,10 +40,14 @@ namespace backlog.Views
         private bool _loading = false;
 
         public delegate Task CloseBacklogFunc();
+        public delegate void ClosePopupFunc();
         public event PropertyChangedEventHandler PropertyChanged;
 
         public CloseBacklogFunc CloseBacklog;
+        public ClosePopupFunc ClosePopup;
+
         public ICommand SaveBacklog { get; }
+        public ICommand MarkBacklogAsIncomplete { get; }
 
 
         public bool IsLoading
@@ -62,7 +66,9 @@ namespace backlog.Views
         {
             this.InitializeComponent();
             SaveBacklog = new AsyncCommand(SaveBacklogAsync);
+            MarkBacklogAsIncomplete = new AsyncCommand(MarkBacklogAsIncompleteAsync);
             CloseBacklog = CloseBacklogAsync;
+            ClosePopup = ClosePopupOverlayAndReload;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
             FinishedBacklogs = new ObservableCollection<Backlog>();
@@ -183,13 +189,12 @@ namespace backlog.Views
         }
 
         /// <summary>
-        /// Sends the selected backlog back to Backlogs
+        /// Marks backlog as incomplete
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void IncompleteButton_Click(object sender, RoutedEventArgs e)
+        /// <returns></returns>
+        private async Task MarkBacklogAsIncompleteAsync()
         {
-            ProgRing.IsActive = true;
+            IsLoading = true;
             foreach (var backlog in Backlogs)
             {
                 if (backlog.id == SelectedBacklog.id)
@@ -200,6 +205,11 @@ namespace backlog.Views
             }
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
+            ClosePopup();
+        }
+
+        private void ClosePopupOverlayAndReload()
+        {
             PopupOverlay.Hide();
             Frame.Navigate(typeof(CompletedBacklogsPage));
         }
@@ -221,7 +231,6 @@ namespace backlog.Views
 
         private async Task CloseBacklogAsync()
         {
-            Debug.WriteLine("Hey");
             try
             {
                 ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
