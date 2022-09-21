@@ -49,10 +49,9 @@ namespace backlog.Views
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand SendLogs { get; }
-
         public ICommand OpenLogs { get; }
-
         public ICommand SendFeedback { get; }
+        public ICommand SignOut { get;  }
 
         public string SelectedTheme
         {
@@ -109,6 +108,7 @@ namespace backlog.Views
             SendLogs = new AsyncCommand(SendLogsAsync);
             OpenLogs = new AsyncCommand(ShowLogsAsync);
             SendFeedback = new AsyncCommand(SendFeedbackAsync);
+            SignOut = new AsyncCommand(SignOutAsync);
 
             MyLicense.Text = GNU_LICENSE;
             WCTLicense.Text = MIT_LICENSE;
@@ -291,11 +291,10 @@ namespace backlog.Views
         }
 
         /// <summary>
-        /// Signs the user out
+        /// Sign the user out of MSAL
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void SignOutButton_Click(object sender, RoutedEventArgs e)
+        /// <returns></returns>
+        private async Task SignOutAsync()
         {
             ContentDialog contentDialog = new ContentDialog
             {

@@ -82,7 +82,7 @@
                                 <TextBlock Text="Account" Margin="0,20,0,0" FontSize="18" />
                                 <TextBlock x:Name="UserNameText" Margin="0,10,0,20" FontStyle="Italic" />
                                 <muxc:PersonPicture x:Name="AccountPic" Margin="0,10,0,20" HorizontalAlignment="Left" />
-                                <Button x:Name="SignOutButton" Content="Sign out" Background="Red" Click="SignOutButton_Click" />
+                                <Button x:Name="SignOutButton" Content="Sign out" Background="Red" Command="{x:Bind SignOut}" />
                             </StackPanel>
 
                             <TextBlock x:Name="SignInText" Text="For the best experience, sign-in with your Microsoft Account. This will sync backlogs using OneDrive so you can access them on all of your Windows devices."
