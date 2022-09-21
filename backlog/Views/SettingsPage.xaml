@@ -75,7 +75,7 @@
                                 <TextBlock Text="Video playback" Margin="0,20,0,0" FontSize="18"/>
                                 <TextBlock Text="Settings for playing trailers for films, series and games." FontStyle="Italic"
                                            FontWeight="ExtraLight" TextWrapping="Wrap" />
-                                <ToggleSwitch x:Name="AutoplaySwitch" Header="Autoplay videos" Toggled="AutoplaySwitch_Toggled" Margin="0,20,0,0" />
+                                <ToggleSwitch x:Name="AutoplaySwitch" Header="Autoplay videos" IsOn="{x:Bind AutoplayVideos, Mode=TwoWay}" Margin="0,20,0,0" />
                             </StackPanel>
 
                             <StackPanel x:Name="AccountPanel" Visibility="Collapsed" Margin="0,20,0,0">

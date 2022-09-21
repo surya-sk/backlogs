@@ -107,6 +107,16 @@ namespace backlog.Views
             }
         }
 
+        public bool AutoplayVideos
+        {
+            get => Settings.AutoplayVideos;
+            set
+            {
+                Settings.AutoplayVideos = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AutoplayVideos)));
+            }
+        }
+
         public string SelectedFeedbackType { get; set; }
 
         public string FeedbackText { get; set; }
@@ -127,7 +137,6 @@ namespace backlog.Views
             WinUILicense.Text = MIT_LICENSE;
             NewtonsoftLicense.Text = MIT_LICENSE;
             Changelog.Text = CHANGE_LOG;
-            AutoplaySwitch.IsOn = Settings.AutoplayVideos == 1;
             TileContentButtons.SelectedValue = Settings.TileContent;
             // show back button
             var view = SystemNavigationManager.GetForCurrentView();
@@ -332,11 +341,6 @@ namespace backlog.Views
             TileStylePreviewImage = selectedTileStyleIndex == 0 ? "ms-appx:///Assets/peeking-tile.png" :
     "ms-appx:///Assets/background-tile.png";
             Settings.TileStyle = selectedTileStyleIndex == 0 ? "Peeking" : "Background";
-        }
-
-        private void AutoplaySwitch_Toggled(object sender, RoutedEventArgs e)
-        {
-            Settings.AutoplayVideos = AutoplaySwitch.IsOn ? 1 : 0;
         }
     }
 }
