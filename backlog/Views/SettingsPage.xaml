@@ -45,7 +45,7 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" MaxWidth="700">
                             <ComboBox x:Name="ThemeInput"  Header="Application Theme" Margin="0,20,0,20"
-                                  MinWidth="30" FontSize="15" SelectedValue="{x:Bind SelectedTheme, Mode=TwoWay}">
+                                  MinWidth="30" FontSize="15" SelectedValue="{Binding SelectedTheme, Mode=TwoWay}">
                                 <x:String>System</x:String>
                                 <x:String>Dark</x:String>
                                 <x:String>Light</x:String>
@@ -55,7 +55,7 @@
                                 <TextBlock Text="Live tile" Margin="0,20,0,0" FontSize="18"/>
                                 <TextBlock Text="Pin the app to start to see a live tile. Available on Windows 10 only." FontStyle="Italic" 
                                        FontWeight="ExtraLight" TextWrapping="Wrap"/>
-                                <ComboBox x:Name="TileContentButtons" SelectionChanged="TileContentButtons_SelectionChanged"
+                                <ComboBox x:Name="TileContentButtons" SelectedValue="{Binding SelectedTileContent, Mode=TwoWay}"
                                           Header="Live tile content" Margin="0,20,0,0">
                                     <x:String>Recently Created</x:String>
                                     <x:String>Recently Completed</x:String>

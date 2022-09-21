@@ -45,6 +45,7 @@ namespace backlog.Views
         private string tileStylePreviewImage = Settings.TileStyle == "Peeking" ? "ms-appx:///Assets/peeking-tile.png" :
                 "ms-appx:///Assets/background-tile.png";
         private bool showProgress;
+        private string tileContent = Settings.TileContent;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -72,6 +73,17 @@ namespace backlog.Views
                 selectedTileStyleIndex = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileStyleIndex)));
                 ChangeTileStyle();
+            }
+        }
+
+        public string SelectedTileContent
+        {
+            get => tileContent;
+            set
+            {
+                tileContent = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileContent)));
+                Settings.TileContent = value.ToString();
             }
         }
 
@@ -319,9 +331,7 @@ namespace backlog.Views
         {
             TileStylePreviewImage = selectedTileStyleIndex == 0 ? "ms-appx:///Assets/peeking-tile.png" :
     "ms-appx:///Assets/background-tile.png";
-            Debug.WriteLine(TileStylePreviewImage);
             Settings.TileStyle = selectedTileStyleIndex == 0 ? "Peeking" : "Background";
-            // SetTileStyleImage();
         }
 
         private void TileContentButtons_SelectionChanged(object sender, SelectionChangedEventArgs e)
