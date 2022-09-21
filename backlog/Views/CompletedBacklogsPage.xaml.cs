@@ -28,6 +28,9 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class CompletedBacklogsPage : Page, INotifyPropertyChanged
     {
+
+        private ICommand CloseBacklogPopup;
+
         private ObservableCollection<Backlog> FinishedBacklogs;
         private ObservableCollection<Backlog> FinishedFilmBacklogs;
         private ObservableCollection<Backlog> FinishedTVBacklogs;
@@ -65,6 +68,9 @@ namespace backlog.Views
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
+            CloseBacklogPopup = new AsyncCommand(CloseBacklogAsync);
+
+
             SaveBacklog = new AsyncCommand(SaveBacklogAsync);
             MarkBacklogAsIncomplete = new AsyncCommand(MarkBacklogAsIncompleteAsync);
             CloseBacklog = CloseBacklogAsync;
@@ -214,21 +220,10 @@ namespace backlog.Views
             Frame.Navigate(typeof(CompletedBacklogsPage));
         }
 
-        private async void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
-                PopupOverlay.Hide();
-                connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
-                await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
-            }
-            catch
-            {
-                PopupOverlay.Hide();
-            }
-        }
-
+        /// <summary>
+        /// Closes the backlog popup
+        /// </summary>
+        /// <returns></returns>
         private async Task CloseBacklogAsync()
         {
             try

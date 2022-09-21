@@ -15,13 +15,15 @@ using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 using backlog.Utils;
 using backlog.Auth;
+using System.Globalization;
 
 namespace backlog.Saving
 {
     class SaveData
     {
         private static SaveData instance = new SaveData();
-        private ObservableCollection<Backlog> Backogs = null;
+        private ObservableCollection<Backlog> Backlogs = null;
+        private ObservableCollection<Backlog> CompletedBacklogs = null;
         StorageFolder localFolder = ApplicationData.Current.LocalFolder;
         string fileName = "backlogs.txt";
         private static GraphServiceClient graphServiceClient = null;
@@ -36,21 +38,13 @@ namespace backlog.Saving
         }
 
 
-
-        private async Task DeleteLocalFiles()
-        {
-            var file = await localFolder.GetFileAsync(fileName);
-            await file.DeleteAsync(StorageDeleteOption.Default);
-        }
-
-
         /// <summary>
         /// Write the backlog list in JSON format
         /// </summary>
         /// <returns></returns>
         public async Task WriteDataAsync(bool sync = false)
         {
-            string json = JsonConvert.SerializeObject(Backogs);
+            string json = JsonConvert.SerializeObject(Backlogs);
             StorageFile storageFile = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(storageFile, json);
             graphServiceClient = await MSAL.GetGraphServiceClient();
@@ -69,7 +63,7 @@ namespace backlog.Saving
 
         public void SaveSettings(ObservableCollection<Backlog> backlogs)
         {
-            Backogs = backlogs;
+            Backlogs = backlogs;
         }
 
         /// <summary>
@@ -91,11 +85,11 @@ namespace backlog.Saving
                 }
                 StorageFile storageFile = await localFolder.GetFileAsync(fileName);
                 string json = await FileIO.ReadTextAsync(storageFile);
-                Backogs = JsonConvert.DeserializeObject<ObservableCollection<Backlog>>(json);
+                Backlogs = JsonConvert.DeserializeObject<ObservableCollection<Backlog>>(json);
             }
             catch
             {
-                Backogs = new ObservableCollection<Backlog>();
+                Backlogs = new ObservableCollection<Backlog>();
             }
         }
 
@@ -122,6 +116,35 @@ namespace backlog.Saving
         }
 
         /// <summary>
+        /// Read completed backlogs from the local file
+        /// </summary>
+        /// <returns></returns>
+        public async Task ReadCompletedBacklogsAsync()
+        {
+            try
+            {
+                StorageFile storageFile = await localFolder.GetFileAsync("CompletedBacklogs.txt");
+                string json = await FileIO.ReadTextAsync(storageFile);
+                CompletedBacklogs = JsonConvert.DeserializeObject<ObservableCollection<Backlog>>(json);
+            }
+            catch
+            {
+                CompletedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete == false));
+            }
+        }
+
+        /// <summary>
+        /// Write completed backlogs to the local file
+        /// </summary>
+        /// <returns></returns>
+        public async Task WriteCompletedBacklogsAsync()
+        {
+            string json = JsonConvert.SerializeObject(CompletedBacklogs);
+            StorageFile storageFile = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(storageFile, json);
+        }
+
+        /// <summary>
         /// Delete the local backlogs
         /// </summary>
         /// <returns></returns>
@@ -140,7 +163,36 @@ namespace backlog.Saving
 
         public ObservableCollection<Backlog> GetBacklogs()
         {
-            return Backogs;
+            return Backlogs;
         }
+
+        public void SetCompletedBacklogs()
+        {
+            switch (Settings.SortOrder)
+            {
+                case "Name":
+                    CompletedBacklogs = new ObservableCollection<Backlog>(CompletedBacklogs.OrderBy(b => b.Name));
+                    break;
+                case "Completed Date Asc.":
+                    CompletedBacklogs = new ObservableCollection<Backlog>(CompletedBacklogs.OrderBy(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
+                    break;
+                case "Completed Date Dsc.":
+                    CompletedBacklogs = new ObservableCollection<Backlog>(CompletedBacklogs.OrderByDescending(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
+                    break;
+                case "Lowest Rating":
+                    CompletedBacklogs = new ObservableCollection<Backlog>(CompletedBacklogs.OrderBy(b => b.UserRating));
+                    break;
+                case "Highest Rating":
+                    CompletedBacklogs = new ObservableCollection<Backlog>(CompletedBacklogs.OrderByDescending(b => b.UserRating));
+                    break;
+            }
+        }
+
+        public ObservableCollection<Backlog> GetCompletedBacklogs()
+        {
+            return CompletedBacklogs;
+        }
+
+        
     }
 }
