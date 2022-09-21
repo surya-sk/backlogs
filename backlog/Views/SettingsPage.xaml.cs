@@ -44,8 +44,11 @@ namespace backlog.Views
         private int selectedTileStyleIndex = Settings.TileStyle == "Peeking" ? 0 : 1;
         private string tileStylePreviewImage = Settings.TileStyle == "Peeking" ? "ms-appx:///Assets/peeking-tile.png" :
                 "ms-appx:///Assets/background-tile.png";
+        private bool showProgress;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ICommand SendLogs { get; }
 
         public string SelectedTheme
         {
@@ -79,11 +82,23 @@ namespace backlog.Views
             }
         }
 
+        public bool ShowProgress
+        {
+            get => showProgress;
+            set
+            {
+                showProgress = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowProgress)));
+            }
+        }
+
 
         public SettingsPage()
         {
             this.InitializeComponent();
             DataContext = this;
+
+            SendLogs = new AsyncCommand(SendAppLogs);
 
             MyLicense.Text = GNU_LICENSE;
             WCTLicense.Text = MIT_LICENSE;
@@ -171,16 +186,15 @@ namespace backlog.Views
                 ThemeHelper.RootTheme = App.GetEnum<ElementTheme>(_selectedTheme);
             }
             Settings.AppTheme = SelectedTheme;
-        }
+        } 
 
         /// <summary>
-        /// Opens the default email client to send logs
+        /// Opens email client to send logs
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void SendLogsButton_Click(object sender, RoutedEventArgs e)
+        /// <returns></returns>
+        private async Task SendAppLogs()
         {
-            ProgRing.IsActive = true;
+            ShowProgress = true;
             EmailMessage emailMessage = new EmailMessage();
             emailMessage.To.Add(new EmailRecipient("surya.sk05@outlook.com"));
             emailMessage.Subject = "Logs from Backlogs";
@@ -189,13 +203,13 @@ namespace backlog.Views
             body.AppendLine("\n\n\n");
             body.AppendLine("Logs:");
             var logList = await Logger.GetLogsAsync();
-            foreach(var log in logList)
+            foreach (var log in logList)
             {
                 body.AppendLine(log.ToString());
             }
             emailMessage.Body = body.ToString();
             await EmailManager.ShowComposeNewEmailAsync(emailMessage);
-            ProgRing.IsActive = false;
+            ShowProgress = false;
         }
 
         private async void OpenLogsButton_Click(object sender, RoutedEventArgs e)
