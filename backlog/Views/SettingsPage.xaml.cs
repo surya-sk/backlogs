@@ -52,6 +52,8 @@ namespace backlog.Views
 
         public ICommand OpenLogs { get; }
 
+        public ICommand SendFeedback { get; }
+
         public string SelectedTheme
         {
             get => selectedTheme;
@@ -94,6 +96,10 @@ namespace backlog.Views
             }
         }
 
+        public string SelectedFeedbackType { get; set; }
+
+        public string FeedbackText { get; set; }
+
 
         public SettingsPage()
         {
@@ -102,6 +108,7 @@ namespace backlog.Views
 
             SendLogs = new AsyncCommand(SendAppLogs);
             OpenLogs = new AsyncCommand(ShowLogs);
+            SendFeedback = new AsyncCommand(SendFeedbackAsync);
 
             MyLicense.Text = GNU_LICENSE;
             WCTLicense.Text = MIT_LICENSE;
@@ -237,9 +244,9 @@ namespace backlog.Views
             await contentDialog.ShowAsync();
         }
 
-        private async void SendButton_Click(object sender, RoutedEventArgs e)
+        private async Task SendFeedbackAsync()
         {
-            if(IssueTypeComboBox.SelectedIndex < 0 || MessageBox.Text == "")
+            if(string.IsNullOrEmpty(SelectedFeedbackType) || string.IsNullOrEmpty(FeedbackText))
             {
                 await ShowError();
             }
@@ -270,13 +277,13 @@ namespace backlog.Views
         /// <returns></returns>
         private async Task SendEmail()
         {
-            ProgRing.IsActive = true;
+            ShowProgress = true;
             EmailMessage emailMessage = new EmailMessage();
             emailMessage.Subject = "[Backlogs] " + IssueTypeComboBox.SelectedItem.ToString();
             emailMessage.Body = MessageBox.Text;
             emailMessage.To.Add(new EmailRecipient("surya.sk05@outlook.com"));
             await EmailManager.ShowComposeNewEmailAsync(emailMessage);
-            ProgRing.IsActive = false;
+            ShowProgress = false;
         }
 
         /// <summary>
