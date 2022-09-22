@@ -20,12 +20,16 @@ namespace backlog.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
-        private string selectedTheme = Settings.AppTheme;
-        private int selectedTileStyleIndex = Settings.TileStyle == "Peeking" ? 0 : 1;
-        private string tileStylePreviewImage = Settings.TileStyle == "Peeking" ? "ms-appx:///Assets/peeking-tile.png" :
+        private string _selectedTheme = Settings.AppTheme;
+        private int _selectedTileStyleIndex = Settings.TileStyle == "Peeking" ? 0 : 1;
+        private string _tileStylePreviewImage = Settings.TileStyle == "Peeking" ? "ms-appx:///Assets/peeking-tile.png" :
                 "ms-appx:///Assets/background-tile.png";
-        private bool showProgress;
-        private string tileContent = Settings.TileContent;
+        private bool _showProgress;
+        private string _tileContent = Settings.TileContent;
+
+        public delegate void NavigateToMainPage();
+
+        public NavigateToMainPage NavigateToMainPageFunc;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -36,10 +40,10 @@ namespace backlog.ViewModels
 
         public string SelectedTheme
         {
-            get => selectedTheme;
+            get => _selectedTheme;
             set
             {
-                selectedTheme = value;
+                _selectedTheme = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTheme)));
                 ChangeAppTheme();
             }
@@ -47,10 +51,10 @@ namespace backlog.ViewModels
 
         public int SelectedTileStyleIndex
         {
-            get => selectedTileStyleIndex;
+            get => _selectedTileStyleIndex;
             set
             {
-                selectedTileStyleIndex = value;
+                _selectedTileStyleIndex = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileStyleIndex)));
                 ChangeTileStyle();
             }
@@ -58,10 +62,10 @@ namespace backlog.ViewModels
 
         public string SelectedTileContent
         {
-            get => tileContent;
+            get => _tileContent;
             set
             {
-                tileContent = value;
+                _tileContent = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileContent)));
                 Settings.TileContent = value.ToString();
             }
@@ -69,20 +73,20 @@ namespace backlog.ViewModels
 
         public string TileStylePreviewImage
         {
-            get => tileStylePreviewImage;
+            get => _tileStylePreviewImage;
             set
             {
-                tileStylePreviewImage = value;
+                _tileStylePreviewImage = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TileStylePreviewImage)));
             }
         }
 
         public bool ShowProgress
         {
-            get => showProgress;
+            get => _showProgress;
             set
             {
-                showProgress = value;
+                _showProgress = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowProgress)));
             }
         }
@@ -234,7 +238,7 @@ namespace backlog.ViewModels
             {
                 await MSAL.SignOut();
                 Settings.IsSignedIn = false;
-                // Frame.Navigate(typeof(MainPage));
+                NavigateToMainPageFunc();
             }
         }
 
@@ -243,9 +247,9 @@ namespace backlog.ViewModels
         /// </summary>
         private void ChangeTileStyle()
         {
-            TileStylePreviewImage = selectedTileStyleIndex == 0 ? "ms-appx:///Assets/peeking-tile.png" :
+            TileStylePreviewImage = _selectedTileStyleIndex == 0 ? "ms-appx:///Assets/peeking-tile.png" :
     "ms-appx:///Assets/background-tile.png";
-            Settings.TileStyle = selectedTileStyleIndex == 0 ? "Peeking" : "Background";
+            Settings.TileStyle = _selectedTileStyleIndex == 0 ? "Peeking" : "Background";
         }
     }
 }

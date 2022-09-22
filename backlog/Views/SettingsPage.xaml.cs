@@ -48,6 +48,7 @@ namespace backlog.Views
         {
             this.InitializeComponent();
             this.DataContext = ViewModel;
+            ViewModel.NavigateToMainPageFunc = NavigateToMainPage;
 
             MyLicense.Text = GNU_LICENSE;
             WCTLicense.Text = MIT_LICENSE;
@@ -117,6 +118,11 @@ namespace backlog.Views
             }
 
             e.Handled = true;
+        }
+
+        private void NavigateToMainPage()
+        {
+            Frame.Navigate(typeof(MainPage));
         }
     }
 }
