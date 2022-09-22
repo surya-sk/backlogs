@@ -60,8 +60,6 @@ namespace backlog.Views
 
         private BitmapImage _accountPic;
 
-        GraphServiceClient graphServiceClient;
-
         bool isNetworkAvailable = false;
         int backlogIndex = -1;
         bool sync = false;
@@ -202,7 +200,6 @@ namespace backlog.Views
             {
                 if (sync)
                 {
-                    //graphServiceClient = await MSAL.GetGraphServiceClient();
                     await SetUserPhotoAsync();
                     try
                     {
@@ -328,7 +325,7 @@ namespace backlog.Views
         /// Set the user photo in the command bar
         /// </summary>
         /// <returns></returns>
-        private async Task SetUserPhotoAsync()
+        public async Task SetUserPhotoAsync()
         {
             var cacheFolder = ApplicationData.Current.LocalCacheFolder;
             try
@@ -342,9 +339,9 @@ namespace backlog.Views
                     AccountPic = image;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                await Logger.Error("Profile photo not found", ex);
+                // No image set
             }
         }
 
