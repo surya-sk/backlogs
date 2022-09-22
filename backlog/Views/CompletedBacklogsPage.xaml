@@ -120,7 +120,7 @@
                     <Button x:Name="IncompleteButton" Content="Move to Backlog" Command="{x:Bind MarkBacklogAsIncomplete}" Margin="10" />
                     <Button x:Name="CloseButton" Content="Close" Background="Red" Command="{x:Bind CloseBacklogPopup}" Margin="10" />
                 </StackPanel>
-                <ProgressRing x:Name="ProgRing" IsActive="{x:Bind IsLoading}" />
+                <ProgressRing x:Name="ProgRing" IsActive="{x:Bind IsLoading, Mode=OneWay}" />
             </Grid>
         </ContentDialog>
 
@@ -133,7 +133,7 @@
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click"/>
-            <AppBarButton x:Name="TopSortButton" Label="{x:Bind sortOrder}" Icon="Sort">
+            <AppBarButton x:Name="TopSortButton" Label="{x:Bind SortOrder}" Icon="Sort">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem x:Name="SortByName" Text="Name" Click="SortByName_Click" />
@@ -157,7 +157,7 @@
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
             <AppBarButton x:Name="BottomSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
-            <AppBarButton x:Name="BottomSortButton" Label="{x:Bind sortOrder}" Icon="Sort">
+            <AppBarButton x:Name="BottomSortButton" Label="{x:Bind SortOrder}" Icon="Sort">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem x:Name="BSortByName" Text="Name" Click="SortByName_Click" />

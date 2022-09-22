@@ -39,11 +39,11 @@ namespace backlog.Views
         private ObservableCollection<Backlog> FinishedBookBacklogs;
         private ObservableCollection<Backlog> Backlogs;
         private Backlog SelectedBacklog;
-        private string sortOrder { get; set; }
+        private string _sortOrder = Settings.SortOrder;
         private bool _loading = false;
 
         public delegate Task CloseBacklogFunc();
-        public delegate void ClosePopupFunc();
+        public delegate void ClosePopupFunc(bool relaod=false);
         public event PropertyChangedEventHandler PropertyChanged;
 
         public CloseBacklogFunc CloseBacklog;
@@ -63,7 +63,17 @@ namespace backlog.Views
             }
         }
 
-
+        public string SortOrder
+        {
+            get => _sortOrder;
+            set
+            {
+                _sortOrder = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SortOrder)));
+                SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
+                PopulateBacklogs();
+            }
+        }
 
         public CompletedBacklogsPage()
         {
@@ -77,7 +87,7 @@ namespace backlog.Views
             ClosePopup = ClosePopupOverlayAndReload;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
-            FinishedBacklogs = new ObservableCollection<Backlog>();
+            FinishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
             FinishedBookBacklogs = new ObservableCollection<Backlog>();
             FinishedFilmBacklogs = new ObservableCollection<Backlog>();
             FinishedTVBacklogs = new ObservableCollection<Backlog>();
@@ -89,36 +99,18 @@ namespace backlog.Views
             view.BackRequested += View_BackRequested;
         }
 
+        /// <summary>
+        /// Populate all backlog categories
+        /// </summary>
         private void PopulateBacklogs()
         {
-            sortOrder = Settings.CompletedSortOrder;
-            TopSortButton.Label = sortOrder;
-            BottomSortButton.Label = sortOrder;
-            ObservableCollection<Backlog> _finishedBacklogs = null;
-            switch(sortOrder)
-            {
-                case "Name":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete).OrderBy(b => b.Name));
-                    break;
-                case "Completed Date Asc.":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete).OrderBy(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
-                    break;
-                case "Completed Date Dsc.":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete).OrderByDescending(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
-                    break;
-                case "Lowest Rating":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete).OrderBy(b => b.UserRating));
-                    break;
-                case "Highest Rating":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete).OrderByDescending(b => b.UserRating));
-                    break;
-
-            }
-            var _finishedBookBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Book.ToString()));
-            var _finishedFilmBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Film.ToString()));
-            var _finishedGameBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Game.ToString()));
-            var _finishedMusicBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Album.ToString()));
-            var _finishedTVBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.TV.ToString()));
+            FinishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
+            var _finishedBookBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Book.ToString()));
+            var _finishedFilmBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Film.ToString()));
+            var _finishedGameBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Game.ToString()));
+            var _finishedMusicBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Album.ToString()));
+            var _finishedTVBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.TV.ToString()));
+            ObservableCollection<Backlog> _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs);
             FinishedBacklogs.Clear();
             FinishedFilmBacklogs.Clear();
             FinishedTVBacklogs.Clear();
@@ -126,7 +118,7 @@ namespace backlog.Views
             FinishedGameBacklogs.Clear();
             FinishedBookBacklogs.Clear();
 
-            foreach(var backlog in _finishedBacklogs)
+            foreach (var backlog in _finishedBacklogs)
             {
                 FinishedBacklogs.Add(backlog);
             }
@@ -188,6 +180,7 @@ namespace backlog.Views
                 }
             }
             SaveData.GetInstance().SaveSettings(Backlogs);
+            SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
             IsLoading = false;
             Debug.WriteLine("Save complete");
@@ -209,15 +202,18 @@ namespace backlog.Views
                     backlog.CompletedDate = null;
                 }
             }
+            FinishedBacklogs.Remove(SelectedBacklog);
             SaveData.GetInstance().SaveSettings(Backlogs);
+            SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
-            ClosePopup();
+            ClosePopup(false);
         }
 
-        private void ClosePopupOverlayAndReload()
+        private void ClosePopupOverlayAndReload(bool reload=false)
         {
             PopupOverlay.Hide();
-            Frame.Navigate(typeof(CompletedBacklogsPage));
+            if(reload)
+                Frame.Navigate(typeof(CompletedBacklogsPage));
         }
 
         /// <summary>

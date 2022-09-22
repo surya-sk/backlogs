@@ -129,7 +129,8 @@ namespace backlog.Saving
             }
             catch
             {
-                CompletedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete == false));
+                Debug.WriteLine("Creating new collection");
+                CompletedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete));
             }
         }
 
@@ -166,8 +167,9 @@ namespace backlog.Saving
             return Backlogs;
         }
 
-        public void SetCompletedBacklogs()
+        public void SetCompletedBacklogs(ObservableCollection<Backlog> completedBacklogs)
         {
+            CompletedBacklogs = completedBacklogs;
             switch (Settings.SortOrder)
             {
                 case "Name":
