@@ -2,6 +2,7 @@
 using backlog.Models;
 using backlog.Saving;
 using backlog.Utils;
+using backlog.ViewModels;
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.Generic;
@@ -26,166 +27,24 @@ namespace backlog.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CompletedBacklogsPage : Page, INotifyPropertyChanged
+    public sealed partial class CompletedBacklogsPage : Page
     {
-
+        private Backlog SelectedBacklog;
         private ICommand CloseBacklogPopup;
 
-        private ObservableCollection<Backlog> FinishedBacklogs;
-        private ObservableCollection<Backlog> FinishedFilmBacklogs;
-        private ObservableCollection<Backlog> FinishedTVBacklogs;
-        private ObservableCollection<Backlog> FinishedMusicBacklogs;
-        private ObservableCollection<Backlog> FinishedGameBacklogs;
-        private ObservableCollection<Backlog> FinishedBookBacklogs;
-        private ObservableCollection<Backlog> Backlogs;
-        private Backlog SelectedBacklog;
-        private string _sortOrder = Settings.CompletedSortOrder;
-        private bool _loading = false;
-        private double _userRating;
-
-        public delegate Task CloseBacklogFunc();
-        public delegate void ClosePopupFunc(bool relaod=false);
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public CloseBacklogFunc CloseBacklog;
-        public ClosePopupFunc ClosePopup;
-
-        public ICommand SaveBacklog { get; }
-        public ICommand MarkBacklogAsIncomplete { get; }
-        public ICommand SortByName { get; }
-        public ICommand SortByDateDsc { get; }
-        public ICommand SortByDateAsc { get; }
-        public ICommand SortByRatingDsc { get; }
-        public ICommand SortByRatingAsc { get; }
-
-
-        public double UserRating
-        {
-            get => _userRating;
-            set
-            {
-                _userRating = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserRating)));
-            }
-        }
-
-        public bool IsLoading
-        {
-            get => _loading;
-            set
-            {
-                _loading = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));
-            }
-        }
-
-        public string SortOrder
-        {
-            get => _sortOrder;
-            set
-            {
-                if(value != _sortOrder)
-                {
-                    _sortOrder = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SortOrder)));
-                    Settings.CompletedSortOrder = _sortOrder;
-                    PopulateBacklogs();
-                }
-            }
-        }
+        public CompletedBacklogsViewModel ViewModel { get; set; } = new CompletedBacklogsViewModel();
 
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
             CloseBacklogPopup = new AsyncCommand(CloseBacklogAsync);
 
+            ViewModel.CloseBacklog = CloseBacklogAsync;
+            ViewModel.ClosePopup = ClosePopupOverlayAndReload;
 
-            SaveBacklog = new AsyncCommand(SaveBacklogAsync);
-            MarkBacklogAsIncomplete = new AsyncCommand(MarkBacklogAsIncompleteAsync);
-            SortByName = new Command(SortBacklogsByName);
-            SortByDateAsc = new Command(SortBacklogsByCompletedDateAsc);
-            SortByDateDsc = new Command(SortBacklogsByCompletedDateDsc);
-            SortByRatingAsc = new Command(SortBacklogsByRatingsAsc);
-            SortByRatingDsc = new Command(SortBacklogsByRatingDsc);
-            CloseBacklog = CloseBacklogAsync;
-            ClosePopup = ClosePopupOverlayAndReload;
-
-            Backlogs = SaveData.GetInstance().GetBacklogs();
-            FinishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
-            FinishedBookBacklogs = new ObservableCollection<Backlog>();
-            FinishedFilmBacklogs = new ObservableCollection<Backlog>();
-            FinishedTVBacklogs = new ObservableCollection<Backlog>();
-            FinishedMusicBacklogs = new ObservableCollection<Backlog>();
-            FinishedGameBacklogs = new ObservableCollection<Backlog>();
-            PopulateBacklogs();
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += View_BackRequested;
-        }
-
-        /// <summary>
-        /// Populate all backlog categories
-        /// </summary>
-        private void PopulateBacklogs()
-        {
-            FinishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
-            ObservableCollection<Backlog> _finishedBacklogs = null;
-            switch (SortOrder)
-            {
-                case "Name":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderBy(b => b.Name));
-                    break;
-                case "Completed Date Asc.":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderBy(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
-                    break;
-                case "Completed Date Dsc.":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderByDescending(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
-                    break;
-                case "Lowest Rating":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderBy(b => b.UserRating));
-                    break;
-                case "Highest Rating":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderByDescending(b => b.UserRating));
-                    break;
-
-            }
-            var _finishedBookBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Book.ToString()));
-            var _finishedFilmBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Film.ToString()));
-            var _finishedGameBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Game.ToString()));
-            var _finishedMusicBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Album.ToString()));
-            var _finishedTVBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.TV.ToString()));
-            FinishedBacklogs.Clear();
-            FinishedFilmBacklogs.Clear();
-            FinishedTVBacklogs.Clear();
-            FinishedMusicBacklogs.Clear();
-            FinishedGameBacklogs.Clear();
-            FinishedBookBacklogs.Clear();
-
-            foreach (var backlog in _finishedBacklogs)
-            {
-                FinishedBacklogs.Add(backlog);
-            }
-            foreach (var backlog in _finishedBookBacklogs)
-            {
-                FinishedBookBacklogs.Add(backlog);
-            }
-            foreach (var backlog in _finishedFilmBacklogs)
-            {
-                FinishedFilmBacklogs.Add(backlog);
-            }
-            foreach (var backlog in _finishedGameBacklogs)
-            {
-                FinishedGameBacklogs.Add(backlog);
-            }
-            foreach (var backlog in _finishedMusicBacklogs)
-            {
-                FinishedMusicBacklogs.Add(backlog);
-            }
-            foreach (var backlog in _finishedTVBacklogs)
-            {
-                FinishedTVBacklogs.Add(backlog);
-            }
-            SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
         }
 
         private void View_BackRequested(object sender, BackRequestedEventArgs e)
@@ -202,62 +61,10 @@ namespace backlog.Views
             e.Handled = true;
         }
 
-        /// <summary>
-        /// Saves the backlog
-        /// </summary>
-        /// <returns></returns>
-        private async Task SaveBacklogAsync()
-        {
-            IsLoading = true;
-            foreach (var backlog in Backlogs)
-            {
-                if (backlog.id == SelectedBacklog.id)
-                {
-                    backlog.UserRating = UserRating;
-                }
-            }
-            foreach (var backlog in FinishedBacklogs)
-            {
-                if (backlog.id == SelectedBacklog.id)
-                {
-                    backlog.UserRating = UserRating;
-                }
-            }
-            SaveData.GetInstance().SaveSettings(Backlogs);
-            SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
-            await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
-            IsLoading = false;
-            Debug.WriteLine("Save complete");
-            await CloseBacklog();
-        }
-
-        /// <summary>
-        /// Marks backlog as incomplete
-        /// </summary>
-        /// <returns></returns>
-        private async Task MarkBacklogAsIncompleteAsync()
-        {
-            IsLoading = true;
-            foreach (var backlog in Backlogs)
-            {
-                if (backlog.id == SelectedBacklog.id)
-                {
-                    backlog.IsComplete = false;
-                    backlog.CompletedDate = null;
-                }
-            }
-            FinishedBacklogs.Remove(SelectedBacklog);
-            SaveData.GetInstance().SaveSettings(Backlogs);
-            SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
-            await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
-            ClosePopup(false);
-        }
-
-        private void ClosePopupOverlayAndReload(bool reload=false)
+        private void ClosePopupOverlayAndReload()
         {
             PopupOverlay.Hide();
-            if(reload)
-                Frame.Navigate(typeof(CompletedBacklogsPage));
+            Frame.Navigate(typeof(CompletedBacklogsPage));
         }
 
         /// <summary>
@@ -283,6 +90,7 @@ namespace backlog.Views
         {
             var selectedBacklog = e.ClickedItem as Backlog;
             SelectedBacklog = selectedBacklog;
+            ViewModel.SelectedBacklog = selectedBacklog;
             try
             {
                 ConnectedAnimation connectedAnimation = MainGrid.PrepareConnectedAnimation("forwardAnimation", SelectedBacklog, "connectedElement");
@@ -298,46 +106,15 @@ namespace backlog.Views
             PopupImage.Source = new BitmapImage(new Uri(selectedBacklog.ImageURL));
             PopupTitle.Text = selectedBacklog.Name;
             PopupDirector.Text = selectedBacklog.Director;
-            UserRating = selectedBacklog.UserRating;
-            UserRating = selectedBacklog.UserRating;
+            ViewModel.UserRating = selectedBacklog.UserRating;
+            ViewModel.UserRating = selectedBacklog.UserRating;
 
             await PopupOverlay.ShowAsync();
-        }
-
-        private void PopupSlider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
-        {
-            PopupRating.Value = e.NewValue;
         }
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             await SearchDialog.ShowAsync();
-        }
-
-        private void SortBacklogsByName()
-        {
-            SortOrder = "Name";
-        }
-
-        private void SortBacklogsByCompletedDateAsc()
-        {
-            SortOrder = "Completed Date Asc.";
-        }
-
-        private void SortBacklogsByCompletedDateDsc()
-        {
-            SortOrder = "Completed Date Dsc.";
-        }
-
-        private void SortBacklogsByRatingsAsc()
-        {
-            SortOrder = "Lowest Rating";
-        }
-
-
-        private void SortBacklogsByRatingDsc()
-        {
-            SortOrder = "Highest Rating";
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -355,22 +132,22 @@ namespace backlog.Views
                 switch (mainPivot.SelectedIndex)
                 {
                     case 0:
-                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedBacklogs);
+                        backlogsToSearch = new ObservableCollection<Backlog>(ViewModel.FinishedBacklogs);
                         break;
                     case 1:
-                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedFilmBacklogs);
+                        backlogsToSearch = new ObservableCollection<Backlog>(ViewModel.FinishedBacklogs);
                         break;
                     case 2:
-                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedMusicBacklogs);
+                        backlogsToSearch = new ObservableCollection<Backlog>(ViewModel.FinishedBacklogs);
                         break;
                     case 3:
-                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedTVBacklogs);
+                        backlogsToSearch = new ObservableCollection<Backlog>(ViewModel.FinishedBacklogs);
                         break;
                     case 4:
-                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedGameBacklogs);
+                        backlogsToSearch = new ObservableCollection<Backlog>(ViewModel.FinishedBacklogs);
                         break;
                     case 5:
-                        backlogsToSearch = new ObservableCollection<Backlog>(FinishedBookBacklogs);
+                        backlogsToSearch = new ObservableCollection<Backlog>(ViewModel.FinishedBacklogs);
                         break;
                 }
                 foreach (var backlog in backlogsToSearch)
@@ -396,7 +173,7 @@ namespace backlog.Views
         {
             mainPivot.SelectedIndex = 0;
             SearchDialog.Hide();
-            var selectedBacklog = FinishedBacklogs.FirstOrDefault(b => b.Name == args.ChosenSuggestion.ToString());
+            var selectedBacklog = ViewModel.FinishedBacklogs.FirstOrDefault(b => b.Name == args.ChosenSuggestion.ToString());
             MainGrid.SelectedItem = selectedBacklog;
             MainGrid.ScrollIntoView(selectedBacklog);
         }

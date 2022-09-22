@@ -69,27 +69,27 @@
         <Pivot x:Name="mainPivot" Grid.Row="1">
             <PivotItem Header="all">
                 <controls:AdaptiveGridView x:Name="MainGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
-                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedBacklogs, Mode=OneWay}" Margin="20" />
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedBacklogs, Mode=OneWay}" Margin="20" />
             </PivotItem>
             <PivotItem Header="films">
                 <controls:AdaptiveGridView x:Name="FilmGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
-                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedFilmBacklogs, Mode=OneWay}" Margin="20" />
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedFilmBacklogs, Mode=OneWay}" Margin="20" />
             </PivotItem>
             <PivotItem Header="albums">
                 <controls:AdaptiveGridView x:Name="MusicGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
-                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedMusicBacklogs, Mode=OneWay}" Margin="20" />
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedMusicBacklogs, Mode=OneWay}" Margin="20" />
             </PivotItem>
             <PivotItem Header="tv">
                 <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
-                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedTVBacklogs, Mode=OneWay}" Margin="20" />
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedTVBacklogs, Mode=OneWay}" Margin="20" />
             </PivotItem>
             <PivotItem Header="games">
                 <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
-                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedGameBacklogs, Mode=OneWay}" Margin="20" />
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedGameBacklogs, Mode=OneWay}" Margin="20" />
             </PivotItem>
             <PivotItem Header="books">
                 <controls:AdaptiveGridView x:Name="BooksGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
-                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind FinishedBookBacklogs, Mode=OneWay}" Margin="20" />
+                                           SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedBookBacklogs, Mode=OneWay}" Margin="20" />
             </PivotItem>
         </Pivot>
 
@@ -113,15 +113,15 @@
                 <TextBlock x:Name="PopupDirector" Style="{StaticResource CaptionTextBlockStyle}" Grid.Row="2" HorizontalAlignment="Center"
                                                 Margin="0,2,8,0" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
                 <muxc:RatingControl x:Name="PopupRating" RelativePanel.Below="PopupDirector" IsReadOnly="True" Grid.Row="3"
-                                    Value="{x:Bind UserRating, Mode=TwoWay}"/>
-                <Slider x:Name="PopupSlider" RelativePanel.Below="PopupRating" Grid.Row="4" Value="{x:Bind UserRating, Mode=TwoWay}"
+                                    Value="{x:Bind ViewModel.UserRating, Mode=TwoWay}"/>
+                <Slider x:Name="PopupSlider" RelativePanel.Below="PopupRating" Grid.Row="4" Value="{x:Bind ViewModel.UserRating, Mode=TwoWay}"
                         Maximum="5" Minimum="-1" StepFrequency="0.5" />
                 <StackPanel Orientation="Horizontal" RelativePanel.Below="PopupSlider" Grid.Row="5">
-                    <Button x:Name="SaveButton" Content="Save" Background="Green" Command="{x:Bind SaveBacklog}" Margin="10" />
-                    <Button x:Name="IncompleteButton" Content="Move to Backlog" Command="{x:Bind MarkBacklogAsIncomplete}" Margin="10" />
+                    <Button x:Name="SaveButton" Content="Save" Background="Green" Command="{x:Bind ViewModel.SaveBacklog}" Margin="10" />
+                    <Button x:Name="IncompleteButton" Content="Move to Backlog" Command="{x:Bind ViewModel.MarkBacklogAsIncomplete}" Margin="10" />
                     <Button x:Name="CloseButton" Content="Close" Background="Red" Command="{x:Bind CloseBacklogPopup}" Margin="10" />
                 </StackPanel>
-                <ProgressRing x:Name="ProgRing" IsActive="{x:Bind IsLoading, Mode=OneWay}" />
+                <ProgressRing x:Name="ProgRing" IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
             </Grid>
         </ContentDialog>
 
@@ -134,16 +134,16 @@
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click"/>
-            <AppBarButton x:Name="TopSortButton" Label="{x:Bind SortOrder, Mode=OneWay}" Icon="Sort">
+            <AppBarButton x:Name="TopSortButton" Label="{x:Bind ViewModel.SortOrder, Mode=OneWay}" Icon="Sort">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="Name" Command="{x:Bind SortByName}" />
+                        <MenuFlyoutItem Text="Name" Command="{x:Bind ViewModel.SortByName}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Completed Date Asc." Command="{x:Bind SortByDateAsc}" />
-                        <MenuFlyoutItem Text="Completed Date Dsc." Command="{x:Bind SortByDateDsc}" />
+                        <MenuFlyoutItem Text="Completed Date Asc." Command="{x:Bind ViewModel.SortByDateAsc}" />
+                        <MenuFlyoutItem Text="Completed Date Dsc." Command="{x:Bind ViewModel.SortByDateDsc}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Lowest Rating" Command="{x:Bind SortByRatingAsc}" />
-                        <MenuFlyoutItem Text="Highest Rating" Command="{x:Bind SortByRatingDsc}" />
+                        <MenuFlyoutItem Text="Lowest Rating" Command="{x:Bind ViewModel.SortByRatingAsc}" />
+                        <MenuFlyoutItem Text="Highest Rating" Command="{x:Bind ViewModel.SortByRatingDsc}" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -158,16 +158,16 @@
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
             <AppBarButton x:Name="BottomSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
-            <AppBarButton x:Name="BottomSortButton" Label="{x:Bind SortOrder, Mode=OneWay}" Icon="Sort">
+            <AppBarButton x:Name="BottomSortButton" Label="{x:Bind ViewModel.SortOrder, Mode=OneWay}" Icon="Sort">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="Name" Command="{x:Bind SortByName}" />
+                        <MenuFlyoutItem Text="Name" Command="{x:Bind ViewModel.SortByName}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Completed Date Asc." Command="{x:Bind SortByDateAsc}" />
-                        <MenuFlyoutItem Text="Completed Date Dsc." Command="{x:Bind SortByDateDsc}" />
+                        <MenuFlyoutItem Text="Completed Date Asc." Command="{x:Bind ViewModel.SortByDateAsc}" />
+                        <MenuFlyoutItem Text="Completed Date Dsc." Command="{x:Bind ViewModel.SortByDateDsc}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Lowest Rating" Command="{x:Bind SortByRatingAsc}" />
-                        <MenuFlyoutItem Text="Highest Rating" Command="{x:Bind SortByRatingDsc}" />
+                        <MenuFlyoutItem Text="Lowest Rating" Command="{x:Bind ViewModel.SortByRatingAsc}" />
+                        <MenuFlyoutItem Text="Highest Rating" Command="{x:Bind ViewModel.SortByRatingDsc}" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
