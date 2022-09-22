@@ -22,6 +22,8 @@ using Windows.UI.Notifications;
 using Google.Apis.YouTube.v3;
 using Google.Apis.Services;
 using Windows.System.Profile;
+using System.Windows.Input;
+using MvvmHelpers.Commands;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -32,8 +34,12 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class BacklogPage : Page
     {
-        private Backlog backlog;
-        private ObservableCollection<Backlog> backlogs;
+        public Backlog Backlog;
+        public ObservableCollection<Backlog> Backlogs;
+
+        public ICommand LaunchBingSearchResults { get; }
+
+
         private int backlogIndex;
         private bool edited;
         bool signedIn;
@@ -45,8 +51,9 @@ namespace backlog.Views
         public BacklogPage()
         {
             this.InitializeComponent();
-            Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
-            backlogs = SaveData.GetInstance().GetBacklogs();
+            LaunchBingSearchResults = new AsyncCommand(LaunchBingSearchResultsAsync);
+
+            Backlogs = SaveData.GetInstance().GetBacklogs();
             signedIn = Settings.IsSignedIn;
             edited = false;
             var view = SystemNavigationManager.GetForCurrentView();
@@ -56,12 +63,12 @@ namespace backlog.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Guid selectedId = (Guid)e.Parameter;
-            foreach (Backlog b in backlogs)
+            foreach (Backlog b in Backlogs)
             {
                 if (selectedId == b.id)
                 {
-                    backlog = b;
-                    switch(backlog.Type)
+                    Backlog = b;
+                    switch(Backlog.Type)
                     {
                         case "Film":
                             source = "IMdB";
@@ -86,13 +93,13 @@ namespace backlog.Views
                             PlayTrailerButton.Visibility = Visibility.Collapsed;
                             break;
                     }
-                    backlogIndex = backlogs.IndexOf(b);
+                    backlogIndex = Backlogs.IndexOf(b);
                 }
             }
-            if(!backlog.ShowProgress)
+            if(!Backlog.ShowProgress)
             {
                 ProgressSwitch.Visibility = Visibility.Visible;
-                if(backlog.Progress > 0)
+                if(Backlog.Progress > 0)
                 {
                     ProgressSwitch.IsOn = true;
                 }
@@ -109,8 +116,8 @@ namespace backlog.Views
         {
             ContentDialog contentDialog = new ContentDialog
             {
-                Title = backlog.Name,
-                Content = backlog.Description,
+                Title = Backlog.Name,
+                Content = Backlog.Description,
                 CloseButtonText = "Close"
             };
             await contentDialog.ShowAsync();
@@ -153,8 +160,8 @@ namespace backlog.Views
         private async Task DeleteConfirmation_Click()
         {
             ProgBar.Visibility = Visibility.Visible;
-            backlogs.Remove(backlog);
-            SaveData.GetInstance().SaveSettings(backlogs);
+            Backlogs.Remove(Backlog);
+            SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(signedIn);
             Frame.Navigate(prevPage?.SourcePageType);
         }
@@ -213,8 +220,8 @@ namespace backlog.Views
             {
                 await Logger.Info("Saving backlog....");
             }catch { }
-            backlogs[backlogIndex] = backlog;
-            SaveData.GetInstance().SaveSettings(backlogs);
+            Backlogs[backlogIndex] = Backlog;
+            SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(signedIn);
         }
 
@@ -235,9 +242,9 @@ namespace backlog.Views
                 await Logger.Info("Marking backlog as complete");
             }
             catch { }
-            backlog.IsComplete = true;
-            backlog.UserRating = UserRating.Value;
-            backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
+            Backlog.IsComplete = true;
+            Backlog.UserRating = UserRating.Value;
+            Backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
             await SaveBacklog();
             RatingDialog.Hide();
             Frame.Navigate(typeof(MainPage));
@@ -331,15 +338,15 @@ namespace backlog.Views
                 }
             }
             ProgBar.Visibility = Visibility.Visible;
-            backlog.TargetDate = DatePicker.Date.Value.ToString("D", CultureInfo.InvariantCulture);
-            backlog.NotifTime = TimePicker.Time;
-            if(backlog.NotifTime != TimeSpan.Zero)
+            Backlog.TargetDate = DatePicker.Date.Value.ToString("D", CultureInfo.InvariantCulture);
+            Backlog.NotifTime = TimePicker.Time;
+            if(Backlog.NotifTime != TimeSpan.Zero)
             {
-                var notifTime = DateTimeOffset.Parse(backlog.TargetDate, CultureInfo.InvariantCulture).Add(backlog.NotifTime);
+                var notifTime = DateTimeOffset.Parse(Backlog.TargetDate, CultureInfo.InvariantCulture).Add(Backlog.NotifTime);
                 var builder = new ToastContentBuilder()
-                    .AddText($"It's {backlog.Name} time!")
-                    .AddText($"You wanted to check out {backlog.Name} by {backlog.Director} today. Get to it!")
-                    .AddHeroImage(new Uri(backlog.ImageURL));
+                    .AddText($"It's {Backlog.Name} time!")
+                    .AddText($"You wanted to check out {Backlog.Name} by {Backlog.Director} today. Get to it!")
+                    .AddHeroImage(new Uri(Backlog.ImageURL));
                 ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), notifTime);
                 ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
             }
@@ -373,8 +380,8 @@ namespace backlog.Views
         private async void ShareButton_Click(object sender, RoutedEventArgs e)
         {
             ProgBar.Visibility = Visibility.Visible;
-            StorageFile backlogFile = await tempFolder.CreateFileAsync($"{backlog.Name}.bklg", CreationCollisionOption.ReplaceExisting);
-            string json = JsonConvert.SerializeObject(backlog);
+            StorageFile backlogFile = await tempFolder.CreateFileAsync($"{Backlog.Name}.bklg", CreationCollisionOption.ReplaceExisting);
+            string json = JsonConvert.SerializeObject(Backlog);
             await FileIO.WriteTextAsync(backlogFile, json);
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
             dataTransferManager.DataRequested += DataTransferManager_DataRequested;
@@ -385,9 +392,9 @@ namespace backlog.Views
         private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             DataRequest dataRequest = args.Request;
-            dataRequest.Data.Properties.Title = $"Share {backlog.Name} backlog";
+            dataRequest.Data.Properties.Title = $"Share {Backlog.Name} backlog";
             dataRequest.Data.Properties.Description = "Your contacts with the Backlogs app installed can open this file and add it to their backlog";
-            var fileToShare = await tempFolder.GetFileAsync($"{backlog.Name}.bklg");
+            var fileToShare = await tempFolder.GetFileAsync($"{Backlog.Name}.bklg");
             List<IStorageItem> list = new List<IStorageItem>();
             list.Add(fileToShare);
             dataRequest.Data.SetStorageItems(list);
@@ -415,12 +422,12 @@ namespace backlog.Views
             edited = true;
             if(ProgressSwitch.IsOn)
             {
-                backlog.Progress = 1;
-                backlog.Length = 1;
+                Backlog.Progress = 1;
+                Backlog.Length = 1;
             }
             else
             {
-                backlog.Progress = 0;
+                Backlog.Progress = 0;
             }
         }
 
@@ -437,7 +444,7 @@ namespace backlog.Views
                 ApplicationName = "Backlogs"
             });
             var searchListRequest = youtubeService.Search.List("snippet");
-            searchListRequest.Q = backlog.Name + " offical trailer";
+            searchListRequest.Q = Backlog.Name + " offical trailer";
             searchListRequest.MaxResults = 1;
 
             var searchListResponse = await searchListRequest.ExecuteAsync();
@@ -476,14 +483,12 @@ namespace backlog.Views
         /// <summary>
         /// Launch default browser to show Bing results
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void bingSearchButton_Click(object sender, RoutedEventArgs e)
+        private async Task LaunchBingSearchResultsAsync()
         {
-            string searchTerm = backlog.Name;
-            if(backlog.Type == "Album" || backlog.Type == "Book")
+            string searchTerm = Backlog.Name;
+            if (Backlog.Type == "Album" || Backlog.Type == "Book")
             {
-                searchTerm += $" {backlog.Director}";
+                searchTerm += $" {Backlog.Director}";
             }
             var searchQuery = searchTerm.Replace(" ", "+");
             var searchUri = new Uri($"https://www.bing.com/search?q={searchQuery}");
