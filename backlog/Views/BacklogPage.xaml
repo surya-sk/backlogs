@@ -38,7 +38,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <ContentDialog x:Name="trailerDialog" CloseButtonText="Close" CloseButtonClick="trailerDialog_CloseButtonClick">
+        <ContentDialog x:Name="trailerDialog" CloseButtonText="Close" CloseButtonCommand="{x:Bind CloseWebViewTrailer}">
             <Grid Width="600" Height="400">
                 <WebView x:Name="webView" />
             </Grid>
@@ -67,7 +67,7 @@
                     
                     <RelativePanel>
                         <Image x:Name="img" Source="{x:Bind Backlog.ImageURL}" Height="200" Width="200" HorizontalAlignment="Center" Margin="30,30,30,0"/>
-                        <Button x:Name="PlayTrailerButton" Click="PlayTrailerButton_Click" Margin="80,10,0,10" Content="Play trailer" RelativePanel.Below="img"
+                        <Button x:Name="PlayTrailerButton" Command="{x:Bind OpenWebViewTrailer}" Margin="80,10,0,10" Content="Play trailer" RelativePanel.Below="img"
                                 Width="100" HorizontalAlignment="Center" Background="{ThemeResource SystemAccentColor}"  />
                         <Grid x:Name="detailsGrid" RelativePanel.RightOf="img" Height="200" Margin="30">
                             <Grid.RowDefinitions>

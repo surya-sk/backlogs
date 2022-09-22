@@ -24,6 +24,7 @@ using Google.Apis.Services;
 using Windows.System.Profile;
 using System.Windows.Input;
 using MvvmHelpers.Commands;
+using System.ComponentModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -32,12 +33,18 @@ namespace backlog.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class BacklogPage : Page
+    public sealed partial class BacklogPage : Page, INotifyPropertyChanged
     {
         public Backlog Backlog;
         public ObservableCollection<Backlog> Backlogs;
 
         public ICommand LaunchBingSearchResults { get; }
+        public ICommand CloseWebViewTrailer { get; }
+        public ICommand OpenWebViewTrailer { get; }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public delegate Task LaunchWebView(string video);
+
+        public LaunchWebView LaunchWebViewFunc;
 
 
         private int backlogIndex;
@@ -48,10 +55,16 @@ namespace backlog.Views
         PageStackEntry prevPage;
         StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
         DateTime today = DateTime.Today;
+
+
         public BacklogPage()
         {
             this.InitializeComponent();
             LaunchBingSearchResults = new AsyncCommand(LaunchBingSearchResultsAsync);
+            CloseWebViewTrailer = new Command(CloseWebView);
+            OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);
+
+            LaunchWebViewFunc = LaunchTrailerWebView;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
             signedIn = Settings.IsSignedIn;
@@ -434,9 +447,7 @@ namespace backlog.Views
         /// <summary>
         /// Plays the first Youtube result found for "*Name* Offical Trailer"
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void PlayTrailerButton_Click(object sender, RoutedEventArgs e)
+        private async Task PlayTrailerAsync()
         {
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
@@ -451,10 +462,16 @@ namespace backlog.Views
 
             List<string> videos = new List<string>();
 
-            foreach(var searchResult in searchListResponse.Items)
+            foreach (var searchResult in searchListResponse.Items)
             {
                 videos.Add(searchResult.Id.VideoId);
             }
+            await LaunchWebViewFunc(videos[0]);
+        }
+
+        private async Task LaunchTrailerWebView(string video)
+        {
+            await trailerDialog.ShowAsync();
             try
             {
                 trailerDialog.CornerRadius = new CornerRadius(0); // Without this, for some fucking reason, buttons inside the WebView do not work
@@ -465,17 +482,14 @@ namespace backlog.Views
             }
             string width = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "600" : "500";
             string height = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "100%" : "400";
-            webView.NavigateToString($"<iframe width=\"{width}\" height=\"{height}\" src=\"https://www.youtube.com/embed/{videos[0]}?autoplay={Settings.AutoplayVideos}\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
+            webView.NavigateToString($"<iframe width=\"{width}\" height=\"{height}\" src=\"https://www.youtube.com/embed/{video}?autoplay={Settings.AutoplayVideos}\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
 
-            await trailerDialog.ShowAsync();
         }
 
         /// <summary>
         /// Navigate to a blank page because audio keeps playing after closing the WebView for some reason
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        private void trailerDialog_CloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private void CloseWebView()
         {
             webView.Navigate(new Uri("about:blank"));
         }
