@@ -59,16 +59,17 @@
         </VisualStateManager.VisualStateGroups>
         <Grid x:Name="mainGrid">
 
-            <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
+            <muxc:ProgressBar VerticalAlignment="Top" IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
             <Pivot x:Name="mainPivot">
                 <PivotItem Header="all">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyListText" Text="Thank you for trying Backlogs. Sign-in for cross-device syncing and data backups! This is pre-release software, so use at your peril " Visibility="{x:Bind BacklogsEmpty, Mode=OneWay}"
+                            <TextBlock x:Name="EmptyListText" Text="Thank you for trying Backlogs. Sign-in for cross-device syncing and data backups! This is pre-release software, so use at your peril " 
+                                       Visibility="{x:Bind ViewModel.BacklogsEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind IncompleteBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.IncompleteBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" Loaded="BacklogsGrid_Loaded"
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -78,10 +79,10 @@
                 <PivotItem Header="films">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyFilmsText" Text="No films yet. Add some by clicking +." Visibility="{x:Bind FilmsEmpty, Mode=OneWay}"
+                            <TextBlock x:Name="EmptyFilmsText" Text="No films yet. Add some by clicking +." Visibility="{x:Bind ViewModel.FilmsEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="FilmsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind FilmBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.FilmBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -91,10 +92,10 @@
                 <PivotItem Header="albums">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyMusicText" Text="No albums yet. Add some by clicking +" Visibility="{x:Bind AlbumsEmpty, Mode=OneWay}"
+                            <TextBlock x:Name="EmptyMusicText" Text="No albums yet. Add some by clicking +" Visibility="{x:Bind ViewModel.AlbumsEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="AlbumsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind MusicBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.MusicBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -104,10 +105,10 @@
                 <PivotItem Header="tv">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyTVText" Text="No series yet. Add some by clicking +" Visibility="{x:Bind TVEmpty, Mode=OneWay}"
+                            <TextBlock x:Name="EmptyTVText" Text="No series yet. Add some by clicking +" Visibility="{x:Bind ViewModel.TVEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind TvBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.TvBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -117,10 +118,10 @@
                 <PivotItem Header="games">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyGamesText" Text="No games yet. Add some by clicking +" Visibility="{x:Bind GamesEmpty, Mode=OneWay}"
+                            <TextBlock x:Name="EmptyGamesText" Text="No games yet. Add some by clicking +" Visibility="{x:Bind ViewModel.GamesEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind GameBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.GameBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -130,10 +131,10 @@
                 <PivotItem Header="books">
                     <ScrollViewer>
                         <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyBooksText" Text="No books yet. Add some by clicking +" Visibility="{x:Bind BooksEmpty, Mode=OneWay}"
+                            <TextBlock x:Name="EmptyBooksText" Text="No books yet. Add some by clicking +" Visibility="{x:Bind ViewModel.BooksEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="BooksGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind BookBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.BookBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" 
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -150,29 +151,30 @@
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
-            <AppBarButton x:Name="TopSortButton" Label="{x:Bind SortOrder, Mode=OneWay}" Icon="Sort">
+            <AppBarButton x:Name="TopSortButton" Label="{x:Bind ViewModel.SortOrder, Mode=OneWay}" Icon="Sort">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="Name" Command="{x:Bind SortByName}" />
+                        <MenuFlyoutItem Text="Name" Command="{x:Bind ViewModel.SortByName}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Created Date Asc." Command="{x:Bind SortByCreatedDateAsc}" />
-                        <MenuFlyoutItem Text="Created Date Dsc." Command="{x:Bind SortByCreatedDateDsc}" />
+                        <MenuFlyoutItem Text="Created Date Asc." Command="{x:Bind ViewModel.SortByCreatedDateAsc}" />
+                        <MenuFlyoutItem Text="Created Date Dsc." Command="{x:Bind ViewModel.SortByCreatedDateDsc}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Target Date Asc." Command="{x:Bind SortByTargetDateAsc}" />
-                        <MenuFlyoutItem Text="Target Date Dsc." Command="{x:Bind SortByTargetDateDsc}" />
+                        <MenuFlyoutItem Text="Target Date Asc." Command="{x:Bind ViewModel.SortByTargetDateAsc}" />
+                        <MenuFlyoutItem Text="Target Date Dsc." Command="{x:Bind ViewModel.SortByTargetDateDsc}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Progress Asc." Command="{x:Bind SortByProgressAsc}" />
-                        <MenuFlyoutItem Text="Progress Dsc." Command="{x:Bind SortByProgressDsc}" />
+                        <MenuFlyoutItem Text="Progress Asc." Command="{x:Bind ViewModel.SortByProgressAsc}" />
+                        <MenuFlyoutItem Text="Progress Dsc." Command="{x:Bind ViewModel.SortByProgressDsc}" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton x:Name="TopRandomButton" Label="Random" Icon="Shuffle" Click="RandomButton_Click" />
+            <AppBarButton x:Name="TopRandomButton" Label="Random" Icon="Shuffle" Command="{x:Bind ViewModel.GenerateRandomBacklog}"
+                          CommandParameter="{x:Bind mainPivot.SelectedIndex, Mode=OneWay}"/>
             <AppBarButton x:Name="TopCreateButton" Label="New" Icon="Add" Click="CreateButton_Click" />
             <AppBarButton x:Name="TopCompletedBacklogsButton" Label="Completed backlogs" Click="CompletedBacklogsButton_Click">
                 <FontIcon Glyph="" />
             </AppBarButton>
-            <AppBarButton Label="{x:Bind UserName, Mode=OneWay}" Visibility="{x:Bind SignedIn}">
-                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind AccountPic, Mode=OneWay}"/>
+            <AppBarButton Label="{x:Bind ViewModel.UserName, Mode=OneWay}" Visibility="{x:Bind ViewModel.SignedIn, Mode=OneWay}">
+                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="TopSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
@@ -183,29 +185,30 @@
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
             <AppBarButton x:Name="BottomSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
-            <AppBarButton x:Name="BottomSortButton" Label="{x:Bind SortOrder, Mode=OneWay}" Icon="Sort">
+            <AppBarButton x:Name="BottomSortButton" Label="{x:Bind ViewModel.SortOrder, Mode=OneWay}" Icon="Sort">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="Name" Command="{x:Bind SortByName}" />
+                        <MenuFlyoutItem Text="Name" Command="{x:Bind ViewModel.SortByName}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Created Date Asc." Command="{x:Bind SortByCreatedDateAsc}" />
-                        <MenuFlyoutItem Text="Created Date Dsc." Command="{x:Bind SortByCreatedDateDsc}" />
+                        <MenuFlyoutItem Text="Created Date Asc." Command="{x:Bind ViewModel.SortByCreatedDateAsc}" />
+                        <MenuFlyoutItem Text="Created Date Dsc." Command="{x:Bind ViewModel.SortByCreatedDateDsc}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Target Date Asc." Command="{x:Bind SortByTargetDateAsc}" />
-                        <MenuFlyoutItem Text="Target Date Dsc." Command="{x:Bind SortByTargetDateDsc}" />
+                        <MenuFlyoutItem Text="Target Date Asc." Command="{x:Bind ViewModel.SortByTargetDateAsc}" />
+                        <MenuFlyoutItem Text="Target Date Dsc." Command="{x:Bind ViewModel.SortByTargetDateDsc}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Progress Asc." Command="{x:Bind SortByProgressAsc}" />
-                        <MenuFlyoutItem Text="Progress Dsc." Command="{x:Bind SortByProgressDsc}" />
+                        <MenuFlyoutItem Text="Progress Asc." Command="{x:Bind ViewModel.SortByProgressAsc}" />
+                        <MenuFlyoutItem Text="Progress Dsc." Command="{x:Bind ViewModel.SortByProgressDsc}" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton x:Name="BottomRandomButton" Label="Random" Icon="Shuffle" Click="RandomButton_Click" />
+            <AppBarButton x:Name="BottomRandomButton" Label="Random" Icon="Shuffle" Command="{x:Bind ViewModel.GenerateRandomBacklog}"
+                          CommandParameter="{x:Bind mainPivot.SelectedIndex, Mode=OneWay}"/>
             <AppBarButton x:Name="BottomCreateButton" Label="New" Icon="Add" Click="CreateButton_Click" />
             <AppBarButton x:Name="BottomCompletedBacklogsButton" Label="Completed backlogs" Click="CompletedBacklogsButton_Click">
                 <FontIcon Glyph="" />
             </AppBarButton>
-            <AppBarButton Label="{x:Bind UserName, Mode=OneWay}" Visibility="{x:Bind SignedIn}">
-                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind AccountPic, Mode=OneWay}"/>
+            <AppBarButton Label="{x:Bind ViewModel.UserName, Mode=OneWay}" Visibility="{x:Bind ViewModel.SignedIn, Mode=OneWay}">
+                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="BottomSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />

@@ -91,8 +91,6 @@ namespace backlog.ViewModels
             SortByDateDsc = new Command(SortBacklogsByCompletedDateDsc);
             SortByRatingAsc = new Command(SortBacklogsByRatingsAsc);
             SortByRatingDsc = new Command(SortBacklogsByRatingDsc);
-            //CloseBacklog = CloseBacklogAsync;
-            //ClosePopup = ClosePopupOverlayAndReload;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
             FinishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
