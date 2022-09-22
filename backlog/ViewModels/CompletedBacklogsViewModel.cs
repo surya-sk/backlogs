@@ -21,6 +21,12 @@ namespace backlog.ViewModels
         private string _sortOrder = Settings.CompletedSortOrder;
         private bool _loading = false;
         private double _userRating;
+        private bool _allEmpty;
+        private bool _filmsEmpty;
+        private bool _albumsEmpty;
+        private bool _booksEmpty;
+        private bool _tvEmpty;
+        private bool _gamesEmpty;
 
         public ObservableCollection<Backlog> FinishedBacklogs;
         public ObservableCollection<Backlog> FinishedFilmBacklogs;
@@ -79,6 +85,66 @@ namespace backlog.ViewModels
                     Settings.CompletedSortOrder = _sortOrder;
                     PopulateBacklogs();
                 }
+            }
+        }
+
+        public bool BacklogsEmpty
+        {
+            get => _allEmpty;
+            set
+            {
+                _allEmpty = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BacklogsEmpty)));
+            }
+        }
+
+        public bool FilmsEmpty
+        {
+            get => _filmsEmpty;
+            set
+            {
+                _filmsEmpty = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilmsEmpty)));
+            }
+        }
+
+        public bool TVEmpty
+        {
+            get => _tvEmpty;
+            set
+            {
+                _tvEmpty = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TVEmpty)));
+            }
+        }
+
+        public bool BooksEmpty
+        {
+            get => _booksEmpty;
+            set
+            {
+                _booksEmpty = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BooksEmpty)));
+            }
+        }
+
+        public bool GamesEmpty
+        {
+            get => _gamesEmpty;
+            set
+            {
+                _gamesEmpty = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GamesEmpty)));
+            }
+        }
+
+        public bool AlbumsEmpty
+        {
+            get => _albumsEmpty;
+            set
+            {
+                _albumsEmpty = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AlbumsEmpty)));
             }
         }
 
@@ -165,6 +231,17 @@ namespace backlog.ViewModels
                 FinishedTVBacklogs.Add(backlog);
             }
             SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
+            CheckEmptyBacklogs();
+        }
+
+        private void CheckEmptyBacklogs()
+        {
+            BacklogsEmpty = FinishedBacklogs.Count <= 0;
+            FilmsEmpty = FinishedFilmBacklogs.Count <= 0;
+            BooksEmpty = FinishedBookBacklogs.Count <= 0;
+            TVEmpty = FinishedTVBacklogs.Count <= 0;
+            GamesEmpty = FinishedGameBacklogs.Count <= 0;
+            AlbumsEmpty = FinishedMusicBacklogs.Count <= 0;
         }
 
         /// <summary>

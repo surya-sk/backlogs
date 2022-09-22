@@ -63,33 +63,66 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock  x:Name="EmptyText" Text="you haven't completed any of your backlogs yet :(" TextWrapping="Wrap" Grid.Row="1" Visibility="Collapsed"
-                    Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
-
         <Pivot x:Name="mainPivot" Grid.Row="1">
             <PivotItem Header="all">
-                <controls:AdaptiveGridView x:Name="MainGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical" Margin="0,20,0,0">
+                        <TextBlock Text="You haven't completed any backlogs yet :(. Get on it!" Visibility="{x:Bind ViewModel.BacklogsEmpty, Mode=OneWay}"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <controls:AdaptiveGridView x:Name="MainGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                            SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedBacklogs, Mode=OneWay}" Margin="20" />
+                    </StackPanel>
+                </ScrollViewer>
             </PivotItem>
             <PivotItem Header="films">
-                <controls:AdaptiveGridView x:Name="FilmGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                <ScrollViewer>
+                    <StackPanel Margin="0,20,0,0">
+                        <TextBlock Text="You haven't completed any films yet :(." Visibility="{x:Bind ViewModel.FilmsEmpty, Mode=OneWay}"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <controls:AdaptiveGridView x:Name="FilmGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                            SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedFilmBacklogs, Mode=OneWay}" Margin="20" />
+                    </StackPanel>
+                </ScrollViewer>
             </PivotItem>
             <PivotItem Header="albums">
-                <controls:AdaptiveGridView x:Name="MusicGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                <ScrollViewer>
+                    <StackPanel Margin="0,20,0,0">
+                        <TextBlock Text="You haven't completed any albums yet :(." Visibility="{x:Bind ViewModel.AlbumsEmpty, Mode=OneWay}"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <controls:AdaptiveGridView x:Name="MusicGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                            SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedMusicBacklogs, Mode=OneWay}" Margin="20" />
+                    </StackPanel>
+                </ScrollViewer>
             </PivotItem>
             <PivotItem Header="tv">
-                <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                <ScrollViewer>
+                    <StackPanel Margin="0,20,0,0">
+                        <TextBlock Text="You haven't completed any series yet :(." Visibility="{x:Bind ViewModel.TVEmpty, Mode=OneWay}"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                            SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedTVBacklogs, Mode=OneWay}" Margin="20" />
+                    </StackPanel>
+                </ScrollViewer>
             </PivotItem>
             <PivotItem Header="games">
-                <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                <ScrollViewer>
+                    <StackPanel Margin="0,20,0,0">
+                        <TextBlock Text="You haven't completed any games yet :(." Visibility="{x:Bind ViewModel.GamesEmpty, Mode=OneWay}"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                            SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedGameBacklogs, Mode=OneWay}" Margin="20" />
+                    </StackPanel>
+                </ScrollViewer>
             </PivotItem>
             <PivotItem Header="books">
-                <controls:AdaptiveGridView x:Name="BooksGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
+                <ScrollViewer>
+                    <StackPanel Margin="0,20,0,0">
+                        <TextBlock Text="You haven't completed any books yet :(." Visibility="{x:Bind ViewModel.BooksEmpty, Mode=OneWay}"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
+                        <controls:AdaptiveGridView x:Name="BooksGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                            SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" ItemsSource="{x:Bind ViewModel.FinishedBookBacklogs, Mode=OneWay}" Margin="20" />
+                    </StackPanel>
+                </ScrollViewer>
             </PivotItem>
         </Pivot>
 

@@ -20,14 +20,6 @@ namespace backlog.ViewModels
 {
     public class BacklogsViewModel: INotifyPropertyChanged
     {
-        public ObservableCollection<Backlog> Backlogs { get; set; }
-        public ObservableCollection<Backlog> IncompleteBacklogs { get; set; }
-        public ObservableCollection<Backlog> FilmBacklogs { get; set; }
-        public ObservableCollection<Backlog> TvBacklogs { get; set; }
-        public ObservableCollection<Backlog> GameBacklogs { get; set; }
-        public ObservableCollection<Backlog> MusicBacklogs { get; set; }
-        public ObservableCollection<Backlog> BookBacklogs { get; set; }
-
         private string _sortOrder = Settings.SortOrder;
         private bool _allEmpty;
         private bool _filmsEmpty;
@@ -37,6 +29,14 @@ namespace backlog.ViewModels
         private bool _gamesEmpty;
 
         private BitmapImage _accountPic;
+
+        public ObservableCollection<Backlog> Backlogs { get; set; }
+        public ObservableCollection<Backlog> IncompleteBacklogs { get; set; }
+        public ObservableCollection<Backlog> FilmBacklogs { get; set; }
+        public ObservableCollection<Backlog> TvBacklogs { get; set; }
+        public ObservableCollection<Backlog> GameBacklogs { get; set; }
+        public ObservableCollection<Backlog> MusicBacklogs { get; set; }
+        public ObservableCollection<Backlog> BookBacklogs { get; set; }
 
         private bool _isLoading;
 
