@@ -3,12 +3,14 @@ using backlog.Logging;
 using backlog.Models;
 using backlog.Saving;
 using backlog.Utils;
+using Google.Apis.Http;
 using Microsoft.Graph;
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -40,15 +42,22 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class BacklogsPage : Page, INotifyPropertyChanged
     {
-        private ObservableCollection<Backlog> Backlogs { get; set; }
-        private ObservableCollection<Backlog> IncompleteBacklogs { get; set; }
-        private ObservableCollection<Backlog> FilmBacklogs { get; set; }
-        private ObservableCollection<Backlog> TvBacklogs { get; set; }
-        private ObservableCollection<Backlog> GameBacklogs { get; set; }
-        private ObservableCollection<Backlog> MusicBacklogs { get; set; }
-        private ObservableCollection<Backlog> BookBacklogs { get; set; }
+        public ObservableCollection<Backlog> Backlogs { get; set; }
+        public ObservableCollection<Backlog> IncompleteBacklogs { get; set; }
+        public ObservableCollection<Backlog> FilmBacklogs { get; set; }
+        public ObservableCollection<Backlog> TvBacklogs { get; set; }
+        public ObservableCollection<Backlog> GameBacklogs { get; set; }
+        public ObservableCollection<Backlog> MusicBacklogs { get; set; }
+        public ObservableCollection<Backlog> BookBacklogs { get; set; }
 
         private string _sortOrder = Settings.SortOrder;
+        private bool _allEmpty;
+        private bool _filmsEmpty;
+        private bool _albumsEmpty;
+        private bool _booksEmpty;
+        private bool _tvEmpty;
+        private bool _gamesEmpty;
+
         GraphServiceClient graphServiceClient;
 
         bool isNetworkAvailable = false;
@@ -80,6 +89,68 @@ namespace backlog.Views
                 }
             }
         }
+
+        public bool BacklogsEmpty
+        {
+            get => _allEmpty;
+            set
+            {
+                _allEmpty = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BacklogsEmpty)));
+            }
+        }
+
+        public bool FilmsEmpty
+        {
+            get => _filmsEmpty;
+            set
+            {
+                _filmsEmpty = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilmsEmpty)));
+            }
+        }
+
+        public bool TVEmpty
+        {
+            get => _tvEmpty;
+            set
+            {
+                _tvEmpty = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TVEmpty)));
+            }
+        }
+
+        public bool BooksEmpty
+        {
+            get => _booksEmpty;
+            set
+            {
+                _booksEmpty = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BooksEmpty)));
+            }
+        }
+
+        public bool GamesEmpty
+        {
+            get => _gamesEmpty;
+            set
+            {
+                _gamesEmpty = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GamesEmpty)));
+            }
+        }
+
+        public bool AlbumsEmpty
+        {
+            get => _albumsEmpty;
+            set
+            {
+                _albumsEmpty = value;
+                Debug.WriteLine("Empty albums - ", value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AlbumsEmpty)));
+            }
+        }
+
         public BacklogsPage()
         {
             this.InitializeComponent();
@@ -205,7 +276,6 @@ namespace backlog.Views
             GameBacklogs.Clear();
             MusicBacklogs.Clear();
             BookBacklogs.Clear();
-            EmptyListText.Visibility = Visibility.Collapsed;
             foreach (var b in _backlogs)
             {
                 IncompleteBacklogs.Add(b);
@@ -230,28 +300,17 @@ namespace backlog.Views
             {
                 MusicBacklogs.Add(b);
             }
-            ShowEmptyMessage();
+            CheckEmptyBacklogs();
         }
 
-        private void ShowEmptyMessage()
+        private void CheckEmptyBacklogs()
         {
-            ObservableCollection<Backlog>[] _backlogs = { IncompleteBacklogs, FilmBacklogs, TvBacklogs, GameBacklogs, MusicBacklogs, BookBacklogs };
-            TextBlock[] textBlocks = { EmptyListText, EmptyFilmsText, EmptyTVText, EmptyGamesText, EmptyMusicText, EmptyBooksText };
-            for (int i = 0; i < _backlogs.Length; i++)
-            {
-                if (_backlogs[i].Count <= 0)
-                {
-                    textBlocks[i].Visibility = Visibility.Visible;
-                    if (i > 0)
-                    {
-                        textBlocks[i].Text = $"Nothing to see here. Add some!";
-                    }
-                }
-                else
-                {
-                    textBlocks[i].Visibility = Visibility.Collapsed;
-                }
-            }
+            BacklogsEmpty = IncompleteBacklogs.Count <= 0;
+            FilmsEmpty = FilmBacklogs.Count <= 0;
+            BooksEmpty = BookBacklogs.Count <= 0;
+            TVEmpty = TvBacklogs.Count <= 0;
+            GamesEmpty = GameBacklogs.Count <= 0;
+            AlbumsEmpty = MusicBacklogs.Count <= 0;
         }
 
         /// <summary>
