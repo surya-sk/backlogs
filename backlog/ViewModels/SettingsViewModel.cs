@@ -14,6 +14,11 @@ using Windows.UI.Xaml;
 using MvvmHelpers.Commands;
 using System.ComponentModel;
 using System.Windows.Input;
+using Microsoft.Identity.Client;
+using Windows.Storage.Streams;
+using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
+using Logger = backlog.Logging.Logger;
 
 namespace backlog.ViewModels
 {
@@ -26,6 +31,7 @@ namespace backlog.ViewModels
                 "ms-appx:///Assets/background-tile.png";
         private bool _showProgress;
         private string _tileContent = Settings.TileContent;
+        private BitmapImage _accountPic;
 
 
         public string MIT { get; } = "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n\nTHE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
@@ -37,6 +43,11 @@ namespace backlog.ViewModels
             "\u2022 The app can now show upcoming backlogs in the live tile.\n";
         public string ChangelogTitle { get; } = "New this version - 30 July, 2022";
         public string Version { get; } = Settings.Version;
+
+        public bool SignedIn { get; } = Settings.IsSignedIn;
+
+        public bool ShowSignInPrompt { get; } = !Settings.IsSignedIn;
+
         public delegate void NavigateToMainPage();
 
         public NavigateToMainPage NavigateToMainPageFunc;
@@ -111,6 +122,18 @@ namespace backlog.ViewModels
             }
         }
 
+        public BitmapImage AccountPic
+        {
+            get => _accountPic;
+            set
+            {
+                _accountPic = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AccountPic)));
+            }
+        }
+
+        public string UserGreeting { get; } = $"Hey there, {Settings.UserName}! You are all synced.";
+
         public string SelectedFeedbackType { get; set; }
 
         public string FeedbackText { get; set; }
@@ -121,6 +144,31 @@ namespace backlog.ViewModels
             SendFeedback = new AsyncCommand(SendFeedbackAsync);
             SignOut = new AsyncCommand(SignOutAsync);
         }
+
+        /// <summary>
+        /// Show the user photo
+        /// </summary>
+        /// <returns></returns>
+        public async Task SetUserPhotoAsync()
+        {
+            var cacheFolder = ApplicationData.Current.LocalCacheFolder;
+            try
+            {
+                var accountPicFile = await cacheFolder.GetFileAsync("profile.png");
+                using (IRandomAccessStream stream = await accountPicFile.OpenAsync(FileAccessMode.Read))
+                {
+                    BitmapImage image = new BitmapImage();
+                    stream.Seek(0);
+                    await image.SetSourceAsync(stream);
+                    AccountPic = image;
+                }
+            }
+            catch
+            {
+                // No image set
+            }
+        }
+
         /// <summary>
         /// Change app theme on the fly and save it
         /// </summary>

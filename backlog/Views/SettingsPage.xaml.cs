@@ -30,8 +30,6 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        bool signedIn;
-
         public SettingsViewModel ViewModel { get; set; } = new SettingsViewModel();
 
         public SettingsPage()
@@ -46,45 +44,15 @@ namespace backlog.Views
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            signedIn = Settings.IsSignedIn;
             if(e.Parameter != null)
             {
                 mainPivot.SelectedIndex = (int)e.Parameter;
             }
-            if(signedIn)
+            if(ViewModel.SignedIn)
             {
-                AccountPanel.Visibility = Visibility.Visible;
-                await SetUserPhotoAsync();
-                SignInText.Visibility = Visibility.Collapsed;
-                WarningText.Visibility = Visibility.Visible;
+                await ViewModel.SetUserPhotoAsync();
             }
             base.OnNavigatedTo(e);
-        }
-
-        /// <summary>
-        /// Show the user photo
-        /// </summary>
-        /// <returns></returns>
-        private async Task SetUserPhotoAsync()
-        {
-            string userName = ApplicationData.Current.LocalSettings.Values["UserName"]?.ToString();
-            UserNameText.Text = $"Hey there, {userName}! You are all synced.";
-            var cacheFolder = ApplicationData.Current.LocalCacheFolder;
-            try
-            {
-                var accountPicFile = await cacheFolder.GetFileAsync("profile.png");
-                using (IRandomAccessStream stream = await accountPicFile.OpenAsync(FileAccessMode.Read))
-                {
-                    BitmapImage image = new BitmapImage();
-                    stream.Seek(0);
-                    await image.SetSourceAsync(stream);
-                    AccountPic.ProfilePicture = image;
-                }
-            }
-            catch
-            {
-                // No image set
-            }
         }
 
         /// <summary>
