@@ -41,6 +41,7 @@ namespace backlog.Views
         private Backlog SelectedBacklog;
         private string _sortOrder = Settings.CompletedSortOrder;
         private bool _loading = false;
+        private double _userRating;
 
         public delegate Task CloseBacklogFunc();
         public delegate void ClosePopupFunc(bool relaod=false);
@@ -57,6 +58,16 @@ namespace backlog.Views
         public ICommand SortByRatingDsc { get; }
         public ICommand SortByRatingAsc { get; }
 
+
+        public double UserRating
+        {
+            get => _userRating;
+            set
+            {
+                _userRating = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserRating)));
+            }
+        }
 
         public bool IsLoading
         {
@@ -202,14 +213,14 @@ namespace backlog.Views
             {
                 if (backlog.id == SelectedBacklog.id)
                 {
-                    backlog.UserRating = PopupRating.Value;
+                    backlog.UserRating = UserRating;
                 }
             }
             foreach (var backlog in FinishedBacklogs)
             {
                 if (backlog.id == SelectedBacklog.id)
                 {
-                    backlog.UserRating = PopupRating.Value;
+                    backlog.UserRating = UserRating;
                 }
             }
             SaveData.GetInstance().SaveSettings(Backlogs);
@@ -287,8 +298,8 @@ namespace backlog.Views
             PopupImage.Source = new BitmapImage(new Uri(selectedBacklog.ImageURL));
             PopupTitle.Text = selectedBacklog.Name;
             PopupDirector.Text = selectedBacklog.Director;
-            PopupRating.Value = selectedBacklog.UserRating;
-            PopupSlider.Value = selectedBacklog.UserRating;
+            UserRating = selectedBacklog.UserRating;
+            UserRating = selectedBacklog.UserRating;
 
             await PopupOverlay.ShowAsync();
         }
