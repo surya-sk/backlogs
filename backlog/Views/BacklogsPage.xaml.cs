@@ -58,10 +58,11 @@ namespace backlog.Views
         private bool _tvEmpty;
         private bool _gamesEmpty;
 
+        private BitmapImage _accountPic;
+
         GraphServiceClient graphServiceClient;
 
         bool isNetworkAvailable = false;
-        bool signedIn;
         int backlogIndex = -1;
         bool sync = false;
 
@@ -74,6 +75,10 @@ namespace backlog.Views
         public ICommand SortByProgressDsc { get; }
         public ICommand SortByTargetDateAsc { get; }
         public ICommand SortByTargetDateDsc { get; }
+
+        public string UserName { get; } = Settings.UserName;
+        public bool SignedIn { get; } = Settings.IsSignedIn;
+        public bool ShowSignInButton { get; } = !Settings.IsSignedIn;
 
         public string SortOrder
         {
@@ -146,8 +151,17 @@ namespace backlog.Views
             set
             {
                 _albumsEmpty = value;
-                Debug.WriteLine("Empty albums - ", value);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AlbumsEmpty)));
+            }
+        }
+
+        public BitmapImage AccountPic
+        {
+            get => _accountPic;
+            set
+            {
+                _accountPic = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AccountPic)));
             }
         }
 
@@ -184,15 +198,12 @@ namespace backlog.Views
                 }
             }
             ProgBar.Visibility = Visibility.Visible;
-            signedIn = Settings.IsSignedIn;
-            if (isNetworkAvailable && signedIn)
+            if (isNetworkAvailable && SignedIn)
             {
                 if (sync)
                 {
-                    graphServiceClient = await MSAL.GetGraphServiceClient();
+                    //graphServiceClient = await MSAL.GetGraphServiceClient();
                     await SetUserPhotoAsync();
-                    TopProfileButton.Visibility = Visibility.Visible;
-                    BottomProfileButton.Visibility = Visibility.Visible;
                     try
                     {
                         await Logger.Info("Syncing backlogs....");
@@ -319,9 +330,6 @@ namespace backlog.Views
         /// <returns></returns>
         private async Task SetUserPhotoAsync()
         {
-            string userName = Settings.UserName;
-            TopProfileButton.Label = userName;
-            BottomProfileButton.Label = userName;
             var cacheFolder = ApplicationData.Current.LocalCacheFolder;
             try
             {
@@ -331,13 +339,12 @@ namespace backlog.Views
                     BitmapImage image = new BitmapImage();
                     stream.Seek(0);
                     await image.SetSourceAsync(stream);
-                    TopAccountPic.ProfilePicture = image;
-                    BottomAccountPic.ProfilePicture = image;
+                    AccountPic = image;
                 }
             }
             catch (Exception ex)
             {
-                await Logger.Error("Error settings", ex);
+                await Logger.Error("Profile photo not found", ex);
             }
         }
 

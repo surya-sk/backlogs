@@ -18,6 +18,10 @@ namespace backlog.ViewModels
 
     public class CompletedBacklogsViewModel : INotifyPropertyChanged
     {
+        private string _sortOrder = Settings.CompletedSortOrder;
+        private bool _loading = false;
+        private double _userRating;
+
         public ObservableCollection<Backlog> FinishedBacklogs;
         public ObservableCollection<Backlog> FinishedFilmBacklogs;
         public ObservableCollection<Backlog> FinishedTVBacklogs;
@@ -26,9 +30,6 @@ namespace backlog.ViewModels
         public ObservableCollection<Backlog> FinishedBookBacklogs;
         public ObservableCollection<Backlog> Backlogs;
         public Backlog SelectedBacklog;
-        private string _sortOrder = Settings.CompletedSortOrder;
-        private bool _loading = false;
-        private double _userRating;
 
         public delegate Task CloseBacklogFunc();
         public delegate void ClosePopupFunc();
