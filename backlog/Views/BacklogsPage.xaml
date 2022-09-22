@@ -68,7 +68,7 @@
                             <TextBlock x:Name="EmptyListText" Text="Thank you for trying Backlogs. Sign-in for cross-device syncing and data backups! This is pre-release software, so use at your peril " Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind backlogs}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind IncompleteBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" Loaded="BacklogsGrid_Loaded"
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -81,7 +81,7 @@
                             <TextBlock x:Name="EmptyFilmsText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="FilmsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind filmBacklogs}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind FilmBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -94,7 +94,7 @@
                             <TextBlock x:Name="EmptyMusicText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="AlbumsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind musicBacklogs}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind MusicBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -107,7 +107,7 @@
                             <TextBlock x:Name="EmptyTVText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind tvBacklogs}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind TvBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -120,7 +120,7 @@
                             <TextBlock x:Name="EmptyGamesText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind gameBacklogs}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind GameBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}"
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -133,7 +133,7 @@
                             <TextBlock x:Name="EmptyBooksText" Text="No backlogs detetced. Sign-in to sync your backlogs or create a new one to get started!" Visibility="Collapsed"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="BooksGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind bookBacklogs}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind BookBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" 
                                                        animations:ReorderGridAnimation.Duration="200"/>
                         </StackPanel>
@@ -150,19 +150,19 @@
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
-            <AppBarButton x:Name="TopSortButton" Label="{x:Bind sortOrder}" Icon="Sort">
+            <AppBarButton x:Name="TopSortButton" Label="{x:Bind SortOrder, Mode=OneWay}" Icon="Sort">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem x:Name="SortByName" Text="Name" Click="SortByName_Click" />
+                        <MenuFlyoutItem Text="Name" Command="{x:Bind SortByName}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="SortByCreatedDateAsc" Text="Created Date Asc." Click="SortByCreatedDateAsc_Click" />
-                        <MenuFlyoutItem x:Name="SortByCreatedDateDsc" Text="Created Date Dsc." Click="SortByCreatedDateDsc_Click" />
+                        <MenuFlyoutItem Text="Created Date Asc." Command="{x:Bind SortByCreatedDateAsc}" />
+                        <MenuFlyoutItem Text="Created Date Dsc." Command="{x:Bind SortByCreatedDateDsc}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="SortByTargetDateAsc" Text="Target Date Asc." Click="SortByTargetDateAsc_Click" />
-                        <MenuFlyoutItem x:Name="SortByTargetDateDsc" Text="Target Date Dsc." Click="SortByTargetDateDsc_Click" />
+                        <MenuFlyoutItem Text="Target Date Asc." Command="{x:Bind SortByTargetDateAsc}" />
+                        <MenuFlyoutItem Text="Target Date Dsc." Command="{x:Bind SortByTargetDateDsc}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="SortByProgressAsc" Text="Progress Asc." Click="SortByProgressAsc_Click"/>
-                        <MenuFlyoutItem x:Name="SortByProgressDsc" Text="Progress Dsc." Click="SortByProgressDsc_Click" />
+                        <MenuFlyoutItem Text="Progress Asc." Command="{x:Bind SortByProgressAsc}" />
+                        <MenuFlyoutItem Text="Progress Dsc." Command="{x:Bind SortByProgressDsc}" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -183,19 +183,19 @@
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
             <AppBarButton x:Name="BottomSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
-            <AppBarButton x:Name="BottomSortButton" Label="{x:Bind sortOrder}" Icon="Sort">
+            <AppBarButton x:Name="BottomSortButton" Label="{x:Bind SortOrder, Mode=OneWay}" Icon="Sort">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem x:Name="BSortByName" Text="Name" Click="SortByName_Click" />
+                        <MenuFlyoutItem Text="Name" Command="{x:Bind SortByName}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="BSortByCreatedDateAsc" Text="Created Date Asc." Click="SortByCreatedDateAsc_Click" />
-                        <MenuFlyoutItem x:Name="BSortByCreatedDateDsc" Text="Created Date Dsc." Click="SortByCreatedDateDsc_Click" />
+                        <MenuFlyoutItem Text="Created Date Asc." Command="{x:Bind SortByCreatedDateAsc}" />
+                        <MenuFlyoutItem Text="Created Date Dsc." Command="{x:Bind SortByCreatedDateDsc}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="BSortByTargetDateAsc" Text="Target Date Asc." Click="SortByTargetDateAsc_Click" />
-                        <MenuFlyoutItem x:Name="BSortByTargetDateDsc" Text="Target Date Dsc." Click="SortByTargetDateDsc_Click" />
+                        <MenuFlyoutItem Text="Target Date Asc." Command="{x:Bind SortByTargetDateAsc}" />
+                        <MenuFlyoutItem Text="Target Date Dsc." Command="{x:Bind SortByTargetDateDsc}" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="BSortByProgressAsc" Text="Progress Asc." Click="SortByProgressAsc_Click"/>
-                        <MenuFlyoutItem x:Name="BSortByProgressDsc" Text="Progress Dsc." Click="SortByProgressDsc_Click" />
+                        <MenuFlyoutItem Text="Progress Asc." Command="{x:Bind SortByProgressAsc}" />
+                        <MenuFlyoutItem Text="Progress Dsc." Command="{x:Bind SortByProgressDsc}" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

@@ -4,15 +4,18 @@ using backlog.Models;
 using backlog.Saving;
 using backlog.Utils;
 using Microsoft.Graph;
+using MvvmHelpers.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -35,28 +38,61 @@ namespace backlog.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class BacklogsPage : Page
+    public sealed partial class BacklogsPage : Page, INotifyPropertyChanged
     {
-        private ObservableCollection<Backlog> allBacklogs { get; set; }
-        private ObservableCollection<Backlog> backlogs { get; set; }
-        private ObservableCollection<Backlog> filmBacklogs { get; set; }
-        private ObservableCollection<Backlog> tvBacklogs { get; set; }
-        private ObservableCollection<Backlog> gameBacklogs { get; set; }
-        private ObservableCollection<Backlog> musicBacklogs { get; set; }
-        private ObservableCollection<Backlog> bookBacklogs { get; set; }
-        GraphServiceClient graphServiceClient;
+        private ObservableCollection<Backlog> Backlogs { get; set; }
+        private ObservableCollection<Backlog> IncompleteBacklogs { get; set; }
+        private ObservableCollection<Backlog> FilmBacklogs { get; set; }
+        private ObservableCollection<Backlog> TvBacklogs { get; set; }
+        private ObservableCollection<Backlog> GameBacklogs { get; set; }
+        private ObservableCollection<Backlog> MusicBacklogs { get; set; }
+        private ObservableCollection<Backlog> BookBacklogs { get; set; }
 
-        string sortOrder { get; set; }
+        private string _sortOrder = Settings.SortOrder;
+        GraphServiceClient graphServiceClient;
 
         bool isNetworkAvailable = false;
         bool signedIn;
         int backlogIndex = -1;
         bool sync = false;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public ICommand SortByName { get; }
+        public ICommand SortByCreatedDateAsc { get; }
+        public ICommand SortByCreatedDateDsc { get; }
+        public ICommand SortByProgressAsc { get; }
+        public ICommand SortByProgressDsc { get; }
+        public ICommand SortByTargetDateAsc { get; }
+        public ICommand SortByTargetDateDsc { get; }
+
+        public string SortOrder
+        {
+            get => _sortOrder;
+            set
+            {
+                if(value != _sortOrder)
+                {
+                    _sortOrder = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SortOrder)));
+                    Settings.SortOrder = _sortOrder;
+                    PopulateBacklogs();
+                }
+            }
+        }
         public BacklogsPage()
         {
             this.InitializeComponent();
+
+            SortByName = new Command(SortBacklogsByName);
+            SortByCreatedDateAsc = new Command(SortBacklogsByCreatedDateAsc);
+            SortByCreatedDateDsc = new Command(SortBacklogsByCreatedDateDsc);
+            SortByProgressAsc = new Command(SortBacklogsByProgressAsc);
+            SortByProgressDsc = new Command(SortBacklogsByProgressDsc);
+            SortByTargetDateAsc = new Command(SortBacklogsByTargetDateAsc);
+            SortByTargetDateDsc = new Command(SortBacklogsByTargetDateDsc);
+
             isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
-            sortOrder = Settings.SortOrder;
             InitBacklogs();
             PopulateBacklogs();
         }
@@ -96,6 +132,9 @@ namespace backlog.Views
                 }
             }
             ProgBar.Visibility = Visibility.Collapsed;
+            var view = SystemNavigationManager.GetForCurrentView();
+            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            view.BackRequested += View_BackRequested;
         }
 
         /// <summary>
@@ -103,17 +142,12 @@ namespace backlog.Views
         /// </summary>
         private void InitBacklogs()
         {
-            allBacklogs = SaveData.GetInstance().GetBacklogs();
-            var readBacklogs = new ObservableCollection<Backlog>(allBacklogs.Where(b => b.IsComplete == false));
-            backlogs = new ObservableCollection<Backlog>();
-            filmBacklogs = new ObservableCollection<Backlog>();
-            tvBacklogs = new ObservableCollection<Backlog>();
-            gameBacklogs = new ObservableCollection<Backlog>();
-            musicBacklogs = new ObservableCollection<Backlog>();
-            bookBacklogs = new ObservableCollection<Backlog>();
-            var view = SystemNavigationManager.GetForCurrentView();
-            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            view.BackRequested += View_BackRequested;
+            IncompleteBacklogs = SaveData.GetInstance().GetIncompleteBacklogs();
+            FilmBacklogs = new ObservableCollection<Backlog>();
+            TvBacklogs = new ObservableCollection<Backlog>();
+            GameBacklogs = new ObservableCollection<Backlog>();
+            MusicBacklogs = new ObservableCollection<Backlog>();
+            BookBacklogs = new ObservableCollection<Backlog>();
         }
 
         private void View_BackRequested(object sender, BackRequestedEventArgs e)
@@ -134,33 +168,30 @@ namespace backlog.Views
         /// </summary>
         private void PopulateBacklogs()
         {
-            var readBacklogs = SaveData.GetInstance().GetBacklogs().Where(b => b.IsComplete == false);
+            IncompleteBacklogs = SaveData.GetInstance().GetIncompleteBacklogs();
             ObservableCollection<Backlog> _backlogs = null;
-            sortOrder = Settings.SortOrder;
-            TopSortButton.Label = sortOrder;
-            BottomSortButton.Label = sortOrder;
-            switch(sortOrder)
+            switch(SortOrder)
             {
                 case "Name":
-                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.Name));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderBy(b => b.Name));
                     break;
                 case "Created Date Asc.":
-                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => Convert.ToDateTime(b.CreatedDate, CultureInfo.InvariantCulture)));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderBy(b => Convert.ToDateTime(b.CreatedDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Created Date Dsc.":
-                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => Convert.ToDateTime(b.CreatedDate, CultureInfo.InvariantCulture)));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderByDescending(b => Convert.ToDateTime(b.CreatedDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Target Date Asc.":
-                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => Convert.ToDateTime(b.TargetDate, CultureInfo.InvariantCulture)));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderBy(b => Convert.ToDateTime(b.TargetDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Target Date Dsc.":
-                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => Convert.ToDateTime(b.TargetDate, CultureInfo.InvariantCulture)));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderByDescending(b => Convert.ToDateTime(b.TargetDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Progress Asc.":
-                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderBy(b => b.Progress));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderBy(b => b.Progress));
                     break;
                 case "Progress Dsc.":
-                    _backlogs = new ObservableCollection<Backlog>(readBacklogs.OrderByDescending(b => b.Progress));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderByDescending(b => b.Progress));
                     break;
             }
             var _filmBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
@@ -168,43 +199,43 @@ namespace backlog.Views
             var _gameBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
             var _musicBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Album.ToString()));
             var _bookBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Book.ToString()));
-            backlogs.Clear();
-            filmBacklogs.Clear();
-            tvBacklogs.Clear();
-            gameBacklogs.Clear();
-            musicBacklogs.Clear();
-            bookBacklogs.Clear();
+            IncompleteBacklogs.Clear();
+            FilmBacklogs.Clear();
+            TvBacklogs.Clear();
+            GameBacklogs.Clear();
+            MusicBacklogs.Clear();
+            BookBacklogs.Clear();
             EmptyListText.Visibility = Visibility.Collapsed;
             foreach (var b in _backlogs)
             {
-                backlogs.Add(b);
+                IncompleteBacklogs.Add(b);
             }
             foreach (var b in _bookBacklogs)
             {
-                bookBacklogs.Add(b);
+                BookBacklogs.Add(b);
             }
             foreach (var b in _filmBacklogs)
             {
-                filmBacklogs.Add(b);
+                FilmBacklogs.Add(b);
             }
             foreach (var b in _gameBacklogs)
             {
-                gameBacklogs.Add(b);
+                GameBacklogs.Add(b);
             }
             foreach (var b in _tvBacklogs)
             {
-                tvBacklogs.Add(b);
+                TvBacklogs.Add(b);
             }
             foreach (var b in _musicBacklogs)
             {
-                musicBacklogs.Add(b);
+                MusicBacklogs.Add(b);
             }
             ShowEmptyMessage();
         }
 
         private void ShowEmptyMessage()
         {
-            ObservableCollection<Backlog>[] _backlogs = { backlogs, filmBacklogs, tvBacklogs, gameBacklogs, musicBacklogs, bookBacklogs };
+            ObservableCollection<Backlog>[] _backlogs = { IncompleteBacklogs, FilmBacklogs, TvBacklogs, GameBacklogs, MusicBacklogs, BookBacklogs };
             TextBlock[] textBlocks = { EmptyListText, EmptyFilmsText, EmptyTVText, EmptyGamesText, EmptyMusicText, EmptyBooksText };
             for (int i = 0; i < _backlogs.Length; i++)
             {
@@ -345,7 +376,7 @@ namespace backlog.Views
                 ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
                 try
                 {
-                    await BacklogsGrid.TryStartConnectedAnimationAsync(animation, allBacklogs[backlogIndex], "coverImage");
+                    await BacklogsGrid.TryStartConnectedAnimationAsync(animation, Backlogs[backlogIndex], "coverImage");
                 }
                 catch
                 {
@@ -369,22 +400,22 @@ namespace backlog.Views
                 switch (mainPivot.SelectedIndex)
                 {
                     case 0:
-                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs);
+                        backlogsToSearch = new ObservableCollection<Backlog>(IncompleteBacklogs);
                         break;
                     case 1:
-                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == "Film"));
+                        backlogsToSearch = new ObservableCollection<Backlog>(IncompleteBacklogs.Where(b => b.Type == "Film"));
                         break;
                     case 2:
-                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == "Album"));
+                        backlogsToSearch = new ObservableCollection<Backlog>(IncompleteBacklogs.Where(b => b.Type == "Album"));
                         break;
                     case 3:
-                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == "TV"));
+                        backlogsToSearch = new ObservableCollection<Backlog>(IncompleteBacklogs.Where(b => b.Type == "TV"));
                         break;
                     case 4:
-                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == "Game"));
+                        backlogsToSearch = new ObservableCollection<Backlog>(IncompleteBacklogs.Where(b => b.Type == "Game"));
                         break;
                     case 5:
-                        backlogsToSearch = new ObservableCollection<Backlog>(backlogs.Where(b => b.Type == "Book"));
+                        backlogsToSearch = new ObservableCollection<Backlog>(IncompleteBacklogs.Where(b => b.Type == "Book"));
                         break;
                 }
                 foreach (var backlog in backlogsToSearch)
@@ -409,7 +440,7 @@ namespace backlog.Views
 
         private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            var selectedBacklog = backlogs.FirstOrDefault(b => b.Name == args.ChosenSuggestion.ToString());
+            var selectedBacklog = IncompleteBacklogs.FirstOrDefault(b => b.Name == args.ChosenSuggestion.ToString());
             SearchDialog.Hide();
             Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, null);
         }
@@ -431,58 +462,58 @@ namespace backlog.Views
             switch (mainPivot.SelectedIndex)
             {
                 case 0:
-                    if (backlogs.Count < 2)
+                    if (IncompleteBacklogs.Count < 2)
                     {
                         await ShowErrorMessage("Add backlogs to get random picks");
                         error = true;
                         break;
                     }
-                    randomBacklog = backlogs[random.Next(0, backlogs.Count)];
+                    randomBacklog = IncompleteBacklogs[random.Next(0, IncompleteBacklogs.Count)];
                     break;
                 case 1:
-                    if (filmBacklogs.Count < 2)
+                    if (FilmBacklogs.Count < 2)
                     {
                         await ShowErrorMessage("Add backlogs to get random picks");
                         error = true;
                         break;
                     }
-                    randomBacklog = filmBacklogs[random.Next(0, filmBacklogs.Count)];
+                    randomBacklog = FilmBacklogs[random.Next(0, FilmBacklogs.Count)];
                     break;
                 case 2:
-                    if (musicBacklogs.Count < 2)
+                    if (MusicBacklogs.Count < 2)
                     {
                         await ShowErrorMessage("Add backlogs to get random picks");
                         error = true;
                         break;
                     }
-                    randomBacklog = musicBacklogs[random.Next(0, musicBacklogs.Count)];
+                    randomBacklog = MusicBacklogs[random.Next(0, MusicBacklogs.Count)];
                     break;
                 case 3:
-                    if (tvBacklogs.Count < 2)
+                    if (TvBacklogs.Count < 2)
                     {
                         await ShowErrorMessage("Add backlogs to get random picks");
                         error = true;
                         break;
                     }
-                    randomBacklog = tvBacklogs[random.Next(0, tvBacklogs.Count)];
+                    randomBacklog = TvBacklogs[random.Next(0, TvBacklogs.Count)];
                     break;
                 case 4:
-                    if (gameBacklogs.Count < 2)
+                    if (GameBacklogs.Count < 2)
                     {
                         await ShowErrorMessage("Add backlogs to get random picks");
                         error = true;
                         break;
                     }
-                    randomBacklog = gameBacklogs[random.Next(0, gameBacklogs.Count)];
+                    randomBacklog = GameBacklogs[random.Next(0, GameBacklogs.Count)];
                     break;
                 case 5:
-                    if (bookBacklogs.Count < 2)
+                    if (BookBacklogs.Count < 2)
                     {
                         await ShowErrorMessage("Add backlogs to get random picks");
                         error = true;
                         break;
                     }
-                    randomBacklog = bookBacklogs[random.Next(0, bookBacklogs.Count)];
+                    randomBacklog = BookBacklogs[random.Next(0, BookBacklogs.Count)];
                     break;
             }
 
@@ -524,46 +555,39 @@ namespace backlog.Views
             }
         }
 
-        private void SortByName_Click(object sender, RoutedEventArgs e)
+        private void SortBacklogsByName()
         {
-            Settings.SortOrder = "Name";
-            PopulateBacklogs();
+            SortOrder = "Name";
         }
 
-        private void SortByCreatedDateAsc_Click(object sender, RoutedEventArgs e)
+        private void SortBacklogsByCreatedDateAsc()
         {
-            Settings.SortOrder = "Created Date Asc.";
-            PopulateBacklogs();
+            SortOrder = "Created Date Asc.";
         }
 
-        private void SortByCreatedDateDsc_Click(object sender, RoutedEventArgs e)
+        private void SortBacklogsByCreatedDateDsc()
         {
-            Settings.SortOrder = "Created Date Dsc.";
-            PopulateBacklogs();
+            SortOrder = "Created Date Dsc.";
         }
 
-        private void SortByTargetDateAsc_Click(object sender, RoutedEventArgs e)
+        private void SortBacklogsByTargetDateAsc()
         {
-            Settings.SortOrder = "Target Date Asc.";
-            PopulateBacklogs();
+            SortOrder = "Target Date Asc.";
         }
 
-        private void SortByTargetDateDsc_Click(object sender, RoutedEventArgs e)
+        private void SortBacklogsByTargetDateDsc()
         {
-            Settings.SortOrder = "Target Date Dsc.";
-            PopulateBacklogs();
+            SortOrder = "Target Date Dsc.";
         }
 
-        private void SortByProgressAsc_Click(object sender, RoutedEventArgs e)
+        private void SortBacklogsByProgressAsc()
         {
-            Settings.SortOrder = "Progress Asc.";
-            PopulateBacklogs();
+            SortOrder = "Progress Asc.";
         }
 
-        private void SortByProgressDsc_Click(object sender, RoutedEventArgs e)
+        private void SortBacklogsByProgressDsc()
         {
-            Settings.SortOrder = "Progress Dsc.";
-            PopulateBacklogs();
+            SortOrder = "Progress Dsc.";
         }
     }
 }
