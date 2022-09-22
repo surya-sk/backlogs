@@ -39,7 +39,7 @@ namespace backlog.Views
         private ObservableCollection<Backlog> FinishedBookBacklogs;
         private ObservableCollection<Backlog> Backlogs;
         private Backlog SelectedBacklog;
-        private string _sortOrder = Settings.SortOrder;
+        private string _sortOrder = Settings.CompletedSortOrder;
         private bool _loading = false;
 
         public delegate Task CloseBacklogFunc();
@@ -51,6 +51,11 @@ namespace backlog.Views
 
         public ICommand SaveBacklog { get; }
         public ICommand MarkBacklogAsIncomplete { get; }
+        public ICommand SortByName { get; }
+        public ICommand SortByDateDsc { get; }
+        public ICommand SortByDateAsc { get; }
+        public ICommand SortByRatingDsc { get; }
+        public ICommand SortByRatingAsc { get; }
 
 
         public bool IsLoading
@@ -68,10 +73,13 @@ namespace backlog.Views
             get => _sortOrder;
             set
             {
-                _sortOrder = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SortOrder)));
-                SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
-                PopulateBacklogs();
+                if(value != _sortOrder)
+                {
+                    _sortOrder = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SortOrder)));
+                    Settings.CompletedSortOrder = _sortOrder;
+                    PopulateBacklogs();
+                }
             }
         }
 
@@ -83,6 +91,11 @@ namespace backlog.Views
 
             SaveBacklog = new AsyncCommand(SaveBacklogAsync);
             MarkBacklogAsIncomplete = new AsyncCommand(MarkBacklogAsIncompleteAsync);
+            SortByName = new Command(SortBacklogsByName);
+            SortByDateAsc = new Command(SortBacklogsByCompletedDateAsc);
+            SortByDateDsc = new Command(SortBacklogsByCompletedDateDsc);
+            SortByRatingAsc = new Command(SortBacklogsByRatingsAsc);
+            SortByRatingDsc = new Command(SortBacklogsByRatingDsc);
             CloseBacklog = CloseBacklogAsync;
             ClosePopup = ClosePopupOverlayAndReload;
 
@@ -105,12 +118,31 @@ namespace backlog.Views
         private void PopulateBacklogs()
         {
             FinishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
-            var _finishedBookBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Book.ToString()));
-            var _finishedFilmBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Film.ToString()));
-            var _finishedGameBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Game.ToString()));
-            var _finishedMusicBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.Album.ToString()));
-            var _finishedTVBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.Where(b => b.Type == BacklogType.TV.ToString()));
-            ObservableCollection<Backlog> _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs);
+            ObservableCollection<Backlog> _finishedBacklogs = null;
+            switch (SortOrder)
+            {
+                case "Name":
+                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderBy(b => b.Name));
+                    break;
+                case "Completed Date Asc.":
+                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderBy(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
+                    break;
+                case "Completed Date Dsc.":
+                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderByDescending(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
+                    break;
+                case "Lowest Rating":
+                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderBy(b => b.UserRating));
+                    break;
+                case "Highest Rating":
+                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderByDescending(b => b.UserRating));
+                    break;
+
+            }
+            var _finishedBookBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Book.ToString()));
+            var _finishedFilmBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Film.ToString()));
+            var _finishedGameBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Game.ToString()));
+            var _finishedMusicBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Album.ToString()));
+            var _finishedTVBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.TV.ToString()));
             FinishedBacklogs.Clear();
             FinishedFilmBacklogs.Clear();
             FinishedTVBacklogs.Clear();
@@ -142,6 +174,7 @@ namespace backlog.Views
             {
                 FinishedTVBacklogs.Add(backlog);
             }
+            SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
         }
 
         private void View_BackRequested(object sender, BackRequestedEventArgs e)
@@ -270,34 +303,30 @@ namespace backlog.Views
             await SearchDialog.ShowAsync();
         }
 
-        private void SortByName_Click(object sender, RoutedEventArgs e)
+        private void SortBacklogsByName()
         {
-            Settings.CompletedSortOrder = "Name";
-            PopulateBacklogs();
+            SortOrder = "Name";
         }
 
-        private void SortByCompletedDateAsc_Click(object sender, RoutedEventArgs e)
+        private void SortBacklogsByCompletedDateAsc()
         {
-            Settings.CompletedSortOrder = "Completed Date Asc.";
-            PopulateBacklogs();
+            SortOrder = "Completed Date Asc.";
         }
 
-        private void SortByCompletedDateDsc_Click(object sender, RoutedEventArgs e)
+        private void SortBacklogsByCompletedDateDsc()
         {
-            Settings.CompletedSortOrder = "Completed Date Dsc.";
-            PopulateBacklogs();
+            SortOrder = "Completed Date Dsc.";
         }
 
-        private void SortByRatingAsc_Click(object sender, RoutedEventArgs e)
+        private void SortBacklogsByRatingsAsc()
         {
-            Settings.CompletedSortOrder = "Lowest Rating";
-            PopulateBacklogs();
+            SortOrder = "Lowest Rating";
         }
 
-        private void SortByRatingDsc_Click(object sender, RoutedEventArgs e)
+
+        private void SortBacklogsByRatingDsc()
         {
-            Settings.CompletedSortOrder = "Highest Rating";
-            PopulateBacklogs();
+            SortOrder = "Highest Rating";
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)

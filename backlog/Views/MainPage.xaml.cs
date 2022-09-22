@@ -1534,14 +1534,20 @@ namespace backlog.Views
             Random random = new Random();
             Backlog randomBacklog = new Backlog();
             bool error = false;
-            switch(type.ToLower())
+            switch (type.ToLower())
             {
                 case "any":
+                    if(incompleteBacklogs.Count <= 0)
+                    {
+                        await ShowErrorMessage("Add more backlogs to see suggestions");
+                        error = true;
+                        break;
+                    }
                     randomBacklog = incompleteBacklogs[random.Next(0, incompleteBacklogsCount)];
                     break;
                 case "film":
                     var filmBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Film"));
-                    if(filmBacklogs.Count <= 0)
+                    if (filmBacklogs.Count <= 0)
                     {
                         await ShowErrorMessage("Add more films to see suggestions");
                         error = true;
@@ -1551,7 +1557,7 @@ namespace backlog.Views
                     break;
                 case "album":
                     var musicBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Album"));
-                    if(musicBacklogs.Count <= 0)
+                    if (musicBacklogs.Count <= 0)
                     {
                         await ShowErrorMessage("Add more albums to see suggestions");
                         error = true;
@@ -1561,17 +1567,17 @@ namespace backlog.Views
                     break;
                 case "game":
                     var gameBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Game"));
-                    if(gameBacklogs.Count <= 0)
+                    if (gameBacklogs.Count <= 0)
                     {
                         await ShowErrorMessage("Add more games to see suggestions");
                         error = true;
                         break;
-                    }    
+                    }
                     randomBacklog = gameBacklogs[random.Next(0, gameBacklogs.Count)];
                     break;
                 case "book":
                     var bookBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "Book"));
-                    if(bookBacklogs.Count <= 0)
+                    if (bookBacklogs.Count <= 0)
                     {
                         await ShowErrorMessage("Add more books to see suggestions");
                         error = true;
@@ -1581,7 +1587,7 @@ namespace backlog.Views
                     break;
                 case "tv":
                     var tvBacklogs = new ObservableCollection<Backlog>(incompleteBacklogs.Where(b => b.Type == "TV"));
-                    if(tvBacklogs.Count <= 0)
+                    if (tvBacklogs.Count <= 0)
                     {
                         await ShowErrorMessage("Add more series to see suggestions");
                         error = true;

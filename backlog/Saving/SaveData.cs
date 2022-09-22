@@ -170,24 +170,6 @@ namespace backlog.Saving
         public void SetCompletedBacklogs(ObservableCollection<Backlog> completedBacklogs)
         {
             CompletedBacklogs = completedBacklogs;
-            switch (Settings.SortOrder)
-            {
-                case "Name":
-                    CompletedBacklogs = new ObservableCollection<Backlog>(CompletedBacklogs.OrderBy(b => b.Name));
-                    break;
-                case "Completed Date Asc.":
-                    CompletedBacklogs = new ObservableCollection<Backlog>(CompletedBacklogs.OrderBy(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
-                    break;
-                case "Completed Date Dsc.":
-                    CompletedBacklogs = new ObservableCollection<Backlog>(CompletedBacklogs.OrderByDescending(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
-                    break;
-                case "Lowest Rating":
-                    CompletedBacklogs = new ObservableCollection<Backlog>(CompletedBacklogs.OrderBy(b => b.UserRating));
-                    break;
-                case "Highest Rating":
-                    CompletedBacklogs = new ObservableCollection<Backlog>(CompletedBacklogs.OrderByDescending(b => b.UserRating));
-                    break;
-            }
         }
 
         public ObservableCollection<Backlog> GetCompletedBacklogs()
