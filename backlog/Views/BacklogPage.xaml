@@ -178,7 +178,7 @@
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
             <AppBarButton Label="Done" Icon="Accept" Click="DoneButton_Click" Visibility="{x:Bind HideEditControls, Mode=OneWay}" />
-            <AppBarButton Icon="Edit" Command="{x:Bind StartEditing}"  Visibility="{x:Bind HideEditControls, Mode=OneWay}" />
+            <AppBarButton Label="Edit" Icon="Edit" Command="{x:Bind StartEditing}"  Visibility="{x:Bind HideEditControls, Mode=OneWay}" />
             <AppBarButton Label="Save" Icon="Save" Command="{x:Bind SaveChanges}" Visibility="{x:Bind ShowEditControls, Mode=OneWay}" />
             <AppBarButton Label="Cancel" Icon="Cancel" Command="{x:Bind StopEditing}" Visibility="{x:Bind ShowEditControls, Mode=OneWay}" />
             <AppBarButton Label="Share" Command="{x:Bind ShareBacklog}">
@@ -193,12 +193,6 @@
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
             <AppBarButton x:Name="BottomDoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
-            <AppBarButton x:Name="BottomEditButton" Label="Edit" Icon="Edit" Click="EditButton_Click" />
-            <AppBarButton x:Name="BottomSaveButton" Label="Save" Icon="Save" Click="SaveButton_Click" Visibility="Collapsed" />
-            <AppBarButton x:Name="BottomCancelButton" Label="Cancel" Icon="Cancel" Command="{x:Bind StopEditing}" Visibility="Collapsed" />
-            <AppBarButton x:Name="BottomShareButton" Label="Share" Command="{x:Bind ShareBacklog}">
-                <FontIcon Glyph="" />
-            </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="BottomDeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
                 <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />

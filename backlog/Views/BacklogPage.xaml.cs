@@ -100,7 +100,7 @@ namespace backlog.Views
             set
             {
                 _showEditControls = value;
-                _hideEditControls = !_showEditControls;
+                HideEditControls = !_showEditControls;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowEditControls)));
             }
         }
