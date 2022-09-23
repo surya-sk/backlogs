@@ -67,7 +67,7 @@
                     
                     <RelativePanel>
                         <Image x:Name="img" Source="{x:Bind ViewModel.Backlog.ImageURL}" Height="200" Width="200" HorizontalAlignment="Center" Margin="30,30,30,0"/>
-                        <Button Command="{x:Bind ViewModel.OpenWebViewTrailer}" Margin="80,10,0,10" Content="Play trailer" RelativePanel.Below="img"
+                        <Button x:Name="PlayTrailerButton" Command="{x:Bind ViewModel.OpenWebViewTrailer}" Margin="80,10,0,10" Content="Play trailer" RelativePanel.Below="img"
                                 Visibility="{x:Bind ViewModel.ShowTrailerButton, Mode=OneWay}" Width="100" HorizontalAlignment="Center" Background="{ThemeResource SystemAccentColor}"  />
                         <Grid x:Name="detailsGrid" RelativePanel.RightOf="img" Height="200" Margin="30">
                             <Grid.RowDefinitions>
