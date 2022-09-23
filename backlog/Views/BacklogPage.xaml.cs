@@ -38,6 +38,7 @@ namespace backlog.Views
         private bool _inProgress;
         private bool _editing;
         private Backlog _backlog;
+        private bool _isLoading;
         private bool _showProgressSwitch;
         private bool _enableNotificationToggle;
         private bool _showNotificationToggle;
@@ -50,6 +51,7 @@ namespace backlog.Views
         public ICommand LaunchBingSearchResults { get; }
         public ICommand CloseWebViewTrailer { get; }
         public ICommand OpenWebViewTrailer { get; }
+        public ICommand ShareBacklog { get; }
         public event PropertyChangedEventHandler PropertyChanged;
         public delegate Task LaunchWebView(string video);
 
@@ -164,6 +166,16 @@ namespace backlog.Views
             }
         }
 
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));
+            }
+        }
+
 
         private int backlogIndex;
         private bool _edited;
@@ -180,6 +192,7 @@ namespace backlog.Views
             LaunchBingSearchResults = new AsyncCommand(LaunchBingSearchResultsAsync);
             CloseWebViewTrailer = new Command(CloseWebView);
             OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);
+            ShareBacklog = new AsyncCommand(ShareBacklogAsync);
 
             LaunchWebViewFunc = LaunchTrailerWebView;
             CalendarDate = DateTimeOffset.MinValue;
@@ -504,16 +517,20 @@ namespace backlog.Views
             DatesPanel.Visibility = Visibility.Visible;
         }
 
-        private async void ShareButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Open Windows share window to share backlog
+        /// </summary>
+        /// <returns></returns>
+        private async Task ShareBacklogAsync()
         {
-            ProgBar.Visibility = Visibility.Visible;
+            IsLoading = true;
             StorageFile backlogFile = await tempFolder.CreateFileAsync($"{Backlog.Name}.bklg", CreationCollisionOption.ReplaceExisting);
             string json = JsonConvert.SerializeObject(Backlog);
             await FileIO.WriteTextAsync(backlogFile, json);
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
             dataTransferManager.DataRequested += DataTransferManager_DataRequested;
             DataTransferManager.ShowShareUI();
-            ProgBar.Visibility = Visibility.Collapsed;
+            IsLoading = false;
         }
 
         private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
