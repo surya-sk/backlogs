@@ -46,6 +46,7 @@ namespace backlog.Views
         private bool _showNotificationOptions;
         private DateTimeOffset _calendarDate;
         private TimeSpan _notifTime = TimeSpan.Zero;
+        private double _userRating;
 
         public ObservableCollection<Backlog> Backlogs;
 
@@ -58,12 +59,19 @@ namespace backlog.Views
         public ICommand SaveChanges { get; }
         public ICommand CloseBacklog { get; }
         public ICommand DeleteBacklog { get; }
+        public ICommand LaunchRatingDialog { get; }
+        public ICommand HideRatingDialog { get; }
+        public ICommand CompleteBacklog { get; }
         public event PropertyChangedEventHandler PropertyChanged;
         public delegate Task LaunchWebView(string video);
         public delegate void NavigateToPreviousPage();
+        public delegate void CloseRatingPopup();
+        public delegate Task ShowRatingPopup();
 
         public LaunchWebView LaunchWebViewFunc;
         public NavigateToPreviousPage NavigateToPreviousPageFunc;
+        public CloseRatingPopup CloseRatingPopupFunc;
+        public ShowRatingPopup ShowRatingPopupFunc;
 
         public DateTime Today { get; } = DateTime.Today;
 
@@ -195,6 +203,16 @@ namespace backlog.Views
             }
         }
 
+        public double UserRating
+        {
+            get => _userRating;
+            set
+            {
+                _userRating = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserRating)));
+            }
+        }
+
 
         private int backlogIndex;
         private bool _edited;
@@ -217,9 +235,14 @@ namespace backlog.Views
             SaveChanges = new AsyncCommand(SaveChangesAsync);
             CloseBacklog = new AsyncCommand(CloseBacklogAsync);
             DeleteBacklog = new AsyncCommand(DeleteBacklogAsync);
+            LaunchRatingDialog = new AsyncCommand(OpenRatingDialogAsync);
+            HideRatingDialog = new Command(CloseRatingDialog);
+            CompleteBacklog = new AsyncCommand(CompleteBacklogAsync);
 
             LaunchWebViewFunc = LaunchTrailerWebView;
-            NavigateToPreviousPageFunc = NavigateToPrevPage;
+            NavigateToPreviousPageFunc = NavigateToPrevPageCallback;
+            ShowRatingPopupFunc = ShowRatingDialogCallbackAsync;
+            CloseRatingPopupFunc = CloseRatingDialogCallback;
             CalendarDate = DateTimeOffset.MinValue;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
@@ -350,17 +373,17 @@ namespace backlog.Views
             NavigateToPreviousPageFunc();
         }
 
-        private void NavigateToPrevPage()
+        private void NavigateToPrevPageCallback()
         {
             Frame.Navigate(prevPage?.SourcePageType, backlogIndex, new SuppressNavigationTransitionInfo());
         }
 
-        /// <summary>
-        /// Mark backlogs as completed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void FinishButton_Click(object sender, RoutedEventArgs e)
+        private async Task OpenRatingDialogAsync()
+        {
+            await ShowRatingPopupFunc();
+        }
+
+        private async Task ShowRatingDialogCallbackAsync()
         {
             await RatingDialog.ShowAsync();
         }
@@ -386,11 +409,10 @@ namespace backlog.Views
         }
 
         /// <summary>
-        /// Mark backlog as complete
+        /// Marks backlog as complete
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void CompleteButton_Click(object sender, RoutedEventArgs e)
+        /// <returns></returns>
+        private async Task CompleteBacklogAsync()
         {
             try
             {
@@ -398,21 +420,21 @@ namespace backlog.Views
             }
             catch { }
             Backlog.IsComplete = true;
-            Backlog.UserRating = UserRating.Value;
+            Backlog.UserRating = UserRating;
             Backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
             await SaveBacklog();
-            RatingDialog.Hide();
-            Frame.Navigate(typeof(MainPage));
+            CloseRatingPopupFunc();
+            NavigateToPreviousPageFunc();
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        private void CloseRatingDialog()
         {
-            RatingDialog.Hide();
+            CloseRatingPopupFunc();
         }
 
-        private void RatingSlider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+        private void CloseRatingDialogCallback()
         {
-            UserRating.Value = e.NewValue;
+            RatingDialog.Hide();
         }
 
         /// <summary>

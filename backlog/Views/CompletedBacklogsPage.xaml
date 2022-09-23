@@ -146,7 +146,7 @@
                 <TextBlock x:Name="PopupDirector" Style="{StaticResource CaptionTextBlockStyle}" Grid.Row="2" HorizontalAlignment="Center"
                                                 Margin="0,2,8,0" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
                 <muxc:RatingControl x:Name="PopupRating" RelativePanel.Below="PopupDirector" IsReadOnly="True" Grid.Row="3"
-                                    Value="{x:Bind ViewModel.UserRating, Mode=TwoWay}"/>
+                                    Value="{x:Bind ViewModel.UserRating, Mode=OneWay}"/>
                 <Slider x:Name="PopupSlider" RelativePanel.Below="PopupRating" Grid.Row="4" Value="{x:Bind ViewModel.UserRating, Mode=TwoWay}"
                         Maximum="5" Minimum="-1" StepFrequency="0.5" />
                 <StackPanel Orientation="Horizontal" RelativePanel.Below="PopupSlider" Grid.Row="5">

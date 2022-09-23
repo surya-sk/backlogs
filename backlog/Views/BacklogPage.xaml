@@ -122,7 +122,7 @@
 
                 <StackPanel x:Name="CompletePanel" Grid.Row="3" Margin="30" Visibility="{x:Bind HideEditControls, Mode=OneWay}">
                     <TextBlock Text="Have you finished checking this out?" Margin="0,20,0,10" />
-                    <Button x:Name="FinishButton" Content="Mark As Complete" Background="Green" Click="FinishButton_Click" />
+                    <Button x:Name="FinishButton" Content="Mark As Complete" Background="Green" Command="{x:Bind LaunchRatingDialog}" />
                 </StackPanel>
 
                 <StackPanel x:Name="NotifPanel" Grid.Row="3" Margin="30" Visibility="{x:Bind ShowEditControls, Mode=OneWay}">
@@ -150,18 +150,18 @@
                             <TextBlock Text="?" />
                         </StackPanel>
 
-                        <muxc:RatingControl x:Name="UserRating" Grid.Row="1" Value="{x:Bind Backlog.UserRating}" IsClearEnabled="True"
-                                        Margin="0,20,0,10" HorizontalAlignment="Center" IsEnabled="False"/>
+                        <muxc:RatingControl Grid.Row="1" Value="{x:Bind UserRating, Mode=OneWay}" IsClearEnabled="True"
+                                        Margin="0,20,0,10" HorizontalAlignment="Center" IsReadOnly="True"/>
 
                         <StackPanel Grid.Row="2">
-                            <Slider x:Name="RatingSlider" Value="{x:Bind Backlog.UserRating}" ValueChanged="RatingSlider_ValueChanged"
+                            <Slider x:Name="RatingSlider" Value="{x:Bind UserRating, Mode=TwoWay}"
                                     Maximum="5" Minimum="-1" StepFrequency="0.5" Margin="10" />
                             <TextBlock Text="Move the slider to update the rating" Margin="0,0,0,10" HorizontalAlignment="Center"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="3">
-                            <Button x:Name="CompleteButton" Content="Done" Background="Green" Click="CompleteButton_Click" Margin="10" />
-                            <Button x:Name="CancelButton" Content="Cancel" Background="Red" Click="CancelButton_Click" />
+                            <Button x:Name="CompleteButton" Content="Done" Background="Green" Command="{x:Bind CompleteBacklog}" Margin="10" />
+                            <Button x:Name="CancelButton" Content="Cancel" Background="Red" Command="{x:Bind HideRatingDialog}" />
                         </StackPanel>
                     </Grid>
                 </ContentDialog>
