@@ -44,14 +44,21 @@ namespace backlog.Views
 
         private void View_BackRequested(object sender, BackRequestedEventArgs e)
         {
-            PageStackEntry prevPage = Frame.BackStack.Last();
             try
             {
-                Frame.Navigate(prevPage?.SourcePageType, null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                PageStackEntry prevPage = Frame.BackStack.Last();
+                try
+                {
+                    Frame.Navigate(prevPage?.SourcePageType, null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                }
+                catch
+                {
+                    Frame.Navigate(prevPage?.SourcePageType);
+                }
             }
             catch
             {
-                Frame.Navigate(prevPage?.SourcePageType);
+                Frame.Navigate(typeof(MainPage));
             }
             e.Handled = true;
         }

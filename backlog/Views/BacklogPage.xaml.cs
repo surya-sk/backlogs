@@ -2,30 +2,14 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using backlog.Models;
-using backlog.Saving;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Windows.Storage;
 using Windows.UI.Xaml.Media.Animation;
-using backlog.Logging;
 using backlog.Utils;
-using System.Globalization;
 using System.Linq;
 using Windows.UI.Core;
-using Windows.ApplicationModel.DataTransfer;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Diagnostics;
-using Microsoft.Toolkit.Uwp.Notifications;
-using Windows.UI.Notifications;
-using Google.Apis.YouTube.v3;
-using Google.Apis.Services;
 using Windows.System.Profile;
 using System.Windows.Input;
 using MvvmHelpers.Commands;
-using System.ComponentModel;
-using Windows.UI.Input.Inking;
 using backlog.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -37,7 +21,6 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class BacklogPage : Page
     {
-        bool signedIn;
         PageStackEntry prevPage;
 
         public ICommand CloseWebViewTrailer { get; }
@@ -50,8 +33,6 @@ namespace backlog.Views
             this.InitializeComponent();
 
             CloseWebViewTrailer = new Command(CloseWebView);
-
-            signedIn = Settings.IsSignedIn;
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }

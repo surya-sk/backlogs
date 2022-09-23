@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace backlog.ViewModels
 {
-    public class BacklogViewModel
+    public class BacklogViewModel : INotifyPropertyChanged
     {
         private bool _inProgress;
         private bool _showEditControls;
@@ -106,8 +107,8 @@ namespace backlog.ViewModels
             set
             {
                 _showEditControls = value;
-                HideEditControls = !_showEditControls;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowEditControls)));
+                HideEditControls = !_showEditControls;
             }
         }
 
