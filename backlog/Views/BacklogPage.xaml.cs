@@ -327,7 +327,7 @@ namespace backlog.Views
         /// <param name="e"></param>
         private async Task DeleteConfirmation_Click()
         {
-            ProgBar.Visibility = Visibility.Visible;
+            IsLoading = true;
             Backlogs.Remove(Backlog);
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(signedIn);
