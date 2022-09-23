@@ -36,7 +36,8 @@ namespace backlog.Views
     public sealed partial class BacklogPage : Page, INotifyPropertyChanged
     {
         private bool _inProgress;
-        private bool _editing;
+        private bool _showEditControls;
+        private bool _hideEditControls = true;
         private Backlog _backlog;
         private bool _isLoading;
         private bool _showProgressSwitch;
@@ -52,6 +53,9 @@ namespace backlog.Views
         public ICommand CloseWebViewTrailer { get; }
         public ICommand OpenWebViewTrailer { get; }
         public ICommand ShareBacklog { get; }
+        public ICommand StopEditing { get; }
+        public ICommand StartEditing { get; }
+        public ICommand SaveChanges { get; }
         public event PropertyChangedEventHandler PropertyChanged;
         public delegate Task LaunchWebView(string video);
 
@@ -90,13 +94,24 @@ namespace backlog.Views
             }
         }
 
-        public bool Editing
+        public bool ShowEditControls
         {
-            get => _editing;
+            get => _showEditControls;
             set
             {
-                _editing = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Editing)));
+                _showEditControls = value;
+                _hideEditControls = !_showEditControls;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowEditControls)));
+            }
+        }
+
+        public bool HideEditControls
+        {
+            get => _hideEditControls;
+            set
+            {
+                _hideEditControls = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HideEditControls)));
             }
         }
 
@@ -193,6 +208,9 @@ namespace backlog.Views
             CloseWebViewTrailer = new Command(CloseWebView);
             OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);
             ShareBacklog = new AsyncCommand(ShareBacklogAsync);
+            StopEditing = new Command(FinishEditing);
+            StartEditing = new Command(EnableEditing);
+            SaveChanges = new AsyncCommand(SaveChangesAsync);
 
             LaunchWebViewFunc = LaunchTrailerWebView;
             CalendarDate = DateTimeOffset.MinValue;
@@ -401,86 +419,76 @@ namespace backlog.Views
         }
 
         /// <summary>
-        /// Enable editing of date and notification time
+        /// Enable editing
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EditButton_Click(object sender, RoutedEventArgs e)
+        private void EnableEditing()
         {
-            TopDoneButton.Visibility = Visibility.Collapsed;
-            TopEditButton.Visibility = Visibility.Collapsed;
-            TopSaveButton.Visibility = Visibility.Visible;
-            TopCancelButton.Visibility = Visibility.Visible;
-
-            BottomDoneButton.Visibility = Visibility.Collapsed;
-            BottomEditButton.Visibility = Visibility.Collapsed;
-            BottomSaveButton.Visibility = Visibility.Visible;
-            BottomCancelButton.Visibility = Visibility.Visible;
-
-            CompletePanel.Visibility = Visibility.Collapsed;
-            NotifPanel.Visibility = Visibility.Visible;
-            DatesPanel.Visibility = Visibility.Collapsed;
+            ShowEditControls = true;
         }
 
         /// <summary>
-        /// Save changes made to the backlog
+        /// Validate and save changes made to the backlog
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void SaveButton_Click(object sender, RoutedEventArgs e)
+        /// <returns></returns>
+        public async Task SaveChangesAsync()
         {
-            if (DatePicker.Date != null)
+            string date = CalendarDate.DateTime.ToString("D", CultureInfo.InvariantCulture);
+            if (ShowNotificationOptions)
             {
-                var chosenDate = DatePicker.Date.Value.DateTime;
-                string date = chosenDate.ToString("D", CultureInfo.InvariantCulture);
-                if (NotifyToggle.IsOn)
+                if (NotifTime == TimeSpan.Zero)
                 {
-                    if (TimePicker.Time == TimeSpan.Zero)
+                    ContentDialog contentDialog = new ContentDialog
                     {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Invalid date and time",
-                            Content = "Please pick a time!",
-                            CloseButtonText = "Ok"
-                        };
-                        await contentDialog.ShowAsync();
-                        return;
-                    }
-                    DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
-                    int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
-                    if (diff < 0)
-                    {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Invalid time",
-                            Content = "The date and time you've chosen are in the past!",
-                            CloseButtonText = "Ok"
-                        };
-                        await contentDialog.ShowAsync();
-                        return;
-                    }
+                        Title = "Invalid date and time",
+                        Content = "Please pick a time!",
+                        CloseButtonText = "Ok"
+                    };
+                    await contentDialog.ShowAsync();
+                    return;
                 }
-                else
+                DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
+                int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
+                if (diff < 0)
                 {
-                    DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture);
-                    int diff = DateTime.Compare(DateTime.Today, chosenDate);
-                    if (diff > 0)
+                    ContentDialog contentDialog = new ContentDialog
                     {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Invalid date and time",
-                            Content = "The date and time you've chosen are in the past!",
-                            CloseButtonText = "Ok"
-                        };
-                        await contentDialog.ShowAsync();
-                        return;
-                    }
+                        Title = "Invalid time",
+                        Content = "The date and time you've chosen are in the past!",
+                        CloseButtonText = "Ok"
+                    };
+                    await contentDialog.ShowAsync();
+                    return;
                 }
             }
-            ProgBar.Visibility = Visibility.Visible;
-            Backlog.TargetDate = DatePicker.Date.Value.ToString("D", CultureInfo.InvariantCulture);
-            Backlog.NotifTime = TimePicker.Time;
-            if(Backlog.NotifTime != TimeSpan.Zero)
+            else
+            {
+                int diff = DateTime.Compare(DateTime.Today, CalendarDate.DateTime);
+                if (diff > 0)
+                {
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Invalid date and time",
+                        Content = "The date and time you've chosen are in the past!",
+                        CloseButtonText = "Ok"
+                    };
+                    await contentDialog.ShowAsync();
+                    return;
+                }
+            }
+            IsLoading = true;
+            Backlog.TargetDate = CalendarDate.ToString("D", CultureInfo.InvariantCulture);
+            Backlog.NotifTime = NotifTime;
+            ScheduleNotification();
+            FinishEditing();
+            IsLoading = false;
+        }
+
+        /// <summary>
+        /// Create notification and send it to Windows
+        /// </summary>
+        private void ScheduleNotification()
+        {
+            if (Backlog.NotifTime != TimeSpan.Zero)
             {
                 var notifTime = DateTimeOffset.Parse(Backlog.TargetDate, CultureInfo.InvariantCulture).Add(Backlog.NotifTime);
                 var builder = new ToastContentBuilder()
@@ -490,31 +498,14 @@ namespace backlog.Views
                 ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), notifTime);
                 ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
             }
-            await SaveBacklog();
-            CmdCancelButton_Click(sender, e);
-            ProgBar.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
         /// Stop editing
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CmdCancelButton_Click(object sender, RoutedEventArgs e)
+        private void FinishEditing()
         {
-            TopDoneButton.Visibility = Visibility.Visible;
-            TopEditButton.Visibility = Visibility.Visible;
-            TopSaveButton.Visibility = Visibility.Collapsed;
-            TopCancelButton.Visibility = Visibility.Collapsed;
-
-            BottomDoneButton.Visibility = Visibility.Visible;
-            BottomEditButton.Visibility = Visibility.Visible;
-            BottomSaveButton.Visibility = Visibility.Collapsed;
-            BottomCancelButton.Visibility = Visibility.Collapsed;
-
-            CompletePanel.Visibility = Visibility.Visible;
-            NotifPanel.Visibility = Visibility.Collapsed;
-            DatesPanel.Visibility = Visibility.Visible;
+            ShowEditControls = false;
         }
 
         /// <summary>

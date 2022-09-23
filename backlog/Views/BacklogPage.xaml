@@ -92,7 +92,7 @@
                     </RelativePanel>
                 </Grid>
 
-                <RelativePanel x:Name="DatesPanel" Grid.Row="1">
+                <RelativePanel x:Name="DatesPanel" Grid.Row="1" Visibility="{x:Bind HideEditControls, Mode=OneWay}">
                     <StackPanel x:Name="CreatedPanel" Margin="30" >
                         <TextBlock Text="Created Date" FontStyle="Oblique" />
                         <TextBlock Text="{x:Bind Backlog.CreatedDate}" />
@@ -120,12 +120,12 @@
                 <ToggleSwitch Grid.Row="2" x:Name="ProgressSwitch" Visibility="{x:Bind ShowProgressSwitch, Mode=OneWay}" OnContent="Yes" OffContent="No" Header="In Progress"
                               IsOn="{x:Bind InProgress, Mode=TwoWay}" Margin="30"/>
 
-                <StackPanel x:Name="CompletePanel" Grid.Row="3" Margin="30">
+                <StackPanel x:Name="CompletePanel" Grid.Row="3" Margin="30" Visibility="{x:Bind HideEditControls, Mode=OneWay}">
                     <TextBlock Text="Have you finished checking this out?" Margin="0,20,0,10" />
                     <Button x:Name="FinishButton" Content="Mark As Complete" Background="Green" Click="FinishButton_Click" />
                 </StackPanel>
 
-                <StackPanel x:Name="NotifPanel" Grid.Row="3" Margin="30" Visibility="Collapsed">
+                <StackPanel x:Name="NotifPanel" Grid.Row="3" Margin="30" Visibility="{x:Bind ShowEditControls, Mode=OneWay}">
                     <TextBlock Text="When do you want to check this out?" Margin="10,0,0,20" />
                     <CalendarDatePicker x:Name="DatePicker" Margin="10,0,0,20" Date="{x:Bind CalendarDate, Mode=TwoWay}"
                                         MinDate="{x:Bind Today}"/>
@@ -177,11 +177,11 @@
     </Grid>
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
-            <AppBarButton x:Name="TopDoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
-            <AppBarButton x:Name="TopEditButton" Label="Edit" Icon="Edit" Click="EditButton_Click" />
-            <AppBarButton x:Name="TopSaveButton" Label="Save" Icon="Save" Click="SaveButton_Click" Visibility="Collapsed" />
-            <AppBarButton x:Name="TopCancelButton" Label="Cancel" Icon="Cancel" Click="CmdCancelButton_Click" Visibility="Collapsed" />
-            <AppBarButton x:Name="TopShareButton" Label="Share" Command="{x:Bind ShareBacklog}">
+            <AppBarButton Label="Done" Icon="Accept" Click="DoneButton_Click" Visibility="{x:Bind HideEditControls, Mode=OneWay}" />
+            <AppBarButton Icon="Edit" Command="{x:Bind StartEditing}"  Visibility="{x:Bind HideEditControls, Mode=OneWay}" />
+            <AppBarButton Label="Save" Icon="Save" Command="{x:Bind SaveChanges}" Visibility="{x:Bind ShowEditControls, Mode=OneWay}" />
+            <AppBarButton Label="Cancel" Icon="Cancel" Command="{x:Bind StopEditing}" Visibility="{x:Bind ShowEditControls, Mode=OneWay}" />
+            <AppBarButton Label="Share" Command="{x:Bind ShareBacklog}">
                 <FontIcon Glyph="" />
             </AppBarButton>
             <CommandBar.SecondaryCommands>
@@ -195,7 +195,7 @@
             <AppBarButton x:Name="BottomDoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
             <AppBarButton x:Name="BottomEditButton" Label="Edit" Icon="Edit" Click="EditButton_Click" />
             <AppBarButton x:Name="BottomSaveButton" Label="Save" Icon="Save" Click="SaveButton_Click" Visibility="Collapsed" />
-            <AppBarButton x:Name="BottomCancelButton" Label="Cancel" Icon="Cancel" Click="CmdCancelButton_Click" Visibility="Collapsed" />
+            <AppBarButton x:Name="BottomCancelButton" Label="Cancel" Icon="Cancel" Command="{x:Bind StopEditing}" Visibility="Collapsed" />
             <AppBarButton x:Name="BottomShareButton" Label="Share" Command="{x:Bind ShareBacklog}">
                 <FontIcon Glyph="" />
             </AppBarButton>
