@@ -56,10 +56,14 @@ namespace backlog.Views
         public ICommand StopEditing { get; }
         public ICommand StartEditing { get; }
         public ICommand SaveChanges { get; }
+        public ICommand CloseBacklog { get; }
+        public ICommand DeleteBacklog { get; }
         public event PropertyChangedEventHandler PropertyChanged;
         public delegate Task LaunchWebView(string video);
+        public delegate void NavigateToPreviousPage();
 
         public LaunchWebView LaunchWebViewFunc;
+        public NavigateToPreviousPage NavigateToPreviousPageFunc;
 
         public DateTime Today { get; } = DateTime.Today;
 
@@ -211,8 +215,11 @@ namespace backlog.Views
             StopEditing = new Command(FinishEditing);
             StartEditing = new Command(EnableEditing);
             SaveChanges = new AsyncCommand(SaveChangesAsync);
+            CloseBacklog = new AsyncCommand(CloseBacklogAsync);
+            DeleteBacklog = new AsyncCommand(DeleteBacklogAsync);
 
             LaunchWebViewFunc = LaunchTrailerWebView;
+            NavigateToPreviousPageFunc = NavigateToPrevPage;
             CalendarDate = DateTimeOffset.MinValue;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
@@ -281,17 +288,18 @@ namespace backlog.Views
             await contentDialog.ShowAsync();
         }
 
+
         /// <summary>
-        /// Delete the backlog
+        /// Deletes the backlog
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        /// <returns></returns>
+        private async Task DeleteBacklogAsync()
         {
             try
             {
                 await Logger.Info("Deleting backlog.....");
-            } catch { }
+            }
+            catch { }
             ContentDialog deleteDialog = new ContentDialog
             {
                 Title = "Delete backlog?",
@@ -307,8 +315,10 @@ namespace backlog.Views
             try
             {
                 await Logger.Info("Deleted backlog");
-            }catch { }
+            }
+            catch { }
         }
+
 
         /// <summary>
         /// Delete a backlog after confirmation
@@ -321,7 +331,7 @@ namespace backlog.Views
             Backlogs.Remove(Backlog);
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(signedIn);
-            Frame.Navigate(prevPage?.SourcePageType);
+            NavigateToPreviousPageFunc();
         }
 
         private void NumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
@@ -332,25 +342,24 @@ namespace backlog.Views
         /// <summary>
         /// Close the backlog
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void DoneButton_Click(object sender, RoutedEventArgs e)
+        /// <returns></returns>
+        private async Task CloseBacklogAsync()
         {
             if (_edited)
                 await SaveBacklog();
+            NavigateToPreviousPageFunc();
+        }
+
+        private void NavigateToPrevPage()
+        {
             try
             {
                 ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backAnimation", img);
                 animation.Configuration = new DirectConnectedAnimationConfiguration();
             }
-            catch (Exception ex)
+            catch
             {
-                try
-                {
-                    await Logger.Warn("Error occured during navigation:");
-                    await Logger.Trace(ex.StackTrace);
-                }
-                catch { }
+                // :)
             }
             finally
             {

@@ -177,7 +177,7 @@
     </Grid>
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
-            <AppBarButton Label="Done" Icon="Accept" Click="DoneButton_Click" Visibility="{x:Bind HideEditControls, Mode=OneWay}" />
+            <AppBarButton Label="Done" Icon="Accept" Command="{x:Bind CloseBacklog}" Visibility="{x:Bind HideEditControls, Mode=OneWay}" />
             <AppBarButton Label="Edit" Icon="Edit" Command="{x:Bind StartEditing}"  Visibility="{x:Bind HideEditControls, Mode=OneWay}" />
             <AppBarButton Label="Save" Icon="Save" Command="{x:Bind SaveChanges}" Visibility="{x:Bind ShowEditControls, Mode=OneWay}" />
             <AppBarButton Label="Cancel" Icon="Cancel" Command="{x:Bind StopEditing}" Visibility="{x:Bind ShowEditControls, Mode=OneWay}" />
@@ -185,16 +185,22 @@
                 <FontIcon Glyph="" />
             </AppBarButton>
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="TopDeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
+                <AppBarButton Label="Delete" Icon="Delete" Command="{x:Bind DeleteBacklog}" />
                 <AppBarButton x:Name="TopSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
-            <AppBarButton x:Name="BottomDoneButton" Label="Done" Icon="Accept" Click="DoneButton_Click" />
+            <AppBarButton Label="Done" Icon="Accept" Command="{x:Bind CloseBacklog}" Visibility="{x:Bind HideEditControls, Mode=OneWay}" />
+            <AppBarButton Label="Edit" Icon="Edit" Command="{x:Bind StartEditing}"  Visibility="{x:Bind HideEditControls, Mode=OneWay}" />
+            <AppBarButton Label="Save" Icon="Save" Command="{x:Bind SaveChanges}" Visibility="{x:Bind ShowEditControls, Mode=OneWay}" />
+            <AppBarButton Label="Cancel" Icon="Cancel" Command="{x:Bind StopEditing}" Visibility="{x:Bind ShowEditControls, Mode=OneWay}" />
+            <AppBarButton Label="Share" Command="{x:Bind ShareBacklog}">
+                <FontIcon Glyph="" />
+            </AppBarButton>
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="BottomDeleteButton" Label="Delete" Icon="Delete" Click="DeleteButton_Click" />
+                <AppBarButton Label="Delete" Icon="Delete" Command="{x:Bind DeleteBacklog}" />
                 <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
