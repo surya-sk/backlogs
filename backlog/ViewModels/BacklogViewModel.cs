@@ -37,7 +37,7 @@ namespace backlog.ViewModels
         private bool _showNotificationToggle;
         private bool _showNotificationOptions;
         private DateTimeOffset _calendarDate;
-        private TimeSpan _notifTime = TimeSpan.Zero;
+        private TimeSpan _notifTime;
         private double _userRating;
         private string _sourceName;
         private Uri _sourceLink;
@@ -243,6 +243,7 @@ namespace backlog.ViewModels
             ReadMore = new AsyncCommand(ReadMoreAsync);
 
             CalendarDate = DateTimeOffset.MinValue;
+            NotifTime = TimeSpan.Zero;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
 
