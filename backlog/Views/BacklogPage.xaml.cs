@@ -352,19 +352,7 @@ namespace backlog.Views
 
         private void NavigateToPrevPage()
         {
-            try
-            {
-                ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backAnimation", img);
-                animation.Configuration = new DirectConnectedAnimationConfiguration();
-            }
-            catch
-            {
-                // :)
-            }
-            finally
-            {
-                Frame.Navigate(prevPage?.SourcePageType, backlogIndex, new SuppressNavigationTransitionInfo());
-            }
+            Frame.Navigate(prevPage?.SourcePageType, backlogIndex, new SuppressNavigationTransitionInfo());
         }
 
         /// <summary>
