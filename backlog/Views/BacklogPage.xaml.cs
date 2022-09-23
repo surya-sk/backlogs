@@ -39,6 +39,11 @@ namespace backlog.Views
         private bool _editing;
         private Backlog _backlog;
         private bool _showProgressSwitch;
+        private bool _enableNotificationToggle;
+        private bool _showNotificationToggle;
+        private bool _showNotificationOptions;
+        private DateTimeOffset _calendarDate;
+        private TimeSpan _notifTime = TimeSpan.Zero;
 
         public ObservableCollection<Backlog> Backlogs;
 
@@ -49,6 +54,8 @@ namespace backlog.Views
         public delegate Task LaunchWebView(string video);
 
         public LaunchWebView LaunchWebViewFunc;
+
+        public DateTime Today { get; } = DateTime.Today;
 
         public bool InProgress
         {
@@ -102,6 +109,61 @@ namespace backlog.Views
             }
         }
 
+        public bool EnableNotificationToggle
+        {
+            get => _enableNotificationToggle;
+            set
+            {
+                _enableNotificationToggle = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EnableNotificationToggle)));
+            }
+        }
+
+        public bool ShowNotificationToggle
+        {
+            get => _showNotificationToggle;
+            set
+            {
+                _showNotificationToggle = value;
+                if(_showNotificationToggle)
+                {
+                    ShowNotificationOptions = true;
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowNotificationToggle)));
+            }
+        }
+
+        public bool ShowNotificationOptions
+        {
+            get => _showNotificationOptions;
+            set
+            {
+                _showNotificationOptions = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowNotificationOptions)));
+            }
+        }
+
+        public DateTimeOffset CalendarDate
+        {
+            get => _calendarDate;
+            set
+            {
+                _calendarDate = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CalendarDate)));
+                EnableNotificationToggle = _calendarDate != DateTimeOffset.MinValue;
+            }
+        }
+
+        public TimeSpan NotifTime
+        {
+            get => _notifTime;
+            set
+            {
+                _notifTime = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotifTime)));
+            }
+        }
+
 
         private int backlogIndex;
         private bool _edited;
@@ -110,7 +172,6 @@ namespace backlog.Views
         Uri sourceLink;
         PageStackEntry prevPage;
         StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
-        DateTime today = DateTime.Today;
 
 
         public BacklogPage()
@@ -121,10 +182,10 @@ namespace backlog.Views
             OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);
 
             LaunchWebViewFunc = LaunchTrailerWebView;
+            CalendarDate = DateTimeOffset.MinValue;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
             signedIn = Settings.IsSignedIn;
-            _edited = false;
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }
@@ -166,7 +227,10 @@ namespace backlog.Views
                 }
             }
             ShowProgressSwitch = !Backlog.ShowProgress;
-            InProgress = Backlog.Progress > 0;
+            if(ShowProgressSwitch)
+            {
+              InProgress = Backlog.Progress > 0;
+            }
             SourceLinkButton.Content = source;
             SourceLinkButton.NavigateUri = sourceLink;
             base.OnNavigatedTo(e);
@@ -461,23 +525,6 @@ namespace backlog.Views
             List<IStorageItem> list = new List<IStorageItem>();
             list.Add(fileToShare);
             dataRequest.Data.SetStorageItems(list);
-        }
-
-        private void NotifyToggle_Toggled(object sender, RoutedEventArgs e)
-        {
-            if(NotifyToggle.IsOn)
-            {
-                TimePicker.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                TimePicker.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void DatePicker_DateChanged(object sender, CalendarDatePickerDateChangedEventArgs e)
-        {
-            NotifyToggle.IsEnabled = true;
         }
 
         /// <summary>
