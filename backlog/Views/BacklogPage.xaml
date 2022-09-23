@@ -117,8 +117,8 @@
                                       IsIndeterminate="False" Margin="20"/>
                 </StackPanel>
 
-                <ToggleSwitch Grid.Row="2" x:Name="ProgressSwitch" Visibility="Collapsed" OnContent="Yes" OffContent="No" Header="In Progress"
-                              Toggled="ProgressSwitch_Toggled" Margin="30"/>
+                <ToggleSwitch Grid.Row="2" x:Name="ProgressSwitch" Visibility="{x:Bind ShowProgressSwitch, Mode=OneWay}" OnContent="Yes" OffContent="No" Header="In Progress"
+                              IsOn="{x:Bind InProgress, Mode=TwoWay}" Margin="30"/>
 
                 <StackPanel x:Name="CompletePanel" Grid.Row="3" Margin="30">
                     <TextBlock Text="Have you finished checking this out?" Margin="0,20,0,10" />

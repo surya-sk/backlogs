@@ -65,6 +65,7 @@ namespace backlog.Saving
         public void SaveSettings(ObservableCollection<Backlog> backlogs)
         {
             Backlogs = backlogs;
+            ResetCompletedAndIncompleteBacklogs();
         }
 
         /// <summary>
@@ -117,64 +118,6 @@ namespace backlog.Saving
         }
 
         /// <summary>
-        /// Read completed backlogs from the local file
-        /// </summary>
-        /// <returns></returns>
-        public async Task ReadCompletedBacklogsAsync()
-        {
-            try
-            {
-                StorageFile storageFile = await localFolder.GetFileAsync("CompletedBacklogs.txt");
-                string json = await FileIO.ReadTextAsync(storageFile);
-                CompletedBacklogs = JsonConvert.DeserializeObject<ObservableCollection<Backlog>>(json);
-            }
-            catch
-            {
-                CompletedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete));
-            }
-        }
-
-        /// <summary>
-        /// Write completed backlogs to the local file
-        /// </summary>
-        /// <returns></returns>
-        public async Task WriteCompletedBacklogsAsync()
-        {
-            string json = JsonConvert.SerializeObject(CompletedBacklogs);
-            StorageFile storageFile = await localFolder.CreateFileAsync("CompletedBacklogs.txt", CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(storageFile, json);
-        }
-
-        /// <summary>
-        /// Read incomplete backlogs from local file
-        /// </summary>
-        /// <returns></returns>
-        public async Task ReadIncompleteBacklogsAsync()
-        {
-            try
-            {
-                StorageFile storageFile = await localFolder.GetFileAsync("IncompleteBacklogs.txt");
-                string json = await FileIO.ReadTextAsync(storageFile);
-                IncompleteBacklogs = JsonConvert.DeserializeObject<ObservableCollection<Backlog>>(json);
-            }
-            catch
-            {
-                IncompleteBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete == false));
-            }
-        }
-
-        /// <summary>
-        /// Write incomplete backlogs to local file
-        /// </summary>
-        /// <returns></returns>
-        public async Task WriteIncompleteBacklogsAsync()
-        {
-            string json = JsonConvert.SerializeObject(CompletedBacklogs);
-            StorageFile storageFile = await localFolder.CreateFileAsync("IncompleteBacklogs.txt", CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(storageFile, json);
-        }
-
-        /// <summary>
         /// Delete the local backlogs
         /// </summary>
         /// <returns></returns>
@@ -196,19 +139,15 @@ namespace backlog.Saving
             return Backlogs;
         }
 
-        public void SetCompletedBacklogs(ObservableCollection<Backlog> completedBacklogs)
-        {
-            CompletedBacklogs = completedBacklogs;
-        }
-
         public ObservableCollection<Backlog> GetCompletedBacklogs()
         {
             return CompletedBacklogs;
         }
 
-        public void SetIncompleteBacklogs(ObservableCollection<Backlog> incompleteBacklogs)
+        public void ResetCompletedAndIncompleteBacklogs()
         {
-            IncompleteBacklogs = incompleteBacklogs;
+            CompletedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete));
+            IncompleteBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete == false));
         }
 
         public ObservableCollection<Backlog> GetIncompleteBacklogs()

@@ -230,7 +230,6 @@ namespace backlog.ViewModels
             {
                 FinishedTVBacklogs.Add(backlog);
             }
-            SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
             CheckEmptyBacklogs();
         }
 
@@ -266,7 +265,6 @@ namespace backlog.ViewModels
                 }
             }
             SaveData.GetInstance().SaveSettings(Backlogs);
-            SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
             IsLoading = false;
             await CloseBacklog();
@@ -288,7 +286,6 @@ namespace backlog.ViewModels
                 }
             }
             SaveData.GetInstance().SaveSettings(Backlogs);
-            SaveData.GetInstance().SetCompletedBacklogs(FinishedBacklogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
             ClosePopup();
         }

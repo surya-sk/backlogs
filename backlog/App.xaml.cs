@@ -93,8 +93,7 @@ namespace backlog
                     Settings.Version = currVer;
 
                     Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
-                    Task.Run(async () => { await SaveData.GetInstance().ReadIncompleteBacklogsAsync(); }).Wait();
-                    Task.Run(async () => { await SaveData.GetInstance().ReadCompletedBacklogsAsync(); }).Wait();
+                    SaveData.GetInstance().ResetCompletedAndIncompleteBacklogs();
                     rootFrame.Navigate(typeof(MainPage), "sync");
                 }
                 // Ensure the current window is active

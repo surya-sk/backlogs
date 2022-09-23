@@ -35,7 +35,11 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class BacklogPage : Page, INotifyPropertyChanged
     {
-        public Backlog Backlog;
+        private bool _inProgress;
+        private bool _editing;
+        private Backlog _backlog;
+        private bool _showProgressSwitch;
+
         public ObservableCollection<Backlog> Backlogs;
 
         public ICommand LaunchBingSearchResults { get; }
@@ -46,9 +50,61 @@ namespace backlog.Views
 
         public LaunchWebView LaunchWebViewFunc;
 
+        public bool InProgress
+        {
+            get => _inProgress;
+            set
+            {
+                _inProgress = value;
+                Debug.WriteLine(value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InProgress)));
+                var _backlog = Backlog;
+                if (_inProgress)
+                {
+                    _backlog.Progress = _backlog.Length = 1;
+                }
+                else
+                {
+                    _backlog.Progress = _backlog.Length = 0;
+                }
+                Backlog = _backlog;
+            }
+        }
+
+        public bool ShowProgressSwitch
+        {
+            get => _showProgressSwitch;
+            set
+            {
+                _showProgressSwitch = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowProgressSwitch)));
+            }
+        }
+
+        public bool Editing
+        {
+            get => _editing;
+            set
+            {
+                _editing = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Editing)));
+            }
+        }
+
+        public Backlog Backlog
+        {
+            get => _backlog;
+            set
+            {
+                _backlog = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Backlog)));
+                _edited = true;
+            }
+        }
+
 
         private int backlogIndex;
-        private bool edited;
+        private bool _edited;
         bool signedIn;
         string source;
         Uri sourceLink;
@@ -68,7 +124,7 @@ namespace backlog.Views
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
             signedIn = Settings.IsSignedIn;
-            edited = false;
+            _edited = false;
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }
@@ -109,14 +165,8 @@ namespace backlog.Views
                     backlogIndex = Backlogs.IndexOf(b);
                 }
             }
-            if(!Backlog.ShowProgress)
-            {
-                ProgressSwitch.Visibility = Visibility.Visible;
-                if(Backlog.Progress > 0)
-                {
-                    ProgressSwitch.IsOn = true;
-                }
-            }
+            ShowProgressSwitch = !Backlog.ShowProgress;
+            InProgress = Backlog.Progress > 0;
             SourceLinkButton.Content = source;
             SourceLinkButton.NavigateUri = sourceLink;
             base.OnNavigatedTo(e);
@@ -181,7 +231,7 @@ namespace backlog.Views
 
         private void NumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
         {
-            edited = true;
+            _edited = true;
         }
 
         /// <summary>
@@ -191,7 +241,7 @@ namespace backlog.Views
         /// <param name="e"></param>
         private async void DoneButton_Click(object sender, RoutedEventArgs e)
         {
-            if (edited)
+            if (_edited)
                 await SaveBacklog();
             try
             {
@@ -428,20 +478,6 @@ namespace backlog.Views
         private void DatePicker_DateChanged(object sender, CalendarDatePickerDateChangedEventArgs e)
         {
             NotifyToggle.IsEnabled = true;
-        }
-
-        private void ProgressSwitch_Toggled(object sender, RoutedEventArgs e)
-        {
-            edited = true;
-            if(ProgressSwitch.IsOn)
-            {
-                Backlog.Progress = 1;
-                Backlog.Length = 1;
-            }
-            else
-            {
-                Backlog.Progress = 0;
-            }
         }
 
         /// <summary>
