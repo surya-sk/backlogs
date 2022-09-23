@@ -80,12 +80,8 @@
                             <RelativePanel Margin="0,0,0,20" Grid.Row="2">
                                 <TextBlock x:Name="descText" Text="{x:Bind Backlog.Description}" TextTrimming="WordEllipsis" MaxLines="4" TextWrapping="Wrap" FontSize="15"
                                                     Margin="0,0,0,10"/>
-                                <TextBlock x:Name="ReadMoreLink" RelativePanel.Below="descText" Margin="0,10,0,0">
-                                            <Hyperlink Click="Hyperlink_Click">
-                                                <Run Text="Read full" />
-                                            </Hyperlink>
-                                </TextBlock>
-                                <Button x:Name="bingSearchButton" RelativePanel.RightOf="ReadMoreLink" Margin="10,0,0,0" Command="{x:Bind LaunchBingSearchResults}"
+                                <Button x:Name="ReadMoreButton" Margin="0,0,0,0" Command="{x:Bind ReadMore}" Content="Read full" RelativePanel.Below="descText" />
+                                <Button x:Name="bingSearchButton" RelativePanel.RightOf="ReadMoreButton" Margin="10,0,0,0" Command="{x:Bind LaunchBingSearchResults}"
                                         Content="More info"  RelativePanel.Below="descText" Background="{ThemeResource SystemAccentColor}" />
                             </RelativePanel>
                         </Grid>
@@ -103,12 +99,12 @@
                     </StackPanel>
                 </RelativePanel>
 
-                <StackPanel Grid.Row="2" Margin="30" Visibility="{x:Bind Backlog.ShowProgress, Converter={StaticResource BoolToVis}}">
+                <StackPanel Grid.Row="2" Margin="30" Visibility="{x:Bind Backlog.ShowProgress}">
                     <TextBlock Text="Progress" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,10" />
                     <TextBlock Text="Enter how much progress you've made" FontStyle="Oblique" Margin="0,0,0,10" />
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <muxc:NumberBox x:Name="ProgressNumBox" Value="{x:Bind Backlog.Progress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpinButtonPlacementMode="Inline" 
-                                        ValueChanged="NumberBox_ValueChanged" Minimum="0" Maximum="{x:Bind Backlog.Length}"/>
+                                         Minimum="0" Maximum="{x:Bind Backlog.Length}"/>
                         <TextBlock Text="of"  Margin="10,5,10,0" FontSize="15"/>
                         <TextBlock Text="{x:Bind Backlog.Length}" Margin="0,5,10,0" FontSize="15"/>
                         <TextBlock Text="{x:Bind Backlog.Units}" Margin="0,5,10,0" FontSize="15" />
@@ -167,8 +163,8 @@
                 </ContentDialog>
 
                 <RelativePanel Grid.Row="4" Margin="30">
-                    <TextBlock x:Name="SourceText" Text="Metadata obtained from" Margin="0,0,5,0"/>
-                    <HyperlinkButton Name="SourceLinkButton" RelativePanel.RightOf="SourceText" Padding="0,0,0,8"/>
+                    <TextBlock Text="Metadata obtained from" Margin="0,0,5,0"/>
+                    <HyperlinkButton Content="{x:Bind SourceName}" NavigateUri="{x:Bind SourceLink}" RelativePanel.RightOf="SourceText" Padding="0,0,0,8"/>
                 </RelativePanel>
             </Grid>
         </ScrollViewer>

@@ -25,6 +25,7 @@ using Windows.System.Profile;
 using System.Windows.Input;
 using MvvmHelpers.Commands;
 using System.ComponentModel;
+using Windows.UI.Input.Inking;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -38,7 +39,6 @@ namespace backlog.Views
         private bool _inProgress;
         private bool _showEditControls;
         private bool _hideEditControls = true;
-        private Backlog _backlog;
         private bool _isLoading;
         private bool _showProgressSwitch;
         private bool _enableNotificationToggle;
@@ -47,8 +47,11 @@ namespace backlog.Views
         private DateTimeOffset _calendarDate;
         private TimeSpan _notifTime = TimeSpan.Zero;
         private double _userRating;
+        private string _sourceName;
+        private Uri _sourceLink;
 
         public ObservableCollection<Backlog> Backlogs;
+        public Backlog Backlog;
 
         public ICommand LaunchBingSearchResults { get; }
         public ICommand CloseWebViewTrailer { get; }
@@ -62,6 +65,7 @@ namespace backlog.Views
         public ICommand LaunchRatingDialog { get; }
         public ICommand HideRatingDialog { get; }
         public ICommand CompleteBacklog { get; }
+        public ICommand ReadMore { get; }
         public event PropertyChangedEventHandler PropertyChanged;
         public delegate Task LaunchWebView(string video);
         public delegate void NavigateToPreviousPage();
@@ -81,18 +85,15 @@ namespace backlog.Views
             set
             {
                 _inProgress = value;
-                Debug.WriteLine(value);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InProgress)));
-                var _backlog = Backlog;
                 if (_inProgress)
                 {
-                    _backlog.Progress = _backlog.Length = 1;
+                    Backlog.Progress = Backlog.Length = 1;
                 }
                 else
                 {
-                    _backlog.Progress = _backlog.Length = 0;
+                    Backlog.Progress = Backlog.Length = 0;
                 }
-                Backlog = _backlog;
             }
         }
 
@@ -124,17 +125,6 @@ namespace backlog.Views
             {
                 _hideEditControls = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HideEditControls)));
-            }
-        }
-
-        public Backlog Backlog
-        {
-            get => _backlog;
-            set
-            {
-                _backlog = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Backlog)));
-                _edited = true;
             }
         }
 
@@ -213,12 +203,29 @@ namespace backlog.Views
             }
         }
 
+        public string SourceName
+        {
+            get => _sourceName;
+            set
+            {
+                _sourceName = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SourceName)));
+            }
+        }
+
+        public Uri SourceLink
+        {
+            get => _sourceLink;
+            set
+            {
+                _sourceLink = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SourceLink)));
+            }
+        }
+
 
         private int backlogIndex;
-        private bool _edited;
         bool signedIn;
-        string source;
-        Uri sourceLink;
         PageStackEntry prevPage;
         StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
 
@@ -238,6 +245,7 @@ namespace backlog.Views
             LaunchRatingDialog = new AsyncCommand(OpenRatingDialogAsync);
             HideRatingDialog = new Command(CloseRatingDialog);
             CompleteBacklog = new AsyncCommand(CompleteBacklogAsync);
+            ReadMore = new AsyncCommand(ReadMoreAsync);
 
             LaunchWebViewFunc = LaunchTrailerWebView;
             NavigateToPreviousPageFunc = NavigateToPrevPageCallback;
@@ -262,25 +270,25 @@ namespace backlog.Views
                     switch(Backlog.Type)
                     {
                         case "Film":
-                            source = "IMdB";
-                            sourceLink = new Uri("https://www.imdb.com/");
+                            SourceName = "IMdB";
+                            SourceLink = new Uri("https://www.imdb.com/");
                             break;
                         case "Album":
-                            source = "LastFM";
-                            sourceLink = new Uri("https://www.last.fm/");
+                            SourceName = "LastFM";
+                            SourceLink = new Uri("https://www.last.fm/");
                             PlayTrailerButton.Visibility = Visibility.Collapsed;
                             break;
                         case "TV":
-                            source = "IMdB";
-                            sourceLink = new Uri("https://www.imbd.com");
+                            SourceName = "IMdB";
+                            SourceLink = new Uri("https://www.imbd.com");
                             break;
                         case "Game":
-                            source = "IGDB";
-                            sourceLink = new Uri("https://www.igdb.com/discover");
+                            SourceName = "IGDB";
+                            SourceLink = new Uri("https://www.igdb.com/discover");
                             break;
                         case "Book":
-                            source = "Google Books";
-                            sourceLink = new Uri("https://books.google.com/");
+                            SourceName = "Google Books";
+                            SourceLink = new Uri("https://books.google.com/");
                             PlayTrailerButton.Visibility = Visibility.Collapsed;
                             break;
                     }
@@ -292,15 +300,13 @@ namespace backlog.Views
             {
               InProgress = Backlog.Progress > 0;
             }
-            SourceLinkButton.Content = source;
-            SourceLinkButton.NavigateUri = sourceLink;
             base.OnNavigatedTo(e);
             prevPage = Frame.BackStack.Last();
             ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
             imageAnimation?.TryStart(img);
         }
 
-        private async void Hyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        private async Task ReadMoreAsync()
         {
             ContentDialog contentDialog = new ContentDialog
             {
@@ -357,19 +363,13 @@ namespace backlog.Views
             NavigateToPreviousPageFunc();
         }
 
-        private void NumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
-        {
-            _edited = true;
-        }
-
         /// <summary>
         /// Close the backlog
         /// </summary>
         /// <returns></returns>
         private async Task CloseBacklogAsync()
         {
-            if (_edited)
-                await SaveBacklog();
+            await SaveBacklog();
             NavigateToPreviousPageFunc();
         }
 
