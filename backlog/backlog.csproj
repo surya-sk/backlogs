@@ -145,6 +145,7 @@
     <Compile Include="Utils\ToastBackgroundTask.cs" />
     <Compile Include="Utils\ThemeHelper.cs" />
     <Compile Include="ViewModels\BacklogsViewModel.cs" />
+    <Compile Include="ViewModels\BacklogViewModel.cs" />
     <Compile Include="ViewModels\CompletedBacklogsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\BacklogPage.xaml.cs">
