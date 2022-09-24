@@ -93,7 +93,7 @@ namespace backlog
                     Settings.Version = currVer;
 
                     Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
-                    SaveData.GetInstance().ResetCompletedAndIncompleteBacklogs();
+                    SaveData.GetInstance().ResetHelperBacklogs();
                     rootFrame.Navigate(typeof(MainPage), "sync");
                 }
                 // Ensure the current window is active

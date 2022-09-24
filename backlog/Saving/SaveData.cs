@@ -25,6 +25,10 @@ namespace backlog.Saving
         private ObservableCollection<Backlog> Backlogs = null;
         private ObservableCollection<Backlog> CompletedBacklogs = null;
         private ObservableCollection<Backlog> IncompleteBacklogs = null;
+        private ObservableCollection<Backlog> RecentlyAddedBacklogs = null;
+        private ObservableCollection<Backlog> RecentlyCompletedBacklogs = null;
+        private ObservableCollection<Backlog> InProgressBacklogs = null;
+        private ObservableCollection<Backlog> UpcomingBacklogs = null;
         StorageFolder localFolder = ApplicationData.Current.LocalFolder;
         string fileName = "backlogs.txt";
         private static GraphServiceClient graphServiceClient = null;
@@ -65,7 +69,7 @@ namespace backlog.Saving
         public void SaveSettings(ObservableCollection<Backlog> backlogs)
         {
             Backlogs = backlogs;
-            ResetCompletedAndIncompleteBacklogs();
+            ResetHelperBacklogs();
         }
 
         /// <summary>
@@ -144,15 +148,77 @@ namespace backlog.Saving
             return CompletedBacklogs;
         }
 
-        public void ResetCompletedAndIncompleteBacklogs()
+        public void ResetHelperBacklogs()
         {
             CompletedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete));
             IncompleteBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete == false));
+            InProgressBacklogs = new ObservableCollection<Backlog>(IncompleteBacklogs.Where(b => b.Progress > 0));
+            var _sortedCompletedBacklogs = new ObservableCollection<Backlog>();
+            var _sortedIncompleteBacklogs = new ObservableCollection<Backlog>();
+            foreach(var backlog in IncompleteBacklogs)
+            {
+                try
+                {
+                    if (DateTime.Parse(backlog.TargetDate) >= DateTime.Today)
+                    {
+                        UpcomingBacklogs.Add(backlog);
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+                if (backlog.CreatedDate == "None" || backlog.CreatedDate == null)
+                {
+                    backlog.CreatedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                }
+                _sortedIncompleteBacklogs.Add(backlog);
+            }
+            foreach(var backlog in CompletedBacklogs)
+            {
+                try
+                {
+                    backlog.CompletedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    continue;
+                }
+                _sortedCompletedBacklogs.Add(backlog);
+            }
+            foreach (var backlog in _sortedIncompleteBacklogs.OrderByDescending(b => DateTime.Parse(b.CreatedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
+            {
+                RecentlyAddedBacklogs.Add(backlog);
+            }
+            foreach (var backlog in _sortedCompletedBacklogs.OrderByDescending(b => DateTime.Parse(b.CompletedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
+            {
+                RecentlyCompletedBacklogs.Add(backlog);
+            }
         }
 
         public ObservableCollection<Backlog> GetIncompleteBacklogs()
         {
             return IncompleteBacklogs;
+        }
+
+        public ObservableCollection<Backlog> GetRecentlyAddedBacklogs()
+        {
+            return RecentlyAddedBacklogs;
+        }
+
+        public ObservableCollection<Backlog> GetRecentlyCompletedBacklogs()
+        {
+            return RecentlyCompletedBacklogs;
+        }
+
+        public ObservableCollection<Backlog> GetInProgressBacklogs()
+        {
+            return InProgressBacklogs;
+        }
+
+        public ObservableCollection<Backlog> GetUpcomingBacklogs()
+        {
+            return UpcomingBacklogs;
         }
     }
 }

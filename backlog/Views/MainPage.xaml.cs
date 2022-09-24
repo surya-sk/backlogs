@@ -99,6 +99,12 @@ namespace backlog.Views
             }
         }
 
+        private async Task ShowCrashLogFunc(string log)
+        {
+            CrashDialog.Content = $"It seems the application crashed the last time, with the following error: {log}";
+            await CrashDialog.ShowAsync();
+        }
+
         /// <summary>
         /// Shows the teaching tips on fresh install
         /// </summary>
@@ -157,7 +163,6 @@ namespace backlog.Views
                     await Logger.Info("Signing in user....");
                 }
                 catch { }
-                graphServiceClient = await MSAL.GetGraphServiceClient();
                 await SetUserPhotoAsync();
                 TopSigninButton.Visibility = Visibility.Collapsed;
                 BottomSigninButton.Visibility = Visibility.Collapsed;
@@ -363,6 +368,11 @@ namespace backlog.Views
                 };
                 _ = await contentDialog.ShowAsync();
             }
+        }
+
+        private void ReloadAndSyncCallback()
+        {
+            Frame.Navigate(typeof(MainPage), "sync");
         }
 
         /// <summary>
@@ -1637,6 +1647,11 @@ namespace backlog.Views
                 await FileIO.WriteTextAsync(stFile, json);
                 Frame.Navigate(typeof(ImportBacklog), stFile.Name, null);
             }
+        }
+
+        private void OpenImportPageCallback(string filename)
+        {
+            Frame.Navigate(typeof(ImportBacklog), filename, null);
         }
 
         private async void WebAppButton_Click(object sender, RoutedEventArgs e)
