@@ -46,7 +46,6 @@ namespace backlog.ViewModels
         private BitmapImage _accountPic;
         private string _randomBacklogType;
 
-        public ObservableCollection<Backlog> Backlogs { get; set; }
         public ObservableCollection<Backlog> RecentlyAdded { get; set; }
         public ObservableCollection<Backlog> RecentlyCompleted { get; set; }
         public ObservableCollection<Backlog> InProgress { get; set; }
@@ -64,6 +63,7 @@ namespace backlog.ViewModels
         public bool Sync { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public delegate Task ShowLastCrashLog(string log);
         public delegate void ReloadAndSync();
         public delegate void OpenImportPage(string fileName);
