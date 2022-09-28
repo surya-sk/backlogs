@@ -44,19 +44,19 @@ namespace backlog.ViewModels
         private bool _showProfileButtons;
         private bool _showSignInButton = true;
         private BitmapImage _accountPic;
-        private string _randomBacklogType;
+        private string _randomBacklogType = "Any";
+        private int _backlogsCount = 0;
+        private int _completedBacklogsCount = 0;
+        private int _incompleteBacklogsCount = 0;
+        private double _completedPercent = 0;
 
         public ObservableCollection<Backlog> RecentlyAdded { get; set; }
         public ObservableCollection<Backlog> RecentlyCompleted { get; set; }
         public ObservableCollection<Backlog> InProgress { get; set; }
         public ObservableCollection<Backlog> Upcoming { get; set; }
         
-        public int BacklogsCount { get; set; }
-        public int CompletedBacklogsCount { get; set; }
-        public int IncompleteBacklogsCount { get; set; }
         public bool IsFirstRun { get; } = Settings.IsFirstRun;
         public bool ShowWhatsNew { get; } = Settings.ShowWhatsNew;
-        public double CompletedBacklogsPercent { get; set; }
         public string WelcomeText = Settings.IsSignedIn ? $"Welcome to Backlogs, {Settings.UserName}!" : "Welcome to Backlogs, stranger!";
         public string UserName { get; } = Settings.UserName;
         public bool SignedIn { get; } = Settings.IsSignedIn;
@@ -215,6 +215,46 @@ namespace backlog.ViewModels
             }
         }
 
+        public int BacklogsCount
+        {
+            get => _backlogsCount;
+            set
+            {
+                _backlogsCount = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BacklogsCount)));
+            }
+        }
+
+        public int CompletedBacklogsCount
+        {
+            get => _completedBacklogsCount;
+            set
+            {
+                _completedBacklogsCount = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CompletedBacklogsCount)));
+            }
+        }
+        
+        public int IncompleteBacklogsCount
+        {
+            get => _incompleteBacklogsCount;
+            set
+            {
+                _incompleteBacklogsCount = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IncompleteBacklogsCount)));
+            }
+        }
+
+        public double CompletedBacklogsPercent
+        {
+            get => _completedPercent;
+            set
+            {
+                _completedPercent = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CompletedBacklogsPercent)));
+            }
+        }
+
         public MainViewModel()
         {
             _networkAvailable = NetworkInterface.GetIsNetworkAvailable();
@@ -229,6 +269,11 @@ namespace backlog.ViewModels
             OpenWebApp = new AsyncCommand(OpenWebAppAsync);
             SignOut = new AsyncCommand(SignOutAsync);
             SendCrashLog = new AsyncCommand(SendCrashLogAsync);
+
+            RecentlyAdded = new ObservableCollection<Backlog>();
+            RecentlyCompleted = new ObservableCollection<Backlog>();
+            InProgress = new ObservableCollection<Backlog>();
+            Upcoming = new ObservableCollection<Backlog>();
 
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
             LoadBacklogs();
@@ -283,7 +328,7 @@ namespace backlog.ViewModels
             {
                 RecentlyAdded.Add(b);
             }
-            RecentlyCreatedEmpty = RecentlyAdded.Count > 0;
+            RecentlyCreatedEmpty = RecentlyAdded.Count <= 0;
             
             var _recentlyCompleted = SaveData.GetInstance().GetRecentlyCompletedBacklogs();
             RecentlyCompleted.Clear();
@@ -291,7 +336,7 @@ namespace backlog.ViewModels
             {
                 RecentlyCompleted.Add(b);
             }
-            RecentlyCompletedEmpty = RecentlyCompleted.Count > 0;
+            RecentlyCompletedEmpty = RecentlyCompleted.Count <= 0;
 
             var _inProgress = SaveData.GetInstance().GetInProgressBacklogs();
             InProgress.Clear();
@@ -299,7 +344,7 @@ namespace backlog.ViewModels
             {
                 InProgress.Add(b);
             }    
-            InProgressEmpty = InProgress.Count > 0;
+            InProgressEmpty = InProgress.Count <= 0;
 
             var _upcoming = SaveData.GetInstance().GetUpcomingBacklogs();
             Upcoming.Clear();
@@ -307,12 +352,15 @@ namespace backlog.ViewModels
             {
                 Upcoming.Add(b);
             }
-            UpcomingEmpty = Upcoming.Count > 0;
+            UpcomingEmpty = Upcoming.Count <= 0;
 
             CompletedBacklogsCount = SaveData.GetInstance().GetCompletedBacklogs().Count;
             IncompleteBacklogsCount = SaveData.GetInstance().GetIncompleteBacklogs().Count;
             BacklogsCount = SaveData.GetInstance().GetBacklogs().Count();
-            CompletedBacklogsPercent = (Convert.ToDouble(CompletedBacklogsCount) / BacklogsCount) * 100;
+            if(BacklogsCount > 0)
+            {
+                CompletedBacklogsPercent = (Convert.ToDouble(CompletedBacklogsCount) / BacklogsCount) * 100.0;
+            }
 
             await GenerateRandomBacklogAsync();
         }

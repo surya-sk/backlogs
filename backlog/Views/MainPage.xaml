@@ -142,14 +142,16 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <ContentDialog x:Name="CrashDialog" Title="Oops.." PrimaryButtonText="Send to Developer" PrimaryButtonClick="CrashDialog_PrimaryButtonClick"
+            <ContentDialog x:Name="CrashDialog" Title="Oops.." PrimaryButtonText="Send to Developer" PrimaryButtonCommand="{x:Bind ViewModel.SendCrashLog}"
                            CloseButtonText="Close" />
 
-            <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed" />
+            <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
             <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind TopSigninButton}"
-                              Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!" />
+                              Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!"
+                              Visibility="{x:Bind ViewModel.ShowTopTeachingTip, Mode=OneWay}"/>
             <muxc:TeachingTip x:Name="BottomSigninTeachingTip" Target="{x:Bind BottomSigninButton}"
-                              Title="Sign-in using your MS account" Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!" />
+                              Title="Sign-in using your MS account" Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!"
+                              Visibility="{x:Bind ViewModel.ShowBottomTeachingTip, Mode=OneWay}"/>
 
             <muxc:TeachingTip x:Name="WhatsNewTip" Title="New this version" 
                               Subtitle="Trailers, upcoming backlogs, Bing search and more"
@@ -158,7 +160,8 @@
                               IsLightDismissEnabled="False"
                               ActionButtonClick="WhatsNewTip_ActionButtonClick"
                               ActionButtonContent="See all"
-                              CloseButtonContent="Got it" />
+                              CloseButtonContent="Got it"
+                              Visibility="{x:Bind ViewModel.ShowWhatsNew, Mode=OneWay}"/>
 
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
@@ -188,35 +191,36 @@
                         <RelativePanel Margin="10,0,0,30">
                             <TextBlock x:Name="RecentsHeadingText" Text="Recently Added" FontSize="20" Margin="20,20,20,20"/>
                             <Button x:Name="AllAddedButton" Content="See all" Click="AllAddedButton_Click" RelativePanel.RightOf="RecentsHeadingText" Margin="0,20,20,20" />
-                            <TextBlock x:Name="EmptyBackogsText" Text="You haven't added any Backlogs yet" Visibility="Collapsed" RelativePanel.Below="RecentsHeadingText" Margin="20" TextWrapping="Wrap"/>
+                            <TextBlock Text="You haven't added any Backlogs yet" RelativePanel.Below="RecentsHeadingText" Margin="20" 
+                                       TextWrapping="Wrap" Visibility="{x:Bind ViewModel.RecentlyCreatedEmpty, Mode=OneWay}"/>
                             <controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind recentlyAdded}" ItemClick="AddedBacklogsGrid_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.RecentlyAdded, Mode=OneWay}" ItemClick="AddedBacklogsGrid_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="RecentsHeadingText" Loaded="AddedBacklogsGrid_Loaded"/>
                         </RelativePanel>
 
                         <RelativePanel Margin="10,0,0,30" Grid.Row="1">
                             <TextBlock x:Name="UpcomingHeadingText" Text="Upcoming" FontSize="20" Margin="20" />
-                            <TextBlock x:Name="EmptyUpcomingText" Text="You have no Backlogs upcoming" Visibility="Collapsed" RelativePanel.Below="UpcomingHeadingText"
+                            <TextBlock Text="You have no Backlogs upcoming" Visibility="{x:Bind ViewModel.UpcomingEmpty, Mode=OneWay}" RelativePanel.Below="UpcomingHeadingText"
                                        Margin="20" TextWrapping="Wrap" />
                             <controls:AdaptiveGridView x:Name="UpcomingBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind comingUp}" ItemClick="UpcomingBacklogsGrid_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.Upcoming, Mode=OneWay}" ItemClick="UpcomingBacklogsGrid_ItemClick"
                                                        ItemTemplate="{StaticResource UpcomingBacklogTemplate}" RelativePanel.Below="UpcomingHeadingText" Loaded="UpcomingBacklogsGrid_Loaded" />
                         </RelativePanel>
                         
                         <RelativePanel Margin="10,0,0,30" Grid.Row="2">
                             <TextBlock x:Name="HeadingText" Text="In Progress" FontSize="20" Margin="20,20,20,20"/>
-                            <TextBlock x:Name="EmptyProgressBackogsText" Text="You have no Backlogs in progress" Visibility="Collapsed" RelativePanel.Below="HeadingText" Margin="20" TextWrapping="Wrap"/>
+                            <TextBlock Text="You have no Backlogs in progress" Visibility="{x:Bind ViewModel.InProgressEmpty, Mode=OneWay}" RelativePanel.Below="HeadingText" Margin="20" TextWrapping="Wrap"/>
                             <controls:AdaptiveGridView x:Name="InProgressBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind inProgress}" ItemClick="InProgressBacklogsGrid_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.InProgress, Mode=OneWay}" ItemClick="InProgressBacklogsGrid_ItemClick"
                                                        ItemTemplate="{StaticResource InProgressBacklogTemplate}" RelativePanel.Below="HeadingText" Loaded="InProgressBacklogsGrid_Loaded"/>
                         </RelativePanel>
 
                         <RelativePanel Grid.Row="3" Margin="10,0,0,30">
                             <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="20,20,20,20" />
                             <Button x:Name="AllCompletedButton" Content="See all" Click="AllCompletedButton_Click" RelativePanel.RightOf="CompletedHeadingText" Margin="0,20,20,20" />
-                            <TextBlock x:Name="EmptyCompletedText" Text="You haven't completed any Backlogs" Visibility="Collapsed" RelativePanel.Below="CompletedHeadingText" Margin="20" TextWrapping="Wrap" />
+                            <TextBlock Text="You haven't completed any Backlogs" Visibility="{x:Bind ViewModel.RecentlyCompletedEmpty, Mode=OneWay}" RelativePanel.Below="CompletedHeadingText" Margin="20" TextWrapping="Wrap" />
                             <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind recentlyCompleted}"
+                                                       SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind ViewModel.RecentlyCompleted, Mode=OneWay}"
                                                        ItemTemplate="{StaticResource CompletedBacklogTemplate}" RelativePanel.Below="CompletedHeadingText"/>
                         </RelativePanel>
                     </Grid>
@@ -253,20 +257,20 @@
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="20">
                                             <TextBlock Text="Total number of backlogs: " FontSize="15" Margin="0,0,10,0" />
-                                            <TextBlock Text="{x:Bind backlogCount}" FontSize="15" FontWeight="Bold" />
+                                            <TextBlock Text="{x:Bind ViewModel.BacklogsCount, Mode=OneWay}" FontSize="15" FontWeight="Bold" />
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="20">
                                             <TextBlock Text="Completed backlogs: " FontSize="15" Margin="0,0,10,0" />
-                                            <TextBlock Text="{x:Bind completedBacklogsCount}" FontSize="15" FontWeight="Bold" />
+                                            <TextBlock Text="{x:Bind ViewModel.CompletedBacklogsCount, Mode=OneWay}" FontSize="15" FontWeight="Bold" />
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="20">
                                             <TextBlock Text="Incomplete backogs: " FontSize="15" Margin="0,0,10,0"/>
-                                            <TextBlock Text="{x:Bind incompleteBacklogsCount}" FontSize="15" FontWeight="Bold" />
+                                            <TextBlock Text="{x:Bind ViewModel.IncompleteBacklogsCount, Mode=OneWay}" FontSize="15" FontWeight="Bold" />
                                         </StackPanel>
                                     </StackPanel>
 
                                     <controls:RadialProgressBar x:Name="PercentBar" Grid.Column="1" Minimum="0" Maximum="100" Thickness="8" Outline="Gray" 
-                                                Foreground="{ThemeResource SystemColorControlAccentBrush}" Margin="20" Width="150" />
+                                                Foreground="{ThemeResource SystemColorControlAccentBrush}" Margin="20" Width="150" Value="{x:Bind ViewModel.CompletedBacklogsPercent, Mode=OneWay}" />
                                 </Grid>
                             </Grid>
                         </ScrollViewer>
@@ -275,7 +279,7 @@
                             <TextBlock x:Name="SuggestionHeadingText" Text="Random Pick" FontSize="20" Margin="20" />
                             <TextBlock x:Name="EmptySuggestionsText" Text="Add backlogs to get picks" Visibility="Collapsed" TextWrapping="Wrap" RelativePanel.Below="SuggestionHeadingText" />
                             <StackPanel x:Name="InputPanel" RelativePanel.Below="SuggestionHeadingText" Margin="20" >
-                                <ComboBox x:Name="TypeComoBox" Margin="10,0,0,20" SelectedIndex="0">
+                                <ComboBox x:Name="TypeComoBox" Margin="10,0,0,20" SelectedIndex="0" SelectedValue="{x:Bind ViewModel.RandomBacklogType, Mode=TwoWay}">
                                     <x:String>Any</x:String>
                                     <x:String>Film</x:String>
                                     <x:String>TV</x:String>
@@ -283,7 +287,7 @@
                                     <x:String>Game</x:String>
                                     <x:String>Book</x:String>
                                 </ComboBox>
-                                <Button x:Name="GoButton" Content="Go" Margin="10,0,0,0" Click="GoButton_Click" />
+                                <Button x:Name="GoButton" Content="Go" Margin="10,0,0,0" Command="{x:Bind ViewModel.GenerateRandomBacklog}" />
                             </StackPanel>
                             <Grid x:Name="suggestionsGrid"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="0,0,10,10" RelativePanel.RightOf="InputPanel" RelativePanel.Below="SuggestionHeadingText">
                                 <Grid.RowDefinitions>
@@ -291,10 +295,10 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
-                                <Image x:Name="suggestionCover" Height="150" Width="200" HorizontalAlignment="Stretch" Margin="0,10,0,0"/>
+                                <Image x:Name="suggestionCover" Source="{x:Bind ViewModel.RandomBacklog.ImageURL, Mode=OneWay}" Height="150" Width="200" HorizontalAlignment="Stretch" Margin="0,10,0,0"/>
                                 <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Center">
                                     <TextBlock
-                        x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
+                        x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis" Text="{x:Bind ViewModel.RandomBacklog.Name, Mode=OneWay}"
                                     Style="{StaticResource BaseTextBlockStyle}"
                                     TextLineBounds="TrimToCapHeight"
                                     TextWrapping="Wrap">
@@ -317,67 +321,67 @@
             <AppBarButton x:Name="TopCompletedBacklogsButton" Label="Completed backlogs" Click="CompletedBacklogsButton_Click">
                 <FontIcon Glyph="" />
             </AppBarButton>
-            <AppBarButton x:Name="TopSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
+            <AppBarButton x:Name="TopSyncButton" Label="Sync" Icon="Sync" Click="{x:Bind ReloadAndSyncCallback}" />
             <AppBarButton x:Name="TopCreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
-            <AppBarButton x:Name="TopSigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
-            <AppBarButton x:Name="TopProfileButton" Label="Signed-in" Visibility="Collapsed">
+            <AppBarButton x:Name="TopSigninButton" Label="Sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />
+            <AppBarButton Label="{x:Bind ViewModel.UserName}" Visibility="{x:Bind ViewModel.ShowProfileButton, Mode=OneWay}">
                 <AppBarButton.Flyout>
                     <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem x:Name="TopSignOutButton" Text="Sign Out" Click="SignOutButton_Click">
+                        <MenuFlyoutItem Text="Sign Out" Command="{x:Bind ViewModel.SignOut}">
                             <MenuFlyoutItem.Icon>
                                 <FontIcon Glyph="" />
                             </MenuFlyoutItem.Icon>
                         </MenuFlyoutItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
-                <muxc:PersonPicture x:Name="TopAccountPic" Height="30" Width="30"/>
+                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="TopSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
-                <AppBarButton x:Name="TopImportButton" Label="Import backlog" Icon="Import" Click="ImportButton_Click" />
-                <AppBarButton x:Name="TopRateButton" Label="Rate and Review on the Store" Icon="Like" Click="RateButton_Click" />
-                <AppBarButton x:Name="TopSupportButton" Label="Support developer"  Click="SupportButton_Click" >
+                <AppBarButton Label="Import backlog" Icon="Import" Command="{x:Bind ViewModel.ImportBacklog}" />
+                <AppBarButton Label="Rate and Review on the Store" Icon="Like" Command="{x:Bind ViewModel.RateAppOnMSStore}" />
+                <AppBarButton Label="Support developer"  Command="{x:Bind ViewModel.OpenPaypal}" >
                     <FontIcon Glyph="" />
                 </AppBarButton>
-                <AppBarButton x:Name="TopShareButton" Label="Share this app" Click="ShareButton_Click" >
+                <AppBarButton Label="Share this app" Command="{x:Bind ViewModel.ShareApp}" >
                     <FontIcon Glyph="" />
                 </AppBarButton>
-                <AppBarButton x:Name="TopWebAppButton" Label="Open web app" Icon="Link" Click="WebAppButton_Click" />
+                <AppBarButton Label="Open web app" Icon="Link" Command="{x:Bind ViewModel.OpenWebApp}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
             <AppBarButton x:Name="BottomBacklogsButton" Label="All Backlogs" Icon="List" Click="BacklogsButton_Click" />
-            <AppBarButton x:Name="BottomSyncButton" Label="Sync" Icon="Sync" Click="SyncButton_Click" />
+            <AppBarButton x:Name="BottomSyncButton" Label="Sync" Icon="Sync" Click="{x:Bind ReloadAndSyncCallback}" />
             <AppBarButton x:Name="BottomCreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
-            <AppBarButton x:Name="BottomSigninButton" Label="Sign-in" Icon="AddFriend" Click="SigninButton_Click" />
-            <AppBarButton x:Name="BottomProfileButton" Label="Signed-in" Visibility="Collapsed">
+            <AppBarButton x:Name="BottomSigninButton" Label="Sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />
+            <AppBarButton Label="{x:Bind ViewModel.UserName}" Visibility="{x:Bind ViewModel.ShowProfileButton, Mode=OneWay}">
                 <AppBarButton.Flyout>
-                    <MenuFlyout Placement="Top">
-                        <MenuFlyoutItem x:Name="BottomSignOutButton" Text="Sign Out" Click="SignOutButton_Click">
+                    <MenuFlyout Placement="Bottom">
+                        <MenuFlyoutItem Text="Sign Out" Command="{x:Bind ViewModel.SignOut}">
                             <MenuFlyoutItem.Icon>
                                 <FontIcon Glyph="" />
                             </MenuFlyoutItem.Icon>
                         </MenuFlyoutItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
-                <muxc:PersonPicture x:Name="BottomAccountPic" Height="30" Width="30"/>
+                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="BottomCompletedBacklogsButton" Label="Completed backlogs" Click="CompletedBacklogsButton_Click">
                     <FontIcon Glyph="" />
                 </AppBarButton>
                 <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
-                <AppBarButton x:Name="BottomImportButton" Label="Import backlog" Icon="Import" Click="ImportButton_Click" />
-                <AppBarButton x:Name="BottomRateButton" Label="Rate and Review on the Store" Icon="Like" Click="RateButton_Click" />
-                <AppBarButton x:Name="BottomSupportButton" Label="Support developer"  Click="SupportButton_Click" >
+                <AppBarButton Label="Import backlog" Icon="Import" Command="{x:Bind ViewModel.ImportBacklog}" />
+                <AppBarButton Label="Rate and Review on the Store" Icon="Like" Command="{x:Bind ViewModel.RateAppOnMSStore}" />
+                <AppBarButton Label="Support developer"  Command="{x:Bind ViewModel.OpenPaypal}" >
                     <FontIcon Glyph="" />
                 </AppBarButton>
-                <AppBarButton x:Name="BottomShareButton" Label="Share this app" Click="ShareButton_Click" >
+                <AppBarButton Label="Share this app" Command="{x:Bind ViewModel.ShareApp}" >
                     <FontIcon Glyph="" />
                 </AppBarButton>
-                <AppBarButton x:Name="BottomWebAppButton" Label="Open web app" Icon="Link" Click="WebAppButton_Click" />
+                <AppBarButton Label="Open web app" Icon="Link" Command="{x:Bind ViewModel.OpenWebApp}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

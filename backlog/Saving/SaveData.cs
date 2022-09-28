@@ -155,8 +155,16 @@ namespace backlog.Saving
             InProgressBacklogs = new ObservableCollection<Backlog>(IncompleteBacklogs.Where(b => b.Progress > 0));
             var _sortedCompletedBacklogs = new ObservableCollection<Backlog>();
             var _sortedIncompleteBacklogs = new ObservableCollection<Backlog>();
+            RecentlyAddedBacklogs = new ObservableCollection<Backlog>();
+            RecentlyCompletedBacklogs = new ObservableCollection<Backlog>();
+            UpcomingBacklogs = new ObservableCollection<Backlog>();
             foreach(var backlog in IncompleteBacklogs)
             {
+                if (backlog.CreatedDate == "None" || backlog.CreatedDate == null)
+                {
+                    backlog.CreatedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                }
+                _sortedIncompleteBacklogs.Add(backlog);
                 try
                 {
                     if (DateTime.Parse(backlog.TargetDate) >= DateTime.Today)
@@ -168,11 +176,6 @@ namespace backlog.Saving
                 {
                     continue;
                 }
-                if (backlog.CreatedDate == "None" || backlog.CreatedDate == null)
-                {
-                    backlog.CreatedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
-                }
-                _sortedIncompleteBacklogs.Add(backlog);
             }
             foreach(var backlog in CompletedBacklogs)
             {
@@ -198,27 +201,27 @@ namespace backlog.Saving
 
         public ObservableCollection<Backlog> GetIncompleteBacklogs()
         {
-            return IncompleteBacklogs;
+            return IncompleteBacklogs != null ? IncompleteBacklogs : new ObservableCollection<Backlog>();
         }
 
         public ObservableCollection<Backlog> GetRecentlyAddedBacklogs()
         {
-            return RecentlyAddedBacklogs;
+            return RecentlyAddedBacklogs != null ? RecentlyAddedBacklogs : new ObservableCollection<Backlog>();
         }
 
         public ObservableCollection<Backlog> GetRecentlyCompletedBacklogs()
         {
-            return RecentlyCompletedBacklogs;
+            return RecentlyCompletedBacklogs != null ? RecentlyCompletedBacklogs : new ObservableCollection<Backlog>() ;
         }
 
         public ObservableCollection<Backlog> GetInProgressBacklogs()
         {
-            return InProgressBacklogs;
+            return InProgressBacklogs != null ? InProgressBacklogs : new ObservableCollection<Backlog>();
         }
 
         public ObservableCollection<Backlog> GetUpcomingBacklogs()
         {
-            return UpcomingBacklogs;
+            return UpcomingBacklogs != null ? UpcomingBacklogs : new ObservableCollection<Backlog>();
         }
     }
 }
