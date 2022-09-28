@@ -62,6 +62,7 @@ namespace backlog.Views
                     backlogIndex = int.Parse(e.Parameter.ToString());
                 }
             }
+            await ViewModel.SetupProfile();
         }
 
 

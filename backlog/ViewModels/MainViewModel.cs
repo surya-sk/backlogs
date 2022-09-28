@@ -3,12 +3,9 @@ using backlog.Logging;
 using backlog.Models;
 using backlog.Saving;
 using backlog.Utils;
-using backlog.Views;
-using Microsoft.Graph;
 using Microsoft.Toolkit.Uwp.Notifications;
 using MvvmHelpers.Commands;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -22,7 +19,6 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System.Profile;
 using Windows.UI.Notifications;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -296,10 +292,10 @@ namespace backlog.ViewModels
                 await SaveData.GetInstance().ReadDataAsync(Sync);
                 SaveData.GetInstance().ResetHelperBacklogs();
                 LoadBacklogs();
-                ShowTeachingTips();
-                ShowLiveTiles();
-                IsBusy = false;
             }
+            ShowTeachingTips();
+            ShowLiveTiles();
+            IsBusy = false;
         }
 
         /// <summary>

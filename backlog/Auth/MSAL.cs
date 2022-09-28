@@ -1,11 +1,7 @@
 ﻿using Microsoft.Identity.Client;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using backlog.Logging;
 using Logger = backlog.Logging.Logger;
 using Microsoft.Graph;
 using Windows.Security.Authentication.Web;
@@ -15,9 +11,6 @@ using System.IO;
 using backlog.Utils;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
-using System.Threading;
-using Windows.UI.Core;
-using System.Diagnostics;
 using backlog.Saving;
 
 namespace backlog.Auth

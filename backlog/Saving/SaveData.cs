@@ -179,13 +179,9 @@ namespace backlog.Saving
             }
             foreach(var backlog in CompletedBacklogs)
             {
-                try
+                if (backlog.CompletedDate == null)
                 {
                     backlog.CompletedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
-                }
-                catch
-                {
-                    continue;
                 }
                 _sortedCompletedBacklogs.Add(backlog);
             }
