@@ -289,13 +289,16 @@ namespace backlog.ViewModels
                 catch { }
                 await SetUserPhotoAsync();
                 ShowProfileButton = true;
-                await SaveData.GetInstance().ReadDataAsync(Sync);
-                SaveData.GetInstance().ResetHelperBacklogs();
-                LoadBacklogs();
+                if (Sync)
+                {
+                    await SaveData.GetInstance().ReadDataAsync(Sync);
+                    SaveData.GetInstance().ResetHelperBacklogs();
+                    LoadBacklogs();
+                }
+                IsBusy = false;
             }
             ShowTeachingTips();
             ShowLiveTiles();
-            IsBusy = false;
         }
 
         /// <summary>
