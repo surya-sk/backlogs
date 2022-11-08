@@ -19,6 +19,8 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
 using System.Windows.Input;
 using MvvmHelpers.Commands;
+using System.ComponentModel;
+using Windows.UI.Xaml.Controls.Primitives;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -27,8 +29,22 @@ namespace backlog.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CreatePage : Page
+    public sealed partial class CreatePage : Page, INotifyPropertyChanged
     {
+        private string m_selectedType;
+        private int m_selectedIndex;
+        private string m_placeholderText = "Enter name";
+        private string m_nameInput;
+        private DateTimeOffset m_dateInput;
+        private TimeSpan m_notifTime;
+        private bool m_enableNotificationToggle;
+        private bool m_showNotificationToggle;
+        private bool m_showNotificationOptions;
+        private Models.SearchResult m_selectedResult;
+        private string m_searchResultTitle;
+
+        public ObservableCollection<Models.SearchResult> SearchResults;
+
         public ICommand SearchBacklog { get; }
         public ICommand Cancel { get; }
 
@@ -36,15 +52,141 @@ namespace backlog.Views
 
         public CancelCreate CancelCreateFunc;
 
+        public string SelectedType
+        {
+            get => m_selectedType;
+            set
+            {
+                if(m_selectedType != value)
+                {
+                    m_selectedType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedType)));
+                    SetPlaceholderText(m_selectedType);
+                }
+            }
+        }
+
+        public string PlaceholderText
+        {
+            get => m_placeholderText;
+            set
+            {
+                m_placeholderText = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PlaceholderText)));
+            }
+        }
+
+        public string NameInput
+        {
+            get => m_nameInput;
+            set
+            {
+                m_nameInput = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NameInput)));
+            }
+        }
+
+        public int SelectedIndex
+        {
+            get => m_selectedIndex;
+            set
+            {
+                m_selectedIndex = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedIndex)));
+            }
+        }
+
+        public DateTimeOffset DateInput
+        {
+            get => m_dateInput;
+            set
+            {
+                m_dateInput = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DateInput)));
+                EnableNotificationToggle = m_dateInput != DateTimeOffset.MinValue;
+            }
+        }
+
+        public TimeSpan NotifTime
+        {
+            get => m_notifTime;
+            set
+            {
+                if(m_notifTime != value)
+                {
+                    m_notifTime = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotifTime)));
+                }
+            }
+        }
+
+        public bool EnableNotificationToggle
+        {
+            get => m_enableNotificationToggle;
+            set
+            {
+                m_enableNotificationToggle = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EnableNotificationToggle)));
+            }
+        }
+
+        public bool ShowNotificationToggle
+        {
+            get => m_showNotificationToggle;
+            set
+            {
+                m_showNotificationToggle = value;
+                if (m_showNotificationToggle)
+                {
+                    ShowNotificationOptions = true;
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowNotificationToggle)));
+            }
+        }
+
+        public bool ShowNotificationOptions
+        {
+            get => m_showNotificationOptions;
+            set
+            {
+                m_showNotificationOptions = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowNotificationOptions)));
+            }
+        }
+
+        public Models.SearchResult SelectedSearchResult
+        {
+            get => m_selectedResult;
+            set
+            {
+                m_selectedResult = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedSearchResult)));
+                SearchResultSelectedAsync().Wait();
+            }
+        }
+
+        public string SearchResultTitle
+        {
+            get => m_searchResultTitle;
+            set
+            {
+                m_searchResultTitle = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchResultTitle)));
+            }
+        }
+
         ObservableCollection<Backlog> backlogs { get; set; }
         bool signedIn;
         bool isNetworkAvailable = false;
         int typeIndex = 0;
         DateTime today = DateTime.Today;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public CreatePage()
         {
             this.InitializeComponent();
+            SearchResults = new ObservableCollection<Models.SearchResult>();
             SearchBacklog = new AsyncCommand(TrySearchBacklogAsync);
             Cancel = new Command(CancelCreation);
 
@@ -61,7 +203,7 @@ namespace backlog.Views
                 typeIndex = (int)e.Parameter;
                 if(typeIndex > 0)
                 {
-                    TypeComoBox.SelectedIndex = typeIndex-1;
+                    SelectedIndex = typeIndex-1;
                 }
             }
             if(isNetworkAvailable)
@@ -97,25 +239,24 @@ namespace backlog.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TypeComoBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SetPlaceholderText(string value)
         {
-            string value = TypeComoBox.SelectedValue.ToString();
             switch (value)
             {
                 case "Film":
-                    NameInput.PlaceholderText = "Evil Dead";
+                    PlaceholderText = "Evil Dead";
                     break;
                 case "TV":
-                    NameInput.PlaceholderText = "Hannibal";
+                    PlaceholderText = "Hannibal";
                     break;
                 case "Album":
-                    NameInput.PlaceholderText = "Radiohead - Amnesiac";
+                    PlaceholderText = "Radiohead - Amnesiac";
                     break;
                 case "Game":
-                    NameInput.PlaceholderText = "Assassins Creed 2";
+                    PlaceholderText = "Assassins Creed 2";
                     break;
                 case "Book":
-                    NameInput.PlaceholderText = "Never Let Me Go";
+                    PlaceholderText = "Never Let Me Go";
                     break;
             }
         }
@@ -138,9 +279,7 @@ namespace backlog.Views
 
             try
             {
-                string title = NameInput.Text;
-
-                if (title == "" || TypeComoBox.SelectedIndex < 0)
+                if (NameInput == "" || SelectedIndex < 0)
                 {
                     ContentDialog contentDialog = new ContentDialog
                     {
@@ -152,13 +291,12 @@ namespace backlog.Views
                 }
                 else
                 {
-                    if (DatePicker.Date != null)
+                    if (DateInput != null && DateInput != DateTimeOffset.MinValue)
                     {
-                        var chosenDate = DatePicker.Date.Value.DateTime;
-                        string date = chosenDate.ToString("D", CultureInfo.InvariantCulture);
-                        if (NotifySwitch.IsOn)
+                        string date = DateInput.DateTime.ToString("D", CultureInfo.InvariantCulture);
+                        if (ShowNotificationOptions)
                         {
-                            if (TimePicker.Time == TimeSpan.Zero)
+                            if (NotifTime == TimeSpan.Zero)
                             {
                                 ContentDialog contentDialog = new ContentDialog
                                 {
@@ -169,7 +307,7 @@ namespace backlog.Views
                                 await contentDialog.ShowAsync();
                                 return;
                             }
-                            DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(TimePicker.Time);
+                            DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(NotifTime);
                             int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
                             if (diff < 0)
                             {
@@ -186,7 +324,7 @@ namespace backlog.Views
                         else
                         {
                             DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture);
-                            int diff = DateTime.Compare(DateTime.Today, chosenDate);
+                            int diff = DateTime.Compare(DateTime.Today, DateInput.DateTime);
                             if (diff > 0)
                             {
                                 ContentDialog contentDialog = new ContentDialog
@@ -200,8 +338,8 @@ namespace backlog.Views
                             }
                         }
                     }
-                    SearchResultsHeader.Text = $"Showing results for \"{NameInput.Text}\". Click the one you'd like to add";
-                    await SearchBacklogAsync(title);
+                    SearchResultTitle = $"Showing results for \"{NameInput}\". Click the one you'd like to add";
+                    await SearchBacklogAsync();
                 }
             }
             catch (Exception ex)
@@ -216,27 +354,25 @@ namespace backlog.Views
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        private async Task SearchBacklogAsync(string title)
+        private async Task SearchBacklogAsync()
         {
             ProgBar.Visibility = Visibility.Visible;
-            string date = DatePicker.Date != null ? DatePicker.Date.Value.ToString("D", CultureInfo.InvariantCulture) : "None";
-            string type = TypeComoBox.SelectedItem.ToString();
-            switch (type)
+            switch (SelectedType)
             {
                 case "Film":
-                    await SearchFilmBacklogAsync(title, date, TimePicker.Time);
+                    await SearchFilmBacklogAsync();
                     break;
                 case "TV":
-                    await SearchSeriesBacklogAsync(title, date, TimePicker.Time);
+                    await SearchSeriesBacklogAsync();
                     break;
                 case "Game":
-                    await SearchGameBacklogAsync(NameInput.Text, date, TimePicker.Time);
+                    await SearchGameBacklogAsync();
                     break;
                 case "Book":
-                    await SearchBookBacklogAsync(NameInput.Text, date, TimePicker.Time);
+                    await SearchBookBacklogAsync();
                     break;
                 case "Album":
-                    await CreateMusicBacklogAsync(NameInput.Text, date, TimePicker.Time);
+                    await CreateMusicBacklogAsync();
                     break;
             }
             ProgBar.Visibility = Visibility.Collapsed;
@@ -285,25 +421,22 @@ namespace backlog.Views
         /// <summary>
         /// Searches for a film
         /// </summary>
-        /// <param name="title"></param>
-        /// <param name="date"></param>
-        /// <param name="time"></param>
         /// <returns></returns>
-        private async Task SearchFilmBacklogAsync(string title, string date, TimeSpan time)
+        private async Task SearchFilmBacklogAsync()
         {
             try
             {
-                string response = await RestClient.GetFilmResponse(title);
-                await Logger.Info($"Trying to find film {title}. Response: {response}");
+                string response = await RestClient.GetFilmResponse(NameInput);
+                await Logger.Info($"Trying to find film {NameInput}. Response: {response}");
                 FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
                 if(filmResult.results.Length > 0)
                 {
-                    ObservableCollection<Models.SearchResult> results = new ObservableCollection<Models.SearchResult>();
+                    SearchResults.Clear();
                     foreach (var result in filmResult.results)
                     {
                         try
                         {
-                            results.Add(new Models.SearchResult
+                            SearchResults.Add(new Models.SearchResult
                             {
                                 Id = result.id,
                                 Name = result.title,
@@ -316,7 +449,6 @@ namespace backlog.Views
                             continue;
                         }
                     }
-                    ResultsListView.ItemsSource = results;
                     _ = await ResultsDialog.ShowAsync();
                     await Logger.Info("Succesfully created backlog");
                 }
@@ -338,9 +470,9 @@ namespace backlog.Views
         /// <param name="date"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        private async Task CreateFilmBacklogAsync(Models.SearchResult selectedItem, string date, TimeSpan time)
+        private async Task CreateFilmBacklogAsync(string date)
         {
-            string filmData = await RestClient.GetFilmDataResponse(selectedItem.Id);
+            string filmData = await RestClient.GetFilmDataResponse(SelectedSearchResult.Id);
             Film film = JsonConvert.DeserializeObject<Film>(filmData);
             Backlog backlog = new Backlog
             {
@@ -356,7 +488,7 @@ namespace backlog.Views
                 Progress = 0,
                 Units = "Minutes",
                 ShowProgress = true,
-                NotifTime = time == null ? TimeSpan.Zero : time,
+                NotifTime = NotifTime == null ? TimeSpan.Zero : NotifTime,
                 UserRating = -1,
                 CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
             };
@@ -370,12 +502,13 @@ namespace backlog.Views
         /// <param name="date"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        private async Task CreateMusicBacklogAsync(string title, string date, TimeSpan time)
+        private async Task CreateMusicBacklogAsync()
         {
             try
             {
-                string response = await RestClient.GetMusicResponse(title);
-                await Logger.Info($"Searching for album {title}. Response: {response}");
+                string _date = DateInput != null ? DateInput.ToString("D", CultureInfo.InvariantCulture) : "None";
+                string response = await RestClient.GetMusicResponse(NameInput);
+                await Logger.Info($"Searching for album {NameInput}. Response: {response}");
                 var musicData = JsonConvert.DeserializeObject<MusicData>(response);
                 if(musicData != null)
                 {
@@ -394,13 +527,13 @@ namespace backlog.Views
                         Type = "Album",
                         ReleaseDate = music.releaseDate,
                         ImageURL = music.image,
-                        TargetDate = date,
+                        TargetDate = _date,
                         Description = music.description,
                         Director = music.artist,
                         Progress = 0,
                         Units = "Minutes",
                         ShowProgress = false,
-                        NotifTime = time,
+                        NotifTime = NotifTime,
                         UserRating = -1,
                         CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
                     };
@@ -426,21 +559,21 @@ namespace backlog.Views
         /// <param name="date"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        private async Task SearchBookBacklogAsync(string title, string date, TimeSpan time)
+        private async Task SearchBookBacklogAsync()
         {
             try
             {
-                string response = await RestClient.GetBookResponse(title);
-                await Logger.Info($"Trying to find book {title}. Response {response}");
+                string response = await RestClient.GetBookResponse(NameInput);
+                await Logger.Info($"Trying to find book {NameInput}. Response {response}");
                 var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
                 if(bookData.items.Count > 0)
                 {
-                    ObservableCollection<Models.SearchResult> searchResults = new ObservableCollection<Models.SearchResult>();
+                    SearchResults.Clear();
                     foreach (var item in bookData.items)
                     {
                         try
                         {
-                            searchResults.Add(new Models.SearchResult
+                            SearchResults.Add(new Models.SearchResult
                             {
                                 Id = item.id,
                                 Name = item.volumeInfo.title,
@@ -453,7 +586,6 @@ namespace backlog.Views
                             continue;
                         }
                     }
-                    ResultsListView.ItemsSource = searchResults;
                     _ = await ResultsDialog.ShowAsync();
                     await Logger.Info("Succesfully created backlog");
                 }
@@ -468,16 +600,16 @@ namespace backlog.Views
             }
         }
 
-        private async Task CreateBookBacklogAsync(Models.SearchResult searchResult, string date, TimeSpan time)
+        private async Task CreateBookBacklogAsync(string date)
         {
-            var title = NameInput.Text;
+            var title = NameInput;
             string response = await RestClient.GetBookResponse(title);
             await Logger.Info($"Trying to find book {title}. Response {response}");
             var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
             Item item = new Item();
             foreach (var i in bookData.items)
             {
-                if (i.id == searchResult.Id)
+                if (i.id == SelectedSearchResult.Id)
                 {
                     item = i;
                 }
@@ -505,7 +637,7 @@ namespace backlog.Views
                 Progress = 0,
                 Units = "Pages",
                 ShowProgress = true,
-                NotifTime = time,
+                NotifTime = NotifTime,
                 UserRating = -1,
                 CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
             };
@@ -519,21 +651,21 @@ namespace backlog.Views
         /// <param name="date"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        private async Task SearchSeriesBacklogAsync(string title, string date, TimeSpan time)
+        private async Task SearchSeriesBacklogAsync()
         {
             try
             {
-                string response = await RestClient.GetSeriesResponse(title);
-                await Logger.Info($"Trying to find series {title}. Response: {response}");
+                string response = await RestClient.GetSeriesResponse(NameInput);
+                await Logger.Info($"Trying to find series {NameInput}. Response: {response}");
                 SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
                 if(seriesResult.results.Length > 0)
                 {
-                    ObservableCollection<Models.SearchResult> searchResults = new ObservableCollection<Models.SearchResult>();
+                    SearchResults.Clear();
                     foreach (var result in seriesResult.results)
                     {
                         try
                         {
-                            searchResults.Add(new Models.SearchResult
+                            SearchResults.Add(new Models.SearchResult
                             {
                                 Id = result.id,
                                 Name = result.title,
@@ -546,7 +678,6 @@ namespace backlog.Views
                             continue;
                         }
                     }
-                    ResultsListView.ItemsSource = searchResults;
                     _ = await ResultsDialog.ShowAsync();
                     // SeriesResponse seriesResponse = seriesResult.results[0
                     await Logger.Info("Succesfully created backlog");
@@ -562,9 +693,9 @@ namespace backlog.Views
             }
         }
 
-        private async Task CreateSeriesBacklogAsync(Models.SearchResult selectedItem, string date, TimeSpan time)
+        private async Task CreateSeriesBacklogAsync(string date)
         {
-            string seriesData = await RestClient.GetSeriesDataResponse(selectedItem.Id);
+            string seriesData = await RestClient.GetSeriesDataResponse(SelectedSearchResult.Id);
             Series series = JsonConvert.DeserializeObject<Series>(seriesData);
             Backlog backlog = new Backlog
             {
@@ -580,7 +711,7 @@ namespace backlog.Views
                 Progress = 0,
                 Units = "Season(s)",
                 ShowProgress = true,
-                NotifTime = time,
+                NotifTime = NotifTime,
                 UserRating = -1,
                 CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
             };
@@ -594,16 +725,16 @@ namespace backlog.Views
         /// <param name="date"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        private async Task SearchGameBacklogAsync(string title, string date, TimeSpan time)
+        private async Task SearchGameBacklogAsync()
         {
             try
             {
-                string response = await RestClient.GetGameResponse(title);
-                await Logger.Info($"Trying to find game {title}. Response: {response}");
+                string response = await RestClient.GetGameResponse(NameInput);
+                await Logger.Info($"Trying to find game {NameInput}. Response: {response}");
                 var result = JsonConvert.DeserializeObject<GameResponse[]>(response);
                 if(result.Length > 0)
                 {
-                    ObservableCollection<Models.SearchResult> results = new ObservableCollection<Models.SearchResult>();
+                    SearchResults.Clear();
                     foreach (var res in result)
                     {
                         string id = res.id.ToString();
@@ -622,7 +753,7 @@ namespace backlog.Views
                                 releaseDate = releaseDate.ToString("D"),
                                 image = "https:" + gameCover[0].url
                             };
-                            results.Add(new Models.SearchResult
+                            SearchResults.Add(new Models.SearchResult
                             {
                                 Id = res.id.ToString(),
                                 Name = game.name,
@@ -635,7 +766,6 @@ namespace backlog.Views
                             continue;
                         }
                     }
-                    ResultsListView.ItemsSource = results;
                     _ = await ResultsDialog.ShowAsync();
                     await Logger.Info("Succesfully created backlog");
                 }
@@ -650,9 +780,9 @@ namespace backlog.Views
             }
         }
 
-        private async Task CreateGameBacklogAsync(Models.SearchResult selectedItem, string date, TimeSpan time)
+        private async Task CreateGameBacklogAsync(string date)
         {
-            string id = selectedItem.Id;
+            string id = SelectedSearchResult.Id;
             string gameResponse = await RestClient.GetGameResult(id);
             var gameResult = JsonConvert.DeserializeObject<GameResult[]>(gameResponse);
             int companyID = await RestClient.GetCompanyID(gameResult[0].involved_companies[0].ToString());
@@ -684,7 +814,7 @@ namespace backlog.Views
                 Director = game.company,
                 Progress = 0,
                 ShowProgress = false,
-                NotifTime = time,
+                NotifTime = NotifTime,
                 UserRating = -1,
                 CreatedDate = DateTimeOffset.Now.Date.ToString("D" ,CultureInfo.InvariantCulture)
             };
@@ -695,7 +825,7 @@ namespace backlog.Views
         {
             ContentDialog contentDialog = new ContentDialog
             {
-                Title = $"Couldn't find any results for {NameInput.Text}",
+                Title = $"Couldn't find any results for {NameInput}",
                 Content = $"Check if you've picked the right type or try entering the full title if you haven't done so. If that doesn't work, please go to \'Settings + more\' and send me the logs",
                 CloseButtonText = "Ok"
             };
@@ -706,7 +836,7 @@ namespace backlog.Views
         {
             ContentDialog contentDialog = new ContentDialog
             {
-                Title = $"Couldn't find any results for {NameInput.Text}",
+                Title = $"Couldn't find any results for {NameInput}",
                 Content = $"Could not create Backlog. Please go to \'Settings + more\' and send me the logs",
                 CloseButtonText = "Ok"
             };
@@ -736,48 +866,29 @@ namespace backlog.Views
             Frame.Navigate(typeof(SettingsPage));
         }
 
-        private async void ResultsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async Task SearchResultSelectedAsync()
         {
             ProgBar.Visibility = Visibility.Collapsed;
-            var selectedItem = ResultsListView.SelectedItem as Models.SearchResult;
-            if(selectedItem != null)
+            if (SelectedSearchResult != null)
             {
-                string date = DatePicker.Date != null ? DatePicker.Date.Value.ToString("D", CultureInfo.InvariantCulture) : "None";
-                var time = TimePicker.Time;
+                string date = DateInput != null ? DateInput.ToString("D", CultureInfo.InvariantCulture) : "None";
                 ResultsDialog.Hide();
-                switch (TypeComoBox.SelectedItem.ToString())
+                switch (SelectedType)
                 {
                     case "Film":
-                        await CreateFilmBacklogAsync(selectedItem, date, time);
+                        await CreateFilmBacklogAsync(date);
                         break;
                     case "TV":
-                        await CreateSeriesBacklogAsync(selectedItem, date, time);
+                        await CreateSeriesBacklogAsync(date);
                         break;
                     case "Game":
-                        await CreateGameBacklogAsync(selectedItem, date, time);
+                        await CreateGameBacklogAsync(date);
                         break;
                     case "Book":
-                        await CreateBookBacklogAsync(selectedItem, date, time);
+                        await CreateBookBacklogAsync(date);
                         break;
                 }
             }
-        }
-
-        private void NotifySwitch_Toggled(object sender, RoutedEventArgs e)
-        {
-            if(NotifySwitch.IsOn)
-            {
-                TimePicker.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                TimePicker.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void DatePicker_DateChanged(object sender, CalendarDatePickerDateChangedEventArgs e)
-        {
-            NotifySwitch.IsEnabled = true;
         }
 
         private async void NameInput_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
