@@ -26,25 +26,25 @@ namespace backlog.ViewModels
 {
     public class MainViewModel: INotifyPropertyChanged
     {
-        private bool _isBusy;
-        private string _crashLog;
-        private bool _networkAvailable;
-        private Guid _randomBacklogId = new Guid();
-        private Backlog _randomBacklog;
-        private bool _recentlyCreatedEmpty;
-        private bool _recentlyCompletedEmtpy;
-        private bool _inProgressEmpty;
-        private bool _upcomingEmpty;
-        private bool _showTopTeachingTip;
-        private bool _showBottomTeachingTip;
-        private bool _showProfileButtons;
-        private bool _showSignInButton = true;
-        private BitmapImage _accountPic;
-        private string _randomBacklogType = "Any";
-        private int _backlogsCount = 0;
-        private int _completedBacklogsCount = 0;
-        private int _incompleteBacklogsCount = 0;
-        private double _completedPercent = 0;
+        private bool m_isBusy;
+        private string m_crashLog;
+        private bool m_networkAvailable;
+        private Guid m_randomBacklogId = new Guid();
+        private Backlog m_randomBacklog;
+        private bool m_recentlyCreatedEmpty;
+        private bool m_recentlyCompletedEmtpy;
+        private bool m_inProgressEmpty;
+        private bool m_upcomingEmpty;
+        private bool m_showTopTeachingTip;
+        private bool m_showBottomTeachingTip;
+        private bool m_showProfileButtons;
+        private bool m_showSignInButton = true;
+        private BitmapImage m_accountPic;
+        private string m_randomBacklogType = "Any";
+        private int m_backlogsCount = 0;
+        private int m_completedBacklogsCount = 0;
+        private int m_incompleteBacklogsCount = 0;
+        private double m_completedPercent = 0;
 
         public ObservableCollection<Backlog> RecentlyAdded { get; set; }
         public ObservableCollection<Backlog> RecentlyCompleted { get; set; }
@@ -81,90 +81,90 @@ namespace backlog.ViewModels
 
         public bool IsBusy
         {
-            get => _isBusy;
+            get => m_isBusy;
             set
             {
-                _isBusy = value;
+                m_isBusy = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsBusy)));
             }
         }
 
         public Guid RandomBacklogId
         {
-            get => _randomBacklogId;
+            get => m_randomBacklogId;
             set
             {
-                _randomBacklogId = value;
+                m_randomBacklogId = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RandomBacklogId)));
             }
         }
 
         public Backlog RandomBacklog
         {
-            get => _randomBacklog;
+            get => m_randomBacklog;
             set
             {
-                _randomBacklog = value;
+                m_randomBacklog = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RandomBacklog)));
             }
         }
 
         public bool RecentlyCreatedEmpty
         {
-            get => _recentlyCreatedEmpty;
+            get => m_recentlyCreatedEmpty;
             set
             {
-                _recentlyCreatedEmpty = value;
+                m_recentlyCreatedEmpty = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RecentlyCreatedEmpty)));
             }
         }
 
         public bool RecentlyCompletedEmpty
         {
-            get => _recentlyCompletedEmtpy;
+            get => m_recentlyCompletedEmtpy;
             set
             {
-                _recentlyCompletedEmtpy = value;
+                m_recentlyCompletedEmtpy = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RecentlyCompletedEmpty)));
             }
         }
 
         public bool InProgressEmpty
         {
-            get => _inProgressEmpty;
+            get => m_inProgressEmpty;
             set
             {
-                _inProgressEmpty = value;
+                m_inProgressEmpty = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InProgressEmpty)));
             }
         }
 
         public bool UpcomingEmpty
         {
-            get => _upcomingEmpty;
+            get => m_upcomingEmpty;
             set
             {
-                _upcomingEmpty = value;
+                m_upcomingEmpty = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UpcomingEmpty)));
             }
         }
 
         public bool ShowTopTeachingTip
         {
-            get => _showTopTeachingTip;
+            get => m_showTopTeachingTip;
             set
             {
-                _showTopTeachingTip = value;
+                m_showTopTeachingTip = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowTopTeachingTip)));
             }
         }
 
         public bool ShowBottomTeachingTip
         {
-            get => _showBottomTeachingTip;
+            get => m_showBottomTeachingTip;
             set
             {
-                _showBottomTeachingTip = value;
+                m_showBottomTeachingTip = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowBottomTeachingTip)));
 
             }
@@ -172,88 +172,88 @@ namespace backlog.ViewModels
 
         public BitmapImage AccountPic
         {
-            get => _accountPic;
+            get => m_accountPic;
             set
             {
-                _accountPic = value;
+                m_accountPic = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AccountPic)));
             }
         }
 
         public bool ShowProfileButton
         {
-            get => _showProfileButtons;
+            get => m_showProfileButtons;
             set
             {
-                _showProfileButtons = value;
-                ShowSignInButton = !_showProfileButtons;
+                m_showProfileButtons = value;
+                ShowSignInButton = !m_showProfileButtons;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowProfileButton)));
             }
         }
 
         public bool ShowSignInButton
         {
-            get => _showSignInButton;
+            get => m_showSignInButton;
             set
             {
-                _showSignInButton = value;
+                m_showSignInButton = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowSignInButton)));
             }
         }
 
         public string RandomBacklogType
         {
-            get => _randomBacklogType;
+            get => m_randomBacklogType;
             set
             {
-                _randomBacklogType = value;
+                m_randomBacklogType = value;
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(RandomBacklogType)));
             }
         }
 
         public int BacklogsCount
         {
-            get => _backlogsCount;
+            get => m_backlogsCount;
             set
             {
-                _backlogsCount = value;
+                m_backlogsCount = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BacklogsCount)));
             }
         }
 
         public int CompletedBacklogsCount
         {
-            get => _completedBacklogsCount;
+            get => m_completedBacklogsCount;
             set
             {
-                _completedBacklogsCount = value;
+                m_completedBacklogsCount = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CompletedBacklogsCount)));
             }
         }
         
         public int IncompleteBacklogsCount
         {
-            get => _incompleteBacklogsCount;
+            get => m_incompleteBacklogsCount;
             set
             {
-                _incompleteBacklogsCount = value;
+                m_incompleteBacklogsCount = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IncompleteBacklogsCount)));
             }
         }
 
         public double CompletedBacklogsPercent
         {
-            get => _completedPercent;
+            get => m_completedPercent;
             set
             {
-                _completedPercent = value;
+                m_completedPercent = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CompletedBacklogsPercent)));
             }
         }
 
         public MainViewModel()
         {
-            _networkAvailable = NetworkInterface.GetIsNetworkAvailable();
+            m_networkAvailable = NetworkInterface.GetIsNetworkAvailable();
 
             SignIn = new AsyncCommand(SignInAsync);
             RateAppOnMSStore = new AsyncCommand(RateAppOnMSStoreAsync);
@@ -279,7 +279,7 @@ namespace backlog.ViewModels
         {
             IsBusy = true;
             await ShowCrashLog();
-            if(_networkAvailable && Settings.IsSignedIn)
+            if(m_networkAvailable && Settings.IsSignedIn)
             {
                 try
                 {
@@ -308,10 +308,10 @@ namespace backlog.ViewModels
         private async Task ShowCrashLog()
         {
             var localSettings = ApplicationData.Current.LocalSettings;
-            _crashLog = localSettings.Values["LastCrashLog"] as string;
-            if (_crashLog != null)
+            m_crashLog = localSettings.Values["LastCrashLog"] as string;
+            if (m_crashLog != null)
             {
-                await ShowLastCrashLogFunc(_crashLog);
+                await ShowLastCrashLogFunc(m_crashLog);
             }
             localSettings.Values["LastCrashLog"] = null;
         }
@@ -423,7 +423,7 @@ namespace backlog.ViewModels
             IsBusy = true;
             ShowTopTeachingTip = false;
             ShowBottomTeachingTip = false;
-            if (_networkAvailable)
+            if (m_networkAvailable)
             {
                 if (!Settings.IsSignedIn)
                 {
@@ -1643,7 +1643,7 @@ namespace backlog.ViewModels
             StringBuilder body = new StringBuilder();
             body.AppendLine("*Enter additional info such as what may have caused the crash*");
             body.AppendLine("\n\n\n");
-            body.AppendLine(_crashLog);
+            body.AppendLine(m_crashLog);
             emailMessage.Body = body.ToString();
             await EmailManager.ShowComposeNewEmailAsync(emailMessage);
             IsBusy = false;
