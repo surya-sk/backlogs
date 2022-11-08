@@ -19,13 +19,13 @@ namespace backlog.ViewModels
     public class SettingsViewModel : INotifyPropertyChanged
     {
 
-        private string _selectedTheme = Settings.AppTheme;
-        private int _selectedTileStyleIndex = Settings.TileStyle == "Peeking" ? 0 : 1;
-        private string _tileStylePreviewImage = Settings.TileStyle == "Peeking" ? "ms-appx:///Assets/peeking-tile.png" :
+        private string m_selectedTheme = Settings.AppTheme;
+        private int m_selectedTileStyleIndex = Settings.TileStyle == "Peeking" ? 0 : 1;
+        private string m_tileStylePreviewImage = Settings.TileStyle == "Peeking" ? "ms-appx:///Assets/peeking-tile.png" :
                 "ms-appx:///Assets/background-tile.png";
-        private bool _showProgress;
-        private string _tileContent = Settings.TileContent;
-        private BitmapImage _accountPic;
+        private bool m_showProgress;
+        private string m_tileContent = Settings.TileContent;
+        private BitmapImage m_accountPic;
 
 
         public string MIT { get; } = "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n\nTHE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
@@ -55,12 +55,12 @@ namespace backlog.ViewModels
 
         public string SelectedTheme
         {
-            get => _selectedTheme;
+            get => m_selectedTheme;
             set
             {
-                if(_selectedTheme != value)
+                if(m_selectedTheme != value)
                 {
-                    _selectedTheme = value;
+                    m_selectedTheme = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTheme)));
                     ChangeAppTheme();
                 }
@@ -69,10 +69,10 @@ namespace backlog.ViewModels
 
         public int SelectedTileStyleIndex
         {
-            get => _selectedTileStyleIndex;
+            get => m_selectedTileStyleIndex;
             set
             {
-                _selectedTileStyleIndex = value;
+                m_selectedTileStyleIndex = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileStyleIndex)));
                 ChangeTileStyle();
             }
@@ -80,12 +80,12 @@ namespace backlog.ViewModels
 
         public string SelectedTileContent
         {
-            get => _tileContent;
+            get => m_tileContent;
             set
             {
-                if(_tileContent != value)
+                if(m_tileContent != value)
                 {
-                    _tileContent = value;
+                    m_tileContent = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileContent)));
                     Settings.TileContent = value.ToString();
                 }
@@ -94,20 +94,20 @@ namespace backlog.ViewModels
 
         public string TileStylePreviewImage
         {
-            get => _tileStylePreviewImage;
+            get => m_tileStylePreviewImage;
             set
             {
-                _tileStylePreviewImage = value;
+                m_tileStylePreviewImage = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TileStylePreviewImage)));
             }
         }
 
         public bool ShowProgress
         {
-            get => _showProgress;
+            get => m_showProgress;
             set
             {
-                _showProgress = value;
+                m_showProgress = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowProgress)));
             }
         }
@@ -124,10 +124,10 @@ namespace backlog.ViewModels
 
         public BitmapImage AccountPic
         {
-            get => _accountPic;
+            get => m_accountPic;
             set
             {
-                _accountPic = value;
+                m_accountPic = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AccountPic)));
             }
         }
@@ -305,9 +305,9 @@ namespace backlog.ViewModels
         /// </summary>
         private void ChangeTileStyle()
         {
-            TileStylePreviewImage = _selectedTileStyleIndex == 0 ? "ms-appx:///Assets/peeking-tile.png" :
+            TileStylePreviewImage = m_selectedTileStyleIndex == 0 ? "ms-appx:///Assets/peeking-tile.png" :
     "ms-appx:///Assets/background-tile.png";
-            Settings.TileStyle = _selectedTileStyleIndex == 0 ? "Peeking" : "Background";
+            Settings.TileStyle = m_selectedTileStyleIndex == 0 ? "Peeking" : "Background";
         }
     }
 }

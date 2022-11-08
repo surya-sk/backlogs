@@ -28,22 +28,22 @@ namespace backlog.ViewModels
 {
     public class BacklogViewModel : INotifyPropertyChanged
     {
-        private bool _inProgress;
-        private bool _showEditControls;
-        private bool _hideEditControls = true;
-        private bool _isLoading;
-        private bool _showProgressSwitch;
-        private bool _enableNotificationToggle;
-        private bool _showNotificationToggle;
-        private bool _showNotificationOptions;
-        private DateTimeOffset _calendarDate;
-        private TimeSpan _notifTime;
-        private double _userRating;
-        private string _sourceName;
-        private Uri _sourceLink;
-        private int _backlogIndex;
-        private bool _showTrailerButton = true;
-        StorageFolder _tempFolder = ApplicationData.Current.TemporaryFolder;
+        private bool m_inProgress;
+        private bool m_showEditControls;
+        private bool m_hideEditControls = true;
+        private bool m_isLoading;
+        private bool m_showProgressSwitch;
+        private bool m_enableNotificationToggle;
+        private bool m_showNotificationToggle;
+        private bool m_showNotificationOptions;
+        private DateTimeOffset m_calendarDate;
+        private TimeSpan m_notifTime;
+        private double m_userRating;
+        private string m_sourceName;
+        private Uri m_sourceLink;
+        private int m_backlogIndex;
+        private bool m_showTrailerButton = true;
+        StorageFolder m_tempFolder = ApplicationData.Current.TemporaryFolder;
 
         public ObservableCollection<Backlog> Backlogs;
         public Backlog Backlog;
@@ -75,12 +75,12 @@ namespace backlog.ViewModels
 
         public bool InProgress
         {
-            get => _inProgress;
+            get => m_inProgress;
             set
             {
-                _inProgress = value;
+                m_inProgress = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InProgress)));
-                if (_inProgress)
+                if (m_inProgress)
                 {
                     Backlog.Progress = Backlog.Length = 1;
                 }
@@ -93,52 +93,52 @@ namespace backlog.ViewModels
 
         public bool ShowProgressSwitch
         {
-            get => _showProgressSwitch;
+            get => m_showProgressSwitch;
             set
             {
-                _showProgressSwitch = value;
+                m_showProgressSwitch = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowProgressSwitch)));
             }
         }
 
         public bool ShowEditControls
         {
-            get => _showEditControls;
+            get => m_showEditControls;
             set
             {
-                _showEditControls = value;
+                m_showEditControls = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowEditControls)));
-                HideEditControls = !_showEditControls;
+                HideEditControls = !m_showEditControls;
             }
         }
 
         public bool HideEditControls
         {
-            get => _hideEditControls;
+            get => m_hideEditControls;
             set
             {
-                _hideEditControls = value;
+                m_hideEditControls = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HideEditControls)));
             }
         }
 
         public bool EnableNotificationToggle
         {
-            get => _enableNotificationToggle;
+            get => m_enableNotificationToggle;
             set
             {
-                _enableNotificationToggle = value;
+                m_enableNotificationToggle = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EnableNotificationToggle)));
             }
         }
 
         public bool ShowNotificationToggle
         {
-            get => _showNotificationToggle;
+            get => m_showNotificationToggle;
             set
             {
-                _showNotificationToggle = value;
-                if (_showNotificationToggle)
+                m_showNotificationToggle = value;
+                if (m_showNotificationToggle)
                 {
                     ShowNotificationOptions = true;
                 }
@@ -148,33 +148,33 @@ namespace backlog.ViewModels
 
         public bool ShowNotificationOptions
         {
-            get => _showNotificationOptions;
+            get => m_showNotificationOptions;
             set
             {
-                _showNotificationOptions = value;
+                m_showNotificationOptions = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowNotificationOptions)));
             }
         }
 
         public DateTimeOffset CalendarDate
         {
-            get => _calendarDate;
+            get => m_calendarDate;
             set
             {
-                _calendarDate = value;
+                m_calendarDate = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CalendarDate)));
-                EnableNotificationToggle = _calendarDate != DateTimeOffset.MinValue;
+                EnableNotificationToggle = m_calendarDate != DateTimeOffset.MinValue;
             }
         }
 
         public TimeSpan NotifTime
         {
-            get => _notifTime;
+            get => m_notifTime;
             set
             {
-                if(_notifTime != value)
+                if(m_notifTime != value)
                 {
-                    _notifTime = value;
+                    m_notifTime = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotifTime)));
                 }
             }
@@ -182,50 +182,50 @@ namespace backlog.ViewModels
 
         public bool IsLoading
         {
-            get => _isLoading;
+            get => m_isLoading;
             set
             {
-                _isLoading = value;
+                m_isLoading = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));
             }
         }
 
         public double UserRating
         {
-            get => _userRating;
+            get => m_userRating;
             set
             {
-                _userRating = value;
+                m_userRating = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserRating)));
             }
         }
 
         public string SourceName
         {
-            get => _sourceName;
+            get => m_sourceName;
             set
             {
-                _sourceName = value;
+                m_sourceName = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SourceName)));
             }
         }
 
         public Uri SourceLink
         {
-            get => _sourceLink;
+            get => m_sourceLink;
             set
             {
-                _sourceLink = value;
+                m_sourceLink = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SourceLink)));
             }
         }
 
         public bool ShowTrailerButton
         {
-            get => _showTrailerButton;
+            get => m_showTrailerButton;
             set
             {
-                _showTrailerButton = value;
+                m_showTrailerButton = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowTrailerButton)));
             }
         }
@@ -280,7 +280,7 @@ namespace backlog.ViewModels
                             ShowTrailerButton = false;
                             break;
                     }
-                    _backlogIndex = Backlogs.IndexOf(b);
+                    m_backlogIndex = Backlogs.IndexOf(b);
                 }
             }
             ShowProgressSwitch = !Backlog.ShowProgress;
@@ -373,7 +373,7 @@ namespace backlog.ViewModels
                 await Logger.Info("Saving backlog....");
             }
             catch { }
-            Backlogs[_backlogIndex] = Backlog;
+            Backlogs[m_backlogIndex] = Backlog;
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
         }
@@ -499,7 +499,7 @@ namespace backlog.ViewModels
         private async Task ShareBacklogAsync()
         {
             IsLoading = true;
-            StorageFile backlogFile = await _tempFolder.CreateFileAsync($"{Backlog.Name}.bklg", CreationCollisionOption.ReplaceExisting);
+            StorageFile backlogFile = await m_tempFolder.CreateFileAsync($"{Backlog.Name}.bklg", CreationCollisionOption.ReplaceExisting);
             string json = JsonConvert.SerializeObject(Backlog);
             await FileIO.WriteTextAsync(backlogFile, json);
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
@@ -513,7 +513,7 @@ namespace backlog.ViewModels
             DataRequest dataRequest = args.Request;
             dataRequest.Data.Properties.Title = $"Share {Backlog.Name} backlog";
             dataRequest.Data.Properties.Description = "Your contacts with the Backlogs app installed can open this file and add it to their backlog";
-            var fileToShare = await _tempFolder.GetFileAsync($"{Backlog.Name}.bklg");
+            var fileToShare = await m_tempFolder.GetFileAsync($"{Backlog.Name}.bklg");
             List<IStorageItem> list = new List<IStorageItem>();
             list.Add(fileToShare);
             dataRequest.Data.SetStorageItems(list);

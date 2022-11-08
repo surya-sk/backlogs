@@ -18,15 +18,15 @@ namespace backlog.ViewModels
 {
     public class BacklogsViewModel: INotifyPropertyChanged
     {
-        private string _sortOrder = Settings.SortOrder;
-        private bool _allEmpty;
-        private bool _filmsEmpty;
-        private bool _albumsEmpty;
-        private bool _booksEmpty;
-        private bool _tvEmpty;
-        private bool _gamesEmpty;
+        private string m_sortOrder = Settings.SortOrder;
+        private bool m_allEmpty;
+        private bool m_filmsEmpty;
+        private bool m_albumsEmpty;
+        private bool m_booksEmpty;
+        private bool m_tvEmpty;
+        private bool m_gamesEmpty;
 
-        private BitmapImage _accountPic;
+        private BitmapImage m_accountPic;
 
         public ObservableCollection<Backlog> Backlogs { get; set; }
         public ObservableCollection<Backlog> IncompleteBacklogs { get; set; }
@@ -58,14 +58,14 @@ namespace backlog.ViewModels
 
         public string SortOrder
         {
-            get => _sortOrder;
+            get => m_sortOrder;
             set
             {
-                if (value != _sortOrder)
+                if (value != m_sortOrder)
                 {
-                    _sortOrder = value;
+                    m_sortOrder = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SortOrder)));
-                    Settings.SortOrder = _sortOrder;
+                    Settings.SortOrder = m_sortOrder;
                     PopulateBacklogs();
                 }
             }
@@ -73,70 +73,70 @@ namespace backlog.ViewModels
 
         public bool BacklogsEmpty
         {
-            get => _allEmpty;
+            get => m_allEmpty;
             set
             {
-                _allEmpty = value;
+                m_allEmpty = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BacklogsEmpty)));
             }
         }
 
         public bool FilmsEmpty
         {
-            get => _filmsEmpty;
+            get => m_filmsEmpty;
             set
             {
-                _filmsEmpty = value;
+                m_filmsEmpty = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilmsEmpty)));
             }
         }
 
         public bool TVEmpty
         {
-            get => _tvEmpty;
+            get => m_tvEmpty;
             set
             {
-                _tvEmpty = value;
+                m_tvEmpty = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TVEmpty)));
             }
         }
 
         public bool BooksEmpty
         {
-            get => _booksEmpty;
+            get => m_booksEmpty;
             set
             {
-                _booksEmpty = value;
+                m_booksEmpty = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BooksEmpty)));
             }
         }
 
         public bool GamesEmpty
         {
-            get => _gamesEmpty;
+            get => m_gamesEmpty;
             set
             {
-                _gamesEmpty = value;
+                m_gamesEmpty = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GamesEmpty)));
             }
         }
 
         public bool AlbumsEmpty
         {
-            get => _albumsEmpty;
+            get => m_albumsEmpty;
             set
             {
-                _albumsEmpty = value;
+                m_albumsEmpty = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AlbumsEmpty)));
             }
         }
 
         public BitmapImage AccountPic
         {
-            get => _accountPic;
+            get => m_accountPic;
             set
             {
-                _accountPic = value;
+                m_accountPic = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AccountPic)));
             }
         }
