@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Media.Animation;
 using System.Linq;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
+using System.Windows.Input;
+using MvvmHelpers.Commands;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -27,6 +29,13 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class CreatePage : Page
     {
+        public ICommand SearchBacklog { get; }
+        public ICommand Cancel { get; }
+
+        public delegate void CancelCreate();
+
+        public CancelCreate CancelCreateFunc;
+
         ObservableCollection<Backlog> backlogs { get; set; }
         bool signedIn;
         bool isNetworkAvailable = false;
@@ -36,6 +45,11 @@ namespace backlog.Views
         public CreatePage()
         {
             this.InitializeComponent();
+            SearchBacklog = new AsyncCommand(TrySearchBacklogAsync);
+            Cancel = new Command(CancelCreation);
+
+            CancelCreateFunc = CancelCreateAndGoBack;
+
             isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
         }
 
@@ -106,21 +120,12 @@ namespace backlog.Views
             }
         }
 
-        /// <summary>
-        /// Validate user input and proceed to create the backlog
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void CreateButton_Click(object sender, RoutedEventArgs e)
-        {
-            await TrySearchBacklog();
-        }
 
         /// <summary>
         /// Try and search for backlog
         /// </summary>
         /// <returns></returns>
-        private async Task TrySearchBacklog()
+        private async Task TrySearchBacklogAsync()
         {
             try
             {
@@ -196,7 +201,7 @@ namespace backlog.Views
                         }
                     }
                     SearchResultsHeader.Text = $"Showing results for \"{NameInput.Text}\". Click the one you'd like to add";
-                    await SearchBacklog(title);
+                    await SearchBacklogAsync(title);
                 }
             }
             catch (Exception ex)
@@ -211,7 +216,7 @@ namespace backlog.Views
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        private async Task SearchBacklog(string title)
+        private async Task SearchBacklogAsync(string title)
         {
             ProgBar.Visibility = Visibility.Visible;
             string date = DatePicker.Date != null ? DatePicker.Date.Value.ToString("D", CultureInfo.InvariantCulture) : "None";
@@ -219,19 +224,19 @@ namespace backlog.Views
             switch (type)
             {
                 case "Film":
-                    await SearchFilmBacklog(title, date, TimePicker.Time);
+                    await SearchFilmBacklogAsync(title, date, TimePicker.Time);
                     break;
                 case "TV":
-                    await SearchSeriesBacklog(title, date, TimePicker.Time);
+                    await SearchSeriesBacklogAsync(title, date, TimePicker.Time);
                     break;
                 case "Game":
-                    await SearchGameBacklog(NameInput.Text, date, TimePicker.Time);
+                    await SearchGameBacklogAsync(NameInput.Text, date, TimePicker.Time);
                     break;
                 case "Book":
-                    await SearchBookBacklog(NameInput.Text, date, TimePicker.Time);
+                    await SearchBookBacklogAsync(NameInput.Text, date, TimePicker.Time);
                     break;
                 case "Album":
-                    await CreateMusicBacklog(NameInput.Text, date, TimePicker.Time);
+                    await CreateMusicBacklogAsync(NameInput.Text, date, TimePicker.Time);
                     break;
             }
             ProgBar.Visibility = Visibility.Collapsed;
@@ -242,7 +247,7 @@ namespace backlog.Views
         /// </summary>
         /// <param name="backlog"></param>
         /// <returns></returns>
-        private async Task CreateBacklogItem(Backlog backlog)
+        private async Task CreateBacklogItemAsync(Backlog backlog)
         {
             ProgBar.Visibility = Visibility.Visible;
             if (backlog != null)
@@ -272,7 +277,7 @@ namespace backlog.Views
             }
             else
             {
-                await ShowErrorDialog();
+                await ShowErrorDialogAsync();
                 ProgBar.Visibility = Visibility.Collapsed;
             }
         }
@@ -284,7 +289,7 @@ namespace backlog.Views
         /// <param name="date"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        private async Task SearchFilmBacklog(string title, string date, TimeSpan time)
+        private async Task SearchFilmBacklogAsync(string title, string date, TimeSpan time)
         {
             try
             {
@@ -317,7 +322,7 @@ namespace backlog.Views
                 }
                 else
                 {
-                    await ShowNotFoundDialog();
+                    await ShowNotFoundDialogAsync();
                 }
             }
             catch (Exception e)
@@ -333,7 +338,7 @@ namespace backlog.Views
         /// <param name="date"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        private async Task CreateFilmBacklog(Models.SearchResult selectedItem, string date, TimeSpan time)
+        private async Task CreateFilmBacklogAsync(Models.SearchResult selectedItem, string date, TimeSpan time)
         {
             string filmData = await RestClient.GetFilmDataResponse(selectedItem.Id);
             Film film = JsonConvert.DeserializeObject<Film>(filmData);
@@ -355,7 +360,7 @@ namespace backlog.Views
                 UserRating = -1,
                 CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
             };
-            await CreateBacklogItem(backlog);
+            await CreateBacklogItemAsync(backlog);
         }
 
         /// <summary>
@@ -365,7 +370,7 @@ namespace backlog.Views
         /// <param name="date"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        private async Task CreateMusicBacklog(string title, string date, TimeSpan time)
+        private async Task CreateMusicBacklogAsync(string title, string date, TimeSpan time)
         {
             try
             {
@@ -399,17 +404,17 @@ namespace backlog.Views
                         UserRating = -1,
                         CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
                     };
-                    await CreateBacklogItem(backlog);
+                    await CreateBacklogItemAsync(backlog);
                     await Logger.Info("Succesfully created backlog");
                 }
                 else
                 {
-                    await ShowNotFoundDialog();
+                    await ShowNotFoundDialogAsync();
                 }
             }
             catch (Exception e)
             {
-                await ShowErrorDialog();
+                await ShowErrorDialogAsync();
                 await Logger.Error("Failed to create backlog", e);
             }
         }
@@ -421,7 +426,7 @@ namespace backlog.Views
         /// <param name="date"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        private async Task SearchBookBacklog(string title, string date, TimeSpan time)
+        private async Task SearchBookBacklogAsync(string title, string date, TimeSpan time)
         {
             try
             {
@@ -454,7 +459,7 @@ namespace backlog.Views
                 }
                 else
                 {
-                    await ShowNotFoundDialog();
+                    await ShowNotFoundDialogAsync();
                 }
             }
             catch (Exception e)
@@ -463,7 +468,7 @@ namespace backlog.Views
             }
         }
 
-        private async Task CreateBookBacklog(Models.SearchResult searchResult, string date, TimeSpan time)
+        private async Task CreateBookBacklogAsync(Models.SearchResult searchResult, string date, TimeSpan time)
         {
             var title = NameInput.Text;
             string response = await RestClient.GetBookResponse(title);
@@ -504,7 +509,7 @@ namespace backlog.Views
                 UserRating = -1,
                 CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
             };
-            await CreateBacklogItem(backlog);
+            await CreateBacklogItemAsync(backlog);
         }
 
         /// <summary>
@@ -514,7 +519,7 @@ namespace backlog.Views
         /// <param name="date"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        private async Task SearchSeriesBacklog(string title, string date, TimeSpan time)
+        private async Task SearchSeriesBacklogAsync(string title, string date, TimeSpan time)
         {
             try
             {
@@ -548,7 +553,7 @@ namespace backlog.Views
                 }
                 else
                 {
-                    await ShowNotFoundDialog();
+                    await ShowNotFoundDialogAsync();
                 }
             }
             catch (Exception e)
@@ -557,7 +562,7 @@ namespace backlog.Views
             }
         }
 
-        private async Task CreateSeriesBacklog(Models.SearchResult selectedItem, string date, TimeSpan time)
+        private async Task CreateSeriesBacklogAsync(Models.SearchResult selectedItem, string date, TimeSpan time)
         {
             string seriesData = await RestClient.GetSeriesDataResponse(selectedItem.Id);
             Series series = JsonConvert.DeserializeObject<Series>(seriesData);
@@ -579,7 +584,7 @@ namespace backlog.Views
                 UserRating = -1,
                 CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
             };
-            await CreateBacklogItem(backlog);
+            await CreateBacklogItemAsync(backlog);
         }
 
         /// <summary>
@@ -589,7 +594,7 @@ namespace backlog.Views
         /// <param name="date"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        private async Task SearchGameBacklog(string title, string date, TimeSpan time)
+        private async Task SearchGameBacklogAsync(string title, string date, TimeSpan time)
         {
             try
             {
@@ -636,7 +641,7 @@ namespace backlog.Views
                 }
                 else
                 {
-                    await ShowNotFoundDialog();
+                    await ShowNotFoundDialogAsync();
                 }
             }
             catch (Exception e)
@@ -645,7 +650,7 @@ namespace backlog.Views
             }
         }
 
-        private async Task CreateGameBacklog(Models.SearchResult selectedItem, string date, TimeSpan time)
+        private async Task CreateGameBacklogAsync(Models.SearchResult selectedItem, string date, TimeSpan time)
         {
             string id = selectedItem.Id;
             string gameResponse = await RestClient.GetGameResult(id);
@@ -683,10 +688,10 @@ namespace backlog.Views
                 UserRating = -1,
                 CreatedDate = DateTimeOffset.Now.Date.ToString("D" ,CultureInfo.InvariantCulture)
             };
-            await CreateBacklogItem(backlog);
+            await CreateBacklogItemAsync(backlog);
         }
 
-        private async Task ShowNotFoundDialog()
+        private async Task ShowNotFoundDialogAsync()
         {
             ContentDialog contentDialog = new ContentDialog
             {
@@ -697,7 +702,7 @@ namespace backlog.Views
             _ = await contentDialog.ShowAsync();
         }
 
-        private async Task ShowErrorDialog()
+        private async Task ShowErrorDialogAsync()
         {
             ContentDialog contentDialog = new ContentDialog
             {
@@ -708,7 +713,7 @@ namespace backlog.Views
             _ = await contentDialog.ShowAsync();
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        private void CancelCreateAndGoBack()
         {
             PageStackEntry prevPage = Frame.BackStack.Last();
             try
@@ -719,6 +724,11 @@ namespace backlog.Views
             {
                 Frame.Navigate(prevPage?.SourcePageType);
             }
+        }
+
+        private void CancelCreation()
+        {
+            CancelCreateFunc();
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -738,16 +748,16 @@ namespace backlog.Views
                 switch (TypeComoBox.SelectedItem.ToString())
                 {
                     case "Film":
-                        await CreateFilmBacklog(selectedItem, date, time);
+                        await CreateFilmBacklogAsync(selectedItem, date, time);
                         break;
                     case "TV":
-                        await CreateSeriesBacklog(selectedItem, date, time);
+                        await CreateSeriesBacklogAsync(selectedItem, date, time);
                         break;
                     case "Game":
-                        await CreateGameBacklog(selectedItem, date, time);
+                        await CreateGameBacklogAsync(selectedItem, date, time);
                         break;
                     case "Book":
-                        await CreateBookBacklog(selectedItem, date, time);
+                        await CreateBookBacklogAsync(selectedItem, date, time);
                         break;
                 }
             }
@@ -774,7 +784,7 @@ namespace backlog.Views
         {
             if(e.Key == Windows.System.VirtualKey.Enter)
             {
-                await TrySearchBacklog();
+                await TrySearchBacklogAsync();
             }
         }
     }
