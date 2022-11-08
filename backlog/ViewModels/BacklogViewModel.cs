@@ -172,8 +172,11 @@ namespace backlog.ViewModels
             get => _notifTime;
             set
             {
-                _notifTime = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotifTime)));
+                if(_notifTime != value)
+                {
+                    _notifTime = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotifTime)));
+                }
             }
         }
 
