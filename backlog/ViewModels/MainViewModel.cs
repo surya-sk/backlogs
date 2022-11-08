@@ -295,8 +295,8 @@ namespace backlog.ViewModels
                     SaveData.GetInstance().ResetHelperBacklogs();
                     LoadBacklogs();
                 }
-                IsBusy = false;
             }
+            IsBusy = false;
             ShowTeachingTips();
             ShowLiveTiles();
         }
