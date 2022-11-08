@@ -58,9 +58,12 @@ namespace backlog.ViewModels
             get => _selectedTheme;
             set
             {
-                _selectedTheme = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTheme)));
-                ChangeAppTheme();
+                if(_selectedTheme != value)
+                {
+                    _selectedTheme = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTheme)));
+                    ChangeAppTheme();
+                }
             }
         }
 
@@ -80,9 +83,12 @@ namespace backlog.ViewModels
             get => _tileContent;
             set
             {
-                _tileContent = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileContent)));
-                Settings.TileContent = value.ToString();
+                if(_tileContent != value)
+                {
+                    _tileContent = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileContent)));
+                    Settings.TileContent = value.ToString();
+                }
             }
         }
 
