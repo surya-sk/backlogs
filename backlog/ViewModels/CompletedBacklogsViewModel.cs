@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml.Controls;
 
 namespace backlog.ViewModels
 {
@@ -24,6 +25,7 @@ namespace backlog.ViewModels
         private bool m_booksEmpty;
         private bool m_tvEmpty;
         private bool m_gamesEmpty;
+        private ContentDialog m_popupOverlay;
 
         public ObservableCollection<Backlog> FinishedBacklogs;
         public ObservableCollection<Backlog> FinishedFilmBacklogs;
@@ -145,7 +147,7 @@ namespace backlog.ViewModels
             }
         }
 
-        public CompletedBacklogsViewModel()
+        public CompletedBacklogsViewModel(ContentDialog popupOverlay)
         {
             SaveBacklog = new AsyncCommand(SaveBacklogAsync);
             MarkBacklogAsIncomplete = new AsyncCommand(MarkBacklogAsIncompleteAsync);
@@ -154,6 +156,8 @@ namespace backlog.ViewModels
             SortByDateDsc = new Command(SortBacklogsByCompletedDateDsc);
             SortByRatingAsc = new Command(SortBacklogsByRatingsAsc);
             SortByRatingDsc = new Command(SortBacklogsByRatingDsc);
+
+            m_popupOverlay = popupOverlay;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
             FinishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
@@ -284,6 +288,7 @@ namespace backlog.ViewModels
             }
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
+            m_popupOverlay.Hide();
             ClosePopup();
         }
 

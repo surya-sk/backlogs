@@ -26,20 +26,12 @@ namespace backlog.Views
         public MainPage()
         {
             this.InitializeComponent();
-            ViewModel = new MainViewModel();
-            ViewModel.ShowLastCrashLogFunc = ShowCrashLogCallback;
+            ViewModel = new MainViewModel(CrashDialog);
             ViewModel.ReloadAndSyncFunc = ReloadAndSyncCallback;
             ViewModel.OpenImportPageFunc = OpenImportPageCallback;
             
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
-        }
-
-
-        private async Task ShowCrashLogCallback(string log)
-        {
-            CrashDialog.Content = $"It seems the application crashed the last time, with the following error: {log}";
-            await CrashDialog.ShowAsync();
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)

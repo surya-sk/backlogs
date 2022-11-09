@@ -66,15 +66,8 @@ namespace backlog.ViewModels
         public ICommand ReadMore { get; }
         public ICommand CloseTrailer { get; }
         public event PropertyChangedEventHandler PropertyChanged;
-        //public delegate Task LaunchWebView(string video);
         public delegate void NavigateToPreviousPage();
-        //public delegate void CloseRatingPopup();
-        //public delegate Task ShowRatingPopup();
-
-        //public LaunchWebView LaunchWebViewFunc;
         public NavigateToPreviousPage NavigateToPreviousPageFunc;
-        //public CloseRatingPopup CloseRatingPopupFunc;
-        //public ShowRatingPopup ShowRatingPopupFunc;
 
         public DateTime Today { get; } = DateTime.Today;
 

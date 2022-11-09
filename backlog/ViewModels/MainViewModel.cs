@@ -45,6 +45,7 @@ namespace backlog.ViewModels
         private int m_completedBacklogsCount = 0;
         private int m_incompleteBacklogsCount = 0;
         private double m_completedPercent = 0;
+        private ContentDialog m_crashLogPopup;
 
         public ObservableCollection<Backlog> RecentlyAdded { get; set; }
         public ObservableCollection<Backlog> RecentlyCompleted { get; set; }
@@ -60,7 +61,6 @@ namespace backlog.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public delegate Task ShowLastCrashLog(string log);
         public delegate void ReloadAndSync();
         public delegate void OpenImportPage(string fileName);
 
@@ -75,7 +75,6 @@ namespace backlog.ViewModels
         public ICommand SignOut { get; }
         public ICommand SendCrashLog { get; }
 
-        public ShowLastCrashLog ShowLastCrashLogFunc;
         public ReloadAndSync ReloadAndSyncFunc;
         public OpenImportPage OpenImportPageFunc;
 
@@ -251,7 +250,7 @@ namespace backlog.ViewModels
             }
         }
 
-        public MainViewModel()
+        public MainViewModel(ContentDialog crashLogPopup)
         {
             m_networkAvailable = NetworkInterface.GetIsNetworkAvailable();
 
@@ -273,6 +272,7 @@ namespace backlog.ViewModels
 
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
             LoadBacklogs();
+            m_crashLogPopup = crashLogPopup;
         }
 
         public async Task SetupProfile()
@@ -311,7 +311,8 @@ namespace backlog.ViewModels
             m_crashLog = localSettings.Values["LastCrashLog"] as string;
             if (m_crashLog != null)
             {
-                await ShowLastCrashLogFunc(m_crashLog);
+                m_crashLogPopup.Content = $"It seems the application crashed the last time, with the following error: {m_crashLog}";
+                await m_crashLogPopup.ShowAsync();
             }
             localSettings.Values["LastCrashLog"] = null;
         }

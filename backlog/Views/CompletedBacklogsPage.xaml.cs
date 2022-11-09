@@ -27,15 +27,17 @@ namespace backlog.Views
         private Backlog SelectedBacklog;
         private ICommand CloseBacklogPopup;
 
-        public CompletedBacklogsViewModel ViewModel { get; set; } = new CompletedBacklogsViewModel();
+        public CompletedBacklogsViewModel ViewModel { get; set; }
 
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
+            ViewModel = new CompletedBacklogsViewModel(PopupOverlay);
+
             CloseBacklogPopup = new AsyncCommand(CloseBacklogAsync);
 
             ViewModel.CloseBacklog = CloseBacklogAsync;
-            ViewModel.ClosePopup = ClosePopupOverlayAndReload;
+            ViewModel.ClosePopup = Reload;
 
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
@@ -63,9 +65,8 @@ namespace backlog.Views
             e.Handled = true;
         }
 
-        private void ClosePopupOverlayAndReload()
+        private void Reload()
         {
-            PopupOverlay.Hide();
             Frame.Navigate(typeof(CompletedBacklogsPage));
         }
 
