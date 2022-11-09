@@ -147,6 +147,7 @@
     <Compile Include="ViewModels\BacklogsViewModel.cs" />
     <Compile Include="ViewModels\BacklogViewModel.cs" />
     <Compile Include="ViewModels\CompletedBacklogsViewModel.cs" />
+    <Compile Include="ViewModels\CreateBacklogViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\BacklogPage.xaml.cs">
