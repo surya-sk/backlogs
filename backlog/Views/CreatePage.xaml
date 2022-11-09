@@ -46,7 +46,8 @@
                     <x:String>Book</x:String>
                 </ComboBox>
                 <TextBlock Text="Name" Margin="10,0,0,20" />
-                <TextBox PlaceholderText="{x:Bind PlaceholderText, Mode=OneWay}" Margin="10,0,0,20" KeyDown="NameInput_KeyDown" />
+                <TextBox PlaceholderText="{x:Bind PlaceholderText, Mode=OneWay}" Margin="10,0,0,20" KeyDown="NameInput_KeyDown"
+                         Text="{x:Bind NameInput, Mode=TwoWay}"/>
                 <TextBlock Text="When do you want to check this out? (optional)" Margin="10,0,0,20" />
                 <CalendarDatePicker Margin="10,0,0,20" Date="{x:Bind DateInput, Mode=TwoWay}" MinDate="{x:Bind today}" />
                 <ToggleSwitch Header="Notify me on this date" Margin="10,0,0,20"
@@ -58,7 +59,8 @@
 
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
 
-        <ContentDialog x:Name="ResultsDialog" CloseButtonText="Cancel">
+        <ContentDialog x:Name="ResultsDialog" CloseButtonText="Cancel" PrimaryButtonText="Create" PrimaryButtonCommand="{x:Bind CreateBacklog}"
+                       IsPrimaryButtonEnabled="{x:Bind CreateButtonEnabled, Mode=OneWay}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

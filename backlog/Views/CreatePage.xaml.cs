@@ -42,11 +42,13 @@ namespace backlog.Views
         private bool m_showNotificationOptions;
         private Models.SearchResult m_selectedResult;
         private string m_searchResultTitle;
+        private bool m_createButtonEnabled;
 
         public ObservableCollection<Models.SearchResult> SearchResults;
 
         public ICommand SearchBacklog { get; }
         public ICommand Cancel { get; }
+        public ICommand CreateBacklog { get; }
 
         public delegate void CancelCreate();
 
@@ -159,9 +161,12 @@ namespace backlog.Views
             get => m_selectedResult;
             set
             {
-                m_selectedResult = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedSearchResult)));
-                SearchResultSelectedAsync().Wait();
+                if(m_selectedResult != value)
+                {
+                    m_selectedResult = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedSearchResult)));
+                    CreateButtonEnabled = true;
+                }
             }
         }
 
@@ -172,6 +177,16 @@ namespace backlog.Views
             {
                 m_searchResultTitle = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchResultTitle)));
+            }
+        }
+
+        public bool CreateButtonEnabled
+        {
+            get => m_createButtonEnabled;
+            set
+            {
+                m_createButtonEnabled = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CreateButtonEnabled)));
             }
         }
 
@@ -189,6 +204,7 @@ namespace backlog.Views
             SearchResults = new ObservableCollection<Models.SearchResult>();
             SearchBacklog = new AsyncCommand(TrySearchBacklogAsync);
             Cancel = new Command(CancelCreation);
+            CreateBacklog = new AsyncCommand(SearchResultSelectedAsync);
 
             CancelCreateFunc = CancelCreateAndGoBack;
 
