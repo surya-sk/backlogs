@@ -43,6 +43,7 @@ namespace backlog.Views
         private Models.SearchResult m_selectedResult;
         private string m_searchResultTitle;
         private bool m_createButtonEnabled;
+        private bool m_isBusy;
 
         public ObservableCollection<Models.SearchResult> SearchResults;
 
@@ -187,6 +188,16 @@ namespace backlog.Views
             {
                 m_createButtonEnabled = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CreateButtonEnabled)));
+            }
+        }
+
+        public bool IsBusy
+        {
+            get => m_isBusy;
+            set
+            {
+                m_isBusy = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsBusy)));
             }
         }
 
@@ -372,7 +383,7 @@ namespace backlog.Views
         /// <returns></returns>
         private async Task SearchBacklogAsync()
         {
-            ProgBar.Visibility = Visibility.Visible;
+            IsBusy = true;
             switch (SelectedType)
             {
                 case "Film":
@@ -391,7 +402,7 @@ namespace backlog.Views
                     await CreateMusicBacklogAsync();
                     break;
             }
-            ProgBar.Visibility = Visibility.Collapsed;
+            IsBusy = false;
         }
 
         /// <summary>
@@ -401,7 +412,7 @@ namespace backlog.Views
         /// <returns></returns>
         private async Task CreateBacklogItemAsync(Backlog backlog)
         {
-            ProgBar.Visibility = Visibility.Visible;
+            IsBusy = true;
             if (backlog != null)
             {
                 backlogs.Add(backlog);
@@ -430,7 +441,7 @@ namespace backlog.Views
             else
             {
                 await ShowErrorDialogAsync();
-                ProgBar.Visibility = Visibility.Collapsed;
+                IsBusy = false;
             }
         }
 
@@ -884,7 +895,7 @@ namespace backlog.Views
 
         private async Task SearchResultSelectedAsync()
         {
-            ProgBar.Visibility = Visibility.Collapsed;
+            IsBusy = true;
             if (SelectedSearchResult != null)
             {
                 string date = DateInput != null ? DateInput.ToString("D", CultureInfo.InvariantCulture) : "None";

@@ -57,7 +57,7 @@
             </StackPanel>
         </ScrollViewer>
 
-        <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
+        <muxc:ProgressBar x:Name="progBar" IsIndeterminate="True" Visibility="{x:Bind IsBusy, Mode=OneWay}" />
 
         <ContentDialog x:Name="ResultsDialog" CloseButtonText="Cancel" PrimaryButtonText="Create" PrimaryButtonCommand="{x:Bind CreateBacklog}"
                        IsPrimaryButtonEnabled="{x:Bind CreateButtonEnabled, Mode=OneWay}">
