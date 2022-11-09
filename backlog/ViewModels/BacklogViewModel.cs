@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
+using Windows.System.Profile;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -44,6 +45,9 @@ namespace backlog.ViewModels
         private int m_backlogIndex;
         private bool m_showTrailerButton = true;
         StorageFolder m_tempFolder = ApplicationData.Current.TemporaryFolder;
+        private ContentDialog m_ratingDialog;
+        private WebView m_webView;
+        private ContentDialog m_trailerDialog;
 
         public ObservableCollection<Backlog> Backlogs;
         public Backlog Backlog;
@@ -60,16 +64,17 @@ namespace backlog.ViewModels
         public ICommand HideRatingDialog { get; }
         public ICommand CompleteBacklog { get; }
         public ICommand ReadMore { get; }
+        public ICommand CloseTrailer { get; }
         public event PropertyChangedEventHandler PropertyChanged;
-        public delegate Task LaunchWebView(string video);
+        //public delegate Task LaunchWebView(string video);
         public delegate void NavigateToPreviousPage();
-        public delegate void CloseRatingPopup();
-        public delegate Task ShowRatingPopup();
+        //public delegate void CloseRatingPopup();
+        //public delegate Task ShowRatingPopup();
 
-        public LaunchWebView LaunchWebViewFunc;
+        //public LaunchWebView LaunchWebViewFunc;
         public NavigateToPreviousPage NavigateToPreviousPageFunc;
-        public CloseRatingPopup CloseRatingPopupFunc;
-        public ShowRatingPopup ShowRatingPopupFunc;
+        //public CloseRatingPopup CloseRatingPopupFunc;
+        //public ShowRatingPopup ShowRatingPopupFunc;
 
         public DateTime Today { get; } = DateTime.Today;
 
@@ -230,7 +235,7 @@ namespace backlog.ViewModels
             }
         }
 
-        public BacklogViewModel(Guid id)
+        public BacklogViewModel(Guid id, ContentDialog ratingDialog, ContentDialog trailerDialog, WebView webView)
         {
             LaunchBingSearchResults = new AsyncCommand(LaunchBingSearchResultsAsync);
             OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);
@@ -244,6 +249,11 @@ namespace backlog.ViewModels
             HideRatingDialog = new Command(CloseRatingDialog);
             CompleteBacklog = new AsyncCommand(CompleteBacklogAsync);
             ReadMore = new AsyncCommand(ReadMoreAsync);
+            CloseTrailer = new Command(CloseWebView);
+
+            m_ratingDialog = ratingDialog;
+            m_trailerDialog = trailerDialog;
+            m_webView = webView;
 
             CalendarDate = DateTimeOffset.MinValue;
             NotifTime = TimeSpan.Zero;
@@ -353,20 +363,20 @@ namespace backlog.ViewModels
         /// <returns></returns>
         private async Task CloseBacklogAsync()
         {
-            await SaveBacklog();
+            await SaveBacklogAsync();
             NavigateToPreviousPageFunc();
         }
 
         private async Task OpenRatingDialogAsync()
         {
-            await ShowRatingPopupFunc();
+            await m_ratingDialog.ShowAsync();
         }
 
         /// <summary>
         /// Write backlog to the json file locally and on OneDrive if signed-in
         /// </summary>
         /// <returns></returns>
-        private async Task SaveBacklog()
+        private async Task SaveBacklogAsync()
         {
             try
             {
@@ -392,14 +402,14 @@ namespace backlog.ViewModels
             Backlog.IsComplete = true;
             Backlog.UserRating = UserRating;
             Backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
-            await SaveBacklog();
-            CloseRatingPopupFunc();
+            await SaveBacklogAsync();
+            CloseRatingDialog();
             NavigateToPreviousPageFunc();
         }
 
         private void CloseRatingDialog()
         {
-            CloseRatingPopupFunc();
+            m_ratingDialog.Hide();
         }
 
         /// <summary>
@@ -541,7 +551,7 @@ namespace backlog.ViewModels
             {
                 videos.Add(searchResult.Id.VideoId);
             }
-            await LaunchWebViewFunc(videos[0]);
+            await LaunchTrailerWebViewAsync(videos[0]);
         }
 
         /// <summary>
@@ -557,6 +567,35 @@ namespace backlog.ViewModels
             var searchQuery = searchTerm.Replace(" ", "+");
             var searchUri = new Uri($"https://www.bing.com/search?q={searchQuery}");
             await Windows.System.Launcher.LaunchUriAsync(searchUri);
+        }
+
+        /// <summary>
+        /// Launch the trailer in a webview
+        /// </summary>
+        /// <param name="video"></param>
+        /// <returns></returns>
+        private async Task LaunchTrailerWebViewAsync(string video)
+        {
+            await m_trailerDialog.ShowAsync();
+            try
+            {
+                m_trailerDialog.CornerRadius = new CornerRadius(0); // Without this, for some fucking reason, buttons inside the WebView do not work
+            }
+            catch
+            {
+
+            }
+            string width = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "600" : "500";
+            string height = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "100%" : "400";
+            m_webView.NavigateToString($"<iframe width=\"{width}\" height=\"{height}\" src=\"https://www.youtube.com/embed/{video}?autoplay={Settings.AutoplayVideos}\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
+        }
+
+        /// <summary>
+        /// Navigate to a blank page because audio keeps playing after closing the WebView for some reason
+        /// </summary>
+        private void CloseWebView()
+        {
+            m_webView.Navigate(new Uri("about:blank"));
         }
     }
 }

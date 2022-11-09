@@ -38,7 +38,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <ContentDialog x:Name="trailerDialog" CloseButtonText="Close" CloseButtonCommand="{x:Bind CloseWebViewTrailer}">
+        <ContentDialog x:Name="trailerDialog" CloseButtonText="Close" CloseButtonCommand="{x:Bind ViewModel.CloseTrailer}">
             <Grid Width="600" Height="400">
                 <WebView x:Name="webView" />
             </Grid>

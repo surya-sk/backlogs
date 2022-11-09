@@ -23,8 +23,6 @@ namespace backlog.Views
     {
         PageStackEntry prevPage;
 
-        public ICommand CloseWebViewTrailer { get; }
-
         public BacklogViewModel ViewModel { get; set; }
 
 
@@ -32,7 +30,6 @@ namespace backlog.Views
         {
             this.InitializeComponent();
 
-            CloseWebViewTrailer = new Command(CloseWebView);
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }
@@ -40,11 +37,8 @@ namespace backlog.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Guid selectedId = (Guid)e.Parameter;
-            ViewModel = new BacklogViewModel(selectedId);
-            ViewModel.LaunchWebViewFunc = LaunchTrailerWebView;
+            ViewModel = new BacklogViewModel(selectedId, ratingDialog:RatingDialog, trailerDialog:trailerDialog, webView:webView);
             ViewModel.NavigateToPreviousPageFunc = NavigateToPrevPageCallback;
-            ViewModel.ShowRatingPopupFunc = ShowRatingDialogCallbackAsync;
-            ViewModel.CloseRatingPopupFunc = CloseRatingDialogCallback;
             base.OnNavigatedTo(e);
             prevPage = Frame.BackStack.Last();
             ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
@@ -56,44 +50,10 @@ namespace backlog.Views
             Frame.Navigate(prevPage?.SourcePageType);
         }
 
-        private async Task ShowRatingDialogCallbackAsync()
-        {
-            await RatingDialog.ShowAsync();
-        }
-
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(SettingsPage));
         }
 
-        private void CloseRatingDialogCallback()
-        {
-            RatingDialog.Hide();
-        }
-
-        private async Task LaunchTrailerWebView(string video)
-        {
-            await trailerDialog.ShowAsync();
-            try
-            {
-                trailerDialog.CornerRadius = new CornerRadius(0); // Without this, for some fucking reason, buttons inside the WebView do not work
-            }
-            catch
-            {
-
-            }
-            string width = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "600" : "500";
-            string height = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "100%" : "400";
-            webView.NavigateToString($"<iframe width=\"{width}\" height=\"{height}\" src=\"https://www.youtube.com/embed/{video}?autoplay={Settings.AutoplayVideos}\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
-
-        }
-
-        /// <summary>
-        /// Navigate to a blank page because audio keeps playing after closing the WebView for some reason
-        /// </summary>
-        private void CloseWebView()
-        {
-            webView.Navigate(new Uri("about:blank"));
-        }
     }
 }
