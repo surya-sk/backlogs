@@ -13,6 +13,8 @@ using Windows.Storage.Streams;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 using Logger = backlog.Logging.Logger;
+using Windows.UI.Core;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace backlog.ViewModels
 {
@@ -306,6 +308,18 @@ namespace backlog.ViewModels
             TileStylePreviewImage = m_selectedTileStyleIndex == 0 ? "ms-appx:///Assets/peeking-tile.png" :
     "ms-appx:///Assets/background-tile.png";
             Settings.TileStyle = m_selectedTileStyleIndex == 0 ? "Peeking" : "Background";
+        }
+
+
+        /// <summary>
+        /// Navigates to previous frame
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void GoBack(object sender, BackRequestedEventArgs e)
+        {
+            m_navigationService.GoBack(new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            e.Handled = true;
         }
     }
 }

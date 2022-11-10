@@ -21,8 +21,6 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class BacklogPage : Page
     {
-        PageStackEntry prevPage;
-
         public BacklogViewModel ViewModel { get; set; }
 
 
@@ -37,23 +35,10 @@ namespace backlog.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Guid selectedId = (Guid)e.Parameter;
-            ViewModel = new BacklogViewModel(selectedId, ratingDialog:RatingDialog, trailerDialog:trailerDialog, webView:webView);
-            ViewModel.NavigateToPreviousPageFunc = NavigateToPrevPageCallback;
+            ViewModel = new BacklogViewModel(selectedId, ratingDialog:RatingDialog, trailerDialog:trailerDialog, webView:webView, App.GetNavigationService());
             base.OnNavigatedTo(e);
-            prevPage = Frame.BackStack.Last();
             ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
             imageAnimation?.TryStart(img);
         }
-
-        private void NavigateToPrevPageCallback()
-        {
-            Frame.Navigate(prevPage?.SourcePageType);
-        }
-
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(SettingsPage));
-        }
-
     }
 }

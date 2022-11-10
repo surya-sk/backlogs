@@ -21,7 +21,7 @@ namespace backlog.Views
             // show back button
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            view.BackRequested += View_BackRequested;
+            view.BackRequested += ViewModel.GoBack;
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -35,21 +35,6 @@ namespace backlog.Views
                 await ViewModel.SetUserPhotoAsync();
             }
             base.OnNavigatedTo(e);
-        }
-
-        /// <summary>
-        /// Go back if possible
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void View_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            if (Frame.CanGoBack)
-            {
-                Frame.GoBack();
-            }
-
-            e.Handled = true;
         }
     }
 }

@@ -152,7 +152,7 @@
                 <StackPanel Orientation="Horizontal" RelativePanel.Below="PopupSlider" Grid.Row="5">
                     <Button x:Name="SaveButton" Content="Save" Background="Green" Command="{x:Bind ViewModel.SaveBacklog}" Margin="10" />
                     <Button x:Name="IncompleteButton" Content="Move to Backlog" Command="{x:Bind ViewModel.MarkBacklogAsIncomplete}" Margin="10" />
-                    <Button x:Name="CloseButton" Content="Close" Background="Red" Command="{x:Bind CloseBacklogPopup}" Margin="10" />
+                    <Button x:Name="CloseButton" Content="Close" Background="Red" Command="{x:Bind ViewModel.CloseBacklog}" Margin="10" />
                 </StackPanel>
                 <ProgressRing x:Name="ProgRing" IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
             </Grid>
@@ -184,7 +184,7 @@
                 <AppBarButton x:Name="TopProfileButton" Label="Signed-in" Visibility="Collapsed">
                     <muxc:PersonPicture x:Name="TopAccountPic" Height="30" Width="30"/>
                 </AppBarButton>
-                <AppBarButton x:Name="TopSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+                <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettings}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>
@@ -208,7 +208,7 @@
                 <AppBarButton x:Name="BottomProfileButton" Label="Signed-in" Visibility="Collapsed">
                     <muxc:PersonPicture x:Name="BottomAccountPic" Height="30" Width="30"/>
                 </AppBarButton>
-                <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+                <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettings}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

@@ -12,7 +12,6 @@ using Windows.UI.Xaml.Navigation;
 public class NavigationService : INavigationService
 {
     private readonly Dictionary<Type, Type> m_viewModelsToViews = new Dictionary<Type, Type>();
-    private Frame m_backFrame;
 
     public void RegisterViewForViewModel(Type viewModel, Type view)
     {
@@ -24,8 +23,8 @@ public class NavigationService : INavigationService
         ((Frame)Window.Current.Content).Navigate(m_viewModelsToViews[typeof(T)], args, navigationTransitionInfo);
     }
 
-    public void GoBack()
+    public void GoBack(NavigationTransitionInfo navigationTransitionInfo = null)
     {
-        ((Frame)Window.Current.Content).GoBack();
+        ((Frame)Window.Current.Content).GoBack(navigationTransitionInfo);
     }
 }

@@ -25,68 +25,29 @@ namespace backlog.Views
     public sealed partial class CompletedBacklogsPage : Page
     {
         private Backlog SelectedBacklog;
-        private ICommand CloseBacklogPopup;
-
         public CompletedBacklogsViewModel ViewModel { get; set; }
 
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
-            ViewModel = new CompletedBacklogsViewModel(PopupOverlay);
+            ViewModel = new CompletedBacklogsViewModel(PopupOverlay, App.GetNavigationService());
 
-            CloseBacklogPopup = new AsyncCommand(CloseBacklogAsync);
-
-            ViewModel.CloseBacklog = CloseBacklogAsync;
-            ViewModel.ClosePopup = Reload;
+            ViewModel.PlayConnectionAnimationAsync = PlayConnectedAnimation;
 
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            view.BackRequested += View_BackRequested;
-        }
-
-        private void View_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            try
-            {
-                PageStackEntry prevPage = Frame.BackStack.Last();
-                try
-                {
-                    Frame.Navigate(prevPage?.SourcePageType, null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-                }
-                catch
-                {
-                    Frame.Navigate(prevPage?.SourcePageType);
-                }
-            }
-            catch
-            {
-                Frame.Navigate(typeof(MainPage));
-            }
-            e.Handled = true;
-        }
-
-        private void Reload()
-        {
-            Frame.Navigate(typeof(CompletedBacklogsPage));
+            view.BackRequested += ViewModel.GoBack;
         }
 
         /// <summary>
-        /// Closes the backlog popup
+        /// Plays connected animation
         /// </summary>
         /// <returns></returns>
-        private async Task CloseBacklogAsync()
+        private async Task PlayConnectedAnimation()
         {
-            try
-            {
-                ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
-                PopupOverlay.Hide();
-                connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
-                await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
-            }
-            catch
-            {
-                PopupOverlay.Hide();
-            }
+            ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
+            connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
+            await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
         }
 
         private async void MainGrid_ItemClick(object sender, ItemClickEventArgs e)
@@ -118,11 +79,6 @@ namespace backlog.Views
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             await SearchDialog.ShowAsync();
-        }
-
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(SettingsPage));
         }
 
         private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)

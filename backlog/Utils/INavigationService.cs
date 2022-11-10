@@ -3,5 +3,5 @@
 public interface INavigationService
 {
     void NavigateTo<T>(object args = null, NavigationTransitionInfo navigationTransitionInfo = null);
-    void GoBack();
+    void GoBack(NavigationTransitionInfo navigationTransitionInfo = null);
 }

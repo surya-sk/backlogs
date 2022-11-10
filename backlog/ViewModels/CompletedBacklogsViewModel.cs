@@ -9,7 +9,9 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace backlog.ViewModels
 {
@@ -25,6 +27,7 @@ namespace backlog.ViewModels
         private bool m_tvEmpty;
         private bool m_gamesEmpty;
         private ContentDialog m_popupOverlay;
+        private readonly INavigationService m_navigationService;
 
         public ObservableCollection<Backlog> FinishedBacklogs;
         public ObservableCollection<Backlog> FinishedFilmBacklogs;
@@ -35,6 +38,10 @@ namespace backlog.ViewModels
         public ObservableCollection<Backlog> Backlogs;
         public Backlog SelectedBacklog;
 
+        public delegate Task PlayConnectionAnimation();
+
+        public PlayConnectionAnimation PlayConnectionAnimationAsync;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand SaveBacklog { get; }
@@ -44,8 +51,11 @@ namespace backlog.ViewModels
         public ICommand SortByDateAsc { get; }
         public ICommand SortByRatingDsc { get; }
         public ICommand SortByRatingAsc { get; }
+        public ICommand Reload { get; }
+        public ICommand OpenSettings { get; }
+        public ICommand CloseBacklog { get; }
 
-
+        #region Properties
         public double UserRating
         {
             get => m_userRating;
@@ -140,8 +150,9 @@ namespace backlog.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AlbumsEmpty)));
             }
         }
+        #endregion
 
-        public CompletedBacklogsViewModel(ContentDialog popupOverlay)
+        public CompletedBacklogsViewModel(ContentDialog popupOverlay, INavigationService navigationService)
         {
             SaveBacklog = new AsyncCommand(SaveBacklogAsync);
             MarkBacklogAsIncomplete = new AsyncCommand(MarkBacklogAsIncompleteAsync);
@@ -150,8 +161,12 @@ namespace backlog.ViewModels
             SortByDateDsc = new Command(SortBacklogsByCompletedDateDsc);
             SortByRatingAsc = new Command(SortBacklogsByRatingsAsc);
             SortByRatingDsc = new Command(SortBacklogsByRatingDsc);
+            Reload = new Command(ReloadPage);
+            OpenSettings = new Command(NavigateToSettingsPage);
+            CloseBacklog = new AsyncCommand(CloseBacklogAsync);
 
             m_popupOverlay = popupOverlay;
+            m_navigationService = navigationService;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
             FinishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
@@ -262,7 +277,20 @@ namespace backlog.ViewModels
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
             IsLoading = false;
-            await CloseBacklog();
+            await CloseBacklogAsync();
+        }
+
+        private async Task CloseBacklogAsync()
+        {
+            try
+            {
+                m_popupOverlay.Hide();
+                await PlayConnectionAnimationAsync();
+            }
+            catch
+            {
+                m_popupOverlay.Hide();
+            }
         }
 
         /// <summary>
@@ -283,7 +311,30 @@ namespace backlog.ViewModels
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
             m_popupOverlay.Hide();
-            ClosePopup();
+            ReloadPage();
+        }
+
+        private void ReloadPage()
+        {
+            m_navigationService.NavigateTo<CompletedBacklogsViewModel>();
+        }
+
+        private void NavigateToSettingsPage()
+        {
+            m_navigationService.NavigateTo<SettingsViewModel>();
+        }
+
+        public void GoBack(object sender, BackRequestedEventArgs e)
+        {
+            try
+            {
+                m_navigationService.GoBack(new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            catch
+            {
+                m_navigationService.GoBack();
+            }
+            e.Handled = true;
         }
 
         #region Sorting

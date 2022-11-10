@@ -13,6 +13,9 @@ using Windows.Storage.Streams;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Core;
+using System.Diagnostics;
 
 namespace backlog.ViewModels
 {
@@ -25,6 +28,7 @@ namespace backlog.ViewModels
         private bool m_booksEmpty;
         private bool m_tvEmpty;
         private bool m_gamesEmpty;
+        private readonly INavigationService m_navigationService;
 
         private BitmapImage m_accountPic;
 
@@ -39,7 +43,6 @@ namespace backlog.ViewModels
         private bool _isLoading;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public delegate void NavigateToBacklogsPage(Guid id);
 
         public ICommand SortByName { get; }
         public ICommand SortByCreatedDateAsc { get; }
@@ -49,13 +52,16 @@ namespace backlog.ViewModels
         public ICommand SortByTargetDateAsc { get; }
         public ICommand SortByTargetDateDsc { get; }
         public ICommand GenerateRandomBacklog { get; }
-
-        public NavigateToBacklogsPage NavigateToBacklogsPageFunc { get; set; }
+        public ICommand OpenCompletedBacklogs { get; }
+        public ICommand OpenSettings { get; }
+        public ICommand Reload { get; }
+        public ICommand OpenCreatePage { get; }
 
         public string UserName { get; } = Settings.UserName;
         public bool SignedIn { get; } = Settings.IsSignedIn;
         public bool ShowSignInButton { get; } = !Settings.IsSignedIn;
 
+        #region Properties
         public string SortOrder
         {
             get => m_sortOrder;
@@ -150,8 +156,9 @@ namespace backlog.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));
             }
         }
+        #endregion
 
-        public BacklogsViewModel()
+        public BacklogsViewModel(INavigationService navigationService)
         {
             SortByName = new Command(SortBacklogsByName);
             SortByCreatedDateAsc = new Command(SortBacklogsByCreatedDateAsc);
@@ -161,6 +168,12 @@ namespace backlog.ViewModels
             SortByTargetDateAsc = new Command(SortBacklogsByTargetDateAsc);
             SortByTargetDateDsc = new Command(SortBacklogsByTargetDateDsc);
             GenerateRandomBacklog = new AsyncCommand<int>(GenerateRandomBacklogAsync);
+            OpenCompletedBacklogs = new Command(OpenCompletedPage);
+            OpenSettings = new Command(OpenSettingsPage);
+            Reload = new Command(ReloadAndSync);
+            OpenCreatePage = new Command(NavigateToCreatePage);
+
+            m_navigationService = navigationService;
 
             InitBacklogs();
             PopulateBacklogs();
@@ -356,6 +369,11 @@ namespace backlog.ViewModels
             }
         }
 
+        /// <summary>
+        /// Popup an error message
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         private async Task ShowErrorMessageAsync(string message)
         {
             ContentDialog contentDialog = new ContentDialog()
@@ -367,6 +385,12 @@ namespace backlog.ViewModels
             await contentDialog.ShowAsync();
         }
 
+        /// <summary>
+        /// Show a random backlog
+        /// </summary>
+        /// <param name="backlog"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         private async Task ShowRandomPickAsync(Backlog backlog, int index)
         {
             ContentDialog contentDialog = new ContentDialog()
@@ -384,8 +408,55 @@ namespace backlog.ViewModels
             }
             else if (result == ContentDialogResult.Secondary)
             {
-                NavigateToBacklogsPageFunc(backlog.id);
+                m_navigationService.NavigateTo<BacklogViewModel>(backlog.id);
             }
+        }
+
+        private void OpenCompletedPage()
+        {
+            try
+            {
+                m_navigationService.NavigateTo<CompletedBacklogsViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
+            catch
+            {
+                m_navigationService.NavigateTo<CompletedBacklogsViewModel>();
+            }
+        }
+
+        private void OpenSettingsPage()
+        {
+            try
+            {
+                m_navigationService.NavigateTo<SettingsViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            catch
+            {
+                m_navigationService.NavigateTo<SettingsViewModel>();
+            }
+        }
+
+        private void ReloadAndSync()
+        {
+            m_navigationService.NavigateTo<BacklogsViewModel>("sync");
+        }
+
+        private void NavigateToCreatePage(object typeIndex)
+        {
+            try
+            {
+                m_navigationService.NavigateTo<CreateBacklogViewModel>(typeIndex, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom });
+            }
+            catch
+            {
+                m_navigationService.NavigateTo<CreateBacklogViewModel>(typeIndex);
+            }
+        }
+
+        public void GoBack(object sender, BackRequestedEventArgs e)
+        {
+            m_navigationService.NavigateTo<MainViewModel>();
+            e.Handled = true;
         }
 
         #region Sorting

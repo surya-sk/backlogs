@@ -24,6 +24,7 @@ using Windows.System.Profile;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace backlog.ViewModels
 {
@@ -48,6 +49,7 @@ namespace backlog.ViewModels
         private ContentDialog m_ratingDialog;
         private WebView m_webView;
         private ContentDialog m_trailerDialog;
+        private readonly INavigationService m_navigationService;
 
         public ObservableCollection<Backlog> Backlogs;
         public Backlog Backlog;
@@ -65,12 +67,14 @@ namespace backlog.ViewModels
         public ICommand CompleteBacklog { get; }
         public ICommand ReadMore { get; }
         public ICommand CloseTrailer { get; }
+        public ICommand GoBack { get; }
+        public ICommand OpenSettings { get; }
+
         public event PropertyChangedEventHandler PropertyChanged;
-        public delegate void NavigateToPreviousPage();
-        public NavigateToPreviousPage NavigateToPreviousPageFunc;
 
         public DateTime Today { get; } = DateTime.Today;
 
+        #region Properties
         public bool InProgress
         {
             get => m_inProgress;
@@ -170,7 +174,7 @@ namespace backlog.ViewModels
             get => m_notifTime;
             set
             {
-                if(m_notifTime != value)
+                if (m_notifTime != value)
                 {
                     m_notifTime = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotifTime)));
@@ -227,8 +231,9 @@ namespace backlog.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowTrailerButton)));
             }
         }
+        #endregion
 
-        public BacklogViewModel(Guid id, ContentDialog ratingDialog, ContentDialog trailerDialog, WebView webView)
+        public BacklogViewModel(Guid id, ContentDialog ratingDialog, ContentDialog trailerDialog, WebView webView, INavigationService navigationService)
         {
             LaunchBingSearchResults = new AsyncCommand(LaunchBingSearchResultsAsync);
             OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);
@@ -243,10 +248,13 @@ namespace backlog.ViewModels
             CompleteBacklog = new AsyncCommand(CompleteBacklogAsync);
             ReadMore = new AsyncCommand(ReadMoreAsync);
             CloseTrailer = new Command(CloseWebView);
+            GoBack = new Command(NavigateToPreviousPage);
+            OpenSettings = new Command(OpenSettingsPage);
 
             m_ratingDialog = ratingDialog;
             m_trailerDialog = trailerDialog;
             m_webView = webView;
+            m_navigationService = navigationService;
 
             CalendarDate = DateTimeOffset.MinValue;
             NotifTime = TimeSpan.Zero;
@@ -347,7 +355,7 @@ namespace backlog.ViewModels
             Backlogs.Remove(Backlog);
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
-            NavigateToPreviousPageFunc();
+            NavigateToPreviousPage();
         }
 
         /// <summary>
@@ -357,7 +365,27 @@ namespace backlog.ViewModels
         private async Task CloseBacklogAsync()
         {
             await SaveBacklogAsync();
-            NavigateToPreviousPageFunc();
+            NavigateToPreviousPage();
+        }
+
+        /// <summary>
+        /// Go back
+        /// </summary>
+        private void NavigateToPreviousPage()
+        {
+            m_navigationService.GoBack();
+        }
+
+        private void OpenSettingsPage()
+        {
+            try
+            {
+                m_navigationService.NavigateTo<SettingsViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            catch
+            {
+                m_navigationService.NavigateTo<SettingsViewModel>();
+            }
         }
 
         private async Task OpenRatingDialogAsync()
@@ -397,7 +425,7 @@ namespace backlog.ViewModels
             Backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
             await SaveBacklogAsync();
             CloseRatingDialog();
-            NavigateToPreviousPageFunc();
+            NavigateToPreviousPage();
         }
 
         private void CloseRatingDialog()

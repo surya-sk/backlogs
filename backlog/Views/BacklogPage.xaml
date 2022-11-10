@@ -182,7 +182,7 @@
             </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Delete" Icon="Delete" Command="{x:Bind ViewModel.DeleteBacklog}" />
-                <AppBarButton x:Name="TopSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+                <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettings}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>
@@ -197,7 +197,7 @@
             </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Delete" Icon="Delete" Command="{x:Bind ViewModel.DeleteBacklog}" />
-                <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+                <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettings}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

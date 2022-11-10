@@ -25,13 +25,13 @@ namespace backlog.Views
         int backlogIndex = -1;
         bool sync = false;
 
-        public BacklogsViewModel ViewModel { get; set; } = new BacklogsViewModel();
+        public BacklogsViewModel ViewModel { get; set; } 
 
         public BacklogsPage()
         {
             this.InitializeComponent();
+            ViewModel = new BacklogsViewModel(App.GetNavigationService());
             IsNetwordAvailable = NetworkInterface.GetIsNetworkAvailable();
-            ViewModel.NavigateToBacklogsPageFunc = GoToBacklog;
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -67,21 +67,9 @@ namespace backlog.Views
             ViewModel.IsLoading = false;
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            view.BackRequested += View_BackRequested;
+            view.BackRequested += ViewModel.GoBack;
         }
 
-        private void View_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            try
-            {
-                Frame.Navigate(typeof(MainPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-            }
-            catch
-            {
-                Frame.Navigate(typeof(MainPage));
-            }
-            e.Handled = true;
-        }
 
         /// <summary>
         /// Opens the Backlog details page
@@ -117,54 +105,7 @@ namespace backlog.Views
             Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, new SuppressNavigationTransitionInfo());
         }
 
-        /// <summary>
-        /// Opens the Create page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CreateButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Frame.Navigate(typeof(CreatePage), mainPivot.SelectedIndex, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom });
-            }
-            catch
-            {
-                Frame.Navigate(typeof(CreatePage), mainPivot.SelectedIndex);
-            }
-        }
 
-        /// <summary>
-        /// Opens the Setting page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(SettingsPage));
-        }
-
-        /// <summary>
-        /// Sync backlogs
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SyncButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(BacklogsPage), "sync");
-        }
-
-        private void CompletedBacklogsButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Frame.Navigate(typeof(CompletedBacklogsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
-            catch
-            {
-                Frame.Navigate(typeof(CompletedBacklogsPage));
-            }
-        }
         /// <summary>
         /// Finish connected animation
         /// </summary>
@@ -244,11 +185,6 @@ namespace backlog.Views
             var selectedBacklog = ViewModel.IncompleteBacklogs.FirstOrDefault(b => b.Name == args.ChosenSuggestion.ToString());
             SearchDialog.Hide();
             Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, null);
-        }
-
-        private void GoToBacklog(Guid id)
-        {
-            Frame.Navigate(typeof(BacklogPage), id, null);
         }
     }
 }
