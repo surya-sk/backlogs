@@ -12,12 +12,12 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        public SettingsViewModel ViewModel { get; set; } = new SettingsViewModel();
+        public SettingsViewModel ViewModel { get; set; }
 
         public SettingsPage()
         {
             this.InitializeComponent();
-            ViewModel.NavigateToMainPageFunc = NavigateToMainPage;
+            ViewModel = new SettingsViewModel(App.GetNavigationService());
             // show back button
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
@@ -50,11 +50,6 @@ namespace backlog.Views
             }
 
             e.Handled = true;
-        }
-
-        private void NavigateToMainPage()
-        {
-            Frame.Navigate(typeof(MainPage));
         }
     }
 }

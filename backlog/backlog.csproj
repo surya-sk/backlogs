@@ -138,8 +138,10 @@
     <Compile Include="Utils\BacklogType.cs" />
     <Compile Include="Utils\BooleanToVisibilityConverter.cs" />
     <Compile Include="Utils\DateTimeExtenstions.cs" />
+    <Compile Include="Utils\INavigationService.cs" />
     <Compile Include="Utils\Keys.cs" />
     <Compile Include="Utils\MediaObjects.cs" />
+    <Compile Include="Utils\NavigationService.cs" />
     <Compile Include="Utils\RestClient.cs" />
     <Compile Include="Utils\Settings.cs" />
     <Compile Include="Utils\ToastBackgroundTask.cs" />
