@@ -20,8 +20,9 @@ namespace backlog.Views
         public CreatePage()
         {
             this.InitializeComponent();
-            ViewModel = new CreateBacklogViewModel(resultsDialog);
-            ViewModel.GoToPrevPageFunc = CancelCreateAndGoBack;
+            var _navService = App.GetNavigationService();
+            _navService.SetFrameForBackNav(Frame);
+            ViewModel = new CreateBacklogViewModel(resultsDialog, _navService);
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -36,24 +37,6 @@ namespace backlog.Views
             }
             await ViewModel.SyncBacklogs();
             base.OnNavigatedTo(e);
-        }
-
-        private void CancelCreateAndGoBack()
-        {
-            PageStackEntry prevPage = Frame.BackStack.Last();
-            try
-            {
-                Frame.Navigate(prevPage?.SourcePageType, null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom});
-            }
-            catch
-            {
-                Frame.Navigate(prevPage?.SourcePageType);
-            }
-        }
-
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(SettingsPage));
         }
 
         private async void NameInput_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)

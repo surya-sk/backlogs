@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using SearchResult = backlog.Models.SearchResult;
 
 namespace backlog.ViewModels
@@ -40,6 +41,7 @@ namespace backlog.ViewModels
         private bool m_isBusy;
         private ContentDialog m_resultsDialog;
         private bool m_SignedIn = Settings.IsSignedIn;
+        private readonly INavigationService m_navigationService;
 
         public ObservableCollection<Backlog> Backlogs;
         public ObservableCollection<SearchResult> SearchResults;
@@ -47,15 +49,13 @@ namespace backlog.ViewModels
         public ICommand SearchBacklog { get; }
         public ICommand Cancel { get; }
         public ICommand CreateBacklog { get; }
-
-        public delegate void GoToPrevPage();
-
-        public GoToPrevPage GoToPrevPageFunc;
+        public ICommand OpenSettings { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DateTime Today = DateTime.Today;
 
+        #region Properties
         public string SelectedType
         {
             get => m_selectedType;
@@ -201,15 +201,18 @@ namespace backlog.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsBusy)));
             }
         }
+        #endregion
 
-        public CreateBacklogViewModel(ContentDialog resultDialog)
+        public CreateBacklogViewModel(ContentDialog resultDialog, INavigationService navigationService)
         {
             SearchResults = new ObservableCollection<SearchResult>();
             SearchBacklog = new AsyncCommand(TrySearchBacklogAsync);
             Cancel = new Command(NavToPrevPage);
             CreateBacklog = new AsyncCommand(SearchResultSelectedAsync);
+            OpenSettings = new Command(NavigateToSettingsPage);
 
             m_resultsDialog = resultDialog;
+            m_navigationService = navigationService;
         }
 
         /// <summary>
@@ -410,7 +413,7 @@ namespace backlog.ViewModels
                     ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
                 }
                 await SaveData.GetInstance().WriteDataAsync(m_SignedIn);
-                GoToPrevPageFunc();
+                NavToPrevPage();
             }
             else
             {
@@ -846,7 +849,7 @@ namespace backlog.ViewModels
 
         private void NavToPrevPage()
         {
-            GoToPrevPageFunc();
+            m_navigationService.GoBack();
         }
 
         /// <summary>
@@ -875,6 +878,18 @@ namespace backlog.ViewModels
                         await CreateBookBacklogAsync(date);
                         break;
                 }
+            }
+        }
+
+        private void NavigateToSettingsPage()
+        {
+            try
+            {
+                m_navigationService.NavigateTo<SettingsViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            catch
+            {
+                m_navigationService.NavigateTo<SettingsViewModel>();
             }
         }
     }

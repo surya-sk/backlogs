@@ -96,7 +96,7 @@
             <AppBarButton Icon="Find" Label="Search" Command="{x:Bind ViewModel.SearchBacklog}" />
             <AppBarButton Icon="Cancel" Label="Cancel" Command="{x:Bind ViewModel.Cancel}" />
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="TopSettingsButton" Icon="Setting" Label="Settings + more" Click="SettingsButton_Click" />
+                <AppBarButton Icon="Setting" Label="Settings + more" Command="{x:Bind ViewModel.OpenSettings}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>
@@ -105,7 +105,7 @@
             <AppBarButton Icon="Find" Label="Search" Command="{x:Bind ViewModel.SearchBacklog}" />
             <AppBarButton Icon="Cancel" Label="Cancel" Command="{x:Bind ViewModel.Cancel}" />
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="BottomSettingsButton" Icon="Setting" Label="Settings + more" Click="SettingsButton_Click" />
+                <AppBarButton Icon="Setting" Label="Settings + more" Command="{x:Bind ViewModel.OpenSettings}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

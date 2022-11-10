@@ -13,7 +13,6 @@ using Windows.UI.Xaml.Controls;
 
 namespace backlog.ViewModels
 {
-
     public class CompletedBacklogsViewModel : INotifyPropertyChanged
     {
         private string m_sortOrder = Settings.CompletedSortOrder;

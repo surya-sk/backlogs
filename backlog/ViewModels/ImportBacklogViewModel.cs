@@ -34,6 +34,7 @@ namespace backlog.ViewModels
         private bool m_enableNotificationToggle;
         private bool m_showNotificationToggle;
         private bool m_showNotificationOptions;
+        private readonly INavigationService m_navigationService;
 
         public ICommand Import { get; set; }
         public ICommand Cancel { get; set; }
@@ -43,9 +44,7 @@ namespace backlog.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<Backlog> Backlogs;
 
-        public delegate void NavigateToMainPage();
-        public NavigateToMainPage NavToMainPageFunc;
-
+        #region Properties
         public Backlog ImportedBacklog
         {
             get => m_importedBacklog;
@@ -133,15 +132,17 @@ namespace backlog.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowNotificationOptions)));
             }
         }
+        #endregion
 
-        public ImportBacklogViewModel()
+        public ImportBacklogViewModel(INavigationService navigationService)
         {
             m_isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             m_importedBacklog = new Backlog();
             m_importedBacklog.ImageURL = "https://github.com/surya-sk/backlogs/blob/master/backlog/Assets/app-icon.png"; // just a placeholder image
 
             Import = new AsyncCommand(ImportBacklogAsync);
-            Cancel = new Command(CancelImport);
+            Cancel = new Command(NavigateToMainPage);
+            m_navigationService = navigationService;
         }
 
         /// <summary>
@@ -244,12 +245,12 @@ namespace backlog.ViewModels
             Backlogs.Add(ImportedBacklog);
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(m_signedIn);
-            NavToMainPageFunc();
+            NavigateToMainPage();
         }
 
-        public void CancelImport()
+        public void NavigateToMainPage()
         {
-            NavToMainPageFunc();
+            m_navigationService.NavigateTo<MainViewModel>();
         }
     }
 }

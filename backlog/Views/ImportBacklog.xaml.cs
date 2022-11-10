@@ -11,11 +11,11 @@ namespace backlog.Views
     /// </summary>
     public sealed partial class ImportBacklog : Page
     {
-        public ImportBacklogViewModel ViewModel { get; set; } = new ImportBacklogViewModel();
+        public ImportBacklogViewModel ViewModel { get; set; } 
         public ImportBacklog()
         {
             this.InitializeComponent();
-            ViewModel.NavToMainPageFunc = NavigateToMainPage;
+            ViewModel = new ImportBacklogViewModel(App.GetNavigationService());
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -23,11 +23,6 @@ namespace backlog.Views
             string fileName = e.Parameter as string;
             await ViewModel.LoadBacklogFromFileAsync(fileName);
             base.OnNavigatedTo(e);
-        }
-
-        private void NavigateToMainPage()
-        {
-            Frame.Navigate(typeof(MainPage));
         }
     }
 }
