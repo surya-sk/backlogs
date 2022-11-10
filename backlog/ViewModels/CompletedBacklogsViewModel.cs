@@ -35,12 +35,7 @@ namespace backlog.ViewModels
         public ObservableCollection<Backlog> Backlogs;
         public Backlog SelectedBacklog;
 
-        public delegate Task CloseBacklogFunc();
-        public delegate void ClosePopupFunc();
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public CloseBacklogFunc CloseBacklog;
-        public ClosePopupFunc ClosePopup;
 
         public ICommand SaveBacklog { get; }
         public ICommand MarkBacklogAsIncomplete { get; }

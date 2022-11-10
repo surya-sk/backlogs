@@ -26,12 +26,6 @@ public class NavigationService : INavigationService
 
     public void GoBack()
     {
-        PageStackEntry _prevPage = m_backFrame.BackStack.Last();
-        ((Frame)Window.Current.Content).Navigate(_prevPage?.SourcePageType);
-    }
-
-    public void SetFrameForBackNav(Frame frame)
-    {
-        m_backFrame = frame;
+        ((Frame)Window.Current.Content).GoBack();
     }
 }

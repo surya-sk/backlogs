@@ -21,7 +21,6 @@ namespace backlog.Views
         {
             this.InitializeComponent();
             var _navService = App.GetNavigationService();
-            _navService.SetFrameForBackNav(Frame);
             ViewModel = new CreateBacklogViewModel(resultsDialog, _navService);
         }
 
