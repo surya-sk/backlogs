@@ -15,13 +15,20 @@ using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 using backlog.Utils;
 using backlog.Auth;
+using System.Globalization;
 
 namespace backlog.Saving
 {
     class SaveData
     {
         private static SaveData instance = new SaveData();
-        private ObservableCollection<Backlog> Backogs = null;
+        private ObservableCollection<Backlog> Backlogs = null;
+        private ObservableCollection<Backlog> CompletedBacklogs = null;
+        private ObservableCollection<Backlog> IncompleteBacklogs = null;
+        private ObservableCollection<Backlog> RecentlyAddedBacklogs = null;
+        private ObservableCollection<Backlog> RecentlyCompletedBacklogs = null;
+        private ObservableCollection<Backlog> InProgressBacklogs = null;
+        private ObservableCollection<Backlog> UpcomingBacklogs = null;
         StorageFolder localFolder = ApplicationData.Current.LocalFolder;
         string fileName = "backlogs.txt";
         private static GraphServiceClient graphServiceClient = null;
@@ -36,21 +43,13 @@ namespace backlog.Saving
         }
 
 
-
-        private async Task DeleteLocalFiles()
-        {
-            var file = await localFolder.GetFileAsync(fileName);
-            await file.DeleteAsync(StorageDeleteOption.Default);
-        }
-
-
         /// <summary>
         /// Write the backlog list in JSON format
         /// </summary>
         /// <returns></returns>
         public async Task WriteDataAsync(bool sync = false)
         {
-            string json = JsonConvert.SerializeObject(Backogs);
+            string json = JsonConvert.SerializeObject(Backlogs);
             StorageFile storageFile = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(storageFile, json);
             graphServiceClient = await MSAL.GetGraphServiceClient();
@@ -69,7 +68,8 @@ namespace backlog.Saving
 
         public void SaveSettings(ObservableCollection<Backlog> backlogs)
         {
-            Backogs = backlogs;
+            Backlogs = backlogs;
+            ResetHelperBacklogs();
         }
 
         /// <summary>
@@ -91,11 +91,11 @@ namespace backlog.Saving
                 }
                 StorageFile storageFile = await localFolder.GetFileAsync(fileName);
                 string json = await FileIO.ReadTextAsync(storageFile);
-                Backogs = JsonConvert.DeserializeObject<ObservableCollection<Backlog>>(json);
+                Backlogs = JsonConvert.DeserializeObject<ObservableCollection<Backlog>>(json);
             }
             catch
             {
-                Backogs = new ObservableCollection<Backlog>();
+                Backlogs = new ObservableCollection<Backlog>();
             }
         }
 
@@ -140,7 +140,84 @@ namespace backlog.Saving
 
         public ObservableCollection<Backlog> GetBacklogs()
         {
-            return Backogs;
+            return Backlogs;
+        }
+
+        public ObservableCollection<Backlog> GetCompletedBacklogs()
+        {
+            return CompletedBacklogs;
+        }
+
+        public void ResetHelperBacklogs()
+        {
+            CompletedBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete));
+            IncompleteBacklogs = new ObservableCollection<Backlog>(Backlogs.Where(b => b.IsComplete == false));
+            InProgressBacklogs = new ObservableCollection<Backlog>(IncompleteBacklogs.Where(b => b.Progress > 0));
+            var _sortedCompletedBacklogs = new ObservableCollection<Backlog>();
+            var _sortedIncompleteBacklogs = new ObservableCollection<Backlog>();
+            RecentlyAddedBacklogs = new ObservableCollection<Backlog>();
+            RecentlyCompletedBacklogs = new ObservableCollection<Backlog>();
+            UpcomingBacklogs = new ObservableCollection<Backlog>();
+            foreach(var backlog in IncompleteBacklogs)
+            {
+                if (backlog.CreatedDate == "None" || backlog.CreatedDate == null)
+                {
+                    backlog.CreatedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                }
+                _sortedIncompleteBacklogs.Add(backlog);
+                try
+                {
+                    if (DateTime.Parse(backlog.TargetDate) >= DateTime.Today)
+                    {
+                        UpcomingBacklogs.Add(backlog);
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+            foreach(var backlog in CompletedBacklogs)
+            {
+                if (backlog.CompletedDate == null)
+                {
+                    backlog.CompletedDate = DateTimeOffset.MinValue.ToString("d", CultureInfo.InvariantCulture);
+                }
+                _sortedCompletedBacklogs.Add(backlog);
+            }
+            foreach (var backlog in _sortedIncompleteBacklogs.OrderByDescending(b => DateTime.Parse(b.CreatedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
+            {
+                RecentlyAddedBacklogs.Add(backlog);
+            }
+            foreach (var backlog in _sortedCompletedBacklogs.OrderByDescending(b => DateTime.Parse(b.CompletedDate, CultureInfo.InvariantCulture)).Skip(0).Take(6))
+            {
+                RecentlyCompletedBacklogs.Add(backlog);
+            }
+        }
+
+        public ObservableCollection<Backlog> GetIncompleteBacklogs()
+        {
+            return IncompleteBacklogs != null ? IncompleteBacklogs : new ObservableCollection<Backlog>();
+        }
+
+        public ObservableCollection<Backlog> GetRecentlyAddedBacklogs()
+        {
+            return RecentlyAddedBacklogs != null ? RecentlyAddedBacklogs : new ObservableCollection<Backlog>();
+        }
+
+        public ObservableCollection<Backlog> GetRecentlyCompletedBacklogs()
+        {
+            return RecentlyCompletedBacklogs != null ? RecentlyCompletedBacklogs : new ObservableCollection<Backlog>() ;
+        }
+
+        public ObservableCollection<Backlog> GetInProgressBacklogs()
+        {
+            return InProgressBacklogs != null ? InProgressBacklogs : new ObservableCollection<Backlog>();
+        }
+
+        public ObservableCollection<Backlog> GetUpcomingBacklogs()
+        {
+            return UpcomingBacklogs != null ? UpcomingBacklogs : new ObservableCollection<Backlog>();
         }
     }
 }

@@ -138,12 +138,21 @@
     <Compile Include="Utils\BacklogType.cs" />
     <Compile Include="Utils\BooleanToVisibilityConverter.cs" />
     <Compile Include="Utils\DateTimeExtenstions.cs" />
+    <Compile Include="Utils\INavigationService.cs" />
     <Compile Include="Utils\Keys.cs" />
     <Compile Include="Utils\MediaObjects.cs" />
+    <Compile Include="Utils\NavigationService.cs" />
     <Compile Include="Utils\RestClient.cs" />
     <Compile Include="Utils\Settings.cs" />
     <Compile Include="Utils\ToastBackgroundTask.cs" />
     <Compile Include="Utils\ThemeHelper.cs" />
+    <Compile Include="ViewModels\BacklogsViewModel.cs" />
+    <Compile Include="ViewModels\BacklogViewModel.cs" />
+    <Compile Include="ViewModels\CompletedBacklogsViewModel.cs" />
+    <Compile Include="ViewModels\CreateBacklogViewModel.cs" />
+    <Compile Include="ViewModels\ImportBacklogViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\BacklogPage.xaml.cs">
       <DependentUpon>BacklogPage.xaml</DependentUpon>
     </Compile>
@@ -294,6 +303,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.4.3</Version>
+    </PackageReference>
+    <PackageReference Include="Refractored.MvvmHelpers">
+      <Version>1.6.2</Version>
     </PackageReference>
     <PackageReference Include="System.Memory">
       <Version>4.5.4</Version>

@@ -38,7 +38,8 @@
                        Margin="10,0,0,20" TextWrapping="Wrap" />
                 <TextBlock Text="Please follow the hints given in the textbox when entering the name. Do NOT use special characters."
                        Foreground="Yellow" FontStyle="Italic" Margin="10,0,0,20" TextWrapping="Wrap" />
-                <ComboBox x:Name="TypeComoBox" Header="Type" SelectionChanged="TypeComoBox_SelectionChanged" PlaceholderText="Choose type" Margin="10,0,0,20">
+                <ComboBox Header="Type" PlaceholderText="Choose type" Margin="10,0,0,20" SelectedValue="{x:Bind ViewModel.SelectedType, Mode=TwoWay}"
+                          SelectedIndex="{x:Bind ViewModel.SelectedIndex, Mode=TwoWay}"> 
                     <x:String>Film</x:String>
                     <x:String>Album</x:String>
                     <x:String>TV</x:String>
@@ -46,27 +47,30 @@
                     <x:String>Book</x:String>
                 </ComboBox>
                 <TextBlock Text="Name" Margin="10,0,0,20" />
-                <TextBox x:Name="NameInput" PlaceholderText="Enter the name" Margin="10,0,0,20" KeyDown="NameInput_KeyDown" />
+                <TextBox PlaceholderText="{x:Bind ViewModel.PlaceholderText, Mode=OneWay}" Margin="10,0,0,20" KeyDown="NameInput_KeyDown"
+                         Text="{x:Bind ViewModel.NameInput, Mode=TwoWay}"/>
                 <TextBlock Text="When do you want to check this out? (optional)" Margin="10,0,0,20" />
-                <CalendarDatePicker x:Name="DatePicker" Margin="10,0,0,20" DateChanged="DatePicker_DateChanged" MinDate="{x:Bind today}" />
-                <ToggleSwitch x:Name="NotifySwitch" Header="Notify me on this date" Margin="10,0,0,20" Toggled="NotifySwitch_Toggled"
-                              OffContent="No" OnContent="Yes" IsEnabled="False" />
-                <TimePicker x:Name="TimePicker" Header="When do you want to be notified?" 
-                            Margin="10,0,0,20" Time="0" Visibility="Collapsed" />
+                <CalendarDatePicker Margin="10,0,0,20" Date="{x:Bind ViewModel.DateInput, Mode=TwoWay}" MinDate="{x:Bind ViewModel.Today}" />
+                <ToggleSwitch Header="Notify me on this date" Margin="10,0,0,20"
+                              OffContent="No" OnContent="Yes" IsEnabled="{x:Bind ViewModel.EnableNotificationToggle, Mode=OneWay}" IsOn="{x:Bind ViewModel.ShowNotificationOptions, Mode=TwoWay}" />
+                <TimePicker Header="When do you want to be notified?" 
+                            Margin="10,0,0,20" Visibility="{x:Bind ViewModel.ShowNotificationOptions, Mode=OneWay}" Time="{x:Bind ViewModel.NotifTime, Mode=TwoWay}" />
             </StackPanel>
         </ScrollViewer>
 
-        <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
+        <muxc:ProgressBar x:Name="progBar" IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
 
-        <ContentDialog x:Name="ResultsDialog" CloseButtonText="Cancel">
+        <ContentDialog x:Name="resultsDialog" CloseButtonText="Cancel" PrimaryButtonText="Create" PrimaryButtonCommand="{x:Bind ViewModel.CreateBacklog}"
+                       IsPrimaryButtonEnabled="{x:Bind ViewModel.CreateButtonEnabled, Mode=OneWay}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                
-                <TextBlock x:Name="SearchResultsHeader" TextWrapping="Wrap" Margin="0,10,0,30" />
-                <ListView x:Name="ResultsListView" SelectionChanged="ResultsListView_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1">
+
+                <TextBlock Text="{x:Bind ViewModel.SearchResultTitle}" TextWrapping="Wrap" Margin="0,10,0,30" />
+                <ListView SelectedItem="{x:Bind ViewModel.SelectedSearchResult, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1"
+                          ItemsSource="{x:Bind ViewModel.SearchResults, Mode=OneWay}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="data:SearchResult">
                             <Grid Margin="20">
@@ -89,19 +93,19 @@
     </Grid>
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
-            <AppBarButton x:Name="TopCreateButton" Icon="Find" Label="Search" Click="CreateButton_Click" />
-            <AppBarButton x:Name="TopCancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
+            <AppBarButton Icon="Find" Label="Search" Command="{x:Bind ViewModel.SearchBacklog}" />
+            <AppBarButton Icon="Cancel" Label="Cancel" Command="{x:Bind ViewModel.Cancel}" />
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="TopSettingsButton" Icon="Setting" Label="Settings + more" Click="SettingsButton_Click" />
+                <AppBarButton Icon="Setting" Label="Settings + more" Command="{x:Bind ViewModel.OpenSettings}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed" >
-            <AppBarButton x:Name="BottomCreateButton" Icon="Find" Label="Search" Click="CreateButton_Click" />
-            <AppBarButton x:Name="BottomCancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
+            <AppBarButton Icon="Find" Label="Search" Command="{x:Bind ViewModel.SearchBacklog}" />
+            <AppBarButton Icon="Cancel" Label="Cancel" Command="{x:Bind ViewModel.Cancel}" />
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="BottomSettingsButton" Icon="Setting" Label="Settings + more" Click="SettingsButton_Click" />
+                <AppBarButton Icon="Setting" Label="Settings + more" Command="{x:Bind ViewModel.OpenSettings}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

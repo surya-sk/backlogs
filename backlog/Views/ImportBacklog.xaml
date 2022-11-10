@@ -35,33 +35,41 @@
             <RowDefinition Height="*"/> 
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Import Backlog" FontSize="20" FontWeight="Bold" Margin="20" />
-        <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="Collapsed" />
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Import Backlog from" FontSize="20" FontWeight="Bold" Margin="20,20,5,20" />
+            <TextBlock Text="{x:Bind ViewModel.FileName, Mode=OneWay}" FontSize="20" FontWeight="Bold" Margin="5,20,20,20" />
+        </StackPanel>
+        <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
 
         <ScrollViewer Grid.Row="1">
             <StackPanel Margin="30" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image x:Name="coverImg"  Height="150" Width="200" HorizontalAlignment="Center" Margin="5" />
-                <TextBlock x:Name="titleText" FontSize="20" MaxLines="2" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" Margin="5" HorizontalAlignment="Center" />
-                <TextBlock x:Name="directorText" FontSize="15" MaxLines="1" TextTrimming="CharacterEllipsis" Margin="5" HorizontalAlignment="Center"/>
-                <TextBlock x:Name="typeText" FontSize="12" HorizontalAlignment="Center" Margin="5"/>
+                <Image x:Name="coverImg"  Height="150" Width="200" HorizontalAlignment="Center" Margin="5" Source="{x:Bind ViewModel.ImportedBacklog.ImageURL, Mode=OneWay}" />
+                <TextBlock x:Name="titleText" FontSize="20" MaxLines="2" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" Margin="5" 
+                           HorizontalAlignment="Center" Text="{x:Bind ViewModel.ImportedBacklog.Name, Mode=OneWay}" />
+                <TextBlock x:Name="directorText" FontSize="15" MaxLines="1" TextTrimming="CharacterEllipsis" Margin="5" HorizontalAlignment="Center"
+                           Text="{x:Bind ViewModel.ImportedBacklog.Director, Mode=OneWay}"/>
+                <TextBlock x:Name="typeText" FontSize="12" HorizontalAlignment="Center" Margin="5" Text="{x:Bind ViewModel.ImportedBacklog.Type, Mode=OneWay}"/>
 
-                <TextBlock Text="When do you want to check this out? (optional)" Margin="10,10,0,20" />
-                <CalendarView x:Name="datePicker" Margin="10,0,0,20" />
-                <TimePicker x:Name="timePicker" Header="When do you want to be notified? (optional)" Margin="10,0,0,20" Time="0" />
+                <TextBlock Text="When do you want to check this out? (optional)" Margin="10,0,0,20" />
+                <CalendarDatePicker Margin="10,0,0,20" Date="{x:Bind ViewModel.DateInput, Mode=TwoWay}" MinDate="{x:Bind ViewModel.Today}" />
+                <ToggleSwitch Header="Notify me on this date" Margin="10,0,0,20"
+                              OffContent="No" OnContent="Yes" IsEnabled="{x:Bind ViewModel.EnableNotificationToggle, Mode=OneWay}" IsOn="{x:Bind ViewModel.ShowNotificationOptions, Mode=TwoWay}" />
+                <TimePicker Header="When do you want to be notified?" 
+                            Margin="10,0,0,20" Visibility="{x:Bind ViewModel.ShowNotificationOptions, Mode=OneWay}" Time="{x:Bind ViewModel.NotifTime, Mode=TwoWay}" />
             </StackPanel>
         </ScrollViewer>
 
     </Grid>
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
-            <AppBarButton x:Name="TopImportButton" Icon="Accept" Label="Import" Click="ImportButton_Click" />
-            <AppBarButton x:Name="TopCancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
+            <AppBarButton Icon="Accept" Label="Import" Command="{x:Bind ViewModel.Import}" />
+            <AppBarButton Icon="Cancel" Label="Cancel" Command="{x:Bind ViewModel.Cancel}" />
         </CommandBar>
     </Page.TopAppBar>
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
-            <AppBarButton x:Name="BottomImportButton" Icon="Accept" Label="Import" Click="ImportButton_Click" />
-            <AppBarButton x:Name="BottomCancelButton" Icon="Cancel" Label="Cancel" Click="CancelButton_Click" />
+            <AppBarButton Icon="Accept" Label="Import" Command="{x:Bind ViewModel.Import}" />
+            <AppBarButton Icon="Cancel" Label="Cancel" Command="{x:Bind ViewModel.Cancel}" />
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

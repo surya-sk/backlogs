@@ -21,6 +21,7 @@ using Microsoft.Identity.Client;
 using Windows.Storage;
 using System.Threading.Tasks;
 using backlog.Saving;
+using backlog.ViewModels;
 
 namespace backlog
 {
@@ -29,6 +30,7 @@ namespace backlog
     /// </summary>
     sealed partial class App : Application
     {
+        private static NavigationService m_navigationService = new NavigationService();
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
@@ -37,6 +39,13 @@ namespace backlog
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             App.Current.UnhandledException += OnUnHandledException;
+            m_navigationService.RegisterViewForViewModel(typeof(MainViewModel), typeof(MainPage));
+            m_navigationService.RegisterViewForViewModel(typeof(BacklogsViewModel), typeof(BacklogsPage));
+            m_navigationService.RegisterViewForViewModel(typeof(BacklogViewModel), typeof(BacklogPage));
+            m_navigationService.RegisterViewForViewModel(typeof(CompletedBacklogsViewModel), typeof(CompletedBacklogsPage));
+            m_navigationService.RegisterViewForViewModel(typeof(CreateBacklogViewModel), typeof(CreatePage));
+            m_navigationService.RegisterViewForViewModel(typeof(ImportBacklogViewModel), typeof(ImportBacklog));
+            m_navigationService.RegisterViewForViewModel(typeof(SettingsViewModel), typeof(SettingsPage));
         }
 
         public static TEnum GetEnum<TEnum>(string text) where TEnum : struct
@@ -46,6 +55,11 @@ namespace backlog
                 throw new InvalidOperationException("Generic parameter 'TEnum' must be an enum.");
             }
             return (TEnum)Enum.Parse(typeof(TEnum), text);
+        }
+
+        public static NavigationService GetNavigationService()
+        {
+            return m_navigationService;
         }
 
         /// <summary>
@@ -93,6 +107,7 @@ namespace backlog
                     Settings.Version = currVer;
 
                     Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
+                    SaveData.GetInstance().ResetHelperBacklogs();
                     rootFrame.Navigate(typeof(MainPage), "sync");
                 }
                 // Ensure the current window is active
