@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 
 /// <summary>
 /// A class to handle navigation from View Models
@@ -15,8 +16,8 @@ public class NavigationService : INavigationService
         m_viewModelsToViews[viewModel] = view;
     }
 
-    public void NavigateTo<T>()
+    public void NavigateTo<T>(object args = null, NavigationTransitionInfo navigationTransitionInfo = null)
     {
-        ((Frame)Window.Current.Content).Navigate(m_viewModelsToViews[typeof(T)]);
+        ((Frame)Window.Current.Content).Navigate(m_viewModelsToViews[typeof(T)], args, navigationTransitionInfo);
     }
 }

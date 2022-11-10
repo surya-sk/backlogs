@@ -3,6 +3,7 @@ using backlog.Logging;
 using backlog.Models;
 using backlog.Saving;
 using backlog.Utils;
+using backlog.Views;
 using Microsoft.Toolkit.Uwp.Notifications;
 using MvvmHelpers.Commands;
 using System;
@@ -20,6 +21,7 @@ using Windows.Storage.Streams;
 using Windows.System.Profile;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace backlog.ViewModels
@@ -46,6 +48,7 @@ namespace backlog.ViewModels
         private int m_incompleteBacklogsCount = 0;
         private double m_completedPercent = 0;
         private ContentDialog m_crashLogPopup;
+        private readonly INavigationService m_navigationService;
 
         public ObservableCollection<Backlog> RecentlyAdded { get; set; }
         public ObservableCollection<Backlog> RecentlyCompleted { get; set; }
@@ -61,9 +64,6 @@ namespace backlog.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public delegate void ReloadAndSync();
-        public delegate void OpenImportPage(string fileName);
-
         public ICommand SignIn { get; }
         public ICommand RateAppOnMSStore { get; }
         public ICommand ShareApp { get; }
@@ -74,10 +74,13 @@ namespace backlog.ViewModels
         public ICommand OpenWebApp { get; }
         public ICommand SignOut { get; }
         public ICommand SendCrashLog { get; }
+        public ICommand OpenCreatePage { get; }
+        public ICommand OpenSettingsPage { get; }
+        public ICommand OpenCompletedPage { get; }
+        public ICommand OpenBacklogsPage { get; }
 
-        public ReloadAndSync ReloadAndSyncFunc;
-        public OpenImportPage OpenImportPageFunc;
 
+        #region Properties
         public bool IsBusy
         {
             get => m_isBusy;
@@ -205,8 +208,11 @@ namespace backlog.ViewModels
             get => m_randomBacklogType;
             set
             {
-                m_randomBacklogType = value;
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(RandomBacklogType)));
+                if(m_randomBacklogType != value)
+                {
+                    m_randomBacklogType = value;
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(RandomBacklogType)));
+                }
             }
         }
 
@@ -249,8 +255,9 @@ namespace backlog.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CompletedBacklogsPercent)));
             }
         }
+        #endregion
 
-        public MainViewModel(ContentDialog crashLogPopup)
+        public MainViewModel(ContentDialog crashLogPopup, INavigationService navigationService)
         {
             m_networkAvailable = NetworkInterface.GetIsNetworkAvailable();
 
@@ -264,6 +271,10 @@ namespace backlog.ViewModels
             OpenWebApp = new AsyncCommand(OpenWebAppAsync);
             SignOut = new AsyncCommand(SignOutAsync);
             SendCrashLog = new AsyncCommand(SendCrashLogAsync);
+            OpenCreatePage = new Command(NavigateToCreatePage);
+            OpenSettingsPage = new Command(NavigateToSettingsPage);
+            OpenCompletedPage = new Command(NavigateToCompletedPage);
+            OpenBacklogsPage = new Command(NavigateToBacklogsPage);
 
             RecentlyAdded = new ObservableCollection<Backlog>();
             RecentlyCompleted = new ObservableCollection<Backlog>();
@@ -273,6 +284,7 @@ namespace backlog.ViewModels
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
             LoadBacklogs();
             m_crashLogPopup = crashLogPopup;
+            m_navigationService = navigationService;
         }
 
         public async Task SetupProfile()
@@ -436,7 +448,7 @@ namespace backlog.ViewModels
                     await SaveData.GetInstance().DeleteLocalFileAsync();
                     Settings.IsSignedIn = true;
                     await SaveData.GetInstance().ReadDataAsync(true);
-                    ReloadAndSyncFunc();
+                    SyncBacklogs();
                 }
             }
             else
@@ -1480,7 +1492,7 @@ namespace backlog.ViewModels
 
         private void SyncBacklogs()
         {
-            ReloadAndSyncFunc();
+            m_navigationService.NavigateTo<MainViewModel>("sync");
         }
 
         /// <summary>
@@ -1595,7 +1607,7 @@ namespace backlog.ViewModels
                 string json = await FileIO.ReadTextAsync(_file);
                 var _stFile = await _tempFolder.GetFileAsync(_file.Name);
                 await FileIO.WriteTextAsync(_stFile, json);
-                OpenImportPageFunc(_stFile.Name);
+                m_navigationService.NavigateTo<ImportBacklogViewModel>(_stFile.Name);
             }
         }
 
@@ -1627,7 +1639,7 @@ namespace backlog.ViewModels
             {
                 await MSAL.SignOut();
                 Settings.IsSignedIn = false;
-                ReloadAndSyncFunc();
+                SyncBacklogs();
             }
         }
 
@@ -1648,6 +1660,47 @@ namespace backlog.ViewModels
             emailMessage.Body = body.ToString();
             await EmailManager.ShowComposeNewEmailAsync(emailMessage);
             IsBusy = false;
+        }
+
+        private void NavigateToCreatePage()
+        {
+            try
+            {
+                m_navigationService.NavigateTo<CreateBacklogViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom });
+            }
+            catch
+            {
+                m_navigationService.NavigateTo<CreateBacklogViewModel>();
+            }
+        }
+
+        private void NavigateToSettingsPage(object args = null)
+        {
+            try
+            {
+                m_navigationService.NavigateTo<SettingsViewModel>(args, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            catch
+            {
+                m_navigationService.NavigateTo<SettingsViewModel>(args);
+            }
+        }
+
+        private void NavigateToCompletedPage()
+        {
+            try
+            {
+                m_navigationService.NavigateTo<CompletedBacklogsViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
+            catch
+            {
+                m_navigationService.NavigateTo<CompletedBacklogsViewModel>();
+            }
+        }
+
+        private void NavigateToBacklogsPage()
+        {
+            m_navigationService.NavigateTo<BacklogsViewModel>();
         }
     }
 }

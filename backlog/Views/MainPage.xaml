@@ -158,7 +158,8 @@
                               PreferredPlacement="BottomRight"
                               PlacementMargin="20"
                               IsLightDismissEnabled="False"
-                              ActionButtonClick="WhatsNewTip_ActionButtonClick"
+                              ActionButtonCommand="{x:Bind ViewModel.OpenSettingsPage}"
+                              ActionButtonCommandParameter="1"
                               ActionButtonContent="See all"
                               CloseButtonContent="Got it"
                               Visibility="{x:Bind ViewModel.ShowWhatsNew, Mode=OneWay}"/>
@@ -190,7 +191,7 @@
 
                         <RelativePanel Margin="10,0,0,30">
                             <TextBlock x:Name="RecentsHeadingText" Text="Recently Added" FontSize="20" Margin="20,20,20,20"/>
-                            <Button x:Name="AllAddedButton" Content="See all" Click="AllAddedButton_Click" RelativePanel.RightOf="RecentsHeadingText" Margin="0,20,20,20" />
+                            <Button x:Name="AllAddedButton" Content="See all" Command="{x:Bind ViewModel.OpenBacklogsPage}" RelativePanel.RightOf="RecentsHeadingText" Margin="0,20,20,20" />
                             <TextBlock Text="You haven't added any Backlogs yet" RelativePanel.Below="RecentsHeadingText" Margin="20" 
                                        TextWrapping="Wrap" Visibility="{x:Bind ViewModel.RecentlyCreatedEmpty, Mode=OneWay}"/>
                             <controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
@@ -217,7 +218,7 @@
 
                         <RelativePanel Grid.Row="3" Margin="10,0,0,30">
                             <TextBlock x:Name="CompletedHeadingText" Text="Recently Completed" FontSize="20" Margin="20,20,20,20" />
-                            <Button x:Name="AllCompletedButton" Content="See all" Click="AllCompletedButton_Click" RelativePanel.RightOf="CompletedHeadingText" Margin="0,20,20,20" />
+                            <Button x:Name="AllCompletedButton" Content="See all" Command="{x:Bind ViewModel.OpenCompletedPage}" RelativePanel.RightOf="CompletedHeadingText" Margin="0,20,20,20" />
                             <TextBlock Text="You haven't completed any Backlogs" Visibility="{x:Bind ViewModel.RecentlyCompletedEmpty, Mode=OneWay}" RelativePanel.Below="CompletedHeadingText" Margin="20" TextWrapping="Wrap" />
                             <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
                                                        SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind ViewModel.RecentlyCompleted, Mode=OneWay}"
@@ -301,11 +302,7 @@
                         x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis" Text="{x:Bind ViewModel.RandomBacklog.Name, Mode=OneWay}"
                                     Style="{StaticResource BaseTextBlockStyle}"
                                     TextLineBounds="TrimToCapHeight"
-                                    TextWrapping="Wrap">
-                                    <Hyperlink Click="Hyperlink_Click">
-                                        <Run x:Name="RunName" />
-                                    </Hyperlink>
-                                    </TextBlock>
+                                    TextWrapping="Wrap" />
                                 </RelativePanel>
                             </Grid>
                         </RelativePanel>
@@ -317,12 +314,12 @@
     </Frame>
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" >
-            <AppBarButton x:Name="TopBacklogsButton" Label="All Backlogs" Icon="List" Click="BacklogsButton_Click" />
-            <AppBarButton x:Name="TopCompletedBacklogsButton" Label="Completed backlogs" Click="CompletedBacklogsButton_Click">
+            <AppBarButton Label="All Backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
+            <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedPage}">
                 <FontIcon Glyph="" />
             </AppBarButton>
-            <AppBarButton x:Name="TopSyncButton" Label="Sync" Icon="Sync" Click="{x:Bind ReloadAndSyncCallback}" />
-            <AppBarButton x:Name="TopCreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
+            <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.SyncAllBacklogs}" />
+            <AppBarButton Label="Create" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" />
             <AppBarButton x:Name="TopSigninButton" Label="Sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />
             <AppBarButton Label="{x:Bind ViewModel.UserName}" Visibility="{x:Bind ViewModel.ShowProfileButton, Mode=OneWay}">
                 <AppBarButton.Flyout>
@@ -337,7 +334,7 @@
                 <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="TopSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+                <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettingsPage}" />
                 <AppBarButton Label="Import backlog" Icon="Import" Command="{x:Bind ViewModel.ImportBacklog}" />
                 <AppBarButton Label="Rate and Review on the Store" Icon="Like" Command="{x:Bind ViewModel.RateAppOnMSStore}" />
                 <AppBarButton Label="Support developer"  Command="{x:Bind ViewModel.OpenPaypal}" >
@@ -352,9 +349,9 @@
     </Page.TopAppBar>
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
-            <AppBarButton x:Name="BottomBacklogsButton" Label="All Backlogs" Icon="List" Click="BacklogsButton_Click" />
-            <AppBarButton x:Name="BottomSyncButton" Label="Sync" Icon="Sync" Click="{x:Bind ReloadAndSyncCallback}" />
-            <AppBarButton x:Name="BottomCreateButton" Label="Create" Icon="Add" Click="CreateButton_Click" />
+            <AppBarButton Label="All Backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
+            <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.SyncAllBacklogs}" />
+            <AppBarButton Label="Create" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" />
             <AppBarButton x:Name="BottomSigninButton" Label="Sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />
             <AppBarButton Label="{x:Bind ViewModel.UserName}" Visibility="{x:Bind ViewModel.ShowProfileButton, Mode=OneWay}">
                 <AppBarButton.Flyout>
@@ -369,10 +366,10 @@
                 <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="BottomCompletedBacklogsButton" Label="Completed backlogs" Click="CompletedBacklogsButton_Click">
+                <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedPage}">
                     <FontIcon Glyph="" />
                 </AppBarButton>
-                <AppBarButton x:Name="BottomSettingsButton" Label="Settings + more" Icon="Setting" Click="SettingsButton_Click" />
+                <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettingsPage}" />
                 <AppBarButton Label="Import backlog" Icon="Import" Command="{x:Bind ViewModel.ImportBacklog}" />
                 <AppBarButton Label="Rate and Review on the Store" Icon="Like" Command="{x:Bind ViewModel.RateAppOnMSStore}" />
                 <AppBarButton Label="Support developer"  Command="{x:Bind ViewModel.OpenPaypal}" >

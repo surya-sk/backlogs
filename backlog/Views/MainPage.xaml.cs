@@ -26,9 +26,7 @@ namespace backlog.Views
         public MainPage()
         {
             this.InitializeComponent();
-            ViewModel = new MainViewModel(CrashDialog);
-            ViewModel.ReloadAndSyncFunc = ReloadAndSyncCallback;
-            ViewModel.OpenImportPageFunc = OpenImportPageCallback;
+            ViewModel = new MainViewModel(CrashDialog, App.GetNavigationService());
             
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
@@ -55,56 +53,6 @@ namespace backlog.Views
                 }
             }
             await ViewModel.SetupProfile();
-        }
-
-
-        private void ReloadAndSyncCallback()
-        {
-            Frame.Navigate(typeof(MainPage), "sync");
-        }
-
-        /// <summary>
-        /// Opens the Create page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CreateButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Frame.Navigate(typeof(CreatePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom});
-            }
-            catch
-            {
-                Frame.Navigate(typeof(CreatePage));
-            }
-        }
-
-        /// <summary>
-        /// Opens the Setting page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(SettingsPage));
-        }
-
-        private void CompletedBacklogsButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Frame.Navigate(typeof(CompletedBacklogsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight});
-            }
-            catch
-            {
-                Frame.Navigate(typeof(CompletedBacklogsPage));
-            }
-        }
-
-        private void BacklogsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(BacklogsPage));
         }
 
         private void AddedBacklogsGrid_ItemClick(object sender, ItemClickEventArgs e)
@@ -174,31 +122,6 @@ namespace backlog.Views
                     // : )
                 }
             }
-        }
-
-        private void AllAddedButton_Click(object sender, RoutedEventArgs e)
-        {
-            BacklogsButton_Click(sender, e);
-        }
-
-        private void AllCompletedButton_Click(object sender, RoutedEventArgs e)
-        {
-            CompletedBacklogsButton_Click(sender, e);
-        }
-
-        private void Hyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
-        {
-            Frame.Navigate(typeof(BacklogPage), ViewModel.RandomBacklogId, null);
-        }
-
-        private void OpenImportPageCallback(string filename)
-        {
-            Frame.Navigate(typeof(ImportBacklog), filename, null);
-        }
-
-        private void WhatsNewTip_ActionButtonClick(Microsoft.UI.Xaml.Controls.TeachingTip sender, object args)
-        {
-            Frame.Navigate(typeof(SettingsPage), 1);
         }
     }
 }
