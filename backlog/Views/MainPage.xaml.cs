@@ -4,7 +4,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using backlog.Models;
 using backlog.Saving;
-using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Animation;
 using backlog.Logging;

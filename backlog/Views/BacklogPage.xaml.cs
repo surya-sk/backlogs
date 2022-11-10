@@ -1,15 +1,8 @@
 ﻿using System;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Animation;
-using backlog.Utils;
-using System.Linq;
 using Windows.UI.Core;
-using Windows.System.Profile;
-using System.Windows.Input;
-using MvvmHelpers.Commands;
 using backlog.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238

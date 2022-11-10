@@ -1,5 +1,4 @@
-﻿using backlog.Logging;
-using backlog.Models;
+﻿using backlog.Models;
 using backlog.ViewModels;
 using System;
 using System.Collections.Generic;

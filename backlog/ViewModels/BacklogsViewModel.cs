@@ -15,7 +15,6 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Core;
-using System.Diagnostics;
 using backlog.Logging;
 using System.Net.NetworkInformation;
 
