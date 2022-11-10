@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Core;
 using System.Diagnostics;
+using backlog.Logging;
+using System.Net.NetworkInformation;
 
 namespace backlog.ViewModels
 {
@@ -177,6 +179,26 @@ namespace backlog.ViewModels
 
             InitBacklogs();
             PopulateBacklogs();
+        }
+
+        public async Task SyncBacklogs(bool sync)
+        {
+            IsLoading = true;
+            if (NetworkInterface.GetIsNetworkAvailable() && SignedIn)
+            {
+                if (sync)
+                {
+                    await SetUserPhotoAsync();
+                    try
+                    {
+                        await Logger.Info("Syncing backlogs....");
+                    }
+                    catch { }
+                    //await SaveData.GetInstance().ReadDataAsync(true);
+                    PopulateBacklogs();
+                }
+            }
+            IsLoading = false;
         }
 
         /// <summary>

@@ -49,22 +49,7 @@ namespace backlog.Views
                     backlogIndex = int.Parse(e.Parameter.ToString());
                 }
             }
-            ViewModel.IsLoading = true;
-            if (IsNetwordAvailable && ViewModel.SignedIn)
-            {
-                if (sync)
-                {
-                    await ViewModel.SetUserPhotoAsync();
-                    try
-                    {
-                        await Logger.Info("Syncing backlogs....");
-                    }
-                    catch { }
-                    //await SaveData.GetInstance().ReadDataAsync(true);
-                    ViewModel.PopulateBacklogs();
-                }
-            }
-            ViewModel.IsLoading = false;
+            await ViewModel.SyncBacklogs(sync);
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += ViewModel.GoBack;
