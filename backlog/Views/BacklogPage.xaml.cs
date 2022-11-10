@@ -23,7 +23,6 @@ namespace backlog.Views
     {
         public BacklogViewModel ViewModel { get; set; }
 
-
         public BacklogPage()
         {
             this.InitializeComponent();
