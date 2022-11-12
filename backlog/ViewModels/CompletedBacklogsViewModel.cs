@@ -1,6 +1,7 @@
 ﻿using backlog.Models;
 using backlog.Saving;
 using backlog.Utils;
+using Microsoft.Toolkit.Uwp;
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.ObjectModel;
@@ -29,18 +30,24 @@ namespace backlog.ViewModels
         private ContentDialog m_popupOverlay;
         private readonly INavigationService m_navigationService;
 
-        public ObservableCollection<Backlog> FinishedBacklogs;
-        public ObservableCollection<Backlog> FinishedFilmBacklogs;
-        public ObservableCollection<Backlog> FinishedTVBacklogs;
-        public ObservableCollection<Backlog> FinishedMusicBacklogs;
-        public ObservableCollection<Backlog> FinishedGameBacklogs;
-        public ObservableCollection<Backlog> FinishedBookBacklogs;
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedBacklogs;
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedFilmBacklogs;
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedTVBacklogs;
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedMusicBacklogs;
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedGameBacklogs;
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedBookBacklogs;
         public ObservableCollection<Backlog> Backlogs;
         public Backlog SelectedBacklog;
 
         public delegate Task PlayConnectionAnimation();
 
         public PlayConnectionAnimation PlayConnectionAnimationAsync;
+        private ObservableCollection<Backlog> m_finishedBacklogs;
+        private ObservableCollection<Backlog> _finishedBookBacklogs;
+        private ObservableCollection<Backlog> _finishedFilmBacklogs;
+        private ObservableCollection<Backlog> _finishedGameBacklogs;
+        private ObservableCollection<Backlog> _finishedMusicBacklogs;
+        private ObservableCollection<Backlog> _finishedTVBacklogs;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -169,12 +176,6 @@ namespace backlog.ViewModels
             m_navigationService = navigationService;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
-            FinishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
-            FinishedBookBacklogs = new ObservableCollection<Backlog>();
-            FinishedFilmBacklogs = new ObservableCollection<Backlog>();
-            FinishedTVBacklogs = new ObservableCollection<Backlog>();
-            FinishedMusicBacklogs = new ObservableCollection<Backlog>();
-            FinishedGameBacklogs = new ObservableCollection<Backlog>();
             PopulateBacklogs();
         }
 
@@ -183,74 +184,51 @@ namespace backlog.ViewModels
         /// </summary>
         private void PopulateBacklogs()
         {
-            FinishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
+            m_finishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
             ObservableCollection<Backlog> _finishedBacklogs = null;
             switch (SortOrder)
             {
                 case "Name":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderBy(b => b.Name));
+                    _finishedBacklogs = new ObservableCollection<Backlog>(m_finishedBacklogs.OrderBy(b => b.Name));
                     break;
                 case "Completed Date Asc.":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderBy(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
+                    _finishedBacklogs = new ObservableCollection<Backlog>(m_finishedBacklogs.OrderBy(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Completed Date Dsc.":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderByDescending(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
+                    _finishedBacklogs = new ObservableCollection<Backlog>(m_finishedBacklogs.OrderByDescending(b => Convert.ToDateTime(b.CompletedDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Lowest Rating":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderBy(b => b.UserRating));
+                    _finishedBacklogs = new ObservableCollection<Backlog>(m_finishedBacklogs.OrderBy(b => b.UserRating));
                     break;
                 case "Highest Rating":
-                    _finishedBacklogs = new ObservableCollection<Backlog>(FinishedBacklogs.OrderByDescending(b => b.UserRating));
+                    _finishedBacklogs = new ObservableCollection<Backlog>(m_finishedBacklogs.OrderByDescending(b => b.UserRating));
                     break;
 
             }
-            var _finishedBookBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Book.ToString()));
-            var _finishedFilmBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Film.ToString()));
-            var _finishedGameBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Game.ToString()));
-            var _finishedMusicBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Album.ToString()));
-            var _finishedTVBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.TV.ToString()));
-            FinishedBacklogs.Clear();
-            FinishedFilmBacklogs.Clear();
-            FinishedTVBacklogs.Clear();
-            FinishedMusicBacklogs.Clear();
-            FinishedGameBacklogs.Clear();
-            FinishedBookBacklogs.Clear();
+            _finishedBookBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Book.ToString()));
+            _finishedFilmBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Film.ToString()));
+            _finishedGameBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Game.ToString()));
+            _finishedMusicBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.Album.ToString()));
+            _finishedTVBacklogs = new ObservableCollection<Backlog>(_finishedBacklogs.Where(b => b.Type == BacklogType.TV.ToString()));
 
-            foreach (var backlog in _finishedBacklogs)
-            {
-                FinishedBacklogs.Add(backlog);
-            }
-            foreach (var backlog in _finishedBookBacklogs)
-            {
-                FinishedBookBacklogs.Add(backlog);
-            }
-            foreach (var backlog in _finishedFilmBacklogs)
-            {
-                FinishedFilmBacklogs.Add(backlog);
-            }
-            foreach (var backlog in _finishedGameBacklogs)
-            {
-                FinishedGameBacklogs.Add(backlog);
-            }
-            foreach (var backlog in _finishedMusicBacklogs)
-            {
-                FinishedMusicBacklogs.Add(backlog);
-            }
-            foreach (var backlog in _finishedTVBacklogs)
-            {
-                FinishedTVBacklogs.Add(backlog);
-            }
+            FinishedBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(m_finishedBacklogs));
+            FinishedFilmBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(_finishedFilmBacklogs));
+            FinishedGameBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(_finishedGameBacklogs));
+            FinishedBookBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(_finishedBookBacklogs));
+            FinishedTVBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(_finishedTVBacklogs));
+            FinishedMusicBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(_finishedMusicBacklogs));
+            
             CheckEmptyBacklogs();
         }
 
         private void CheckEmptyBacklogs()
         {
-            BacklogsEmpty = FinishedBacklogs.Count <= 0;
-            FilmsEmpty = FinishedFilmBacklogs.Count <= 0;
-            BooksEmpty = FinishedBookBacklogs.Count <= 0;
-            TVEmpty = FinishedTVBacklogs.Count <= 0;
-            GamesEmpty = FinishedGameBacklogs.Count <= 0;
-            AlbumsEmpty = FinishedMusicBacklogs.Count <= 0;
+            BacklogsEmpty = m_finishedBacklogs.Count <= 0;
+            FilmsEmpty = _finishedFilmBacklogs.Count <= 0;
+            BooksEmpty = _finishedBookBacklogs.Count <= 0;
+            TVEmpty = _finishedTVBacklogs.Count <= 0;
+            GamesEmpty = _finishedGameBacklogs.Count <= 0;
+            AlbumsEmpty = _finishedMusicBacklogs.Count <= 0;
         }
 
         /// <summary>

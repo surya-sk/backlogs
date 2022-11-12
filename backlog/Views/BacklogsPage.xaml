@@ -63,82 +63,107 @@
 
             <Pivot x:Name="mainPivot">
                 <PivotItem Header="all">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyListText" Text="Thank you for trying Backlogs. Sign-in for cross-device syncing and data backups! This is pre-release software, so use at your peril " 
+                    <Grid Margin="0,20,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="EmptyListText" Text="Thank you for trying Backlogs. Sign-in for cross-device syncing and data backups! This is pre-release software, so use at your peril " 
                                        Visibility="{x:Bind ViewModel.BacklogsEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
+                        <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
                                                        SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.IncompleteBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" Loaded="BacklogsGrid_Loaded"
-                                                       animations:ReorderGridAnimation.Duration="200"/>
-                        </StackPanel>
-                    </ScrollViewer>
+                                                       animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
+                                                       ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"
+                                                       Grid.Row="1"/>
+                    </Grid>
                 </PivotItem>
 
                 <PivotItem Header="films">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyFilmsText" Text="No films yet. Add some by clicking +." Visibility="{x:Bind ViewModel.FilmsEmpty, Mode=OneWay}"
+                    <Grid Margin="0,20,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="EmptyFilmsText" Text="No films yet. Add some by clicking +." Visibility="{x:Bind ViewModel.FilmsEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="FilmsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.FilmBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}"
-                                                       animations:ReorderGridAnimation.Duration="200"/>
-                        </StackPanel>
-                    </ScrollViewer>
+                        <controls:AdaptiveGridView x:Name="FilmsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
+                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.FilmBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                    ItemTemplate="{StaticResource BacklogTemplate}"
+                                                    animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
+                                                    ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"
+                                                    Grid.Row="1"
+                                                   />
+                    </Grid>
                 </PivotItem>
 
                 <PivotItem Header="albums">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyMusicText" Text="No albums yet. Add some by clicking +" Visibility="{x:Bind ViewModel.AlbumsEmpty, Mode=OneWay}"
+                    <Grid Margin="0,20,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="EmptyMusicText" Text="No albums yet. Add some by clicking +" Visibility="{x:Bind ViewModel.AlbumsEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="AlbumsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.MusicBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}"
-                                                       animations:ReorderGridAnimation.Duration="200"/>
-                        </StackPanel>
-                    </ScrollViewer>
+                        <controls:AdaptiveGridView x:Name="AlbumsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
+                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.MusicBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                    ItemTemplate="{StaticResource BacklogTemplate}"
+                                                    animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
+                                                    ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"
+                                                    Grid.Row="1"/>
+                    </Grid>
                 </PivotItem>
 
                 <PivotItem Header="tv">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyTVText" Text="No series yet. Add some by clicking +" Visibility="{x:Bind ViewModel.TVEmpty, Mode=OneWay}"
+                    <Grid Margin="0,20,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="EmptyTVText" Text="No series yet. Add some by clicking +" Visibility="{x:Bind ViewModel.TVEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.TvBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}"
-                                                       animations:ReorderGridAnimation.Duration="200"/>
-                        </StackPanel>
-                    </ScrollViewer>
+                        <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
+                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.TvBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                    ItemTemplate="{StaticResource BacklogTemplate}"
+                                                    animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
+                                                    ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"
+                                                    Grid.Row="1"/>
+                    </Grid>
                 </PivotItem>
 
                 <PivotItem Header="games">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyGamesText" Text="No games yet. Add some by clicking +" Visibility="{x:Bind ViewModel.GamesEmpty, Mode=OneWay}"
+                    <Grid Margin="0,20,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="EmptyGamesText" Text="No games yet. Add some by clicking +" Visibility="{x:Bind ViewModel.GamesEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.GameBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}"
-                                                       animations:ReorderGridAnimation.Duration="200"/>
-                        </StackPanel>
-                    </ScrollViewer>
+                        <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
+                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.GameBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                    ItemTemplate="{StaticResource BacklogTemplate}"
+                                                    animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
+                                                    ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"
+                                                    Grid.Row="1"/>
+                    </Grid>
                 </PivotItem>
 
                 <PivotItem Header="books">
-                    <ScrollViewer>
-                        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                            <TextBlock x:Name="EmptyBooksText" Text="No books yet. Add some by clicking +" Visibility="{x:Bind ViewModel.BooksEmpty, Mode=OneWay}"
+                    <Grid Margin="0,20,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="EmptyBooksText" Text="No books yet. Add some by clicking +" Visibility="{x:Bind ViewModel.BooksEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                            <controls:AdaptiveGridView x:Name="BooksGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.BookBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
-                                                       ItemTemplate="{StaticResource BacklogTemplate}" 
-                                                       animations:ReorderGridAnimation.Duration="200"/>
-                        </StackPanel>
-                    </ScrollViewer>
+                        <controls:AdaptiveGridView x:Name="BooksGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
+                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.BookBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                    ItemTemplate="{StaticResource BacklogTemplate}" 
+                                                    animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
+                                                    ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"
+                                                    Grid.Row="1"/>
+                    </Grid>
                 </PivotItem>
             </Pivot>
 
