@@ -1,7 +1,7 @@
-﻿using backlog.Logging;
-using backlog.Models;
-using backlog.Saving;
-using backlog.Utils;
+﻿using Backlogs.Logging;
+using Backlogs.Models;
+using Backlogs.Saving;
+using Backlogs.Utils;
 using Microsoft.Graph;
 using Microsoft.Toolkit.Uwp.Notifications;
 using MvvmHelpers.Commands;
@@ -20,9 +20,9 @@ using System.Windows.Input;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
-using SearchResult = backlog.Models.SearchResult;
+using SearchResult = Backlogs.Models.SearchResult;
 
-namespace backlog.ViewModels
+namespace Backlogs.ViewModels
 {
     public class CreateBacklogViewModel: INotifyPropertyChanged
     {

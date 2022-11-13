@@ -1,6 +1,6 @@
-﻿using backlog.Models;
-using backlog.Saving;
-using backlog.Utils;
+﻿using Backlogs.Models;
+using Backlogs.Saving;
+using Backlogs.Utils;
 using Microsoft.Toolkit.Uwp;
 using MvvmHelpers.Commands;
 using System;
@@ -14,7 +14,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 
-namespace backlog.ViewModels
+namespace Backlogs.ViewModels
 {
     public class CompletedBacklogsViewModel : INotifyPropertyChanged
     {

@@ -1,7 +1,7 @@
-﻿using backlog.Models;
-using backlog.Saving;
-using backlog.Utils;
-using backlog.Views;
+﻿using Backlogs.Models;
+using Backlogs.Saving;
+using Backlogs.Utils;
+using Backlogs.Views;
 using Microsoft.Graph;
 using Newtonsoft.Json;
 using System;
@@ -20,7 +20,7 @@ using Windows.UI.Xaml.Controls;
 using System.Windows.Input;
 using MvvmHelpers.Commands;
 
-namespace backlog.ViewModels
+namespace Backlogs.ViewModels
 {
     public class ImportBacklogViewModel : INotifyPropertyChanged
     {

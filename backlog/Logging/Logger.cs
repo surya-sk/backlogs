@@ -11,7 +11,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Search;
 
-namespace backlog.Logging
+namespace Backlogs.Logging
 {
     public class Logger
     {

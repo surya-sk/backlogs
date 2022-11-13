@@ -7,8 +7,8 @@
     <ProjectGuid>{147688A8-D934-41C9-8620-D0A9B392856C}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>backlog</RootNamespace>
-    <AssemblyName>backlog</AssemblyName>
+    <RootNamespace>Backlogs</RootNamespace>
+    <AssemblyName>Backlogs</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
@@ -313,6 +313,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="backlog_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

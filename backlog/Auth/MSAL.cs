@@ -2,18 +2,18 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Logger = backlog.Logging.Logger;
+using Logger = Backlogs.Logging.Logger;
 using Microsoft.Graph;
 using Windows.Security.Authentication.Web;
 using System.Net.Http.Headers;
 using Windows.Storage;
 using System.IO;
-using backlog.Utils;
+using Backlogs.Utils;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
-using backlog.Saving;
+using Backlogs.Saving;
 
-namespace backlog.Auth
+namespace Backlogs.Auth
 {
     public class MSAL
     {

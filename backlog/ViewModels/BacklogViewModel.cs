@@ -1,7 +1,7 @@
-﻿using backlog.Logging;
-using backlog.Models;
-using backlog.Saving;
-using backlog.Utils;
+﻿using Backlogs.Logging;
+using Backlogs.Models;
+using Backlogs.Saving;
+using Backlogs.Utils;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Microsoft.Graph;
@@ -26,7 +26,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 
-namespace backlog.ViewModels
+namespace Backlogs.ViewModels
 {
     public class BacklogViewModel : INotifyPropertyChanged
     {

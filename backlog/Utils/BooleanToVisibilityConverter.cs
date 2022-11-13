@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace backlog.Utils
+namespace Backlogs.Utils
 {
     class BooleanToVisibilityConverter : IValueConverter
     {

@@ -1,4 +1,4 @@
-﻿namespace backlog.Utils
+﻿namespace Backlogs.Utils
 {
     public enum BacklogType
     {

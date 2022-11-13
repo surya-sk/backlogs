@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace backlog.Models
+namespace Backlogs.Models
 {
     public class Backlog : INotifyPropertyChanged
     {

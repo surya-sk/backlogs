@@ -1,6 +1,6 @@
 ﻿using Windows.Storage;
 
-namespace backlog.Utils
+namespace Backlogs.Utils
 {
     public static class Settings
     {

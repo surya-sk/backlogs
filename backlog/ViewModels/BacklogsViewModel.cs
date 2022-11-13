@@ -1,6 +1,6 @@
-﻿using backlog.Models;
-using backlog.Saving;
-using backlog.Utils;
+﻿using Backlogs.Models;
+using Backlogs.Saving;
+using Backlogs.Utils;
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.ObjectModel;
@@ -15,11 +15,11 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Core;
-using backlog.Logging;
+using Backlogs.Logging;
 using System.Net.NetworkInformation;
 using Microsoft.Toolkit.Uwp;
 
-namespace backlog.ViewModels
+namespace Backlogs.ViewModels
 {
     public class BacklogsViewModel: INotifyPropertyChanged
     {

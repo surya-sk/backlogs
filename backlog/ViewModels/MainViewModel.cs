@@ -1,9 +1,9 @@
-﻿using backlog.Auth;
-using backlog.Logging;
-using backlog.Models;
-using backlog.Saving;
-using backlog.Utils;
-using backlog.Views;
+﻿using Backlogs.Auth;
+using Backlogs.Logging;
+using Backlogs.Models;
+using Backlogs.Saving;
+using Backlogs.Utils;
+using Backlogs.Views;
 using Microsoft.Toolkit.Uwp.Notifications;
 using MvvmHelpers.Commands;
 using System;
@@ -24,7 +24,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace backlog.ViewModels
+namespace Backlogs.ViewModels
 {
     public class MainViewModel: INotifyPropertyChanged
     {

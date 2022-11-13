@@ -1,5 +1,5 @@
-﻿using backlog.Auth;
-using backlog.Utils;
+﻿using Backlogs.Auth;
+using Backlogs.Utils;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,11 +12,11 @@ using System.Windows.Input;
 using Windows.Storage.Streams;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
-using Logger = backlog.Logging.Logger;
+using Logger = Backlogs.Logging.Logger;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Animation;
 
-namespace backlog.ViewModels
+namespace Backlogs.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {

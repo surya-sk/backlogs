@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Notifications;
-using backlog.Saving;
-using backlog.Models;
+using Backlogs.Saving;
+using Backlogs.Models;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
-namespace backlog.Utils
+namespace Backlogs.Utils
 {
     internal class ToastBackgroundTask : IBackgroundTask
     {
