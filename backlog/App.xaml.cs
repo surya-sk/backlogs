@@ -22,6 +22,11 @@ using Windows.Storage;
 using System.Threading.Tasks;
 using Backlogs.Saving;
 using Backlogs.ViewModels;
+using Backlogs.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Backlogs.UtilsUWP;
+using Settings = Backlogs.UtilsUWP.Settings;
+using Backlogs.Constants;
 
 namespace Backlogs
 {
@@ -31,6 +36,8 @@ namespace Backlogs
     sealed partial class App : Application
     {
         private static NavigationService m_navigationService = new NavigationService();
+        private IServiceProvider m_serviceProvider;
+        private IUserSettings m_userSettings;
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
@@ -46,6 +53,19 @@ namespace Backlogs
             m_navigationService.RegisterViewForViewModel(typeof(CreateBacklogViewModel), typeof(CreatePage));
             m_navigationService.RegisterViewForViewModel(typeof(ImportBacklogViewModel), typeof(ImportBacklog));
             m_navigationService.RegisterViewForViewModel(typeof(SettingsViewModel), typeof(SettingsPage));
+        }
+
+        public static IServiceProvider Services
+        {
+            get
+            {
+                IServiceProvider serviceProvider = ((App)Current).m_serviceProvider;
+                if (serviceProvider == null)
+                {
+                    throw new InvalidOperationException("Service is not initialized");
+                }
+                return serviceProvider;
+            }
         }
 
         public static TEnum GetEnum<TEnum>(string text) where TEnum : struct
@@ -87,6 +107,8 @@ namespace Backlogs
 
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
+                m_serviceProvider = ConfigureServices();
+                m_userSettings = (IUserSettings)Services.GetService(typeof(IUserSettings));
             }
 
             if (e.PrelaunchActivated == false)
@@ -100,11 +122,13 @@ namespace Backlogs
 
                     var version = Package.Current.Id.Version;
                     string currVer = string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
-                    if(Settings.Version == null || Settings.Version != currVer)
+                    var settingsService = Services.GetRequiredService<IUserSettings>();
+                    var settingsVersion = settingsService.Get<string>(SettingsConstants.Version);
+                    if (settingsVersion == null || settingsVersion != currVer)
                     {
-                        Settings.ShowWhatsNew = true;
+                        settingsService.Set(SettingsConstants.ShowWhatsNew, true);
                     }
-                    Settings.Version = currVer;
+                    settingsService.Set(SettingsConstants.Version, version);
 
                     Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
                     SaveData.GetInstance().ResetHelperBacklogs();
@@ -113,6 +137,14 @@ namespace Backlogs
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+        }
+
+        private static IServiceProvider ConfigureServices()
+        {
+            var provider = new ServiceCollection()
+                .AddSingleton<IUserSettings, Settings>()
+                .BuildServiceProvider();
+            return provider;
         }
 
         /// <summary>

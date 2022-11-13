@@ -8,7 +8,7 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
-        "projectName": "backlog",
+        "projectName": "Backlogs",
         "projectPath": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
         "packagesPath": "C:\\Users\\surya\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\surya\\git\\backlogs\\backlog\\obj\\",
@@ -46,6 +46,10 @@
             "Microsoft.AspNet.WebApi.Client": {
               "target": "Package",
               "version": "[5.2.7, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[1.0.1, )"
             },
             "Microsoft.Graph": {
               "target": "Package",

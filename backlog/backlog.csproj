@@ -131,10 +131,17 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Auth\MSAL.cs" />
+    <Compile Include="Constants\MSALConstants.cs" />
+    <Compile Include="Constants\SettingsConstants.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Models\Backlog.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Saving\SaveData.cs" />
+    <Compile Include="Services\IFileHandler.cs" />
+    <Compile Include="Services\IMsal.cs" />
+    <Compile Include="Services\IUserSettings.cs" />
+    <Compile Include="UtilsUWP\MSAL.cs" />
+    <Compile Include="UtilsUWP\Settings.cs" />
     <Compile Include="Utils\BacklogType.cs" />
     <Compile Include="Utils\BooleanToVisibilityConverter.cs" />
     <Compile Include="Utils\DateTimeExtenstions.cs" />
@@ -280,6 +287,9 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Client">
       <Version>5.2.7</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
+      <Version>1.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Graph">
       <Version>1.15.0</Version>
     </PackageReference>
@@ -314,9 +324,7 @@
   <ItemGroup>
     <None Include="backlog_TemporaryKey.pfx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
