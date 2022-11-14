@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace Backlogs.UtilsUWP
+namespace Backlogs.Utils.UWP
 {
     public class Settings : IUserSettings
     {

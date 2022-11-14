@@ -24,8 +24,8 @@ using Backlogs.Saving;
 using Backlogs.ViewModels;
 using Backlogs.Services;
 using Microsoft.Extensions.DependencyInjection;
-using Backlogs.UtilsUWP;
-using Settings = Backlogs.UtilsUWP.Settings;
+using Backlogs.Utils.UWP;
+using Settings = Backlogs.Utils.UWP.Settings;
 using Backlogs.Constants;
 
 namespace Backlogs
@@ -143,6 +143,7 @@ namespace Backlogs
         {
             var provider = new ServiceCollection()
                 .AddSingleton<IUserSettings, Settings>()
+                .AddSingleton<IMsal, MSAL>()
                 .BuildServiceProvider();
             return provider;
         }

@@ -1,14 +1,21 @@
 ﻿using Backlogs.Constants;
+using Backlogs.Saving;
 using Backlogs.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Graph;
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Graphics.Imaging;
 using Windows.Security.Authentication.Web;
 using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
+using Logger = Backlogs.Logging.Logger;
 
 namespace Backlogs.Utils.UWP
 {
@@ -19,14 +26,54 @@ namespace Backlogs.Utils.UWP
         private GraphServiceClient s_graphServiceClient = null;
         private IPublicClientApplication s_PublicClientApplication;
 
+        private IUserSettings m_settings = App.Services.GetRequiredService<IUserSettings>();
+
         private string[] scopes = MSALConstants.Scopes;
 
         static StorageFolder s_cacheFolder = ApplicationData.Current.LocalCacheFolder;
         static string m_accountPicFile = "profile.png";
-
-        public Task<GraphServiceClient> GetGraphServiceClient()
+        
+        public async Task<GraphServiceClient> GetGraphServiceClient()
         {
-            throw new NotImplementedException();
+            if (s_graphServiceClient == null)
+            {
+                s_graphServiceClient = await SignInAndInitializeGraphServiceClient().ConfigureAwait(false);
+                try
+                {
+                    await Logger.Info("Fetching graph service client.....");
+                    var user = await s_graphServiceClient.Me.Request().GetAsync();
+                    m_settings.Set(SettingsConstants.UserName, user.GivenName);
+                    try
+                    {
+                        Stream photoresponse = await s_graphServiceClient.Me.Photo.Content.Request().GetAsync();
+                        if (photoresponse != null)
+                        {
+                            using (var randomAccessStream = photoresponse.AsRandomAccessStream())
+                            {
+                                BitmapImage image = new BitmapImage();
+                                randomAccessStream.Seek(0);
+                                await image.SetSourceAsync(randomAccessStream);
+
+                                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
+                                SoftwareBitmap softwareBitmap = await decoder.GetSoftwareBitmapAsync();
+                                var storageFile = await s_cacheFolder.CreateFileAsync(m_accountPicFile, CreationCollisionOption.ReplaceExisting);
+                                BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, await storageFile.OpenAsync(FileAccessMode.ReadWrite));
+                                encoder.SetSoftwareBitmap(softwareBitmap);
+                                await encoder.FlushAsync();
+                            }
+                        }
+                    }
+                    catch (ServiceException ex)
+                    {
+                        await Logger.Error("Failed to fetch user photo", ex);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await Logger.Error("Failed to sign-in user or get user photo and name", ex);
+                }
+            }
+            return s_graphServiceClient;
         }
 
         public async Task<string> SignInAndGetAuthResult()
@@ -58,19 +105,43 @@ namespace Backlogs.Utils.UWP
             }
             if (authResult != null)
             {
-                
+                m_settings.Set(SettingsConstants.IsSignedIn, true);   
             }
             return authResult.AccessToken;
         }
 
-        public Task<GraphServiceClient> SignInAndInitializeGraphServiceClient()
+        public async Task<GraphServiceClient> SignInAndInitializeGraphServiceClient()
         {
-            throw new NotImplementedException();
+            GraphServiceClient graphClient = new GraphServiceClient(s_MSGraphURL,
+            new DelegateAuthenticationProvider(async (requestMessage) => {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", await SignInAndGetAuthResult());
+            }));
+
+            return await Task.FromResult(graphClient);
         }
 
-        public Task SignOut()
+        public async Task SignOut()
         {
-            throw new NotImplementedException();
+            var accounts = await s_PublicClientApplication.GetAccountsAsync();
+            IAccount firstAccount = accounts.FirstOrDefault();
+            try
+            {
+                await Logger.Info("Signing out user...");
+                await s_PublicClientApplication.RemoveAsync(firstAccount).ConfigureAwait(false);
+                m_settings.Set(SettingsConstants.IsSignedIn, false);
+                try
+                {
+                    await SaveData.GetInstance().DeleteLocalFileAsync();
+                }
+                catch
+                {
+                    // : )
+                }
+            }
+            catch (Exception ex)
+            {
+                await Logger.Error("Failed to sign out user.", ex);
+            }
         }
     }
 }
