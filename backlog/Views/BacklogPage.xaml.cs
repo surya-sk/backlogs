@@ -4,6 +4,8 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Core;
 using Backlogs.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using Backlogs.Services;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -27,7 +29,7 @@ namespace Backlogs.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Guid selectedId = (Guid)e.Parameter;
-            ViewModel = new BacklogViewModel(selectedId, ratingDialog:RatingDialog, trailerDialog:trailerDialog, webView:webView, App.GetNavigationService());
+            ViewModel = new BacklogViewModel(selectedId, App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>());
             base.OnNavigatedTo(e);
             ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
             imageAnimation?.TryStart(img);

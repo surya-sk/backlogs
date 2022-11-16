@@ -1,6 +1,7 @@
 ﻿using Backlogs.Logging;
 using Backlogs.Models;
 using Backlogs.Saving;
+using Backlogs.Services;
 using Backlogs.Utils;
 using Microsoft.Graph;
 using Microsoft.Toolkit.Uwp.Notifications;
@@ -18,8 +19,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Notifications;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 using SearchResult = Backlogs.Models.SearchResult;
 
 namespace Backlogs.ViewModels
@@ -39,16 +38,15 @@ namespace Backlogs.ViewModels
         private string m_searchResultTitle;
         private bool m_createButtonEnabled;
         private bool m_isBusy;
-        private ContentDialog m_resultsDialog;
         private bool m_SignedIn = Settings.IsSignedIn;
         private readonly INavigationService m_navigationService;
+        private readonly IDialogHandler m_dialogHandler;
 
         public ObservableCollection<Backlog> Backlogs;
         public ObservableCollection<SearchResult> SearchResults;
 
         public ICommand SearchBacklog { get; }
         public ICommand Cancel { get; }
-        public ICommand CreateBacklog { get; }
         public ICommand OpenSettings { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -203,16 +201,15 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public CreateBacklogViewModel(ContentDialog resultDialog, INavigationService navigationService)
+        public CreateBacklogViewModel(INavigationService navigationService, IDialogHandler dialogHandler)
         {
             SearchResults = new ObservableCollection<SearchResult>();
             SearchBacklog = new AsyncCommand(TrySearchBacklogAsync);
             Cancel = new Command(NavToPrevPage);
-            CreateBacklog = new AsyncCommand(SearchResultSelectedAsync);
             OpenSettings = new Command(NavigateToSettingsPage);
 
-            m_resultsDialog = resultDialog;
             m_navigationService = navigationService;
+            m_dialogHandler = dialogHandler;
         }
 
         /// <summary>
@@ -237,14 +234,8 @@ namespace Backlogs.ViewModels
             }
             else
             {
-                ContentDialog contentDialog = new ContentDialog
-                {
-                    Title = "No internet",
-                    Content = "You need the internet to create backlogs",
-                    CloseButtonText = "Ok"
-                };
                 await Logger.Warn("Not connected to the internet");
-                await contentDialog.ShowAsync();
+                await m_dialogHandler.ShowErrorDialogAsync("No internet", "You need the internet to create backlogs", "Ok");
             }
         }
 
@@ -294,13 +285,7 @@ namespace Backlogs.ViewModels
             {
                 if (NameInput == "" || SelectedIndex < 0)
                 {
-                    ContentDialog contentDialog = new ContentDialog
-                    {
-                        Title = "Missing fields",
-                        Content = "Please fill in all the values",
-                        CloseButtonText = "Ok"
-                    };
-                    await contentDialog.ShowAsync();
+                    await m_dialogHandler.ShowErrorDialogAsync("Missing fields", "Please fill in all the values", "Ok");
                 }
                 else
                 {
@@ -311,26 +296,14 @@ namespace Backlogs.ViewModels
                         {
                             if (NotifTime == TimeSpan.Zero)
                             {
-                                ContentDialog contentDialog = new ContentDialog
-                                {
-                                    Title = "Invalid date and time",
-                                    Content = "Please pick a time!",
-                                    CloseButtonText = "Ok"
-                                };
-                                await contentDialog.ShowAsync();
+                                await m_dialogHandler.ShowErrorDialogAsync("Invalid date and time time", "Pleae pick a time", "Ok");
                                 return;
                             }
                             DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(NotifTime);
                             int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
                             if (diff < 0)
                             {
-                                ContentDialog contentDialog = new ContentDialog
-                                {
-                                    Title = "Invalid time",
-                                    Content = "The date and time you've chosen are in the past!",
-                                    CloseButtonText = "Ok"
-                                };
-                                await contentDialog.ShowAsync();
+                                await m_dialogHandler.ShowErrorDialogAsync("Invalid time", "The date and time you've chosen are in the past!", "Ok");
                                 return;
                             }
                         }
@@ -340,13 +313,7 @@ namespace Backlogs.ViewModels
                             int diff = DateTime.Compare(DateTime.Today, DateInput.DateTime);
                             if (diff > 0)
                             {
-                                ContentDialog contentDialog = new ContentDialog
-                                {
-                                    Title = "Invalid date and time",
-                                    Content = "The date and time you've chosen are in the past!",
-                                    CloseButtonText = "Ok"
-                                };
-                                await contentDialog.ShowAsync();
+                                await m_dialogHandler.ShowErrorDialogAsync("Invalid date and time", "The date and time you've chosen are in the past!", "Ok");
                                 return;
                             }
                         }
@@ -453,7 +420,8 @@ namespace Backlogs.ViewModels
                             continue;
                         }
                     }
-                    _ = await m_resultsDialog.ShowAsync();
+                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
+                    await SearchResultSelectedAsync();
                     await Logger.Info("Succesfully created backlog");
                 }
                 else
@@ -582,7 +550,8 @@ namespace Backlogs.ViewModels
                             continue;
                         }
                     }
-                    _ = await m_resultsDialog.ShowAsync();
+                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
+                    await SearchResultSelectedAsync();
                     await Logger.Info("Succesfully created backlog");
                 }
                 else
@@ -676,7 +645,8 @@ namespace Backlogs.ViewModels
                             continue;
                         }
                     }
-                    _ = await m_resultsDialog.ShowAsync();
+                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
+                    await SearchResultSelectedAsync();
                     await Logger.Info("Succesfully created backlog");
                 }
                 else
@@ -765,7 +735,8 @@ namespace Backlogs.ViewModels
                             continue;
                         }
                     }
-                    _ = await m_resultsDialog.ShowAsync();
+                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
+                    await SearchResultSelectedAsync();
                     await Logger.Info("Succesfully created backlog");
                 }
                 else
@@ -827,24 +798,12 @@ namespace Backlogs.ViewModels
 
         private async Task ShowNotFoundDialogAsync()
         {
-            ContentDialog contentDialog = new ContentDialog
-            {
-                Title = $"Couldn't find any results for {NameInput}",
-                Content = $"Check if you've picked the right type or try entering the full title if you haven't done so. If that doesn't work, please go to \'Settings + more\' and send me the logs",
-                CloseButtonText = "Ok"
-            };
-            _ = await contentDialog.ShowAsync();
+            await m_dialogHandler.ShowErrorDialogAsync($"Couldn't find any results for {NameInput}", $"Check if you've picked the right type or try entering the full title if you haven't done so. If that doesn't work, please go to \'Settings + more\' and send me the logs", "Ok");
         }
 
         private async Task ShowErrorDialogAsync()
         {
-            ContentDialog contentDialog = new ContentDialog
-            {
-                Title = $"Couldn't find any results for {NameInput}",
-                Content = $"Could not create Backlog. Please go to \'Settings + more\' and send me the logs",
-                CloseButtonText = "Ok"
-            };
-            _ = await contentDialog.ShowAsync();
+            await m_dialogHandler.ShowErrorDialogAsync($"Couldn't find any results for {NameInput}", $"Could not create Backlog. Please go to \'Settings + more\' and send me the logs", "Ok");
         }
 
         private void NavToPrevPage()
@@ -862,7 +821,6 @@ namespace Backlogs.ViewModels
             if (SelectedSearchResult != null)
             {
                 string date = DateInput != null ? DateInput.ToString("D", CultureInfo.InvariantCulture) : "None";
-                m_resultsDialog.Hide();
                 switch (SelectedType)
                 {
                     case "Film":
@@ -883,14 +841,7 @@ namespace Backlogs.ViewModels
 
         private void NavigateToSettingsPage()
         {
-            try
-            {
-                m_navigationService.NavigateTo<SettingsViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-            }
-            catch
-            {
-                m_navigationService.NavigateTo<SettingsViewModel>();
-            }
+            m_navigationService.NavigateTo<SettingsViewModel>();
         }
     }
 }

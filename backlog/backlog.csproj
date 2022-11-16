@@ -133,18 +133,29 @@
     <Compile Include="Auth\MSAL.cs" />
     <Compile Include="Constants\MSALConstants.cs" />
     <Compile Include="Constants\SettingsConstants.cs" />
+    <Compile Include="Controls\SearchResultsDialog.xaml.cs">
+      <DependentUpon>SearchResultsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Models\Backlog.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Saving\SaveData.cs" />
+    <Compile Include="Services\IDialogHandler.cs" />
     <Compile Include="Services\IFileHandler.cs" />
     <Compile Include="Services\IMsal.cs" />
+    <Compile Include="Services\INavigation.cs" />
     <Compile Include="Services\IUserSettings.cs" />
+    <Compile Include="UtilsCore\BacklogsManager.cs" />
+    <Compile Include="UtilsCore\Keys.cs" />
+    <Compile Include="UtilsCore\MediaObjects.cs" />
+    <Compile Include="UtilsCore\RestClient.cs" />
+    <Compile Include="UtilsUWP\DialogHandler.cs" />
+    <Compile Include="UtilsUWP\FileIO.cs" />
     <Compile Include="UtilsUWP\MSAL.cs" />
+    <Compile Include="UtilsUWP\Navigator.cs" />
     <Compile Include="UtilsUWP\Settings.cs" />
+    <Compile Include="UtilsUWP\ThemeHelper.cs" />
     <Compile Include="Utils\BacklogType.cs" />
-    <Compile Include="Utils\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Utils\DateTimeExtenstions.cs" />
     <Compile Include="Utils\INavigationService.cs" />
     <Compile Include="Utils\Keys.cs" />
     <Compile Include="Utils\MediaObjects.cs" />
@@ -251,6 +262,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\SearchResultsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\BacklogPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

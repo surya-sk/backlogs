@@ -12,7 +12,7 @@ namespace Backlogs.Services
 {
     public interface IFileHandler
     {
-        Task<string> ReadBacklogsAsync(Stream stream, bool sync);
+        Task<string> ReadBacklogsAsync(bool sync);
         Task WriteBacklogsAsync(ObservableCollection<Backlog> backlogs, bool sync);
         Task<string> DownloadBacklogsJsonAsync();
         Task DeleteLocalFilesAsync();

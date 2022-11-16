@@ -1,5 +1,7 @@
 ﻿using Backlogs.Models;
+using Backlogs.Services;
 using Backlogs.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,7 +31,7 @@ namespace Backlogs.Views
         public BacklogsPage()
         {
             this.InitializeComponent();
-            ViewModel = new BacklogsViewModel(App.GetNavigationService());
+            ViewModel = new BacklogsViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>());
             IsNetwordAvailable = NetworkInterface.GetIsNetworkAvailable();
         }
 

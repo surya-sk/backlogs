@@ -4,8 +4,6 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Email;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml;
 using MvvmHelpers.Commands;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -14,7 +12,8 @@ using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 using Logger = Backlogs.Logging.Logger;
 using Windows.UI.Core;
-using Windows.UI.Xaml.Media.Animation;
+using Backlogs.Services;
+using Windows.UI.Xaml;
 
 namespace Backlogs.ViewModels
 {
@@ -29,6 +28,7 @@ namespace Backlogs.ViewModels
         private string m_tileContent = Settings.TileContent;
         private BitmapImage m_accountPic;
         private readonly INavigationService m_navigationService;
+        private readonly IDialogHandler m_dialogHander;
 
 
         public string MIT { get; } = "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n\nTHE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
@@ -136,13 +136,14 @@ namespace Backlogs.ViewModels
         public string SelectedFeedbackType { get; set; }
 
         public string FeedbackText { get; set; }
-        public SettingsViewModel(INavigationService navigationService)
+        public SettingsViewModel(INavigationService navigationService, IDialogHandler dialogHandler)
         {
             SendLogs = new AsyncCommand(SendLogsAsync);
             OpenLogs = new AsyncCommand(ShowLogsAsync);
             SendFeedback = new AsyncCommand(SendFeedbackAsync);
             SignOut = new AsyncCommand(SignOutAsync);
             m_navigationService = navigationService;
+            m_dialogHander = dialogHandler;
         }
 
         /// <summary>
@@ -217,19 +218,7 @@ namespace Backlogs.ViewModels
         private async Task ShowLogsAsync()
         {
             var logs = await Logger.GetLogsAsync();
-            ContentDialog contentDialog = new ContentDialog()
-            {
-                Title = "Logs",
-                Content = new ListView()
-                {
-                    ItemsSource = logs,
-                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                    IsItemClickEnabled = false,
-                    SelectionMode = ListViewSelectionMode.None
-                },
-                CloseButtonText = "Close"
-            };
-            await contentDialog.ShowAsync();
+            await m_dialogHander.ShowLogsDialogAsyncAsync(logs);
         }
 
         /// <summary>
@@ -254,13 +243,7 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task ShowFeedbackInputErrorAsync()
         {
-            ContentDialog contentDialog = new ContentDialog
-            {
-                Title = "Insufficient data",
-                Content = "Please fill in both the fields",
-                CloseButtonText = "Ok"
-            };
-            ContentDialogResult result = await contentDialog.ShowAsync();
+            await m_dialogHander.ShowErrorDialogAsync("Insufficient data", "Please fill in both the fields", "Ok");
         }
 
         /// <summary>
@@ -284,15 +267,7 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task SignOutAsync()
         {
-            ContentDialog contentDialog = new ContentDialog
-            {
-                Title = "Sign out?",
-                Content = "You will no longer have access to your backlogs, and new ones will no longer be synced",
-                PrimaryButtonText = "Yes",
-                CloseButtonText = "No"
-            };
-            ContentDialogResult result = await contentDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            if (await m_dialogHander.ShowSignOutDialogAsync())
             {
                 await MSAL.SignOut();
                 Settings.IsSignedIn = false;
@@ -318,7 +293,7 @@ namespace Backlogs.ViewModels
         /// <param name="e"></param>
         public void GoBack(object sender, BackRequestedEventArgs e)
         {
-            m_navigationService.GoBack(new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            m_navigationService.GoBack();
             e.Handled = true;
         }
     }

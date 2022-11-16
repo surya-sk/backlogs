@@ -2,6 +2,7 @@
 using Backlogs.Logging;
 using Backlogs.Models;
 using Backlogs.Saving;
+using Backlogs.Services;
 using Backlogs.Utils;
 using Backlogs.Views;
 using Microsoft.Toolkit.Uwp.Notifications;
@@ -20,8 +21,6 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System.Profile;
 using Windows.UI.Notifications;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Backlogs.ViewModels
@@ -47,8 +46,8 @@ namespace Backlogs.ViewModels
         private int m_completedBacklogsCount = 0;
         private int m_incompleteBacklogsCount = 0;
         private double m_completedPercent = 0;
-        private ContentDialog m_crashLogPopup;
         private readonly INavigationService m_navigationService;
+        private readonly IDialogHandler m_dialogHandler;
 
         public ObservableCollection<Backlog> RecentlyAdded { get; set; }
         public ObservableCollection<Backlog> RecentlyCompleted { get; set; }
@@ -257,7 +256,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public MainViewModel(ContentDialog crashLogPopup, INavigationService navigationService)
+        public MainViewModel(INavigationService navigationService, IDialogHandler dialogHandler)
         {
             m_networkAvailable = NetworkInterface.GetIsNetworkAvailable();
 
@@ -283,8 +282,8 @@ namespace Backlogs.ViewModels
 
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
             LoadBacklogs();
-            m_crashLogPopup = crashLogPopup;
             m_navigationService = navigationService;
+            m_dialogHandler = dialogHandler;
         }
 
         public async Task SetupProfile()
@@ -321,10 +320,9 @@ namespace Backlogs.ViewModels
         {
             var localSettings = ApplicationData.Current.LocalSettings;
             m_crashLog = localSettings.Values["LastCrashLog"] as string;
-            if (m_crashLog != null)
+            if(await m_dialogHandler.ShowCrashLogDialogAsync(m_crashLog))
             {
-                m_crashLogPopup.Content = $"It seems the application crashed the last time, with the following error: {m_crashLog}";
-                await m_crashLogPopup.ShowAsync();
+                await SendCrashLogAsync();
             }
             localSettings.Values["LastCrashLog"] = null;
         }
@@ -453,13 +451,7 @@ namespace Backlogs.ViewModels
             }
             else
             {
-                ContentDialog contentDialog = new ContentDialog
-                {
-                    Title = "No Internet",
-                    Content = "You need to be connected to sign-in",
-                    CloseButtonText = "Ok"
-                };
-                _ = await contentDialog.ShowAsync();
+                await m_dialogHandler.ShowErrorDialogAsync("No internet", "You need to be connected to the internet for this!", "Ok");
             }
         }
 
@@ -1579,13 +1571,7 @@ namespace Backlogs.ViewModels
 
         private async Task ShowErrorMessage(string message)
         {
-            ContentDialog contentDialog = new ContentDialog()
-            {
-                Title = "Not enough Backlogs",
-                Content = message,
-                CloseButtonText = "Ok"
-            };
-            await contentDialog.ShowAsync();
+            await m_dialogHandler.ShowErrorDialogAsync("Not enought backlogs", message, "OK");
         }
 
         /// <summary>
@@ -1627,15 +1613,7 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task SignOutAsync()
         {
-            ContentDialog contentDialog = new ContentDialog
-            {
-                Title = "Sign out?",
-                Content = "You will no longer have access to your backlogs, and new ones will no longer be synced",
-                PrimaryButtonText = "Yes",
-                CloseButtonText = "No"
-            };
-            ContentDialogResult result = await contentDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            if (await m_dialogHandler.ShowSignOutDialogAsync())
             {
                 await MSAL.SignOut();
                 Settings.IsSignedIn = false;
@@ -1664,38 +1642,17 @@ namespace Backlogs.ViewModels
 
         private void NavigateToCreatePage()
         {
-            try
-            {
-                m_navigationService.NavigateTo<CreateBacklogViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom });
-            }
-            catch
-            {
-                m_navigationService.NavigateTo<CreateBacklogViewModel>();
-            }
+            m_navigationService.NavigateTo<CreateBacklogViewModel>();
         }
 
         private void NavigateToSettingsPage(object args = null)
         {
-            try
-            {
-                m_navigationService.NavigateTo<SettingsViewModel>(args, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-            }
-            catch
-            {
-                m_navigationService.NavigateTo<SettingsViewModel>(args);
-            }
+            m_navigationService.NavigateTo<SettingsViewModel>(args);
         }
 
         private void NavigateToCompletedPage()
         {
-            try
-            {
-                m_navigationService.NavigateTo<CompletedBacklogsViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
-            catch
-            {
-                m_navigationService.NavigateTo<CompletedBacklogsViewModel>();
-            }
+            m_navigationService.NavigateTo<CompletedBacklogsViewModel>();
         }
 
         private void NavigateToBacklogsPage()

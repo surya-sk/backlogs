@@ -27,6 +27,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Backlogs.Utils.UWP;
 using Settings = Backlogs.Utils.UWP.Settings;
 using Backlogs.Constants;
+using FileIO = Windows.Storage.FileIO;
+using ThemeHelper = Backlogs.Utils.UWP.ThemeHelper;
 
 namespace Backlogs
 {
@@ -128,7 +130,7 @@ namespace Backlogs
                     {
                         settingsService.Set(SettingsConstants.ShowWhatsNew, true);
                     }
-                    settingsService.Set(SettingsConstants.Version, version);
+                    settingsService.Set(SettingsConstants.Version, currVer);
 
                     Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
                     SaveData.GetInstance().ResetHelperBacklogs();
@@ -144,6 +146,7 @@ namespace Backlogs
             var provider = new ServiceCollection()
                 .AddSingleton<IUserSettings, Settings>()
                 .AddSingleton<IMsal, MSAL>()
+                .AddSingleton<IDialogHandler,DialogHandler>()
                 .BuildServiceProvider();
             return provider;
         }

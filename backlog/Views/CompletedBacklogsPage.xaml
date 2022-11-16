@@ -181,7 +181,7 @@
             </PivotItem>
         </Pivot>
 
-        <ContentDialog x:Name="PopupOverlay" Title="Edit Backlog">
+        <!--<ContentDialog x:Name="PopupOverlay" Title="Edit Backlog">
             <Grid x:Name="destinationGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -211,7 +211,7 @@
                 </StackPanel>
                 <ProgressRing x:Name="ProgRing" IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
             </Grid>
-        </ContentDialog>
+        </ContentDialog>-->
 
         <ContentDialog x:Name="SearchDialog" CloseButtonText="Close">
             <AutoSuggestBox x:Name="SearchBox" TextChanged="SearchBox_TextChanged" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" />

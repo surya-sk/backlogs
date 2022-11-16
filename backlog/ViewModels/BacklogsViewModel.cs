@@ -12,12 +12,11 @@ using System.Windows.Input;
 using Windows.Storage.Streams;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Core;
 using Backlogs.Logging;
 using System.Net.NetworkInformation;
 using Microsoft.Toolkit.Uwp;
+using Backlogs.Services;
 
 namespace Backlogs.ViewModels
 {
@@ -31,6 +30,7 @@ namespace Backlogs.ViewModels
         private bool m_tvEmpty;
         private bool m_gamesEmpty;
         private readonly INavigationService m_navigationService;
+        private readonly IDialogHandler m_dialogHandler;
 
         private BitmapImage m_accountPic;
 
@@ -166,7 +166,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public BacklogsViewModel(INavigationService navigationService)
+        public BacklogsViewModel(INavigationService navigationService, IDialogHandler dialogHandler)
         {
             SortByName = new Command(SortBacklogsByName);
             SortByCreatedDateAsc = new Command(SortBacklogsByCreatedDateAsc);
@@ -182,6 +182,7 @@ namespace Backlogs.ViewModels
             OpenCreatePage = new Command(NavigateToCreatePage);
 
             m_navigationService = navigationService;
+            m_dialogHandler = dialogHandler;
 
             PopulateBacklogs();
         }
@@ -365,13 +366,8 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task ShowErrorMessageAsync(string message)
         {
-            ContentDialog contentDialog = new ContentDialog()
-            {
-                Title = "Not enough Backlogs",
-                Content = message,
-                CloseButtonText = "Ok"
-            };
-            await contentDialog.ShowAsync();
+            await m_dialogHandler.ShowErrorDialogAsync("Not enough backlogs", message, "Ok");
+
         }
 
         /// <summary>
@@ -382,20 +378,12 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task ShowRandomPickAsync(Backlog backlog, int index)
         {
-            ContentDialog contentDialog = new ContentDialog()
-            {
-                Title = "Your Pick",
-                Content = $"Your current pick is {backlog.Name} by {backlog.Director}",
-                CloseButtonText = "Ok",
-                PrimaryButtonText = "Go again",
-                SecondaryButtonText = "Open"
-            };
-            var result = await contentDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            var result = await m_dialogHandler.ShowRandomBacklogDialogAsync(backlog);
+            if (result == 1)
             {
                 await GenerateRandomBacklogAsync(index);
             }
-            else if (result == ContentDialogResult.Secondary)
+            else if (result == 2)
             {
                 m_navigationService.NavigateTo<BacklogViewModel>(backlog.id);
             }
@@ -403,26 +391,12 @@ namespace Backlogs.ViewModels
 
         private void OpenCompletedPage()
         {
-            try
-            {
-                m_navigationService.NavigateTo<CompletedBacklogsViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
-            catch
-            {
-                m_navigationService.NavigateTo<CompletedBacklogsViewModel>();
-            }
+             m_navigationService.NavigateTo<CompletedBacklogsViewModel>();
         }
 
         private void OpenSettingsPage()
         {
-            try
-            {
-                m_navigationService.NavigateTo<SettingsViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-            }
-            catch
-            {
-                m_navigationService.NavigateTo<SettingsViewModel>();
-            }
+            m_navigationService.NavigateTo<SettingsViewModel>();
         }
 
         private void ReloadAndSync()
@@ -432,14 +406,8 @@ namespace Backlogs.ViewModels
 
         private void NavigateToCreatePage(object typeIndex)
         {
-            try
-            {
-                m_navigationService.NavigateTo<CreateBacklogViewModel>(typeIndex, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromBottom });
-            }
-            catch
-            {
-                m_navigationService.NavigateTo<CreateBacklogViewModel>(typeIndex);
-            }
+            
+            m_navigationService.NavigateTo<CreateBacklogViewModel>(typeIndex);
         }
 
         public void GoBack(object sender, BackRequestedEventArgs e)

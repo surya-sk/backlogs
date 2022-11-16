@@ -11,8 +11,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Core;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 
 namespace Backlogs.ViewModels
 {
@@ -27,7 +25,7 @@ namespace Backlogs.ViewModels
         private bool m_booksEmpty;
         private bool m_tvEmpty;
         private bool m_gamesEmpty;
-        private ContentDialog m_popupOverlay;
+        //private ContentDialog m_popupOverlay;
         private readonly INavigationService m_navigationService;
 
         public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedBacklogs;
@@ -39,9 +37,6 @@ namespace Backlogs.ViewModels
         public ObservableCollection<Backlog> Backlogs;
         public Backlog SelectedBacklog;
 
-        public delegate Task PlayConnectionAnimation();
-
-        public PlayConnectionAnimation PlayConnectionAnimationAsync;
         private ObservableCollection<Backlog> m_finishedBacklogs;
         private ObservableCollection<Backlog> _finishedBookBacklogs;
         private ObservableCollection<Backlog> _finishedFilmBacklogs;
@@ -159,7 +154,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public CompletedBacklogsViewModel(ContentDialog popupOverlay, INavigationService navigationService)
+        public CompletedBacklogsViewModel(INavigationService navigationService)
         {
             SaveBacklog = new AsyncCommand(SaveBacklogAsync);
             MarkBacklogAsIncomplete = new AsyncCommand(MarkBacklogAsIncompleteAsync);
@@ -170,9 +165,7 @@ namespace Backlogs.ViewModels
             SortByRatingDsc = new Command(SortBacklogsByRatingDsc);
             Reload = new Command(ReloadPage);
             OpenSettings = new Command(NavigateToSettingsPage);
-            CloseBacklog = new AsyncCommand(CloseBacklogAsync);
 
-            m_popupOverlay = popupOverlay;
             m_navigationService = navigationService;
 
             Backlogs = SaveData.GetInstance().GetBacklogs();
@@ -255,21 +248,8 @@ namespace Backlogs.ViewModels
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
             IsLoading = false;
-            await CloseBacklogAsync();
         }
 
-        private async Task CloseBacklogAsync()
-        {
-            try
-            {
-                m_popupOverlay.Hide();
-                await PlayConnectionAnimationAsync();
-            }
-            catch
-            {
-                m_popupOverlay.Hide();
-            }
-        }
 
         /// <summary>
         /// Marks backlog as incomplete
@@ -288,7 +268,6 @@ namespace Backlogs.ViewModels
             }
             SaveData.GetInstance().SaveSettings(Backlogs);
             await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
-            m_popupOverlay.Hide();
             ReloadPage();
         }
 
@@ -304,14 +283,7 @@ namespace Backlogs.ViewModels
 
         public void GoBack(object sender, BackRequestedEventArgs e)
         {
-            try
-            {
-                m_navigationService.GoBack(new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-            }
-            catch
-            {
-                m_navigationService.GoBack();
-            }
+            m_navigationService.GoBack();
             e.Handled = true;
         }
 

@@ -27,9 +27,7 @@ namespace Backlogs.Views
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
-            ViewModel = new CompletedBacklogsViewModel(PopupOverlay, App.GetNavigationService());
-
-            ViewModel.PlayConnectionAnimationAsync = PlayConnectedAnimation;
+            ViewModel = new CompletedBacklogsViewModel(App.GetNavigationService());
 
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
@@ -42,9 +40,9 @@ namespace Backlogs.Views
         /// <returns></returns>
         private async Task PlayConnectedAnimation()
         {
-            ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
-            connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
-            await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
+            //ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
+            //connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
+            //await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
         }
 
         private async void MainGrid_ItemClick(object sender, ItemClickEventArgs e)
@@ -56,7 +54,7 @@ namespace Backlogs.Views
             {
                 ConnectedAnimation connectedAnimation = MainGrid.PrepareConnectedAnimation("forwardAnimation", SelectedBacklog, "connectedElement");
                 connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
-                connectedAnimation.TryStart(destinationGrid);
+                //connectedAnimation.TryStart(destinationGrid);
             }
             catch (Exception ex)
             {
@@ -64,13 +62,13 @@ namespace Backlogs.Views
                 // ; )
             }
 
-            PopupImage.Source = new BitmapImage(new Uri(selectedBacklog.ImageURL));
-            PopupTitle.Text = selectedBacklog.Name;
-            PopupDirector.Text = selectedBacklog.Director;
-            ViewModel.UserRating = selectedBacklog.UserRating;
-            ViewModel.UserRating = selectedBacklog.UserRating;
+            //PopupImage.Source = new BitmapImage(new Uri(selectedBacklog.ImageURL));
+            //PopupTitle.Text = selectedBacklog.Name;
+            //PopupDirector.Text = selectedBacklog.Director;
+            //ViewModel.UserRating = selectedBacklog.UserRating;
+            //ViewModel.UserRating = selectedBacklog.UserRating;
 
-            await PopupOverlay.ShowAsync();
+            //await PopupOverlay.ShowAsync();
         }
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)

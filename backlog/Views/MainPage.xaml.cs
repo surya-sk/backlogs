@@ -8,6 +8,8 @@ using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Animation;
 using Backlogs.Logging;
 using Backlogs.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using Backlogs.Services;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -25,7 +27,7 @@ namespace Backlogs.Views
         public MainPage()
         {
             this.InitializeComponent();
-            ViewModel = new MainViewModel(CrashDialog, App.GetNavigationService());
+            ViewModel = new MainViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>());
             
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;

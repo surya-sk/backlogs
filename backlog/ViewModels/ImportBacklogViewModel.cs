@@ -13,12 +13,10 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml;
 using System.Globalization;
-using Windows.UI.Xaml.Controls;
 using System.Windows.Input;
 using MvvmHelpers.Commands;
+using Backlogs.Services;
 
 namespace Backlogs.ViewModels
 {
@@ -35,6 +33,7 @@ namespace Backlogs.ViewModels
         private bool m_showNotificationToggle;
         private bool m_showNotificationOptions;
         private readonly INavigationService m_navigationService;
+        private readonly IDialogHandler m_dialogHandler;
 
         public ICommand Import { get; set; }
         public ICommand Cancel { get; set; }
@@ -134,7 +133,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public ImportBacklogViewModel(INavigationService navigationService)
+        public ImportBacklogViewModel(INavigationService navigationService, IDialogHandler dialogHandler)
         {
             m_isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             m_importedBacklog = new Backlog();
@@ -143,6 +142,7 @@ namespace Backlogs.ViewModels
             Import = new AsyncCommand(ImportBacklogAsync);
             Cancel = new Command(NavigateToMainPage);
             m_navigationService = navigationService;
+            m_dialogHandler = dialogHandler;
         }
 
         /// <summary>
@@ -178,13 +178,7 @@ namespace Backlogs.ViewModels
             IsBusy = true;
             if (!m_isNetworkAvailable && m_signedIn)
             {
-                ContentDialog contentDialog = new ContentDialog
-                {
-                    Title = "No internet",
-                    Content = "You need to be connected to the internet for this!",
-                    CloseButtonText = "Ok"
-                };
-                await contentDialog.ShowAsync();
+                await m_dialogHandler.ShowErrorDialogAsync("No internet", "You need to be connected to the internet for this!", "Ok");
                 return;
             }
             if (DateInput != null && DateInput != DateTimeOffset.MinValue)
@@ -194,26 +188,14 @@ namespace Backlogs.ViewModels
                 {
                     if (NotifTime == TimeSpan.Zero)
                     {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Invalid date and time",
-                            Content = "Please pick a time!",
-                            CloseButtonText = "Ok"
-                        };
-                        await contentDialog.ShowAsync();
+                        await m_dialogHandler.ShowErrorDialogAsync("Invalid date and time", "Please pick a time!", "Ok");
                         return;
                     }
                     DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(NotifTime);
                     int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
                     if (diff < 0)
                     {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Invalid time",
-                            Content = "The date and time you've chosen are in the past!",
-                            CloseButtonText = "Ok"
-                        };
-                        await contentDialog.ShowAsync();
+                        await m_dialogHandler.ShowErrorDialogAsync("Invalid time", "The date and time you've chosen are in the past!", "Ok");
                         return;
                     }
                 }
@@ -223,13 +205,7 @@ namespace Backlogs.ViewModels
                     int diff = DateTime.Compare(DateTime.Today, DateInput.DateTime);
                     if (diff > 0)
                     {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Invalid date and time",
-                            Content = "The date and time you've chosen are in the past!",
-                            CloseButtonText = "Ok"
-                        };
-                        await contentDialog.ShowAsync();
+                        await m_dialogHandler.ShowErrorDialogAsync("Invalid date and time", "The date and time you've chosen are in the past!", "Ok");
                         return;
                     }
                 }

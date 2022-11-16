@@ -50,7 +50,7 @@ namespace Backlogs.Utils.UWP
             }
         }
 
-        public async Task<string> ReadBacklogsAsync(Stream stream, bool sync = false)
+        public async Task<string> ReadBacklogsAsync(bool sync = false)
         {
             if (sync)
             {

@@ -1,6 +1,7 @@
 ﻿using Backlogs.Logging;
 using Backlogs.Models;
 using Backlogs.Saving;
+using Backlogs.Services;
 using Backlogs.Utils;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
@@ -20,11 +21,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-using Windows.System.Profile;
 using Windows.UI.Notifications;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 
 namespace Backlogs.ViewModels
 {
@@ -46,10 +43,8 @@ namespace Backlogs.ViewModels
         private int m_backlogIndex;
         private bool m_showTrailerButton = true;
         StorageFolder m_tempFolder = ApplicationData.Current.TemporaryFolder;
-        private ContentDialog m_ratingDialog;
-        private WebView m_webView;
-        private ContentDialog m_trailerDialog;
         private readonly INavigationService m_navigationService;
+        private readonly IDialogHandler m_dialogHandler;
 
         public ObservableCollection<Backlog> Backlogs;
         public Backlog Backlog;
@@ -62,11 +57,8 @@ namespace Backlogs.ViewModels
         public ICommand SaveChanges { get; }
         public ICommand CloseBacklog { get; }
         public ICommand DeleteBacklog { get; }
-        public ICommand LaunchRatingDialog { get; }
-        public ICommand HideRatingDialog { get; }
         public ICommand CompleteBacklog { get; }
         public ICommand ReadMore { get; }
-        public ICommand CloseTrailer { get; }
         public ICommand GoBack { get; }
         public ICommand OpenSettings { get; }
 
@@ -233,7 +225,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public BacklogViewModel(Guid id, ContentDialog ratingDialog, ContentDialog trailerDialog, WebView webView, INavigationService navigationService)
+        public BacklogViewModel(Guid id, INavigationService navigationService, IDialogHandler dialogHandler)
         {
             LaunchBingSearchResults = new AsyncCommand(LaunchBingSearchResultsAsync);
             OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);
@@ -243,18 +235,13 @@ namespace Backlogs.ViewModels
             SaveChanges = new AsyncCommand(SaveChangesAsync);
             CloseBacklog = new AsyncCommand(CloseBacklogAsync);
             DeleteBacklog = new AsyncCommand(DeleteBacklogAsync);
-            LaunchRatingDialog = new AsyncCommand(OpenRatingDialogAsync);
-            HideRatingDialog = new Command(CloseRatingDialog);
             CompleteBacklog = new AsyncCommand(CompleteBacklogAsync);
             ReadMore = new AsyncCommand(ReadMoreAsync);
-            CloseTrailer = new Command(CloseWebView);
             GoBack = new Command(NavigateToPreviousPage);
             OpenSettings = new Command(OpenSettingsPage);
 
-            m_ratingDialog = ratingDialog;
-            m_trailerDialog = trailerDialog;
-            m_webView = webView;
             m_navigationService = navigationService;
+            m_dialogHandler = dialogHandler;
 
             CalendarDate = DateTimeOffset.MinValue;
             NotifTime = TimeSpan.Zero;
@@ -303,13 +290,7 @@ namespace Backlogs.ViewModels
 
         private async Task ReadMoreAsync()
         {
-            ContentDialog contentDialog = new ContentDialog
-            {
-                Title = Backlog.Name,
-                Content = Backlog.Description,
-                CloseButtonText = "Close"
-            };
-            await contentDialog.ShowAsync();
+            await m_dialogHandler.ReadMoreDialogAsync(Backlog);
         }
 
 
@@ -324,15 +305,8 @@ namespace Backlogs.ViewModels
                 await Logger.Info("Deleting backlog.....");
             }
             catch { }
-            ContentDialog deleteDialog = new ContentDialog
-            {
-                Title = "Delete backlog?",
-                Content = "Deletion is permanent. This backlog cannot be recovered, and will be gone forever.",
-                PrimaryButtonText = "Delete",
-                CloseButtonText = "Cancel"
-            };
-            ContentDialogResult result = await deleteDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            var result = await m_dialogHandler.ShowDeleteConfirmationDialogAsync();
+            if (result)
             {
                 await DeleteConfirmation_Click();
             }
@@ -378,19 +352,7 @@ namespace Backlogs.ViewModels
 
         private void OpenSettingsPage()
         {
-            try
-            {
-                m_navigationService.NavigateTo<SettingsViewModel>(null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-            }
-            catch
-            {
-                m_navigationService.NavigateTo<SettingsViewModel>();
-            }
-        }
-
-        private async Task OpenRatingDialogAsync()
-        {
-            await m_ratingDialog.ShowAsync();
+             m_navigationService.NavigateTo<SettingsViewModel>();
         }
 
         /// <summary>
@@ -424,13 +386,7 @@ namespace Backlogs.ViewModels
             Backlog.UserRating = UserRating;
             Backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
             await SaveBacklogAsync();
-            CloseRatingDialog();
             NavigateToPreviousPage();
-        }
-
-        private void CloseRatingDialog()
-        {
-            m_ratingDialog.Hide();
         }
 
         /// <summary>
@@ -452,26 +408,14 @@ namespace Backlogs.ViewModels
             {
                 if (NotifTime == TimeSpan.Zero)
                 {
-                    ContentDialog contentDialog = new ContentDialog
-                    {
-                        Title = "Invalid date and time",
-                        Content = "Please pick a time!",
-                        CloseButtonText = "Ok"
-                    };
-                    await contentDialog.ShowAsync();
+                    await m_dialogHandler.ShowErrorDialogAsync("Invalid date and time", "Please pick a time", "Ok");
                     return;
                 }
                 DateTimeOffset dateTime = DateTimeOffset.Parse(date, CultureInfo.InvariantCulture).Add(NotifTime);
                 int diff = DateTimeOffset.Compare(dateTime, DateTimeOffset.Now);
                 if (diff < 0)
                 {
-                    ContentDialog contentDialog = new ContentDialog
-                    {
-                        Title = "Invalid time",
-                        Content = "The date and time you've chosen are in the past!",
-                        CloseButtonText = "Ok"
-                    };
-                    await contentDialog.ShowAsync();
+                    await m_dialogHandler.ShowErrorDialogAsync("Invalid time", "The date and time you've chosen are in the past!", "Ok");
                     return;
                 }
             }
@@ -480,13 +424,7 @@ namespace Backlogs.ViewModels
                 int diff = DateTime.Compare(DateTime.Today, CalendarDate.DateTime);
                 if (diff > 0)
                 {
-                    ContentDialog contentDialog = new ContentDialog
-                    {
-                        Title = "Invalid date and time",
-                        Content = "The date and time you've chosen are in the past!",
-                        CloseButtonText = "Ok"
-                    };
-                    await contentDialog.ShowAsync();
+                    await m_dialogHandler.ShowErrorDialogAsync("Invalid date and time", "The date and time you've chosen are in the past!", "Ok");
                     return;
                 }
             }
@@ -597,26 +535,7 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task LaunchTrailerWebViewAsync(string video)
         {
-            await m_trailerDialog.ShowAsync();
-            try
-            {
-                m_trailerDialog.CornerRadius = new CornerRadius(0); // Without this, for some fucking reason, buttons inside the WebView do not work
-            }
-            catch
-            {
-
-            }
-            string width = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "600" : "500";
-            string height = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "100%" : "400";
-            m_webView.NavigateToString($"<iframe width=\"{width}\" height=\"{height}\" src=\"https://www.youtube.com/embed/{video}?autoplay={Settings.AutoplayVideos}\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
-        }
-
-        /// <summary>
-        /// Navigate to a blank page because audio keeps playing after closing the WebView for some reason
-        /// </summary>
-        private void CloseWebView()
-        {
-            m_webView.Navigate(new Uri("about:blank"));
+            await m_dialogHandler.OpenTrailerDialogAsync(video);
         }
     }
 }

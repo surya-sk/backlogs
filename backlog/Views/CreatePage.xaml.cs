@@ -1,6 +1,8 @@
 ﻿using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Backlogs.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using Backlogs.Services;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -18,7 +20,7 @@ namespace Backlogs.Views
         {
             this.InitializeComponent();
             var _navService = App.GetNavigationService();
-            ViewModel = new CreateBacklogViewModel(resultsDialog, _navService);
+            ViewModel = new CreateBacklogViewModel(_navService, App.Services.GetRequiredService<IDialogHandler>());
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)

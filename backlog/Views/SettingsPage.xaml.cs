@@ -2,6 +2,8 @@
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Backlogs.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using Backlogs.Services;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -17,7 +19,7 @@ namespace Backlogs.Views
         public SettingsPage()
         {
             this.InitializeComponent();
-            ViewModel = new SettingsViewModel(App.GetNavigationService());
+            ViewModel = new SettingsViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>());
             // show back button
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
