@@ -1,12 +1,8 @@
-﻿using Backlogs.Auth;
-using Backlogs.Constants;
+﻿using Backlogs.Constants;
 using Backlogs.Logging;
 using Backlogs.Models;
-using Backlogs.Saving;
 using Backlogs.Services;
-using Backlogs.Utils;
-using Backlogs.Views;
-using Microsoft.Toolkit.Uwp.Notifications;
+using Backlogs.Utils.Core;
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.ObjectModel;
@@ -48,17 +44,18 @@ namespace Backlogs.ViewModels
         private readonly ILiveTileService m_liveTileService;
         private readonly IFilePicker m_filePicker;
         private readonly IEmailService m_emailService;
+        private readonly IMsal m_msal;
 
         public ObservableCollection<Backlog> RecentlyAdded { get; set; }
         public ObservableCollection<Backlog> RecentlyCompleted { get; set; }
         public ObservableCollection<Backlog> InProgress { get; set; }
         public ObservableCollection<Backlog> Upcoming { get; set; }
         
-        public bool IsFirstRun { get; } = Settings.IsFirstRun;
-        public bool ShowWhatsNew { get; } = Settings.ShowWhatsNew;
-        public string WelcomeText = Settings.IsSignedIn ? $"Welcome to Backlogs, {Settings.UserName}!" : "Welcome to Backlogs, stranger!";
-        public string UserName { get; } = Settings.UserName;
-        public bool SignedIn { get; } = Settings.IsSignedIn;
+        public bool IsFirstRun { get => m_settings.Get<bool>(SettingsConstants.IsFirstRun); }
+        public bool ShowWhatsNew { get => m_settings.Get<bool>(SettingsConstants.ShowWhatsNew); }
+        public string WelcomeText { get => m_settings.Get<bool>(SettingsConstants.IsSignedIn) ? $"Welcome to Backlogs, {m_settings.Get<string>(SettingsConstants.UserName)}!" : "Welcome to Backlogs, stranger!"; }
+        public string UserName { get => m_settings.Get<string>(SettingsConstants.UserName); } 
+        public bool SignedIn { get => m_settings.Get<bool>(SettingsConstants.IsSignedIn); }
         public bool Sync { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -259,7 +256,7 @@ namespace Backlogs.ViewModels
         public MainViewModel(INavigation navigationService, 
             IDialogHandler dialogHandler, IShareDialogService shareService, 
             IUserSettings settings, IFileHandler fileHandler, ILiveTileService liveTileService,
-            IFilePicker filePicker, IEmailService emailService)
+            IFilePicker filePicker, IEmailService emailService, IMsal msal)
         {
             m_networkAvailable = NetworkInterface.GetIsNetworkAvailable();
 
@@ -292,6 +289,7 @@ namespace Backlogs.ViewModels
             m_liveTileService = liveTileService;
             m_filePicker = filePicker;
             m_emailService = emailService;
+            m_msal = msal;
 
             m_liveTileService.EnableLiveTileQueue();
         }
@@ -300,7 +298,7 @@ namespace Backlogs.ViewModels
         {
             IsBusy = true;
             await ShowCrashLog();
-            if(m_networkAvailable && Settings.IsSignedIn)
+            if(m_networkAvailable && m_settings.Get<bool>(SettingsConstants.IsSignedIn))
             {
                 try
                 {
@@ -312,8 +310,8 @@ namespace Backlogs.ViewModels
                 ShowProfileButton = true;
                 if (Sync)
                 {
-                    await SaveData.GetInstance().ReadDataAsync(Sync);
-                    SaveData.GetInstance().ResetHelperBacklogs();
+                    await BacklogsManager.GetInstance().ReadDataAsync(Sync);
+                    BacklogsManager.GetInstance().ResetHelperBacklogs();
                     LoadBacklogs();
                 }
             }
@@ -341,7 +339,7 @@ namespace Backlogs.ViewModels
         /// </summary>
         private async void LoadBacklogs()
         {
-            var _recentlyAdded = SaveData.GetInstance().GetRecentlyAddedBacklogs();
+            var _recentlyAdded = BacklogsManager.GetInstance().GetRecentlyAddedBacklogs();
             RecentlyAdded.Clear();
             foreach(var b in _recentlyAdded)
             {
@@ -349,7 +347,7 @@ namespace Backlogs.ViewModels
             }
             RecentlyCreatedEmpty = RecentlyAdded.Count <= 0;
             
-            var _recentlyCompleted = SaveData.GetInstance().GetRecentlyCompletedBacklogs();
+            var _recentlyCompleted = BacklogsManager.GetInstance().GetRecentlyCompletedBacklogs();
             RecentlyCompleted.Clear();
             foreach (var b in _recentlyCompleted)
             {
@@ -357,7 +355,7 @@ namespace Backlogs.ViewModels
             }
             RecentlyCompletedEmpty = RecentlyCompleted.Count <= 0;
 
-            var _inProgress = SaveData.GetInstance().GetInProgressBacklogs();
+            var _inProgress = BacklogsManager.GetInstance().GetInProgressBacklogs();
             InProgress.Clear();
             foreach(var b in _inProgress)
             {
@@ -365,7 +363,7 @@ namespace Backlogs.ViewModels
             }    
             InProgressEmpty = InProgress.Count <= 0;
 
-            var _upcoming = SaveData.GetInstance().GetUpcomingBacklogs();
+            var _upcoming = BacklogsManager.GetInstance().GetUpcomingBacklogs();
             Upcoming.Clear();
             foreach(var b in _upcoming)
             {
@@ -373,9 +371,9 @@ namespace Backlogs.ViewModels
             }
             UpcomingEmpty = Upcoming.Count <= 0;
 
-            CompletedBacklogsCount = SaveData.GetInstance().GetCompletedBacklogs().Count;
-            IncompleteBacklogsCount = SaveData.GetInstance().GetIncompleteBacklogs().Count;
-            BacklogsCount = SaveData.GetInstance().GetBacklogs().Count();
+            CompletedBacklogsCount = BacklogsManager.GetInstance().GetCompletedBacklogs().Count;
+            IncompleteBacklogsCount = BacklogsManager.GetInstance().GetIncompleteBacklogs().Count;
+            BacklogsCount = BacklogsManager.GetInstance().GetBacklogs().Count();
             if(BacklogsCount > 0)
             {
                 CompletedBacklogsPercent = (Convert.ToDouble(CompletedBacklogsCount) / BacklogsCount) * 100.0;
@@ -407,9 +405,9 @@ namespace Backlogs.ViewModels
         {
             if (IsFirstRun)
             {
-                Settings.IsFirstRun = false;
+                m_settings.Set(SettingsConstants.IsFirstRun, false);
             }
-            if (!Settings.IsSignedIn)
+            if (!m_settings.Get<bool>(SettingsConstants.IsSignedIn))
             {
                 //if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
                 //{
@@ -421,9 +419,9 @@ namespace Backlogs.ViewModels
                 //}
                 ShowBottomTeachingTip = true;
             }
-            if (Settings.ShowWhatsNew)
+            if (m_settings.Get<bool>(SettingsConstants.ShowWhatsNew))
             {
-                Settings.ShowWhatsNew = false;
+                m_settings.Set(SettingsConstants.ShowWhatsNew, false);
             }
         }
 
@@ -438,16 +436,16 @@ namespace Backlogs.ViewModels
             ShowBottomTeachingTip = false;
             if (m_networkAvailable)
             {
-                if (!Settings.IsSignedIn)
+                if (!m_settings.Get<bool>(SettingsConstants.IsSignedIn))
                 {
                     try
                     {
                         await Logger.Info("Signing in...");
                     }
                     catch { }
-                    await SaveData.GetInstance().DeleteLocalFileAsync();
-                    Settings.IsSignedIn = true;
-                    await SaveData.GetInstance().ReadDataAsync(true);
+                    //await BacklogsManager.GetInstance().DeleteLocalFileAsync();
+                    m_settings.Set(SettingsConstants.IsSignedIn, true);
+                    await BacklogsManager.GetInstance().ReadDataAsync(true);
                     SyncBacklogs();
                 }
             }
@@ -552,7 +550,7 @@ namespace Backlogs.ViewModels
             catch { }
             Random _random = new Random();
             bool _error = false;
-            var _incompleteBacklogs = SaveData.GetInstance().GetIncompleteBacklogs();
+            var _incompleteBacklogs = BacklogsManager.GetInstance().GetIncompleteBacklogs();
             switch (RandomBacklogType.ToLower())
             {
                 case "any":
@@ -654,8 +652,8 @@ namespace Backlogs.ViewModels
         {
             if (await m_dialogHandler.ShowSignOutDialogAsync())
             {
-                await MSAL.SignOut();
-                Settings.IsSignedIn = false;
+                await m_msal.SignOut();
+                m_settings.Set(SettingsConstants.IsSignedIn, false);
                 SyncBacklogs();
             }
         }

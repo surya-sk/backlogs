@@ -19,8 +19,9 @@ namespace Backlogs.Views
         public CreatePage()
         {
             this.InitializeComponent();
-            ViewModel = new CreateBacklogViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
-                App.Services.GetRequiredService<IToastNotificationService>());
+            ViewModel = new CreateBacklogViewModel(App.Services.GetRequiredService<INavigation>(), 
+                App.Services.GetRequiredService<IDialogHandler>(),
+                App.Services.GetRequiredService<IToastNotificationService>(), App.Services.GetService<IUserSettings>());
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)

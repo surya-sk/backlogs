@@ -1,8 +1,8 @@
-﻿using Backlogs.Logging;
+﻿using Backlogs.Constants;
+using Backlogs.Logging;
 using Backlogs.Models;
-using Backlogs.Saving;
 using Backlogs.Services;
-using Backlogs.Utils;
+using Backlogs.Utils.Core;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using MvvmHelpers.Commands;
@@ -13,6 +13,8 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
+
 namespace Backlogs.ViewModels
 {
     public class BacklogViewModel : INotifyPropertyChanged
@@ -36,6 +38,7 @@ namespace Backlogs.ViewModels
         private readonly IDialogHandler m_dialogHandler;
         private readonly IToastNotificationService m_notificationService;
         private readonly IShareDialogService m_shareDialogService;
+        private readonly IUserSettings m_settings;
 
         public ObservableCollection<Backlog> Backlogs;
         public Backlog Backlog;
@@ -216,7 +219,8 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public BacklogViewModel(Guid id, INavigation navigationService, IDialogHandler dialogHandler, IToastNotificationService notificationService, IShareDialogService shareDialogService)
+        public BacklogViewModel(Guid id, INavigation navigationService, IDialogHandler dialogHandler, 
+            IToastNotificationService notificationService, IShareDialogService shareDialogService, IUserSettings settings)
         {
             LaunchBingSearchResults = new AsyncCommand(LaunchBingSearchResultsAsync);
             OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);
@@ -235,11 +239,12 @@ namespace Backlogs.ViewModels
             m_dialogHandler = dialogHandler;
             m_shareDialogService = shareDialogService;
             m_notificationService = notificationService;
+            m_settings = settings;
 
             CalendarDate = DateTimeOffset.MinValue;
             NotifTime = TimeSpan.Zero;
 
-            Backlogs = SaveData.GetInstance().GetBacklogs();
+            Backlogs = BacklogsManager.GetInstance().GetBacklogs();
 
             foreach (Backlog b in Backlogs)
             {
@@ -320,8 +325,8 @@ namespace Backlogs.ViewModels
         {
             IsLoading = true;
             Backlogs.Remove(Backlog);
-            SaveData.GetInstance().SaveSettings(Backlogs);
-            await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
+            BacklogsManager.GetInstance().SaveSettings(Backlogs);
+            await BacklogsManager.GetInstance().WriteDataAsync(m_settings.Get<bool>(SettingsConstants.IsSignedIn));
             NavigateToPreviousPage();
         }
 
@@ -360,8 +365,8 @@ namespace Backlogs.ViewModels
             }
             catch { }
             Backlogs[m_backlogIndex] = Backlog;
-            SaveData.GetInstance().SaveSettings(Backlogs);
-            await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
+            BacklogsManager.GetInstance().SaveSettings(Backlogs);
+            await BacklogsManager.GetInstance().WriteDataAsync(m_settings.Get<bool>(SettingsConstants.IsSignedIn));
         }
 
         /// <summary>

@@ -1,21 +1,17 @@
-﻿using Backlogs.Logging;
+﻿using Backlogs.Constants;
+using Backlogs.Logging;
 using Backlogs.Models;
-using Backlogs.Saving;
 using Backlogs.Services;
-using Backlogs.Utils;
-using Microsoft.Graph;
-using Microsoft.Toolkit.Uwp.Notifications;
+using Backlogs.Utils.Core;
 using MvvmHelpers.Commands;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using SearchResult = Backlogs.Models.SearchResult;
@@ -37,10 +33,11 @@ namespace Backlogs.ViewModels
         private string m_searchResultTitle;
         private bool m_createButtonEnabled;
         private bool m_isBusy;
-        private bool m_SignedIn = Settings.IsSignedIn;
+        private bool m_SignedIn;
         private readonly INavigation m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
         private readonly IToastNotificationService m_toastNotificationService;
+        private readonly IUserSettings m_settings;
 
         public ObservableCollection<Backlog> Backlogs;
         public ObservableCollection<SearchResult> SearchResults;
@@ -201,7 +198,8 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public CreateBacklogViewModel(INavigation navigationService, IDialogHandler dialogHandler, IToastNotificationService toastNotificationService)
+        public CreateBacklogViewModel(INavigation navigationService, IDialogHandler dialogHandler,
+            IToastNotificationService toastNotificationService, IUserSettings userSettings)
         {
             SearchResults = new ObservableCollection<SearchResult>();
             SearchBacklog = new AsyncCommand(TrySearchBacklogAsync);
@@ -211,6 +209,9 @@ namespace Backlogs.ViewModels
             m_navigationService = navigationService;
             m_dialogHandler = dialogHandler;
             m_toastNotificationService = toastNotificationService;
+            m_settings = userSettings;
+
+            m_SignedIn = m_settings.Get<bool>(SettingsConstants.IsSignedIn);
         }
 
         /// <summary>
@@ -224,13 +225,13 @@ namespace Backlogs.ViewModels
                 await Logger.Info("Fetching backlogs...");
                 if (m_SignedIn)
                 {
-                    await SaveData.GetInstance().ReadDataAsync(true);
-                    Backlogs = SaveData.GetInstance().GetBacklogs();
+                    await BacklogsManager.GetInstance().ReadDataAsync(true);
+                    Backlogs = BacklogsManager.GetInstance().GetBacklogs();
                 }
                 else
                 {
-                    await SaveData.GetInstance().ReadDataAsync();
-                    Backlogs = SaveData.GetInstance().GetBacklogs();
+                    await BacklogsManager.GetInstance().ReadDataAsync();
+                    Backlogs = BacklogsManager.GetInstance().GetBacklogs();
                 }
             }
             else
@@ -369,12 +370,12 @@ namespace Backlogs.ViewModels
             if (backlog != null)
             {
                 Backlogs.Add(backlog);
-                SaveData.GetInstance().SaveSettings(Backlogs);
+                BacklogsManager.GetInstance().SaveSettings(Backlogs);
                 if (backlog.TargetDate != "None" && backlog.NotifTime != TimeSpan.Zero)
                 {
                     m_toastNotificationService.CreateToastNotification(backlog);   
                 }
-                await SaveData.GetInstance().WriteDataAsync(m_SignedIn);
+                await BacklogsManager.GetInstance().WriteDataAsync(m_SignedIn);
                 NavToPrevPage();
             }
             else

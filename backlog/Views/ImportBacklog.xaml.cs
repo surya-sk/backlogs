@@ -17,8 +17,9 @@ namespace Backlogs.Views
         public ImportBacklog()
         {
             this.InitializeComponent();
-            ViewModel = new ImportBacklogViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
-                App.Services.GetRequiredService<IFileHandler>());
+            ViewModel = new ImportBacklogViewModel(App.Services.GetRequiredService<INavigation>(), 
+                App.Services.GetRequiredService<IDialogHandler>(),
+                App.Services.GetRequiredService<IFileHandler>(), App.Services.GetService<IUserSettings>());
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)

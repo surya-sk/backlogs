@@ -12,6 +12,7 @@ using Backlogs.Utils;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 using Backlogs.Saving;
+using Backlogs.Utils.Core;
 
 namespace Backlogs.Auth
 {
@@ -140,7 +141,7 @@ namespace Backlogs.Auth
                 Settings.IsSignedIn = false;
                 try
                 {
-                    await SaveData.GetInstance().DeleteLocalFileAsync();
+                    // TODO: Delete local files
                 }
                 catch
                 {

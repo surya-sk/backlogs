@@ -29,7 +29,7 @@ namespace Backlogs.Views
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
-            ViewModel = new CompletedBacklogsViewModel(App.Services.GetRequiredService<INavigation>());
+            ViewModel = new CompletedBacklogsViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetService<IUserSettings>());
 
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;

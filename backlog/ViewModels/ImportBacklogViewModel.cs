@@ -1,28 +1,23 @@
 ﻿using Backlogs.Models;
-using Backlogs.Saving;
-using Backlogs.Utils;
-using Backlogs.Views;
-using Microsoft.Graph;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Windows.Input;
 using MvvmHelpers.Commands;
 using Backlogs.Services;
+using Backlogs.Constants;
+using Backlogs.Utils.Core;
 
 namespace Backlogs.ViewModels
 {
     public class ImportBacklogViewModel : INotifyPropertyChanged
     {
         private Backlog m_importedBacklog;
-        private bool m_signedIn = Settings.IsSignedIn;
+        private bool m_signedIn;
         private bool m_isNetworkAvailable;
         private string m_fileName;
         private bool m_isBusy;
@@ -34,6 +29,7 @@ namespace Backlogs.ViewModels
         private readonly INavigation m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
         private readonly IFileHandler m_fileHandler;
+        private readonly IUserSettings m_settings;
 
         public ICommand Import { get; set; }
         public ICommand Cancel { get; set; }
@@ -133,7 +129,8 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public ImportBacklogViewModel(INavigation navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler)
+        public ImportBacklogViewModel(INavigation navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler,
+            IUserSettings settings)
         {
             m_isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             m_importedBacklog = new Backlog();
@@ -144,6 +141,9 @@ namespace Backlogs.ViewModels
             m_navigationService = navigationService;
             m_dialogHandler = dialogHandler;
             m_fileHandler = fileHandler;
+            m_settings = settings;
+
+            m_signedIn = m_settings.Get<bool>(SettingsConstants.IsSignedIn);
         }
 
         /// <summary>
@@ -159,8 +159,8 @@ namespace Backlogs.ViewModels
                 IsBusy = true;
                 if (m_isNetworkAvailable)
                 {
-                    await SaveData.GetInstance().ReadDataAsync(m_signedIn);
-                    Backlogs = SaveData.GetInstance().GetBacklogs();
+                    await BacklogsManager.GetInstance().ReadDataAsync(m_signedIn);
+                    Backlogs = BacklogsManager.GetInstance().GetBacklogs();
                     string json = await m_fileHandler.ReadBacklogJsonAsync(fileName);
                     ImportedBacklog = JsonConvert.DeserializeObject<Backlog>(json);
                 }
@@ -218,8 +218,8 @@ namespace Backlogs.ViewModels
             ImportedBacklog.TargetDate = DateInput != null ? DateInput.ToString("D", CultureInfo.InvariantCulture) : "None";
             ImportedBacklog.NotifTime = NotifTime;
             Backlogs.Add(ImportedBacklog);
-            SaveData.GetInstance().SaveSettings(Backlogs);
-            await SaveData.GetInstance().WriteDataAsync(m_signedIn);
+            BacklogsManager.GetInstance().SaveSettings(Backlogs);
+            await BacklogsManager.GetInstance().WriteDataAsync(m_signedIn);
             NavigateToMainPage();
         }
 

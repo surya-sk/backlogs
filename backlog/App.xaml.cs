@@ -27,6 +27,7 @@ using Backlogs.Utils.UWP;
 using Settings = Backlogs.Utils.UWP.Settings;
 using Backlogs.Constants;
 using FileIO = Windows.Storage.FileIO;
+using Backlogs.Utils.Core;
 
 namespace Backlogs
 {
@@ -127,8 +128,8 @@ namespace Backlogs
                     }
                     settingsService.Set(SettingsConstants.Version, currVer);
 
-                    Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
-                    SaveData.GetInstance().ResetHelperBacklogs();
+                    Task.Run(async () => { await BacklogsManager.GetInstance().ReadDataAsync(); }).Wait();
+                    BacklogsManager.GetInstance().ResetHelperBacklogs();
                     rootFrame.Navigate(typeof(MainPage), "sync");
                 }
                 // Ensure the current window is active

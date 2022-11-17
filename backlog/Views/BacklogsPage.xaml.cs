@@ -32,7 +32,7 @@ namespace Backlogs.Views
         {
             this.InitializeComponent();
             ViewModel = new BacklogsViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
-                App.Services.GetRequiredService<IFileHandler>());
+                App.Services.GetRequiredService<IFileHandler>(), App.Services.GetService<IUserSettings>());
             IsNetwordAvailable = NetworkInterface.GetIsNetworkAvailable();
         }
 

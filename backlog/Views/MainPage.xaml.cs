@@ -3,13 +3,13 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Backlogs.Models;
-using Backlogs.Saving;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Animation;
 using Backlogs.Logging;
 using Backlogs.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Backlogs.Services;
+using Backlogs.Utils.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -30,7 +30,8 @@ namespace Backlogs.Views
             ViewModel = new MainViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
                 App.Services.GetRequiredService<IShareDialogService>(), App.Services.GetRequiredService<IUserSettings>(),
                 App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<ILiveTileService>(),
-                App.Services.GetRequiredService<IFilePicker>(), App.Services.GetRequiredService<IEmailService>());
+                App.Services.GetRequiredService<IFilePicker>(), App.Services.GetRequiredService<IEmailService>(),
+                App.Services.GetService<IMsal>());
             
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
@@ -73,7 +74,7 @@ namespace Backlogs.Views
                 ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
                 try
                 {
-                    await AddedBacklogsGrid.TryStartConnectedAnimationAsync(animation, SaveData.GetInstance().GetBacklogs()[backlogIndex], "coverImage");
+                    await AddedBacklogsGrid.TryStartConnectedAnimationAsync(animation, BacklogsManager.GetInstance().GetBacklogs()[backlogIndex], "coverImage");
                 }
                 catch
                 {
@@ -96,7 +97,7 @@ namespace Backlogs.Views
                 ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
                 try
                 {
-                    await UpcomingBacklogsGrid.TryStartConnectedAnimationAsync(animation, SaveData.GetInstance().GetBacklogs()[backlogIndex], "coveerImage");
+                    await UpcomingBacklogsGrid.TryStartConnectedAnimationAsync(animation, BacklogsManager.GetInstance().GetBacklogs()[backlogIndex], "coveerImage");
                 }
                 catch
                 {
@@ -119,7 +120,7 @@ namespace Backlogs.Views
                 ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
                 try
                 {
-                    await InProgressBacklogsGrid.TryStartConnectedAnimationAsync(animation, SaveData.GetInstance().GetBacklogs()[backlogIndex], "coverImage");
+                    await InProgressBacklogsGrid.TryStartConnectedAnimationAsync(animation, BacklogsManager.GetInstance().GetBacklogs()[backlogIndex], "coverImage");
                 }
                 catch
                 {

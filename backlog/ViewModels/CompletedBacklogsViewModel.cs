@@ -1,7 +1,7 @@
-﻿using Backlogs.Models;
-using Backlogs.Saving;
+﻿using Backlogs.Constants;
+using Backlogs.Models;
 using Backlogs.Services;
-using Backlogs.Utils;
+using Backlogs.Utils.Core;
 using Microsoft.Toolkit.Uwp;
 using MvvmHelpers.Commands;
 using System;
@@ -16,7 +16,7 @@ namespace Backlogs.ViewModels
 {
     public class CompletedBacklogsViewModel : INotifyPropertyChanged
     {
-        private string m_sortOrder = Settings.CompletedSortOrder;
+        private string m_sortOrder;
         private bool m_loading = false;
         private double m_userRating;
         private bool m_allEmpty;
@@ -26,6 +26,7 @@ namespace Backlogs.ViewModels
         private bool m_tvEmpty;
         private bool m_gamesEmpty;
         private readonly INavigation m_navigationService;
+        private readonly IUserSettings m_settings;
 
         public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedBacklogs;
         public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedFilmBacklogs;
@@ -79,14 +80,18 @@ namespace Backlogs.ViewModels
 
         public string SortOrder
         {
-            get => m_sortOrder;
+            get
+            {
+                m_sortOrder = m_settings.Get<string>(SettingsConstants.CompletedSortOrder);
+                return m_sortOrder;
+            }
             set
             {
                 if (value != m_sortOrder)
                 {
                     m_sortOrder = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SortOrder)));
-                    Settings.CompletedSortOrder = m_sortOrder;
+                    m_settings.Set(SettingsConstants.CompletedSortOrder, value);
                     PopulateBacklogs();
                 }
             }
@@ -153,7 +158,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public CompletedBacklogsViewModel(INavigation navigationService)
+        public CompletedBacklogsViewModel(INavigation navigationService, IUserSettings settings)
         {
             SaveBacklog = new AsyncCommand(SaveBacklogAsync);
             MarkBacklogAsIncomplete = new AsyncCommand(MarkBacklogAsIncompleteAsync);
@@ -167,8 +172,9 @@ namespace Backlogs.ViewModels
 
             m_navigationService = navigationService;
 
-            Backlogs = SaveData.GetInstance().GetBacklogs();
+            Backlogs = BacklogsManager.GetInstance().GetBacklogs();
             PopulateBacklogs();
+            m_settings = settings;
         }
 
         /// <summary>
@@ -176,7 +182,7 @@ namespace Backlogs.ViewModels
         /// </summary>
         private void PopulateBacklogs()
         {
-            m_finishedBacklogs = SaveData.GetInstance().GetCompletedBacklogs();
+            m_finishedBacklogs = BacklogsManager.GetInstance().GetCompletedBacklogs();
             ObservableCollection<Backlog> _finishedBacklogs = null;
             switch (SortOrder)
             {
@@ -244,8 +250,8 @@ namespace Backlogs.ViewModels
                     backlog.UserRating = UserRating;
                 }
             }
-            SaveData.GetInstance().SaveSettings(Backlogs);
-            await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
+            BacklogsManager.GetInstance().SaveSettings(Backlogs);
+            await BacklogsManager.GetInstance().WriteDataAsync(m_settings.Get<bool>(SettingsConstants.IsSignedIn));
             IsLoading = false;
         }
 
@@ -265,8 +271,8 @@ namespace Backlogs.ViewModels
                     backlog.CompletedDate = null;
                 }
             }
-            SaveData.GetInstance().SaveSettings(Backlogs);
-            await SaveData.GetInstance().WriteDataAsync(Settings.IsSignedIn);
+            BacklogsManager.GetInstance().SaveSettings(Backlogs);
+            await BacklogsManager.GetInstance().WriteDataAsync(m_settings.Get<bool>(SettingsConstants.IsSignedIn));
             ReloadPage();
         }
 

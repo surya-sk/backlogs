@@ -1,6 +1,4 @@
 ﻿using Backlogs.Models;
-using Backlogs.Saving;
-using Backlogs.Utils;
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.ObjectModel;
@@ -13,12 +11,14 @@ using Backlogs.Logging;
 using System.Net.NetworkInformation;
 using Microsoft.Toolkit.Uwp;
 using Backlogs.Services;
+using Backlogs.Utils.Core;
+using Backlogs.Constants;
 
 namespace Backlogs.ViewModels
 {
     public class BacklogsViewModel: INotifyPropertyChanged
     {
-        private string m_sortOrder = Settings.SortOrder;
+        private string m_sortOrder;
         private bool m_allEmpty;
         private bool m_filmsEmpty;
         private bool m_albumsEmpty;
@@ -28,6 +28,7 @@ namespace Backlogs.ViewModels
         private readonly INavigation m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
         private readonly IFileHandler m_fileHandler;
+        private IUserSettings m_settings;
 
         private string m_accountPic;
 
@@ -62,21 +63,25 @@ namespace Backlogs.ViewModels
         public ICommand Reload { get; }
         public ICommand OpenCreatePage { get; }
 
-        public string UserName { get; } = Settings.UserName;
-        public bool SignedIn { get; } = Settings.IsSignedIn;
-        public bool ShowSignInButton { get; } = !Settings.IsSignedIn;
+        public string UserName { get => m_settings.Get<string>(SettingsConstants.UserName); }
+        public bool SignedIn { get => m_settings.Get<bool>(SettingsConstants.IsSignedIn); } 
+        public bool ShowSignInButton { get => !SignedIn; }  
 
         #region Properties
         public string SortOrder
         {
-            get => m_sortOrder;
+            get
+            {
+                m_sortOrder = m_settings.Get<string>(SettingsConstants.SortOrder);
+                return m_sortOrder;
+            }
             set
             {
                 if (value != m_sortOrder)
                 {
                     m_sortOrder = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SortOrder)));
-                    Settings.SortOrder = m_sortOrder;
+                    m_settings.Set(SettingsConstants.SortOrder, value);
                     PopulateBacklogs();
                 }
             }
@@ -163,7 +168,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public BacklogsViewModel(INavigation navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler)
+        public BacklogsViewModel(INavigation navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler, IUserSettings settings)
         {
             SortByName = new Command(SortBacklogsByName);
             SortByCreatedDateAsc = new Command(SortBacklogsByCreatedDateAsc);
@@ -179,10 +184,11 @@ namespace Backlogs.ViewModels
             OpenCreatePage = new Command(NavigateToCreatePage);
 
             m_navigationService = navigationService;
-            m_dialogHandler = dialogHandler; 
+            m_dialogHandler = dialogHandler;
             m_fileHandler = fileHandler;
 
             PopulateBacklogs();
+            m_settings = settings;
         }
 
         public async Task SyncBacklogs(bool sync)
@@ -210,7 +216,7 @@ namespace Backlogs.ViewModels
         /// </summary>
         public void PopulateBacklogs()
         {
-            m_incompleteBacklogs = SaveData.GetInstance().GetIncompleteBacklogs();
+            m_incompleteBacklogs = BacklogsManager.GetInstance().GetIncompleteBacklogs();
             ObservableCollection<Backlog> _backlogs = null;
             switch (SortOrder)
             {

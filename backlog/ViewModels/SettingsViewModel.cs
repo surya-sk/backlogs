@@ -1,5 +1,4 @@
-﻿using Backlogs.Auth;
-using System;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
 using MvvmHelpers.Commands;
@@ -20,6 +19,7 @@ namespace Backlogs.ViewModels
         private readonly IFileHandler m_fileHandler;
         private readonly IEmailService m_emailService;
         private IUserSettings m_settings;
+        private IMsal m_msal;
         private string m_selectedTheme;
         private int m_selectedTileStyleIndex;
         private string m_tileContent;
@@ -148,7 +148,7 @@ namespace Backlogs.ViewModels
 
         public string FeedbackText { get; set; }
         public SettingsViewModel(INavigation navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler,
-            IEmailService emailService, IUserSettings settings)
+            IEmailService emailService, IUserSettings settings, IMsal msal)
         {
             SendLogs = new AsyncCommand(SendLogsAsync);
             OpenLogs = new AsyncCommand(ShowLogsAsync);
@@ -159,6 +159,7 @@ namespace Backlogs.ViewModels
             m_fileHandler = fileHandler;
             m_emailService = emailService;
             m_settings = settings;
+            m_msal = msal;
         }
 
         /// <summary>
@@ -262,7 +263,7 @@ namespace Backlogs.ViewModels
         {
             if (await m_dialogHander.ShowSignOutDialogAsync())
             {
-                await MSAL.SignOut();
+                await m_msal.SignOut();
                 m_settings.Set(SettingsConstants.IsSignedIn, false);
                 m_navigationService.NavigateTo<MainViewModel>();
             }

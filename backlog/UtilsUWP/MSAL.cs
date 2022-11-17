@@ -131,7 +131,7 @@ namespace Backlogs.Utils.UWP
                 m_settings.Set(SettingsConstants.IsSignedIn, false);
                 try
                 {
-                    await SaveData.GetInstance().DeleteLocalFileAsync();
+                    //await SaveData.GetInstance().DeleteLocalFileAsync();
                 }
                 catch
                 {
