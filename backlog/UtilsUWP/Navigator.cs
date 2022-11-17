@@ -25,12 +25,14 @@ namespace Backlogs.Utils.UWP
 
         public void GoBack<T>()
         {
-            ((Frame)Window.Current.Content).GoBack(m_transitions[typeof(T)]);
+            //((Frame)Window.Current.Content).GoBack(m_transitions[typeof(T)]);
+            ((Frame)Window.Current.Content).GoBack();
         }
 
         public void NavigateTo<T>(object args = null)
         {
-            ((Frame)Window.Current.Content).Navigate(m_viewModelsToViews[typeof(T)], args, m_transitions[typeof(T)]);
+            //((Frame)Window.Current.Content).Navigate(m_viewModelsToViews[typeof(T)], args, m_transitions[typeof(T)]);
+            ((Frame)Window.Current.Content).Navigate(m_viewModelsToViews[typeof(T)], args, null);
         }
 
         public void GoBack()
