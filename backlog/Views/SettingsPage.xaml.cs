@@ -19,11 +19,18 @@ namespace Backlogs.Views
         public SettingsPage()
         {
             this.InitializeComponent();
-            ViewModel = new SettingsViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>());
+            ViewModel = new SettingsViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>(),
+                App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<IEmailService>());
             // show back button
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            view.BackRequested += ViewModel.GoBack;
+            view.BackRequested += View_BackRequested;
+        }
+
+        private void View_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            ViewModel.GoBack();
+            e.Handled = true;
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)

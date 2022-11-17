@@ -18,7 +18,6 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Notifications;
 using SearchResult = Backlogs.Models.SearchResult;
 
 namespace Backlogs.ViewModels
@@ -41,6 +40,7 @@ namespace Backlogs.ViewModels
         private bool m_SignedIn = Settings.IsSignedIn;
         private readonly INavigationService m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
+        private readonly IToastNotificationService m_toastNotificationService;
 
         public ObservableCollection<Backlog> Backlogs;
         public ObservableCollection<SearchResult> SearchResults;
@@ -201,7 +201,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public CreateBacklogViewModel(INavigationService navigationService, IDialogHandler dialogHandler)
+        public CreateBacklogViewModel(INavigationService navigationService, IDialogHandler dialogHandler, IToastNotificationService toastNotificationService)
         {
             SearchResults = new ObservableCollection<SearchResult>();
             SearchBacklog = new AsyncCommand(TrySearchBacklogAsync);
@@ -210,6 +210,7 @@ namespace Backlogs.ViewModels
 
             m_navigationService = navigationService;
             m_dialogHandler = dialogHandler;
+            m_toastNotificationService = toastNotificationService;
         }
 
         /// <summary>
@@ -371,13 +372,7 @@ namespace Backlogs.ViewModels
                 SaveData.GetInstance().SaveSettings(Backlogs);
                 if (backlog.TargetDate != "None" && backlog.NotifTime != TimeSpan.Zero)
                 {
-                    var notifTime = DateTimeOffset.Parse(backlog.TargetDate, CultureInfo.InvariantCulture).Add(backlog.NotifTime);
-                    var builder = new ToastContentBuilder()
-                        .AddText($"It's {backlog.Name} time!")
-                        .AddText($"You wanted to check out {backlog.Name} by {backlog.Director} today. Get to it!")
-                        .AddHeroImage(new Uri(backlog.ImageURL));
-                    ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), notifTime);
-                    ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+                    m_toastNotificationService.CreateToastNotification(backlog);   
                 }
                 await SaveData.GetInstance().WriteDataAsync(m_SignedIn);
                 NavToPrevPage();

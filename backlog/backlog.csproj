@@ -144,6 +144,8 @@
     <Compile Include="Services\IFileHandler.cs" />
     <Compile Include="Services\IMsal.cs" />
     <Compile Include="Services\INavigation.cs" />
+    <Compile Include="Services\IShareDialogService.cs" />
+    <Compile Include="Services\IToastNotificationService.cs" />
     <Compile Include="Services\IUserSettings.cs" />
     <Compile Include="UtilsCore\BacklogsManager.cs" />
     <Compile Include="UtilsCore\Keys.cs" />
@@ -154,7 +156,9 @@
     <Compile Include="UtilsUWP\MSAL.cs" />
     <Compile Include="UtilsUWP\Navigator.cs" />
     <Compile Include="UtilsUWP\Settings.cs" />
+    <Compile Include="UtilsUWP\ShareDialogService.cs" />
     <Compile Include="UtilsUWP\ThemeHelper.cs" />
+    <Compile Include="UtilsUWP\ToastNotificationService.cs" />
     <Compile Include="Utils\BacklogType.cs" />
     <Compile Include="Utils\INavigationService.cs" />
     <Compile Include="Utils\Keys.cs" />

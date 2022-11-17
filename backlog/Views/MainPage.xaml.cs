@@ -27,7 +27,10 @@ namespace Backlogs.Views
         public MainPage()
         {
             this.InitializeComponent();
-            ViewModel = new MainViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>());
+            ViewModel = new MainViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>(),
+                App.Services.GetRequiredService<IShareDialogService>(), App.Services.GetRequiredService<IUserSettings>(),
+                App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<ILiveTileService>(),
+                App.Services.GetRequiredService<IFilePicker>(), App.Services.GetRequiredService<IEmailService>());
             
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;

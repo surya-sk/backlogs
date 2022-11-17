@@ -29,6 +29,7 @@ using Settings = Backlogs.Utils.UWP.Settings;
 using Backlogs.Constants;
 using FileIO = Windows.Storage.FileIO;
 using ThemeHelper = Backlogs.Utils.UWP.ThemeHelper;
+using Backlogs.UtilsUWP;
 
 namespace Backlogs
 {
@@ -146,7 +147,13 @@ namespace Backlogs
             var provider = new ServiceCollection()
                 .AddSingleton<IUserSettings, Settings>()
                 .AddSingleton<IMsal, MSAL>()
-                .AddSingleton<IDialogHandler,DialogHandler>()
+                .AddSingleton<IDialogHandler, DialogHandler>()
+                .AddSingleton<IEmailService, EmailHandler>()
+                .AddSingleton<IFileHandler, Backlogs.Utils.UWP.FileIO>()
+                .AddSingleton<IFilePicker, FilePickerService>()
+                .AddSingleton<ILiveTileService, LiveTileManager>()
+                .AddSingleton<IShareDialogService, ShareDialogService>()
+                .AddSingleton<IToastNotificationService, ToastNotificationService>()
                 .BuildServiceProvider();
             return provider;
         }

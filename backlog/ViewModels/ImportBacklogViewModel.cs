@@ -12,7 +12,6 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.Storage;
 using System.Globalization;
 using System.Windows.Input;
 using MvvmHelpers.Commands;
@@ -34,6 +33,7 @@ namespace Backlogs.ViewModels
         private bool m_showNotificationOptions;
         private readonly INavigationService m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
+        private readonly IFileHandler m_fileHandler;
 
         public ICommand Import { get; set; }
         public ICommand Cancel { get; set; }
@@ -133,7 +133,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public ImportBacklogViewModel(INavigationService navigationService, IDialogHandler dialogHandler)
+        public ImportBacklogViewModel(INavigationService navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler)
         {
             m_isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             m_importedBacklog = new Backlog();
@@ -143,6 +143,7 @@ namespace Backlogs.ViewModels
             Cancel = new Command(NavigateToMainPage);
             m_navigationService = navigationService;
             m_dialogHandler = dialogHandler;
+            m_fileHandler = fileHandler;
         }
 
         /// <summary>
@@ -160,9 +161,7 @@ namespace Backlogs.ViewModels
                 {
                     await SaveData.GetInstance().ReadDataAsync(m_signedIn);
                     Backlogs = SaveData.GetInstance().GetBacklogs();
-                    StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
-                    StorageFile file = await tempFolder.GetFileAsync(fileName);
-                    string json = await FileIO.ReadTextAsync(file);
+                    string json = await m_fileHandler.ReadBacklogJsonAsync(fileName);
                     ImportedBacklog = JsonConvert.DeserializeObject<Backlog>(json);
                 }
                 IsBusy = false;

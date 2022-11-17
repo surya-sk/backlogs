@@ -31,14 +31,20 @@ namespace Backlogs.Views
 
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            view.BackRequested += ViewModel.GoBack;
+            view.BackRequested += View_BackRequested; ;
+        }
+
+        private void View_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            ViewModel.GoBack();
+            e.Handled = true;
         }
 
         /// <summary>
         /// Plays connected animation
         /// </summary>
         /// <returns></returns>
-        private async Task PlayConnectedAnimation()
+        private void PlayConnectedAnimation()
         {
             //ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
             //connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();

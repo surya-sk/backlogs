@@ -50,6 +50,14 @@ namespace Backlogs.Utils.UWP
             }
         }
 
+        public async Task<string> ReadBacklogJsonAsync(string fileName)
+        {
+            StorageFolder tempFolder = ApplicationData.Current.TemporaryFolder;
+            StorageFile file = await tempFolder.GetFileAsync(fileName);
+            string json = await Windows.Storage.FileIO.ReadTextAsync(file);
+            return json;
+        }
+
         public async Task<string> ReadBacklogsAsync(bool sync = false)
         {
             if (sync)
@@ -64,6 +72,13 @@ namespace Backlogs.Utils.UWP
             StorageFile storageFile = await m_localFolder.GetFileAsync(m_fileName);
             string json = await ReadTextAsync(storageFile.Name);
             return json;
+        }
+
+        public async Task<string> ReadImageAsync(string fileName)
+        {
+            var cacheFolder = ApplicationData.Current.LocalCacheFolder;
+            var image = await cacheFolder.GetFileAsync(fileName);
+            return image.Name;
         }
 
         public async Task<string> ReadTextAsync(string fileName)

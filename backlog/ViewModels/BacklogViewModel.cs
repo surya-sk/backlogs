@@ -5,24 +5,14 @@ using Backlogs.Services;
 using Backlogs.Utils;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
-using Microsoft.Graph;
-using Microsoft.Toolkit.Uwp.Notifications;
 using MvvmHelpers.Commands;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage;
-using Windows.UI.Notifications;
-
 namespace Backlogs.ViewModels
 {
     public class BacklogViewModel : INotifyPropertyChanged
@@ -42,9 +32,10 @@ namespace Backlogs.ViewModels
         private Uri m_sourceLink;
         private int m_backlogIndex;
         private bool m_showTrailerButton = true;
-        StorageFolder m_tempFolder = ApplicationData.Current.TemporaryFolder;
         private readonly INavigationService m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
+        private readonly IToastNotificationService m_notificationService;
+        private readonly IShareDialogService m_shareDialogService;
 
         public ObservableCollection<Backlog> Backlogs;
         public Backlog Backlog;
@@ -225,7 +216,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public BacklogViewModel(Guid id, INavigationService navigationService, IDialogHandler dialogHandler)
+        public BacklogViewModel(Guid id, INavigationService navigationService, IDialogHandler dialogHandler, IToastNotificationService notificationService, IShareDialogService shareDialogService)
         {
             LaunchBingSearchResults = new AsyncCommand(LaunchBingSearchResultsAsync);
             OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);
@@ -242,6 +233,8 @@ namespace Backlogs.ViewModels
 
             m_navigationService = navigationService;
             m_dialogHandler = dialogHandler;
+            m_shareDialogService = shareDialogService;
+            m_notificationService = notificationService;
 
             CalendarDate = DateTimeOffset.MinValue;
             NotifTime = TimeSpan.Zero;
@@ -443,13 +436,7 @@ namespace Backlogs.ViewModels
         {
             if (Backlog.NotifTime != TimeSpan.Zero)
             {
-                var notifTime = DateTimeOffset.Parse(Backlog.TargetDate, CultureInfo.InvariantCulture).Add(Backlog.NotifTime);
-                var builder = new ToastContentBuilder()
-                    .AddText($"It's {Backlog.Name} time!")
-                    .AddText($"You wanted to check out {Backlog.Name} by {Backlog.Director} today. Get to it!")
-                    .AddHeroImage(new Uri(Backlog.ImageURL));
-                ScheduledToastNotification toastNotification = new ScheduledToastNotification(builder.GetXml(), notifTime);
-                ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+                m_notificationService.CreateToastNotification(Backlog);
             }
         }
 
@@ -468,24 +455,8 @@ namespace Backlogs.ViewModels
         private async Task ShareBacklogAsync()
         {
             IsLoading = true;
-            StorageFile backlogFile = await m_tempFolder.CreateFileAsync($"{Backlog.Name}.bklg", CreationCollisionOption.ReplaceExisting);
-            string json = JsonConvert.SerializeObject(Backlog);
-            await FileIO.WriteTextAsync(backlogFile, json);
-            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
-            dataTransferManager.DataRequested += DataTransferManager_DataRequested;
-            DataTransferManager.ShowShareUI();
+            await m_shareDialogService.ShowSearchDialog(Backlog);
             IsLoading = false;
-        }
-
-        private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
-        {
-            DataRequest dataRequest = args.Request;
-            dataRequest.Data.Properties.Title = $"Share {Backlog.Name} backlog";
-            dataRequest.Data.Properties.Description = "Your contacts with the Backlogs app installed can open this file and add it to their backlog";
-            var fileToShare = await m_tempFolder.GetFileAsync($"{Backlog.Name}.bklg");
-            List<IStorageItem> list = new List<IStorageItem>();
-            list.Add(fileToShare);
-            dataRequest.Data.SetStorageItems(list);
         }
 
         /// <summary>

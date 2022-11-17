@@ -31,7 +31,8 @@ namespace Backlogs.Views
         public BacklogsPage()
         {
             this.InitializeComponent();
-            ViewModel = new BacklogsViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>());
+            ViewModel = new BacklogsViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>(),
+                App.Services.GetRequiredService<IFileHandler>());
             IsNetwordAvailable = NetworkInterface.GetIsNetworkAvailable();
         }
 
@@ -53,7 +54,13 @@ namespace Backlogs.Views
             await ViewModel.SyncBacklogs(sync);
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            view.BackRequested += ViewModel.GoBack;
+            view.BackRequested += View_BackRequested;
+        }
+
+        private void View_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            ViewModel.GoBack();
+            e.Handled = true;
         }
 
 

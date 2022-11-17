@@ -10,7 +10,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Core;
 
 namespace Backlogs.ViewModels
 {
@@ -25,7 +24,6 @@ namespace Backlogs.ViewModels
         private bool m_booksEmpty;
         private bool m_tvEmpty;
         private bool m_gamesEmpty;
-        //private ContentDialog m_popupOverlay;
         private readonly INavigationService m_navigationService;
 
         public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedBacklogs;
@@ -281,10 +279,9 @@ namespace Backlogs.ViewModels
             m_navigationService.NavigateTo<SettingsViewModel>();
         }
 
-        public void GoBack(object sender, BackRequestedEventArgs e)
+        public void GoBack()
         {
             m_navigationService.GoBack();
-            e.Handled = true;
         }
 
         #region Sorting

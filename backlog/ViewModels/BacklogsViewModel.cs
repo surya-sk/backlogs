@@ -9,10 +9,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.Storage.Streams;
-using Windows.Storage;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Core;
 using Backlogs.Logging;
 using System.Net.NetworkInformation;
 using Microsoft.Toolkit.Uwp;
@@ -31,8 +27,9 @@ namespace Backlogs.ViewModels
         private bool m_gamesEmpty;
         private readonly INavigationService m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
+        private readonly IFileHandler m_fileHandler;
 
-        private BitmapImage m_accountPic;
+        private string m_accountPic;
 
         private bool m_isLoading;
         private ObservableCollection<Backlog> m_filmBacklogs;
@@ -145,7 +142,7 @@ namespace Backlogs.ViewModels
             }
         }
 
-        public BitmapImage AccountPic
+        public string AccountPic
         {
             get => m_accountPic;
             set
@@ -166,7 +163,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public BacklogsViewModel(INavigationService navigationService, IDialogHandler dialogHandler)
+        public BacklogsViewModel(INavigationService navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler)
         {
             SortByName = new Command(SortBacklogsByName);
             SortByCreatedDateAsc = new Command(SortBacklogsByCreatedDateAsc);
@@ -182,7 +179,8 @@ namespace Backlogs.ViewModels
             OpenCreatePage = new Command(NavigateToCreatePage);
 
             m_navigationService = navigationService;
-            m_dialogHandler = dialogHandler;
+            m_dialogHandler = dialogHandler; 
+            m_fileHandler = fileHandler;
 
             PopulateBacklogs();
         }
@@ -268,17 +266,9 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         public async Task SetUserPhotoAsync()
         {
-            var cacheFolder = ApplicationData.Current.LocalCacheFolder;
             try
             {
-                var accountPicFile = await cacheFolder.GetFileAsync("profile.png");
-                using (IRandomAccessStream stream = await accountPicFile.OpenAsync(FileAccessMode.Read))
-                {
-                    BitmapImage image = new BitmapImage();
-                    stream.Seek(0);
-                    await image.SetSourceAsync(stream);
-                    AccountPic = image;
-                }
+                AccountPic = await m_fileHandler.ReadImageAsync("profile.png");
             }
             catch
             {
@@ -410,10 +400,9 @@ namespace Backlogs.ViewModels
             m_navigationService.NavigateTo<CreateBacklogViewModel>(typeIndex);
         }
 
-        public void GoBack(object sender, BackRequestedEventArgs e)
+        public void GoBack()
         {
             m_navigationService.NavigateTo<MainViewModel>();
-            e.Handled = true;
         }
 
         #region Sorting

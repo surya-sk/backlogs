@@ -20,6 +20,7 @@ namespace Backlogs.Constants
         public const string TileContent = nameof(TileContent);
         public const string AutoplayVideos = nameof(AutoplayVideos);
         public const string AppTheme = nameof(AppTheme);
+        public const string LastCrashLog = nameof(LastCrashLog);
 
         public static IReadOnlyDictionary<string, object> Defaults { get; } = new Dictionary<string, object>()
         {
@@ -34,7 +35,8 @@ namespace Backlogs.Constants
             {TileStyle, "Peeking" },
             {TileContent, "Recently Created" },
             {AutoplayVideos, false },
-            {AppTheme, "System" }
+            {AppTheme, "System" },
+            {LastCrashLog, null }
         };
     }
 }

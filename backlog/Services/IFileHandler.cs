@@ -19,5 +19,7 @@ namespace Backlogs.Services
         Task WriteBitmapAsync(Stream stream, string fileName);
         Task WriteTextAsync(string text, string fileName);
         Task<string> ReadTextAsync(string fileName);
+        Task<string> ReadImageAsync(string fileName);
+        Task<string> ReadBacklogJsonAsync(string fileName);
     }
 }
