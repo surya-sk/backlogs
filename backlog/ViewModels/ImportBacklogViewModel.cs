@@ -31,7 +31,7 @@ namespace Backlogs.ViewModels
         private bool m_enableNotificationToggle;
         private bool m_showNotificationToggle;
         private bool m_showNotificationOptions;
-        private readonly INavigationService m_navigationService;
+        private readonly INavigation m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
         private readonly IFileHandler m_fileHandler;
 
@@ -133,7 +133,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public ImportBacklogViewModel(INavigationService navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler)
+        public ImportBacklogViewModel(INavigation navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler)
         {
             m_isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             m_importedBacklog = new Backlog();

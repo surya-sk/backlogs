@@ -25,7 +25,7 @@ namespace Backlogs.ViewModels
         private bool m_booksEmpty;
         private bool m_tvEmpty;
         private bool m_gamesEmpty;
-        private readonly INavigationService m_navigationService;
+        private readonly INavigation m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
         private readonly IFileHandler m_fileHandler;
 
@@ -163,7 +163,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public BacklogsViewModel(INavigationService navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler)
+        public BacklogsViewModel(INavigation navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler)
         {
             SortByName = new Command(SortBacklogsByName);
             SortByCreatedDateAsc = new Command(SortBacklogsByCreatedDateAsc);

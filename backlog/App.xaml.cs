@@ -35,9 +35,9 @@ namespace Backlogs
     /// </summary>
     sealed partial class App : Application
     {
-        private static NavigationService m_navigationService = new NavigationService();
         private IServiceProvider m_serviceProvider;
         private IUserSettings m_userSettings;
+        private INavigation m_navigationService;
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
@@ -46,13 +46,6 @@ namespace Backlogs
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             App.Current.UnhandledException += OnUnHandledException;
-            m_navigationService.RegisterViewForViewModel(typeof(MainViewModel), typeof(MainPage));
-            m_navigationService.RegisterViewForViewModel(typeof(BacklogsViewModel), typeof(BacklogsPage));
-            m_navigationService.RegisterViewForViewModel(typeof(BacklogViewModel), typeof(BacklogPage));
-            m_navigationService.RegisterViewForViewModel(typeof(CompletedBacklogsViewModel), typeof(CompletedBacklogsPage));
-            m_navigationService.RegisterViewForViewModel(typeof(CreateBacklogViewModel), typeof(CreatePage));
-            m_navigationService.RegisterViewForViewModel(typeof(ImportBacklogViewModel), typeof(ImportBacklog));
-            m_navigationService.RegisterViewForViewModel(typeof(SettingsViewModel), typeof(SettingsPage));
         }
 
         public static IServiceProvider Services
@@ -75,11 +68,6 @@ namespace Backlogs
                 throw new InvalidOperationException("Generic parameter 'TEnum' must be an enum.");
             }
             return (TEnum)Enum.Parse(typeof(TEnum), text);
-        }
-
-        public static NavigationService GetNavigationService()
-        {
-            return m_navigationService;
         }
 
         /// <summary>
@@ -110,6 +98,14 @@ namespace Backlogs
                 m_serviceProvider = ConfigureServices();
                 m_userSettings = Services.GetRequiredService<IUserSettings>();
                 m_userSettings.UserSettingsChanged += M_userSettings_UserSettingsChanged;
+                m_navigationService = Services.GetRequiredService<INavigation>();
+                m_navigationService.RegisterViewForViewModel(typeof(MainViewModel), typeof(MainPage));
+                m_navigationService.RegisterViewForViewModel(typeof(BacklogsViewModel), typeof(BacklogsPage));
+                m_navigationService.RegisterViewForViewModel(typeof(BacklogViewModel), typeof(BacklogPage));
+                m_navigationService.RegisterViewForViewModel(typeof(CompletedBacklogsViewModel), typeof(CompletedBacklogsPage));
+                m_navigationService.RegisterViewForViewModel(typeof(CreateBacklogViewModel), typeof(CreatePage));
+                m_navigationService.RegisterViewForViewModel(typeof(ImportBacklogViewModel), typeof(ImportBacklog));
+                m_navigationService.RegisterViewForViewModel(typeof(SettingsViewModel), typeof(SettingsPage));
             }
 
             if (e.PrelaunchActivated == false)
@@ -161,6 +157,7 @@ namespace Backlogs
                 .AddSingleton<ILiveTileService, LiveTileManager>()
                 .AddSingleton<IShareDialogService, ShareDialogService>()
                 .AddSingleton<IToastNotificationService, ToastNotificationService>()
+                .AddSingleton<INavigation, Navigator>()
                 .BuildServiceProvider();
             return provider;
         }
@@ -217,6 +214,9 @@ namespace Backlogs
                         GetRootFrame().RequestedTheme = ElementTheme.Dark;
                         break;
                     case "System":
+                        GetRootFrame().RequestedTheme = ElementTheme.Default;
+                        break;
+                    default:
                         GetRootFrame().RequestedTheme = ElementTheme.Default;
                         break;
                 }

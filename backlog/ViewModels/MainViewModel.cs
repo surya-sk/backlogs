@@ -40,7 +40,7 @@ namespace Backlogs.ViewModels
         private int m_completedBacklogsCount = 0;
         private int m_incompleteBacklogsCount = 0;
         private double m_completedPercent = 0;
-        private readonly INavigationService m_navigationService;
+        private readonly INavigation m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
         private readonly IShareDialogService m_shareService;
         private readonly IUserSettings m_settings;
@@ -256,7 +256,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public MainViewModel(INavigationService navigationService, 
+        public MainViewModel(INavigation navigationService, 
             IDialogHandler dialogHandler, IShareDialogService shareService, 
             IUserSettings settings, IFileHandler fileHandler, ILiveTileService liveTileService,
             IFilePicker filePicker, IEmailService emailService)

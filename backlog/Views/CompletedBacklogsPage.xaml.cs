@@ -1,6 +1,8 @@
 ﻿using Backlogs.Logging;
 using Backlogs.Models;
+using Backlogs.Services;
 using Backlogs.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,7 +29,7 @@ namespace Backlogs.Views
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
-            ViewModel = new CompletedBacklogsViewModel(App.GetNavigationService());
+            ViewModel = new CompletedBacklogsViewModel(App.Services.GetRequiredService<INavigation>());
 
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;

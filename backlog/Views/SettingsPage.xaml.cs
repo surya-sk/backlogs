@@ -19,8 +19,9 @@ namespace Backlogs.Views
         public SettingsPage()
         {
             this.InitializeComponent();
-            ViewModel = new SettingsViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>(),
-                App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<IEmailService>());
+            ViewModel = new SettingsViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
+                App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<IEmailService>(),
+                App.Services.GetRequiredService<IUserSettings>());
             // show back button
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;

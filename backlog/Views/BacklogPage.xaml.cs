@@ -29,7 +29,7 @@ namespace Backlogs.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Guid selectedId = (Guid)e.Parameter;
-            ViewModel = new BacklogViewModel(selectedId, App.GetNavigationService(), 
+            ViewModel = new BacklogViewModel(selectedId, App.Services.GetRequiredService<INavigation>(), 
                 App.Services.GetRequiredService<IDialogHandler>(), App.Services.GetRequiredService<IToastNotificationService>(), 
                 App.Services.GetRequiredService<IShareDialogService>());
             base.OnNavigatedTo(e);

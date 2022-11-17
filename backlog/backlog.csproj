@@ -163,7 +163,6 @@
     <Compile Include="UtilsUWP\Navigator.cs" />
     <Compile Include="UtilsUWP\Settings.cs" />
     <Compile Include="UtilsUWP\ShareDialogService.cs" />
-    <Compile Include="UtilsUWP\ThemeHelper.cs" />
     <Compile Include="UtilsUWP\ToastNotificationService.cs" />
     <Compile Include="Utils\BacklogType.cs" />
     <Compile Include="Utils\INavigationService.cs" />

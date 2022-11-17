@@ -1,5 +1,6 @@
 ﻿using Backlogs.Models;
 using Backlogs.Saving;
+using Backlogs.Services;
 using Backlogs.Utils;
 using Microsoft.Toolkit.Uwp;
 using MvvmHelpers.Commands;
@@ -24,7 +25,7 @@ namespace Backlogs.ViewModels
         private bool m_booksEmpty;
         private bool m_tvEmpty;
         private bool m_gamesEmpty;
-        private readonly INavigationService m_navigationService;
+        private readonly INavigation m_navigationService;
 
         public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedBacklogs;
         public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedFilmBacklogs;
@@ -152,7 +153,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public CompletedBacklogsViewModel(INavigationService navigationService)
+        public CompletedBacklogsViewModel(INavigation navigationService)
         {
             SaveBacklog = new AsyncCommand(SaveBacklogAsync);
             MarkBacklogAsIncomplete = new AsyncCommand(MarkBacklogAsIncompleteAsync);

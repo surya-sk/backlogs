@@ -32,5 +32,10 @@ namespace Backlogs.Utils.UWP
         {
             ((Frame)Window.Current.Content).Navigate(m_viewModelsToViews[typeof(T)], args, m_transitions[typeof(T)]);
         }
+
+        public void GoBack()
+        {
+            ((Frame)Window.Current.Content).GoBack();
+        }
     }
 }

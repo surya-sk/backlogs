@@ -32,7 +32,7 @@ namespace Backlogs.ViewModels
         private Uri m_sourceLink;
         private int m_backlogIndex;
         private bool m_showTrailerButton = true;
-        private readonly INavigationService m_navigationService;
+        private readonly INavigation m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
         private readonly IToastNotificationService m_notificationService;
         private readonly IShareDialogService m_shareDialogService;
@@ -216,7 +216,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public BacklogViewModel(Guid id, INavigationService navigationService, IDialogHandler dialogHandler, IToastNotificationService notificationService, IShareDialogService shareDialogService)
+        public BacklogViewModel(Guid id, INavigation navigationService, IDialogHandler dialogHandler, IToastNotificationService notificationService, IShareDialogService shareDialogService)
         {
             LaunchBingSearchResults = new AsyncCommand(LaunchBingSearchResultsAsync);
             OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);

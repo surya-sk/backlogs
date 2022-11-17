@@ -15,7 +15,7 @@ namespace Backlogs.ViewModels
     {
         private bool m_showProgress;
         private string m_accountPic;
-        private readonly INavigationService m_navigationService;
+        private readonly INavigation m_navigationService;
         private readonly IDialogHandler m_dialogHander;
         private readonly IFileHandler m_fileHandler;
         private readonly IEmailService m_emailService;
@@ -147,7 +147,7 @@ namespace Backlogs.ViewModels
         public string SelectedFeedbackType { get; set; }
 
         public string FeedbackText { get; set; }
-        public SettingsViewModel(INavigationService navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler,
+        public SettingsViewModel(INavigation navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler,
             IEmailService emailService, IUserSettings settings)
         {
             SendLogs = new AsyncCommand(SendLogsAsync);

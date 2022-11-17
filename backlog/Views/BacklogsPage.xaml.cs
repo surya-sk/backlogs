@@ -31,7 +31,7 @@ namespace Backlogs.Views
         public BacklogsPage()
         {
             this.InitializeComponent();
-            ViewModel = new BacklogsViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>(),
+            ViewModel = new BacklogsViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
                 App.Services.GetRequiredService<IFileHandler>());
             IsNetwordAvailable = NetworkInterface.GetIsNetworkAvailable();
         }

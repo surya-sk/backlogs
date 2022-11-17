@@ -19,8 +19,7 @@ namespace Backlogs.Views
         public CreatePage()
         {
             this.InitializeComponent();
-            var _navService = App.GetNavigationService();
-            ViewModel = new CreateBacklogViewModel(_navService, App.Services.GetRequiredService<IDialogHandler>(),
+            ViewModel = new CreateBacklogViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
                 App.Services.GetRequiredService<IToastNotificationService>());
         }
 

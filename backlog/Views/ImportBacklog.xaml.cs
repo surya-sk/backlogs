@@ -17,7 +17,7 @@ namespace Backlogs.Views
         public ImportBacklog()
         {
             this.InitializeComponent();
-            ViewModel = new ImportBacklogViewModel(App.GetNavigationService(), App.Services.GetRequiredService<IDialogHandler>(),
+            ViewModel = new ImportBacklogViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
                 App.Services.GetRequiredService<IFileHandler>());
         }
 

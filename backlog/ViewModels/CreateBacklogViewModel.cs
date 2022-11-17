@@ -38,7 +38,7 @@ namespace Backlogs.ViewModels
         private bool m_createButtonEnabled;
         private bool m_isBusy;
         private bool m_SignedIn = Settings.IsSignedIn;
-        private readonly INavigationService m_navigationService;
+        private readonly INavigation m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
         private readonly IToastNotificationService m_toastNotificationService;
 
@@ -201,7 +201,7 @@ namespace Backlogs.ViewModels
         }
         #endregion
 
-        public CreateBacklogViewModel(INavigationService navigationService, IDialogHandler dialogHandler, IToastNotificationService toastNotificationService)
+        public CreateBacklogViewModel(INavigation navigationService, IDialogHandler dialogHandler, IToastNotificationService toastNotificationService)
         {
             SearchResults = new ObservableCollection<SearchResult>();
             SearchBacklog = new AsyncCommand(TrySearchBacklogAsync);
