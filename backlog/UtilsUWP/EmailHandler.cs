@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Email;
 
-namespace Backlogs.UtilsUWP
+namespace Backlogs.Utils.UWP
 {
     public class EmailHandler : IEmailService
     {

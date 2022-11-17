@@ -141,7 +141,10 @@
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Saving\SaveData.cs" />
     <Compile Include="Services\IDialogHandler.cs" />
+    <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\IFileHandler.cs" />
+    <Compile Include="Services\IFilePicker.cs" />
+    <Compile Include="Services\ILiveTileService.cs" />
     <Compile Include="Services\IMsal.cs" />
     <Compile Include="Services\INavigation.cs" />
     <Compile Include="Services\IShareDialogService.cs" />
@@ -152,7 +155,10 @@
     <Compile Include="UtilsCore\MediaObjects.cs" />
     <Compile Include="UtilsCore\RestClient.cs" />
     <Compile Include="UtilsUWP\DialogHandler.cs" />
+    <Compile Include="UtilsUWP\EmailHandler.cs" />
     <Compile Include="UtilsUWP\FileIO.cs" />
+    <Compile Include="UtilsUWP\FilePickerService.cs" />
+    <Compile Include="UtilsUWP\LiveTileManager.cs" />
     <Compile Include="UtilsUWP\MSAL.cs" />
     <Compile Include="UtilsUWP\Navigator.cs" />
     <Compile Include="UtilsUWP\Settings.cs" />

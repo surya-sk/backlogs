@@ -12,6 +12,9 @@ namespace Backlogs.Utils.UWP
     public class Settings : IUserSettings
     {
         private static ApplicationDataContainer m_settings = ApplicationData.Current.LocalSettings;
+
+        public event EventHandler<string> UserSettingsChanged;
+
         public T Get<T>(string key)
         {
             if(m_settings.Values.TryGetValue(key, out var v))
@@ -24,6 +27,7 @@ namespace Backlogs.Utils.UWP
         public void Set<T>(string key, T value)
         {
             m_settings.Values[key] = value;
+            UserSettingsChanged?.Invoke(this, key);
         }
     }
 }

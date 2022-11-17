@@ -1,5 +1,4 @@
 ﻿using Backlogs.Auth;
-using Backlogs.Utils;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,25 +7,23 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Logger = Backlogs.Logging.Logger;
 using Backlogs.Services;
-using Windows.UI.Xaml;
+using Backlogs.Constants;
 
 namespace Backlogs.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
-
-        private string m_selectedTheme = Settings.AppTheme;
-        private int m_selectedTileStyleIndex = Settings.TileStyle == "Peeking" ? 0 : 1;
-        private string m_tileStylePreviewImage = Settings.TileStyle == "Peeking" ? "ms-appx:///Assets/peeking-tile.png" :
-                "ms-appx:///Assets/background-tile.png";
         private bool m_showProgress;
-        private string m_tileContent = Settings.TileContent;
         private string m_accountPic;
         private readonly INavigationService m_navigationService;
         private readonly IDialogHandler m_dialogHander;
         private readonly IFileHandler m_fileHandler;
         private readonly IEmailService m_emailService;
-
+        private IUserSettings m_settings;
+        private string m_selectedTheme;
+        private int m_selectedTileStyleIndex;
+        private string m_tileContent;
+        private string m_tileStylePreviewImage;
 
         public string MIT { get; } = "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n\nTHE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
         public string GPL { get; } = "This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. \n\nYou should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/";
@@ -36,11 +33,11 @@ namespace Backlogs.ViewModels
             "\u2022 The homepage now shows upcoming backlogs.\n" +
             "\u2022 The app can now show upcoming backlogs in the live tile.\n";
         public string ChangelogTitle { get; } = "New this version - 30 July, 2022";
-        public string Version { get; } = Settings.Version;
+        public string Version { get; } 
 
-        public bool SignedIn { get; } = Settings.IsSignedIn;
+        public bool SignedIn { get; } 
 
-        public bool ShowSignInPrompt { get; } = !Settings.IsSignedIn;
+        public bool ShowSignInPrompt { get; } 
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -51,7 +48,11 @@ namespace Backlogs.ViewModels
 
         public string SelectedTheme
         {
-            get => m_selectedTheme;
+            get
+            {
+                m_selectedTheme = m_settings.Get<string>(SettingsConstants.AppTheme);
+                return m_selectedTheme;
+            }
             set
             {
                 if(m_selectedTheme != value)
@@ -65,7 +66,11 @@ namespace Backlogs.ViewModels
 
         public int SelectedTileStyleIndex
         {
-            get => m_selectedTileStyleIndex;
+            get
+            {
+                m_selectedTileStyleIndex = m_settings.Get<string>(SettingsConstants.TileStyle) == "Peeking" ? 0 : 1;
+                return m_selectedTileStyleIndex;
+            }
             set
             {
                 m_selectedTileStyleIndex = value;
@@ -76,21 +81,30 @@ namespace Backlogs.ViewModels
 
         public string SelectedTileContent
         {
-            get => m_tileContent;
+            get
+            {
+                m_tileContent = m_settings.Get<string>(SettingsConstants.TileContent);
+                return m_tileContent;
+            }
             set
             {
                 if(m_tileContent != value)
                 {
                     m_tileContent = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileContent)));
-                    Settings.TileContent = value.ToString();
+                    m_settings.Set<string>(SettingsConstants.TileContent, value);
                 }
             }
         }
 
         public string TileStylePreviewImage
         {
-            get => m_tileStylePreviewImage;
+            get
+            {
+                m_tileStylePreviewImage = m_settings.Get<string>(SettingsConstants.TileStyle) == "Peeking" ?
+                    "ms-appx:///Assets/peeking-tile.png" : "ms-appx:///Assets/background-tile.png";
+                return m_tileStylePreviewImage;
+            }
             set
             {
                 m_tileStylePreviewImage = value;
@@ -110,10 +124,10 @@ namespace Backlogs.ViewModels
 
         public bool AutoplayVideos
         {
-            get => Settings.AutoplayVideos;
+            get => m_settings.Get<bool>(SettingsConstants.AutoplayVideos);
             set
             {
-                Settings.AutoplayVideos = value;
+                m_settings.Set(SettingsConstants.AutoplayVideos, value);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AutoplayVideos)));
             }
         }
@@ -128,13 +142,13 @@ namespace Backlogs.ViewModels
             }
         }
 
-        public string UserGreeting { get; } = $"Hey there, {Settings.UserName}! You are all synced.";
+        public string UserGreeting { get => $"Hey there, {m_settings.Get<string>(SettingsConstants.UserName)}! You are all synced."; }
 
         public string SelectedFeedbackType { get; set; }
 
         public string FeedbackText { get; set; }
         public SettingsViewModel(INavigationService navigationService, IDialogHandler dialogHandler, IFileHandler fileHandler,
-            IEmailService emailService)
+            IEmailService emailService, IUserSettings settings)
         {
             SendLogs = new AsyncCommand(SendLogsAsync);
             OpenLogs = new AsyncCommand(ShowLogsAsync);
@@ -144,6 +158,7 @@ namespace Backlogs.ViewModels
             m_dialogHander = dialogHandler;
             m_fileHandler = fileHandler;
             m_emailService = emailService;
+            m_settings = settings;
         }
 
         /// <summary>
@@ -167,16 +182,7 @@ namespace Backlogs.ViewModels
         /// </summary>
         private void ChangeAppTheme()
         {
-            var _selectedTheme = SelectedTheme;
-            if (_selectedTheme != null)
-            {
-                if (_selectedTheme == "System")
-                {
-                    _selectedTheme = "Default";
-                }
-                ThemeHelper.RootTheme = App.GetEnum<ElementTheme>(_selectedTheme);
-            }
-            Settings.AppTheme = SelectedTheme;
+            m_settings.Set(SettingsConstants.AppTheme, SelectedTheme);
         }
 
         /// <summary>
@@ -257,7 +263,7 @@ namespace Backlogs.ViewModels
             if (await m_dialogHander.ShowSignOutDialogAsync())
             {
                 await MSAL.SignOut();
-                Settings.IsSignedIn = false;
+                m_settings.Set(SettingsConstants.IsSignedIn, false);
                 m_navigationService.NavigateTo<MainViewModel>();
             }
         }
@@ -269,7 +275,7 @@ namespace Backlogs.ViewModels
         {
             TileStylePreviewImage = m_selectedTileStyleIndex == 0 ? "ms-appx:///Assets/peeking-tile.png" :
     "ms-appx:///Assets/background-tile.png";
-            Settings.TileStyle = m_selectedTileStyleIndex == 0 ? "Peeking" : "Background";
+            m_settings.Set(SettingsConstants.TileStyle, m_selectedTileStyleIndex == 0 ? "Peeking" : "Background");
         }
 
 

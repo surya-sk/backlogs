@@ -15,7 +15,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Backlogs.Views;
-using Backlogs.Utils;
 using System.Reflection;
 using Microsoft.Identity.Client;
 using Windows.Storage;
@@ -28,8 +27,6 @@ using Backlogs.Utils.UWP;
 using Settings = Backlogs.Utils.UWP.Settings;
 using Backlogs.Constants;
 using FileIO = Windows.Storage.FileIO;
-using ThemeHelper = Backlogs.Utils.UWP.ThemeHelper;
-using Backlogs.UtilsUWP;
 
 namespace Backlogs
 {
@@ -111,7 +108,8 @@ namespace Backlogs
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
                 m_serviceProvider = ConfigureServices();
-                m_userSettings = (IUserSettings)Services.GetService(typeof(IUserSettings));
+                m_userSettings = Services.GetRequiredService<IUserSettings>();
+                m_userSettings.UserSettingsChanged += M_userSettings_UserSettingsChanged;
             }
 
             if (e.PrelaunchActivated == false)
@@ -139,6 +137,15 @@ namespace Backlogs
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
+            }
+            SetAppTheme();
+        }
+
+        private void M_userSettings_UserSettingsChanged(object sender, string e)
+        {
+            if(e == SettingsConstants.AppTheme)
+            {
+                SetAppTheme();
             }
         }
 
@@ -193,17 +200,27 @@ namespace Backlogs
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
             base.OnBackgroundActivated(args);
+        }
 
-            var deferral = args.TaskInstance.GetDeferral();
-
-            switch (args.TaskInstance.Task.Name)
+        private void SetAppTheme()
+        {
+            object themeObject = ApplicationData.Current.LocalSettings.Values[SettingsConstants.AppTheme];
+            if(themeObject != null && GetRootFrame() != null)
             {
-                case "ToastTask":
-                    new ToastBackgroundTask().Run(args.TaskInstance);
-                    break;
+                string theme = themeObject.ToString();
+                switch(theme)
+                {
+                    case "Light":
+                        GetRootFrame().RequestedTheme = ElementTheme.Light;
+                        break;
+                    case "Dark":
+                        GetRootFrame().RequestedTheme = ElementTheme.Dark;
+                        break;
+                    case "System":
+                        GetRootFrame().RequestedTheme = ElementTheme.Default;
+                        break;
+                }
             }
-
-            deferral.Complete();
         }
 
         /// <summary>
@@ -213,7 +230,6 @@ namespace Backlogs
         private void InitFrame(IActivatedEventArgs args)
         {
             Frame rootFrame = GetRootFrame();
-            ThemeHelper.Initialize();
 
             rootFrame.Navigate(typeof(MainPage), "sync");
         }
