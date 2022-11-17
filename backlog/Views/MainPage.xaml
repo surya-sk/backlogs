@@ -328,7 +328,7 @@
                         </MenuFlyoutItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
-                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
+                <!--<muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>-->
             </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettingsPage}" />
@@ -360,7 +360,7 @@
                         </MenuFlyoutItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
-                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
+                <!--<muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>-->
             </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedPage}">

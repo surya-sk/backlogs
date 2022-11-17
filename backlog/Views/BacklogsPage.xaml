@@ -198,9 +198,6 @@
             <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedBacklogs}">
                 <FontIcon Glyph="" />
             </AppBarButton>
-            <AppBarButton Label="{x:Bind ViewModel.UserName, Mode=OneWay}" Visibility="{x:Bind ViewModel.SignedIn, Mode=OneWay}">
-                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
-            </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.Reload}" />
                 <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettings}" />
@@ -231,9 +228,6 @@
             <AppBarButton Label="New" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" CommandParameter="{x:Bind mainPivot.SelectedIndex, Mode=OneWay}" />
             <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedBacklogs}">
                 <FontIcon Glyph="" />
-            </AppBarButton>
-            <AppBarButton Label="{x:Bind ViewModel.UserName, Mode=OneWay}" Visibility="{x:Bind ViewModel.SignedIn, Mode=OneWay}">
-                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.Reload}" />
