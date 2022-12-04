@@ -1,25 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Backlogs.Views;
 using System.Reflection;
-using Microsoft.Identity.Client;
 using Windows.Storage;
 using System.Threading.Tasks;
-using Backlogs.Saving;
 using Backlogs.ViewModels;
 using Backlogs.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +16,7 @@ using Settings = Backlogs.Utils.UWP.Settings;
 using Backlogs.Constants;
 using FileIO = Windows.Storage.FileIO;
 using Backlogs.Utils.Core;
+using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace Backlogs
 {
@@ -39,6 +28,7 @@ namespace Backlogs
         private IServiceProvider m_serviceProvider;
         private IUserSettings m_userSettings;
         private INavigation m_navigationService;
+        private IFileHandler m_fileHander;
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
@@ -99,6 +89,7 @@ namespace Backlogs
                 m_serviceProvider = ConfigureServices();
                 m_userSettings = Services.GetRequiredService<IUserSettings>();
                 m_userSettings.UserSettingsChanged += M_userSettings_UserSettingsChanged;
+                m_fileHander = Services.GetRequiredService<IFileHandler>();
                 m_navigationService = Services.GetRequiredService<INavigation>();
                 m_navigationService.RegisterViewForViewModel(typeof(MainViewModel), typeof(MainPage));
                 m_navigationService.RegisterViewForViewModel(typeof(BacklogsViewModel), typeof(BacklogsPage));
@@ -127,7 +118,7 @@ namespace Backlogs
                         settingsService.Set(SettingsConstants.ShowWhatsNew, true);
                     }
                     settingsService.Set(SettingsConstants.Version, currVer);
-
+                    BacklogsManager.GetInstance().InitBacklogsManager(m_fileHander);
                     Task.Run(async () => { await BacklogsManager.GetInstance().ReadDataAsync(); }).Wait();
                     BacklogsManager.GetInstance().ResetHelperBacklogs();
                     rootFrame.Navigate(typeof(MainPage), "sync");

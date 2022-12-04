@@ -11,8 +11,8 @@
     <AssemblyName>Backlogs</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22000.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.22000.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -130,7 +130,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Auth\MSAL.cs" />
     <Compile Include="Constants\MSALConstants.cs" />
     <Compile Include="Constants\SettingsConstants.cs" />
     <Compile Include="Controls\SearchResultsDialog.xaml.cs">
@@ -139,7 +138,6 @@
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Models\Backlog.cs" />
     <Compile Include="Models\SearchResult.cs" />
-    <Compile Include="Saving\SaveData.cs" />
     <Compile Include="Services\IDialogHandler.cs" />
     <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\IFileHandler.cs" />
@@ -151,6 +149,7 @@
     <Compile Include="Services\IToastNotificationService.cs" />
     <Compile Include="Services\IUserSettings.cs" />
     <Compile Include="UtilsCore\BacklogsManager.cs" />
+    <Compile Include="UtilsCore\BacklogType.cs" />
     <Compile Include="UtilsCore\Keys.cs" />
     <Compile Include="UtilsCore\MediaObjects.cs" />
     <Compile Include="UtilsCore\RestClient.cs" />
@@ -164,15 +163,6 @@
     <Compile Include="UtilsUWP\Settings.cs" />
     <Compile Include="UtilsUWP\ShareDialogService.cs" />
     <Compile Include="UtilsUWP\ToastNotificationService.cs" />
-    <Compile Include="Utils\BacklogType.cs" />
-    <Compile Include="Utils\INavigationService.cs" />
-    <Compile Include="Utils\Keys.cs" />
-    <Compile Include="Utils\MediaObjects.cs" />
-    <Compile Include="Utils\NavigationService.cs" />
-    <Compile Include="Utils\RestClient.cs" />
-    <Compile Include="Utils\Settings.cs" />
-    <Compile Include="Utils\ToastBackgroundTask.cs" />
-    <Compile Include="Utils\ThemeHelper.cs" />
     <Compile Include="ViewModels\BacklogsViewModel.cs" />
     <Compile Include="ViewModels\BacklogViewModel.cs" />
     <Compile Include="ViewModels\CompletedBacklogsViewModel.cs" />

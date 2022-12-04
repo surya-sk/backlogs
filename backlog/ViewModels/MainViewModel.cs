@@ -327,6 +327,7 @@ namespace Backlogs.ViewModels
         private async Task ShowCrashLog()
         {
             m_crashLog = m_settings.Get<string>(SettingsConstants.LastCrashLog);
+            if (m_crashLog == null) return;
             if(await m_dialogHandler.ShowCrashLogDialogAsync(m_crashLog))
             {
                 await SendCrashLogAsync();

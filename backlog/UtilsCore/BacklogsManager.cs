@@ -1,5 +1,4 @@
 ﻿using Backlogs.Models;
-using Backlogs.Saving;
 using Backlogs.Services;
 using Microsoft.Graph;
 using Newtonsoft.Json;
@@ -16,8 +15,8 @@ namespace Backlogs.Utils.Core
 {
     public class BacklogsManager
     {
-        private static BacklogsManager m_instance = null;
-        private readonly IFileHandler m_fileHandler;
+        private static BacklogsManager m_instance = new BacklogsManager();
+        private IFileHandler m_fileHandler;
 
         private ObservableCollection<Backlog> Backlogs = null;
         private ObservableCollection<Backlog> CompletedBacklogs = null;
@@ -27,10 +26,9 @@ namespace Backlogs.Utils.Core
         private ObservableCollection<Backlog> InProgressBacklogs = null;
         private ObservableCollection<Backlog> UpcomingBacklogs = null;
 
-        private BacklogsManager(IFileHandler fileHandler)
+        public void InitBacklogsManager(IFileHandler fileHandler)
         {
             m_fileHandler = fileHandler;
-            m_instance = this;
         }
 
         public static BacklogsManager GetInstance()

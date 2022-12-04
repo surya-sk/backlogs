@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj": {}
+    "D:\\git\\backlogs\\backlog\\backlog.csproj": {}
   },
   "projects": {
-    "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj": {
+    "D:\\git\\backlogs\\backlog\\backlog.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
+        "projectUniqueName": "D:\\git\\backlogs\\backlog\\backlog.csproj",
         "projectName": "Backlogs",
-        "projectPath": "C:\\Users\\surya\\git\\backlogs\\backlog\\backlog.csproj",
+        "projectPath": "D:\\git\\backlogs\\backlog\\backlog.csproj",
         "packagesPath": "C:\\Users\\surya\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\surya\\git\\backlogs\\backlog\\obj\\",
+        "outputPath": "D:\\git\\backlogs\\backlog\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [
@@ -24,20 +24,20 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "uap10.0.15063"
+          "uap10.0.22000"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "uap10.0.15063": {
+          "uap10.0.22000": {
             "projectReferences": {}
           }
         }
       },
       "frameworks": {
-        "uap10.0.15063": {
+        "uap10.0.22000": {
           "dependencies": {
             "Google.Apis.YouTube.v3": {
               "target": "Package",
@@ -91,7 +91,12 @@
               "target": "Package",
               "version": "[4.5.4, )"
             }
-          }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
         }
       },
       "runtimes": {
