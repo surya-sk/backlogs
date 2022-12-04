@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "x7wEiT+SdQL1PWWgu6LQFoAv4Q/akqKR28/ex+Z8QhF2u4Gl+cJ3lLW3gP0d9W6DMSLmPuE3TpeG+LpCCwIgUA==",
+  "dgSpecHash": "EseNilnbrQVpVvLNrcORyk0tj+t2Ka0Z2NIVxOnqAdbYzlZFo/YHEeF6mc7lH5gz/fmeX41B/o0GrStnV3OQ8A==",
   "success": true,
-  "projectFilePath": "D:\\git\\backlogs\\backlog\\backlog.csproj",
+  "projectFilePath": "D:\\git\\backlogs\\backlog\\Backlogs.UWP.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\surya\\.nuget\\packages\\colorcode.core\\2.0.5\\colorcode.core.2.0.5.nupkg.sha512",
     "C:\\Users\\surya\\.nuget\\packages\\colorcode.uwp\\2.0.5\\colorcode.uwp.2.0.5.nupkg.sha512",

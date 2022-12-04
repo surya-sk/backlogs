@@ -2445,6 +2445,16 @@
             "rid": "win10-x86"
           }
         }
+      },
+      "Backlogs.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0.22000/win10-arm": {
@@ -5153,6 +5163,16 @@
         },
         "native": {
           "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll": {}
+        }
+      },
+      "Backlogs.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Backlogs.Core.dll": {}
         }
       }
     },
@@ -7906,6 +7926,16 @@
         "native": {
           "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll": {}
         }
+      },
+      "Backlogs.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0.22000/win10-arm64-aot": {
@@ -10650,6 +10680,16 @@
             "related": ".xml"
           }
         }
+      },
+      "Backlogs.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0.22000/win10-x64": {
@@ -13358,6 +13398,16 @@
         },
         "native": {
           "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll": {}
+        }
+      },
+      "Backlogs.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Backlogs.Core.dll": {}
         }
       }
     },
@@ -16111,6 +16161,16 @@
         "native": {
           "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll": {}
         }
+      },
+      "Backlogs.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0.22000/win10-x86": {
@@ -18819,6 +18879,16 @@
         },
         "native": {
           "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll": {}
+        }
+      },
+      "Backlogs.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Backlogs.Core.dll": {}
         }
       }
     },
@@ -21571,6 +21641,16 @@
         },
         "native": {
           "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll": {}
+        }
+      },
+      "Backlogs.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Backlogs.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Backlogs.Core.dll": {}
         }
       }
     }
@@ -31076,10 +31156,16 @@
         "win2d.uwp.1.21.0.nupkg.sha512",
         "win2d.uwp.nuspec"
       ]
+    },
+    "Backlogs.Core/1.0.0": {
+      "type": "project",
+      "path": "../Backlogs.Core/Backlogs.Core.csproj",
+      "msbuildProject": "../Backlogs.Core/Backlogs.Core.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "UAP,Version=v10.0.22000": [
+      "Backlogs.Core >= 1.0.0",
       "Google.Apis.YouTube.v3 >= 1.57.0.2756",
       "Microsoft.AspNet.WebApi.Client >= 5.2.7",
       "Microsoft.Extensions.DependencyInjection >= 1.0.1",
@@ -31103,9 +31189,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\git\\backlogs\\backlog\\backlog.csproj",
+      "projectUniqueName": "D:\\git\\backlogs\\backlog\\Backlogs.UWP.csproj",
       "projectName": "Backlogs",
-      "projectPath": "D:\\git\\backlogs\\backlog\\backlog.csproj",
+      "projectPath": "D:\\git\\backlogs\\backlog\\Backlogs.UWP.csproj",
       "packagesPath": "C:\\Users\\surya\\.nuget\\packages\\",
       "outputPath": "D:\\git\\backlogs\\backlog\\obj\\",
       "projectStyle": "PackageReference",
@@ -31128,7 +31214,11 @@
       },
       "frameworks": {
         "uap10.0.22000": {
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\git\\backlogs\\Backlogs.Core\\Backlogs.Core.csproj": {
+              "projectPath": "D:\\git\\backlogs\\Backlogs.Core\\Backlogs.Core.csproj"
+            }
+          }
         }
       }
     },
