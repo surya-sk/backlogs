@@ -2449,6 +2449,9 @@
       "Backlogs.Core/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Microsoft.Graph": "1.15.0"
+        },
         "compile": {
           "bin/placeholder/Backlogs.Core.dll": {}
         },
@@ -5168,6 +5171,9 @@
       "Backlogs.Core/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Microsoft.Graph": "1.15.0"
+        },
         "compile": {
           "bin/placeholder/Backlogs.Core.dll": {}
         },
@@ -7930,6 +7936,9 @@
       "Backlogs.Core/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Microsoft.Graph": "1.15.0"
+        },
         "compile": {
           "bin/placeholder/Backlogs.Core.dll": {}
         },
@@ -10684,6 +10693,9 @@
       "Backlogs.Core/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Microsoft.Graph": "1.15.0"
+        },
         "compile": {
           "bin/placeholder/Backlogs.Core.dll": {}
         },
@@ -13403,6 +13415,9 @@
       "Backlogs.Core/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Microsoft.Graph": "1.15.0"
+        },
         "compile": {
           "bin/placeholder/Backlogs.Core.dll": {}
         },
@@ -16165,6 +16180,9 @@
       "Backlogs.Core/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Microsoft.Graph": "1.15.0"
+        },
         "compile": {
           "bin/placeholder/Backlogs.Core.dll": {}
         },
@@ -18884,6 +18902,9 @@
       "Backlogs.Core/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Microsoft.Graph": "1.15.0"
+        },
         "compile": {
           "bin/placeholder/Backlogs.Core.dll": {}
         },
@@ -21646,6 +21667,9 @@
       "Backlogs.Core/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Microsoft.Graph": "1.15.0"
+        },
         "compile": {
           "bin/placeholder/Backlogs.Core.dll": {}
         },
@@ -29145,7 +29169,7 @@
       ]
     },
     "System.Reflection.Emit.Lightweight/4.0.1": {
-      "sha512": "VChj+ghaMXBbCylLZHRMEWF6CYvq5NVmS+tTGJFI0ZJGyaES3jDy1ZfgiIBppBTyrtjpSis2kpSoGyS5kbwhSQ==",
+      "sha512": "sSzHHXueZ5Uh0OLpUQprhr+ZYJrLPA2Cmr4gn0wj9+FftNKXx8RIMKvO9qnjk2ebPYUjZ+F2ulGdPOsvj+MEjA==",
       "type": "package",
       "path": "system.reflection.emit.lightweight/4.0.1",
       "files": [

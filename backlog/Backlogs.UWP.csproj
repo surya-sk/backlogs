@@ -134,16 +134,6 @@
       <DependentUpon>SearchResultsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Services\IDialogHandler.cs" />
-    <Compile Include="Services\IEmailService.cs" />
-    <Compile Include="Services\IFileHandler.cs" />
-    <Compile Include="Services\IFilePicker.cs" />
-    <Compile Include="Services\ILiveTileService.cs" />
-    <Compile Include="Services\IMsal.cs" />
-    <Compile Include="Services\INavigation.cs" />
-    <Compile Include="Services\IShareDialogService.cs" />
-    <Compile Include="Services\IToastNotificationService.cs" />
-    <Compile Include="Services\IUserSettings.cs" />
     <Compile Include="UtilsCore\BacklogsManager.cs" />
     <Compile Include="UtilsCore\BacklogType.cs" />
     <Compile Include="UtilsCore\Keys.cs" />
