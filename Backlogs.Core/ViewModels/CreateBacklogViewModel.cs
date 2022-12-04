@@ -1,5 +1,4 @@
 ﻿using Backlogs.Constants;
-using Backlogs.Logging;
 using Backlogs.Models;
 using Backlogs.Services;
 using Backlogs.Utils;
@@ -222,7 +221,7 @@ namespace Backlogs.ViewModels
         {
             if (NetworkInterface.GetIsNetworkAvailable())
             {
-                await Logger.Info("Fetching backlogs...");
+                //await Logger.Info("Fetching backlogs...");
                 if (m_SignedIn)
                 {
                     await BacklogsManager.GetInstance().ReadDataAsync(true);
@@ -236,7 +235,7 @@ namespace Backlogs.ViewModels
             }
             else
             {
-                await Logger.Warn("Not connected to the internet");
+               // await Logger.Warn("Not connected to the internet");
                 await m_dialogHandler.ShowErrorDialogAsync("No internet", "You need the internet to create backlogs", "Ok");
             }
         }
@@ -276,11 +275,11 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                await Logger.Info("Creating backlog.....");
+                //await Logger.Info("Creating backlog.....");
             }
             catch (Exception ex)
             {
-                await Logger.Error("Error", ex);
+               // await Logger.Error("Error", ex);
             }
 
             try
@@ -327,7 +326,7 @@ namespace Backlogs.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.StackTrace);
-                await Logger.Error("Failed to create backlog", ex);
+                //await Logger.Error("Failed to create backlog", ex);
             }
         }
 
@@ -394,7 +393,7 @@ namespace Backlogs.ViewModels
             try
             {
                 string response = await RestClient.GetFilmResponse(NameInput);
-                await Logger.Info($"Trying to find film {NameInput}. Response: {response}");
+                //await Logger.Info($"Trying to find film {NameInput}. Response: {response}");
                 FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
                 if (filmResult.results.Length > 0)
                 {
@@ -418,7 +417,7 @@ namespace Backlogs.ViewModels
                     }
                     SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
                     await SearchResultSelectedAsync();
-                    await Logger.Info("Succesfully created backlog");
+                    //await Logger.Info("Succesfully created backlog");
                 }
                 else
                 {
@@ -427,7 +426,7 @@ namespace Backlogs.ViewModels
             }
             catch (Exception e)
             {
-                await Logger.Error("Failed to find film.", e);
+               // await Logger.Error("Failed to find film.", e);
             }
         }
 
@@ -471,7 +470,7 @@ namespace Backlogs.ViewModels
             {
                 string _date = DateInput != null ? DateInput.ToString("D", CultureInfo.InvariantCulture) : "None";
                 string response = await RestClient.GetMusicResponse(NameInput);
-                await Logger.Info($"Searching for album {NameInput}. Response: {response}");
+                //await Logger.Info($"Searching for album {NameInput}. Response: {response}");
                 var musicData = JsonConvert.DeserializeObject<MusicData>(response);
                 if (musicData != null)
                 {
@@ -501,7 +500,7 @@ namespace Backlogs.ViewModels
                         CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
                     };
                     await CreateBacklogItemAsync(backlog);
-                    await Logger.Info("Succesfully created backlog");
+                   // await Logger.Info("Succesfully created backlog");
                 }
                 else
                 {
@@ -511,7 +510,7 @@ namespace Backlogs.ViewModels
             catch (Exception e)
             {
                 await ShowErrorDialogAsync();
-                await Logger.Error("Failed to create backlog", e);
+                //await Logger.Error("Failed to create backlog", e);
             }
         }
 
@@ -524,7 +523,7 @@ namespace Backlogs.ViewModels
             try
             {
                 string response = await RestClient.GetBookResponse(NameInput);
-                await Logger.Info($"Trying to find book {NameInput}. Response {response}");
+                //await Logger.Info($"Trying to find book {NameInput}. Response {response}");
                 var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
                 if (bookData.items.Count > 0)
                 {
@@ -548,7 +547,7 @@ namespace Backlogs.ViewModels
                     }
                     SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
                     await SearchResultSelectedAsync();
-                    await Logger.Info("Succesfully created backlog");
+                   // await Logger.Info("Succesfully created backlog");
                 }
                 else
                 {
@@ -557,7 +556,7 @@ namespace Backlogs.ViewModels
             }
             catch (Exception e)
             {
-                await Logger.Error("Failed to create backlog", e);
+              //  await Logger.Error("Failed to create backlog", e);
             }
         }
 
@@ -570,7 +569,7 @@ namespace Backlogs.ViewModels
         {
             var title = NameInput;
             string response = await RestClient.GetBookResponse(title);
-            await Logger.Info($"Trying to find book {title}. Response {response}");
+           // await Logger.Info($"Trying to find book {title}. Response {response}");
             var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
             Item item = new Item();
             foreach (var i in bookData.items)
@@ -619,7 +618,7 @@ namespace Backlogs.ViewModels
             try
             {
                 string response = await RestClient.GetSeriesResponse(NameInput);
-                await Logger.Info($"Trying to find series {NameInput}. Response: {response}");
+               // await Logger.Info($"Trying to find series {NameInput}. Response: {response}");
                 SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
                 if (seriesResult.results.Length > 0)
                 {
@@ -643,7 +642,7 @@ namespace Backlogs.ViewModels
                     }
                     SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
                     await SearchResultSelectedAsync();
-                    await Logger.Info("Succesfully created backlog");
+                    //await Logger.Info("Succesfully created backlog");
                 }
                 else
                 {
@@ -652,7 +651,7 @@ namespace Backlogs.ViewModels
             }
             catch (Exception e)
             {
-                await Logger.Error("Failed to create backlog", e);
+                //await Logger.Error("Failed to create backlog", e);
             }
         }
 
@@ -695,7 +694,7 @@ namespace Backlogs.ViewModels
             try
             {
                 string response = await RestClient.GetGameResponse(NameInput);
-                await Logger.Info($"Trying to find game {NameInput}. Response: {response}");
+                //await Logger.Info($"Trying to find game {NameInput}. Response: {response}");
                 var result = JsonConvert.DeserializeObject<GameResponse[]>(response);
                 if (result.Length > 0)
                 {
@@ -733,7 +732,7 @@ namespace Backlogs.ViewModels
                     }
                     SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
                     await SearchResultSelectedAsync();
-                    await Logger.Info("Succesfully created backlog");
+                  //  await Logger.Info("Succesfully created backlog");
                 }
                 else
                 {
@@ -742,7 +741,7 @@ namespace Backlogs.ViewModels
             }
             catch (Exception e)
             {
-                await Logger.Error("Failed to create backlog", e);
+                //await Logger.Error("Failed to create backlog", e);
             }
         }
 

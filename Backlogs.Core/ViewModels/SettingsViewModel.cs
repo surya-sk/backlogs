@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using MvvmHelpers.Commands;
 using System.ComponentModel;
 using System.Windows.Input;
-using Logger = Backlogs.Logging.Logger;
 using Backlogs.Services;
 using Backlogs.Constants;
 
@@ -198,11 +197,11 @@ namespace Backlogs.ViewModels
             body.AppendLine("*Enter a brief description of your issue here*");
             body.AppendLine("\n\n\n");
             body.AppendLine("Logs:");
-            var logList = await Logger.GetLogsAsync();
-            foreach (var log in logList)
-            {
-                body.AppendLine(log.ToString());
-            }
+           // var logList = await Logger.GetLogsAsync();
+            //foreach (var log in logList)
+            //{
+            //    body.AppendLine(log.ToString());
+            //}
             await m_emailService.SendEmailAsync(subject, body.ToString());
             ShowProgress = false;
         }
@@ -213,8 +212,8 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task ShowLogsAsync()
         {
-            var logs = await Logger.GetLogsAsync();
-            await m_dialogHander.ShowLogsDialogAsyncAsync(logs);
+            //var logs = await Logger.GetLogsAsync();
+            //await m_dialogHander.ShowLogsDialogAsyncAsync(logs);
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
 ﻿using Backlogs.Constants;
-using Backlogs.Logging;
 using Backlogs.Models;
 using Backlogs.Services;
 using Backlogs.Utils;
@@ -302,8 +301,8 @@ namespace Backlogs.ViewModels
             {
                 try
                 {
-                    await Logger.Info("Internet access");
-                    await Logger.Info("Signing in user....");
+                    //await Logger.Info("Internet access");
+                    //await Logger.Info("Signing in user....");
                 }
                 catch { }
                 await SetUserPhotoAsync();
@@ -441,7 +440,7 @@ namespace Backlogs.ViewModels
                 {
                     try
                     {
-                        await Logger.Info("Signing in...");
+                        //await Logger.Info("Signing in...");
                     }
                     catch { }
                     //await BacklogsManager.GetInstance().DeleteLocalFileAsync();
@@ -462,7 +461,7 @@ namespace Backlogs.ViewModels
         private async Task RateAppOnMSStoreAsync()
         {
             var _ratingUri = new Uri(@"ms-windows-store://review/?ProductId=9N2H8CM2KWVZ");
-            await Windows.System.Launcher.LaunchUriAsync(_ratingUri);
+            //await Windows.System.Launcher.LaunchUriAsync(_ratingUri);
         }
 
         /// <summary>
@@ -526,11 +525,11 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                await Logger.Info("Opening Paypal link...");
+                //await Logger.Info("Opening Paypal link...");
             }
             catch { }
             var paypalUri = new Uri(@"https://paypal.me/surya4822?locale.x=en_US");
-            await Windows.System.Launcher.LaunchUriAsync(paypalUri);
+           // await Windows.System.Launcher.LaunchUriAsync(paypalUri);
         }
 
         private void SyncBacklogs()
@@ -546,7 +545,7 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                await Logger.Info("Generating random backlog...");
+                //await Logger.Info("Generating random backlog...");
             }
             catch { }
             Random _random = new Random();
@@ -622,7 +621,7 @@ namespace Backlogs.ViewModels
 
         private async Task ShowErrorMessage(string message)
         {
-            await m_dialogHandler.ShowErrorDialogAsync("Not enought backlogs", message, "OK");
+            //await m_dialogHandler.ShowErrorDialogAsync("Not enough backlogs", message, "OK");
         }
 
         /// <summary>
@@ -642,7 +641,7 @@ namespace Backlogs.ViewModels
         private async Task OpenWebAppAsync()
         {
             var _webAppUri = new Uri(@"https://backlogs.azurewebsites.net/");
-            await Windows.System.Launcher.LaunchUriAsync(_webAppUri);
+            //await Windows.System.Launcher.LaunchUriAsync(_webAppUri);
         }
 
         /// <summary>

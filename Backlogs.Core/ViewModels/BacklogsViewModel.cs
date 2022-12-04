@@ -7,7 +7,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Backlogs.Logging;
 using System.Net.NetworkInformation;
 using Backlogs.Services;
 using Backlogs.Utils;
@@ -195,7 +194,7 @@ namespace Backlogs.ViewModels
                     await SetUserPhotoAsync();
                     try
                     {
-                        await Logger.Info("Syncing backlogs....");
+                        //await Logger.Info("Syncing backlogs....");
                     }
                     catch { }
                 }

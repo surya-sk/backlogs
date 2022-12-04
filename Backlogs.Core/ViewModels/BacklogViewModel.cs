@@ -1,5 +1,4 @@
 ﻿using Backlogs.Constants;
-using Backlogs.Logging;
 using Backlogs.Models;
 using Backlogs.Services;
 using Backlogs.Utils;
@@ -300,7 +299,7 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                await Logger.Info("Deleting backlog.....");
+                //await Logger.Info("Deleting backlog.....");
             }
             catch { }
             var result = await m_dialogHandler.ShowDeleteConfirmationDialogAsync();
@@ -310,7 +309,7 @@ namespace Backlogs.ViewModels
             }
             try
             {
-                await Logger.Info("Deleted backlog");
+                //await Logger.Info("Deleted backlog");
             }
             catch { }
         }
@@ -361,7 +360,7 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                await Logger.Info("Saving backlog....");
+                //await Logger.Info("Saving backlog....");
             }
             catch { }
             Backlogs[m_backlogIndex] = Backlog;
@@ -377,7 +376,7 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                await Logger.Info("Marking backlog as complete");
+                //await Logger.Info("Marking backlog as complete");
             }
             catch { }
             Backlog.IsComplete = true;
@@ -501,7 +500,7 @@ namespace Backlogs.ViewModels
             }
             var searchQuery = searchTerm.Replace(" ", "+");
             var searchUri = new Uri($"https://www.bing.com/search?q={searchQuery}");
-            await Windows.System.Launcher.LaunchUriAsync(searchUri);
+            //await Windows.System.Launcher.LaunchUriAsync(searchUri);
         }
 
         /// <summary>
