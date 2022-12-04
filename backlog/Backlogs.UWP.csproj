@@ -134,8 +134,6 @@
       <DependentUpon>SearchResultsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Models\Backlog.cs" />
-    <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Services\IDialogHandler.cs" />
     <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\IFileHandler.cs" />
