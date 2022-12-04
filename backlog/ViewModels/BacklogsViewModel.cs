@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Backlogs.Logging;
 using System.Net.NetworkInformation;
-using Microsoft.Toolkit.Uwp;
 using Backlogs.Services;
 using Backlogs.Utils.Core;
 using Backlogs.Constants;
@@ -33,22 +32,16 @@ namespace Backlogs.ViewModels
         private string m_accountPic;
 
         private bool m_isLoading;
-        private ObservableCollection<Backlog> m_filmBacklogs;
-        private ObservableCollection<Backlog> m_tvBacklogs;
-        private ObservableCollection<Backlog> m_gameBacklogs;
-        private ObservableCollection<Backlog> m_musicBacklogs;
-        private ObservableCollection<Backlog> m_bookBacklogs;
-        private ObservableCollection<Backlog> m_incompleteBacklogs;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<Backlog> Backlogs { get; set; }
-        public IncrementalLoadingCollection<BacklogSource, Backlog> IncompleteBacklogs { get; set; }
-        public IncrementalLoadingCollection<BacklogSource, Backlog> FilmBacklogs { get; set; }
-        public IncrementalLoadingCollection<BacklogSource, Backlog> TvBacklogs { get; set; }
-        public IncrementalLoadingCollection<BacklogSource, Backlog> GameBacklogs { get; set; }
-        public IncrementalLoadingCollection<BacklogSource, Backlog> MusicBacklogs { get; set; }
-        public IncrementalLoadingCollection<BacklogSource, Backlog> BookBacklogs { get; set; }
+        public ObservableCollection<Backlog> IncompleteBacklogs { get; set; }
+        public ObservableCollection<Backlog> FilmBacklogs { get; set; }
+        public ObservableCollection<Backlog> TvBacklogs { get; set; }
+        public ObservableCollection<Backlog> GameBacklogs { get; set; }
+        public ObservableCollection<Backlog> MusicBacklogs { get; set; }
+        public ObservableCollection<Backlog> BookBacklogs { get; set; }
 
         public ICommand SortByName { get; }
         public ICommand SortByCreatedDateAsc { get; }
@@ -72,7 +65,7 @@ namespace Backlogs.ViewModels
         {
             get
             {
-                m_sortOrder = m_settings.Get<string>(SettingsConstants.SortOrder);
+                m_sortOrder = "Name";
                 return m_sortOrder;
             }
             set
@@ -187,6 +180,7 @@ namespace Backlogs.ViewModels
             m_dialogHandler = dialogHandler;
             m_fileHandler = fileHandler;
 
+            InitBacklogs();
             PopulateBacklogs();
             m_settings = settings;
         }
@@ -209,6 +203,18 @@ namespace Backlogs.ViewModels
             CheckEmptyBacklogs();
             IsLoading = false;
         }
+        /// <summary>
+        /// Initalize backlogs
+        /// </summary>
+        private void InitBacklogs()
+        {
+            IncompleteBacklogs = BacklogsManager.GetInstance().GetIncompleteBacklogs();
+            FilmBacklogs = new ObservableCollection<Backlog>();
+            TvBacklogs = new ObservableCollection<Backlog>();
+            GameBacklogs = new ObservableCollection<Backlog>();
+            MusicBacklogs = new ObservableCollection<Backlog>();
+            BookBacklogs = new ObservableCollection<Backlog>();
+        }
 
 
         /// <summary>
@@ -216,54 +222,78 @@ namespace Backlogs.ViewModels
         /// </summary>
         public void PopulateBacklogs()
         {
-            m_incompleteBacklogs = BacklogsManager.GetInstance().GetIncompleteBacklogs();
+            IncompleteBacklogs = BacklogsManager.GetInstance().GetIncompleteBacklogs();
             ObservableCollection<Backlog> _backlogs = null;
             switch (SortOrder)
             {
                 case "Name":
-                    _backlogs = new ObservableCollection<Backlog>(m_incompleteBacklogs.OrderBy(b => b.Name));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderBy(b => b.Name));
                     break;
                 case "Created Date Asc.":
-                    _backlogs = new ObservableCollection<Backlog>(m_incompleteBacklogs.OrderBy(b => Convert.ToDateTime(b.CreatedDate, CultureInfo.InvariantCulture)));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderBy(b => Convert.ToDateTime(b.CreatedDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Created Date Dsc.":
-                    _backlogs = new ObservableCollection<Backlog>(m_incompleteBacklogs.OrderByDescending(b => Convert.ToDateTime(b.CreatedDate, CultureInfo.InvariantCulture)));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderByDescending(b => Convert.ToDateTime(b.CreatedDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Target Date Asc.":
-                    _backlogs = new ObservableCollection<Backlog>(m_incompleteBacklogs.OrderBy(b => Convert.ToDateTime(b.TargetDate, CultureInfo.InvariantCulture)));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderBy(b => Convert.ToDateTime(b.TargetDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Target Date Dsc.":
-                    _backlogs = new ObservableCollection<Backlog>(m_incompleteBacklogs.OrderByDescending(b => Convert.ToDateTime(b.TargetDate, CultureInfo.InvariantCulture)));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderByDescending(b => Convert.ToDateTime(b.TargetDate, CultureInfo.InvariantCulture)));
                     break;
                 case "Progress Asc.":
-                    _backlogs = new ObservableCollection<Backlog>(m_incompleteBacklogs.OrderBy(b => b.Progress));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderBy(b => b.Progress));
                     break;
                 case "Progress Dsc.":
-                    _backlogs = new ObservableCollection<Backlog>(m_incompleteBacklogs.OrderByDescending(b => b.Progress));
+                    _backlogs = new ObservableCollection<Backlog>(IncompleteBacklogs.OrderByDescending(b => b.Progress));
                     break;
             }
-            m_filmBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
-            m_tvBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
-            m_gameBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
-            m_musicBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Album.ToString()));
-            m_bookBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Book.ToString()));
-
-            IncompleteBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(m_incompleteBacklogs));
-            FilmBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(m_filmBacklogs));
-            TvBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(m_tvBacklogs));
-            MusicBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(m_musicBacklogs));
-            GameBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(m_gameBacklogs));
-            BookBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(m_bookBacklogs));
+            var _filmBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Film.ToString()));
+            var _tvBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.TV.ToString()));
+            var _gameBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Game.ToString()));
+            var _musicBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Album.ToString()));
+            var _bookBacklogs = new ObservableCollection<Backlog>(_backlogs.Where(b => b.Type == BacklogType.Book.ToString()));
+            IncompleteBacklogs.Clear();
+            FilmBacklogs.Clear();
+            TvBacklogs.Clear();
+            GameBacklogs.Clear();
+            MusicBacklogs.Clear();
+            BookBacklogs.Clear();
+            foreach (var b in _backlogs)
+            {
+                IncompleteBacklogs.Add(b);
+            }
+            foreach (var b in _bookBacklogs)
+            {
+                BookBacklogs.Add(b);
+            }
+            foreach (var b in _filmBacklogs)
+            {
+                FilmBacklogs.Add(b);
+            }
+            foreach (var b in _gameBacklogs)
+            {
+                GameBacklogs.Add(b);
+            }
+            foreach (var b in _tvBacklogs)
+            {
+                TvBacklogs.Add(b);
+            }
+            foreach (var b in _musicBacklogs)
+            {
+                MusicBacklogs.Add(b);
+            }
+            CheckEmptyBacklogs();
         }
 
         private void CheckEmptyBacklogs()
         {
-            BacklogsEmpty = m_incompleteBacklogs.Count <= 0;
-            FilmsEmpty = m_filmBacklogs.Count <= 0;
-            BooksEmpty = m_bookBacklogs.Count <= 0;
-            TVEmpty = m_tvBacklogs.Count <= 0;
-            GamesEmpty = m_gameBacklogs.Count <= 0;
-            AlbumsEmpty = m_musicBacklogs.Count <= 0;
+            BacklogsEmpty = IncompleteBacklogs.Count <= 0;
+            FilmsEmpty = FilmBacklogs.Count <= 0;
+            BooksEmpty = BookBacklogs.Count <= 0;
+            TVEmpty = TvBacklogs.Count <= 0;
+            GamesEmpty = GameBacklogs.Count <= 0;
+            AlbumsEmpty = MusicBacklogs.Count <= 0;
         }
 
         /// <summary>
