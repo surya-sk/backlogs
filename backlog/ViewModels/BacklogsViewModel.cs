@@ -10,7 +10,7 @@ using System.Windows.Input;
 using Backlogs.Logging;
 using System.Net.NetworkInformation;
 using Backlogs.Services;
-using Backlogs.Utils.Core;
+using Backlogs.Utils;
 using Backlogs.Constants;
 
 namespace Backlogs.ViewModels

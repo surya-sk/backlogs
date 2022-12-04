@@ -2,7 +2,7 @@
 using Backlogs.Logging;
 using Backlogs.Models;
 using Backlogs.Services;
-using Backlogs.Utils.Core;
+using Backlogs.Utils;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using MvvmHelpers.Commands;

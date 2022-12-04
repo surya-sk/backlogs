@@ -134,11 +134,6 @@
       <DependentUpon>SearchResultsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logging\Logger.cs" />
-    <Compile Include="UtilsCore\BacklogsManager.cs" />
-    <Compile Include="UtilsCore\BacklogType.cs" />
-    <Compile Include="UtilsCore\Keys.cs" />
-    <Compile Include="UtilsCore\MediaObjects.cs" />
-    <Compile Include="UtilsCore\RestClient.cs" />
     <Compile Include="UtilsUWP\DialogHandler.cs" />
     <Compile Include="UtilsUWP\EmailHandler.cs" />
     <Compile Include="UtilsUWP\FileIO.cs" />

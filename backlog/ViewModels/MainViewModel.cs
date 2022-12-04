@@ -2,7 +2,7 @@
 using Backlogs.Logging;
 using Backlogs.Models;
 using Backlogs.Services;
-using Backlogs.Utils.Core;
+using Backlogs.Utils;
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.ObjectModel;

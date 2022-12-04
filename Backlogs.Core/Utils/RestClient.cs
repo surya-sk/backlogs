@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Backlogs.Utils.Core
+namespace Backlogs.Utils
 {
     public static class RestClient
     {
@@ -81,7 +81,7 @@ namespace Backlogs.Utils.Core
             }
             else
             {
-                await Logging.Logger.Warn("Error fetching Twitch access token. Response: " + tokenResponse);
+                //await Logging.Logger.Warn("Error fetching Twitch access token. Response: " + tokenResponse);
             }
             Uri igdbURL = new Uri($"https://api.igdb.com/v4/games");
             var cl = new HttpClient();

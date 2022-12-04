@@ -1,17 +1,13 @@
 ﻿using Backlogs.Models;
 using Backlogs.Services;
-using Microsoft.Graph;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Backlogs.Utils.Core
+namespace Backlogs.Utils
 {
     public class BacklogsManager
     {

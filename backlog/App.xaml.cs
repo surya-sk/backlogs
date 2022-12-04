@@ -15,7 +15,7 @@ using Backlogs.Utils.UWP;
 using Settings = Backlogs.Utils.UWP.Settings;
 using Backlogs.Constants;
 using FileIO = Windows.Storage.FileIO;
-using Backlogs.Utils.Core;
+using Backlogs.Utils;
 using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace Backlogs

@@ -10,7 +10,7 @@ using System.Windows.Input;
 using MvvmHelpers.Commands;
 using Backlogs.Services;
 using Backlogs.Constants;
-using Backlogs.Utils.Core;
+using Backlogs.Utils;
 
 namespace Backlogs.ViewModels
 {
