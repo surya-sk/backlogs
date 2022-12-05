@@ -34,12 +34,9 @@ namespace Backlogs.ViewModels
         public ObservableCollection<Backlog> FinishedGameBacklogs;
         public ObservableCollection<Backlog> FinishedBookBacklogs;
         public ObservableCollection<Backlog> Backlogs;
-        public Backlog SelectedBacklog;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ICommand SaveBacklog { get; }
-        public ICommand MarkBacklogAsIncomplete { get; }
         public ICommand SortByName { get; }
         public ICommand SortByDateDsc { get; }
         public ICommand SortByDateAsc { get; }
@@ -152,8 +149,6 @@ namespace Backlogs.ViewModels
 
         public CompletedBacklogsViewModel(INavigation navigationService, IUserSettings settings)
         {
-            SaveBacklog = new AsyncCommand(SaveBacklogAsync);
-            MarkBacklogAsIncomplete = new AsyncCommand(MarkBacklogAsIncompleteAsync);
             SortByName = new Command(SortBacklogsByName);
             SortByDateAsc = new Command(SortBacklogsByCompletedDateAsc);
             SortByDateDsc = new Command(SortBacklogsByCompletedDateDsc);
@@ -249,53 +244,6 @@ namespace Backlogs.ViewModels
             TVEmpty = FinishedTVBacklogs.Count <= 0;
             GamesEmpty = FinishedGameBacklogs.Count <= 0;
             AlbumsEmpty = FinishedMusicBacklogs.Count <= 0;
-        }
-
-        /// <summary>
-        /// Saves the backlog
-        /// </summary>
-        /// <returns></returns>
-        private async Task SaveBacklogAsync()
-        {
-            IsLoading = true;
-            foreach (var backlog in Backlogs)
-            {
-                if (backlog.id == SelectedBacklog.id)
-                {
-                    backlog.UserRating = UserRating;
-                }
-            }
-            foreach (var backlog in FinishedBacklogs)
-            {
-                if (backlog.id == SelectedBacklog.id)
-                {
-                    backlog.UserRating = UserRating;
-                }
-            }
-            BacklogsManager.GetInstance().SaveSettings(Backlogs);
-            await BacklogsManager.GetInstance().WriteDataAsync(m_settings.Get<bool>(SettingsConstants.IsSignedIn));
-            IsLoading = false;
-        }
-
-
-        /// <summary>
-        /// Marks backlog as incomplete
-        /// </summary>
-        /// <returns></returns>
-        private async Task MarkBacklogAsIncompleteAsync()
-        {
-            IsLoading = true;
-            foreach (var backlog in Backlogs)
-            {
-                if (backlog.id == SelectedBacklog.id)
-                {
-                    backlog.IsComplete = false;
-                    backlog.CompletedDate = null;
-                }
-            }
-            BacklogsManager.GetInstance().SaveSettings(Backlogs);
-            await BacklogsManager.GetInstance().WriteDataAsync(m_settings.Get<bool>(SettingsConstants.IsSignedIn));
-            ReloadPage();
         }
 
         private void ReloadPage()
