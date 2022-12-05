@@ -32,7 +32,7 @@ namespace Backlogs.Views
             ViewModel = new BacklogViewModel(selectedId, App.Services.GetRequiredService<INavigation>(), 
                 App.Services.GetRequiredService<IDialogHandler>(), App.Services.GetRequiredService<IToastNotificationService>(), 
                 App.Services.GetRequiredService<IShareDialogService>(), App.Services.GetRequiredService<IUserSettings>(),
-                App.Services.GetRequiredService<IFileHandler>());
+                App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<ISystemLauncher>());
             base.OnNavigatedTo(e);
             ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
             imageAnimation?.TryStart(img);

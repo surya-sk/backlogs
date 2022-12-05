@@ -32,7 +32,7 @@ namespace Backlogs.Views
                 App.Services.GetRequiredService<IShareDialogService>(), App.Services.GetRequiredService<IUserSettings>(),
                 App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<ILiveTileService>(),
                 App.Services.GetRequiredService<IFilePicker>(), App.Services.GetRequiredService<IEmailService>(),
-                App.Services.GetService<IMsal>());
+                App.Services.GetService<IMsal>(), App.Services.GetRequiredService<ISystemLauncher>());
             
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;

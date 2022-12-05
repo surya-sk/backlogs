@@ -41,6 +41,7 @@ namespace Backlogs.ViewModels
         private readonly IShareDialogService m_shareDialogService;
         private readonly IUserSettings m_settings;
         private readonly IFileHandler m_fileHandler;
+        private readonly ISystemLauncher m_systemLauncher;
 
         public ObservableCollection<Backlog> Backlogs;
         public Backlog Backlog;
@@ -237,7 +238,7 @@ namespace Backlogs.ViewModels
 
         public BacklogViewModel(Guid id, INavigation navigationService, IDialogHandler dialogHandler, 
             IToastNotificationService notificationService, IShareDialogService shareDialogService,
-            IUserSettings settings, IFileHandler fileHandler)
+            IUserSettings settings, IFileHandler fileHandler, ISystemLauncher systemLauncher)
         {
             LaunchBingSearchResults = new AsyncCommand(LaunchBingSearchResultsAsync);
             OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);
@@ -260,6 +261,7 @@ namespace Backlogs.ViewModels
             m_notificationService = notificationService;
             m_settings = settings;
             m_fileHandler = fileHandler;
+            m_systemLauncher = systemLauncher;
 
             CalendarDate = DateTimeOffset.MinValue;
             NotifTime = TimeSpan.Zero;
@@ -405,7 +407,7 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                //await Logger.Info("Marking backlog as complete");
+                await m_fileHandler.WriteLogsAsync("Marking backlog as complete");
             }
             catch { }
             Backlog.IsComplete = true;
@@ -543,7 +545,7 @@ namespace Backlogs.ViewModels
             }
             var searchQuery = searchTerm.Replace(" ", "+");
             var searchUri = new Uri($"https://www.bing.com/search?q={searchQuery}");
-            //await Windows.System.Launcher.LaunchUriAsync(searchUri);
+            await m_systemLauncher.LaunchUriAsync(searchUri);
         }
 
         /// <summary>

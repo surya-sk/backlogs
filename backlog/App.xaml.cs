@@ -71,7 +71,6 @@ namespace Backlogs
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
-            m_serviceProvider = ConfigureServices();
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -89,6 +88,7 @@ namespace Backlogs
 
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
+                m_serviceProvider = ConfigureServices();
                 m_userSettings = Services.GetRequiredService<IUserSettings>();
                 m_userSettings.UserSettingsChanged += M_userSettings_UserSettingsChanged;
                 m_fileHander = Services.GetRequiredService<IFileHandler>();
@@ -152,6 +152,7 @@ namespace Backlogs
                 .AddSingleton<IShareDialogService, ShareDialogService>()
                 .AddSingleton<IToastNotificationService, ToastNotificationService>()
                 .AddSingleton<INavigation, Navigator>()
+                .AddSingleton<ISystemLauncher, SystemLauncher>()
                 .BuildServiceProvider();
             return provider;
         }

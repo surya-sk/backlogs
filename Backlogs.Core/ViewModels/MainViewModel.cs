@@ -45,6 +45,7 @@ namespace Backlogs.ViewModels
         private readonly IFilePicker m_filePicker;
         private readonly IEmailService m_emailService;
         private readonly IMsal m_msal;
+        private readonly ISystemLauncher m_systemLauncher;
 
         public ObservableCollection<Backlog> RecentlyAdded { get; set; }
         public ObservableCollection<Backlog> RecentlyCompleted { get; set; }
@@ -256,7 +257,7 @@ namespace Backlogs.ViewModels
         public MainViewModel(INavigation navigationService, 
             IDialogHandler dialogHandler, IShareDialogService shareService, 
             IUserSettings settings, IFileHandler fileHandler, ILiveTileService liveTileService,
-            IFilePicker filePicker, IEmailService emailService, IMsal msal)
+            IFilePicker filePicker, IEmailService emailService, IMsal msal, ISystemLauncher systemLauncher)
         {
             m_networkAvailable = NetworkInterface.GetIsNetworkAvailable();
 
@@ -289,6 +290,7 @@ namespace Backlogs.ViewModels
             m_filePicker = filePicker;
             m_emailService = emailService;
             m_msal = msal;
+            m_systemLauncher = systemLauncher;
 
             LoadBacklogs();
             m_liveTileService.EnableLiveTileQueue();
@@ -462,7 +464,7 @@ namespace Backlogs.ViewModels
         private async Task RateAppOnMSStoreAsync()
         {
             var _ratingUri = new Uri(@"ms-windows-store://review/?ProductId=9N2H8CM2KWVZ");
-            //await Windows.System.Launcher.LaunchUriAsync(_ratingUri);
+            await m_systemLauncher.LaunchUriAsync(_ratingUri);
         }
 
         /// <summary>
@@ -530,7 +532,7 @@ namespace Backlogs.ViewModels
             }
             catch { }
             var paypalUri = new Uri(@"https://paypal.me/surya4822?locale.x=en_US");
-           // await Windows.System.Launcher.LaunchUriAsync(paypalUri);
+            await m_systemLauncher.LaunchUriAsync(paypalUri);
         }
 
         private void SyncBacklogs()
@@ -642,7 +644,7 @@ namespace Backlogs.ViewModels
         private async Task OpenWebAppAsync()
         {
             var _webAppUri = new Uri(@"https://backlogs.azurewebsites.net/");
-            //await Windows.System.Launcher.LaunchUriAsync(_webAppUri);
+            await m_systemLauncher.LaunchUriAsync(_webAppUri);
         }
 
         /// <summary>

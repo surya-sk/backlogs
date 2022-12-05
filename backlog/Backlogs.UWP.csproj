@@ -143,6 +143,7 @@
     <Compile Include="Utils\Navigator.cs" />
     <Compile Include="Utils\Settings.cs" />
     <Compile Include="Utils\ShareDialogService.cs" />
+    <Compile Include="Utils\SystemLauncher.cs" />
     <Compile Include="Utils\ToastNotificationService.cs" />
     <Compile Include="Views\BacklogPage.xaml.cs">
       <DependentUpon>BacklogPage.xaml</DependentUpon>
