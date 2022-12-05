@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -33,6 +34,8 @@ namespace Backlogs.ViewModels
         private Uri m_sourceLink;
         private int m_backlogIndex;
         private bool m_showTrailerButton = true;
+        private bool m_showRatingContent;
+        private bool m_hideRatingContent = true;
         private readonly INavigation m_navigationService;
         private readonly IDialogHandler m_dialogHandler;
         private readonly IToastNotificationService m_notificationService;
@@ -54,6 +57,8 @@ namespace Backlogs.ViewModels
         public ICommand ReadMore { get; }
         public ICommand GoBack { get; }
         public ICommand OpenSettings { get; }
+        public ICommand MarkAsCompleted { get; }
+        public ICommand HideRatingControl { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -96,6 +101,7 @@ namespace Backlogs.ViewModels
                 m_showEditControls = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowEditControls)));
                 HideEditControls = !m_showEditControls;
+                ShowRatingContent = !m_showRatingContent;
             }
         }
 
@@ -216,6 +222,27 @@ namespace Backlogs.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowTrailerButton)));
             }
         }
+
+        public bool ShowRatingContent
+        {
+            get => m_showRatingContent;
+            set
+            {
+                m_showRatingContent = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowRatingContent)));
+                HideRatingContent = !m_showRatingContent;
+            }
+        }
+
+        public bool HideRatingContent
+        {
+            get => m_hideRatingContent;
+            set
+            {
+                m_hideRatingContent = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HideRatingContent)));
+            }
+        }
         #endregion
 
         public BacklogViewModel(Guid id, INavigation navigationService, IDialogHandler dialogHandler, 
@@ -229,6 +256,8 @@ namespace Backlogs.ViewModels
             SaveChanges = new AsyncCommand(SaveChangesAsync);
             CloseBacklog = new AsyncCommand(CloseBacklogAsync);
             DeleteBacklog = new AsyncCommand(DeleteBacklogAsync);
+            MarkAsCompleted = new Command(MarkBacklogAsComplete);
+            HideRatingControl = new Command(HideRatingGrid);
             CompleteBacklog = new AsyncCommand(CompleteBacklogAsync);
             ReadMore = new AsyncCommand(ReadMoreAsync);
             GoBack = new Command(NavigateToPreviousPage);
@@ -384,6 +413,22 @@ namespace Backlogs.ViewModels
             Backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
             await SaveBacklogAsync();
             NavigateToPreviousPage();
+        }
+
+        /// <summary>
+        /// Show rating dialog
+        /// </summary>
+        private void MarkBacklogAsComplete()
+        {
+            ShowRatingContent = true;
+        }
+
+        /// <summary>
+        /// Hide the rating dialog
+        /// </summary>
+        private void HideRatingGrid()
+        {
+            ShowRatingContent = false;
         }
 
         /// <summary>
