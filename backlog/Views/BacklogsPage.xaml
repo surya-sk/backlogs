@@ -1,15 +1,15 @@
 ﻿<Page
-    x:Class="backlog.Views.BacklogsPage"
+    x:Class="Backlogs.Views.BacklogsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:backlog.Views"
+    xmlns:local="using:Backlogs.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     mc:Ignorable="d"
-    xmlns:data="using:backlog.Models"
+    xmlns:data="using:Backlogs.Models"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
@@ -198,9 +198,6 @@
             <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedBacklogs}">
                 <FontIcon Glyph="" />
             </AppBarButton>
-            <AppBarButton Label="{x:Bind ViewModel.UserName, Mode=OneWay}" Visibility="{x:Bind ViewModel.SignedIn, Mode=OneWay}">
-                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
-            </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.Reload}" />
                 <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettings}" />
@@ -231,9 +228,6 @@
             <AppBarButton Label="New" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" CommandParameter="{x:Bind mainPivot.SelectedIndex, Mode=OneWay}" />
             <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedBacklogs}">
                 <FontIcon Glyph="" />
-            </AppBarButton>
-            <AppBarButton Label="{x:Bind ViewModel.UserName, Mode=OneWay}" Visibility="{x:Bind ViewModel.SignedIn, Mode=OneWay}">
-                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.Reload}" />

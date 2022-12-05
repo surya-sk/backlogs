@@ -1,18 +1,13 @@
 ﻿<Page
-    x:Class="backlog.Views.BacklogPage"
+    x:Class="Backlogs.Views.BacklogPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:utils="using:backlog.Utils"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <Page.Resources>
-        <utils:BooleanToVisibilityConverter x:Key="BoolToVis" />
-    </Page.Resources>
 
     <Grid x:Name="mainGrid">
         <VisualStateManager.VisualStateGroups>
@@ -38,24 +33,16 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <ContentDialog x:Name="trailerDialog" CloseButtonText="Close" CloseButtonCommand="{x:Bind ViewModel.CloseTrailer}">
-            <Grid Width="600" Height="400">
-                <WebView x:Name="webView" />
-            </Grid>
-        </ContentDialog>
-
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <Grid x:Name="rootGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Grid>
+                <Grid x:Name="metadataGrid">
                     <Grid.Background>
                         <ImageBrush ImageSource="{x:Bind ViewModel.Backlog.ImageURL}" Stretch="UniformToFill" />
                     </Grid.Background>
@@ -88,81 +75,76 @@
                     </RelativePanel>
                 </Grid>
 
-                <RelativePanel x:Name="DatesPanel" Grid.Row="1" Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}">
-                    <StackPanel x:Name="CreatedPanel" Margin="30" >
-                        <TextBlock Text="Created Date" FontStyle="Oblique" />
-                        <TextBlock Text="{x:Bind ViewModel.Backlog.CreatedDate}" />
-                    </StackPanel>
-                    <StackPanel RelativePanel.RightOf="CreatedPanel"  Margin="30">
-                        <TextBlock Text="Target Date" FontStyle="Oblique" />
-                        <TextBlock Text="{x:Bind ViewModel.Backlog.TargetDate, Mode=TwoWay}" />
-                    </StackPanel>
-                </RelativePanel>
+                <Grid x:Name="infoGrid" Grid.Row="1" Visibility="{x:Bind ViewModel.HideRatingContent, Mode=OneWay}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <RelativePanel x:Name="DatesPanel" Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}">
+                        <StackPanel x:Name="CreatedPanel" Margin="30" >
+                            <TextBlock Text="Created Date" FontStyle="Oblique" />
+                            <TextBlock Text="{x:Bind ViewModel.Backlog.CreatedDate}" />
+                        </StackPanel>
+                        <StackPanel RelativePanel.RightOf="CreatedPanel"  Margin="30">
+                            <TextBlock Text="Target Date" FontStyle="Oblique" />
+                            <TextBlock Text="{x:Bind ViewModel.Backlog.TargetDate, Mode=TwoWay}" />
+                        </StackPanel>
+                    </RelativePanel>
 
-                <StackPanel Grid.Row="2" Margin="30" Visibility="{x:Bind ViewModel.Backlog.ShowProgress}">
-                    <TextBlock Text="Progress" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,10" />
-                    <TextBlock Text="Enter how much progress you've made" FontStyle="Oblique" Margin="0,0,0,10" />
-                    <StackPanel Orientation="Horizontal" Margin="10">
-                        <muxc:NumberBox x:Name="ProgressNumBox" Value="{x:Bind ViewModel.Backlog.Progress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpinButtonPlacementMode="Inline" 
+                    <StackPanel Grid.Row="1" Margin="30" Visibility="{x:Bind ViewModel.Backlog.ShowProgress}">
+                        <TextBlock Text="Progress" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,10" />
+                        <TextBlock Text="Enter how much progress you've made" FontStyle="Oblique" Margin="0,0,0,10" />
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <muxc:NumberBox x:Name="ProgressNumBox" Value="{x:Bind ViewModel.Backlog.Progress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpinButtonPlacementMode="Inline" 
                                          Minimum="0" Maximum="{x:Bind ViewModel.Backlog.Length}"/>
-                        <TextBlock Text="of"  Margin="10,5,10,0" FontSize="15"/>
-                        <TextBlock Text="{x:Bind ViewModel.Backlog.Length}" Margin="0,5,10,0" FontSize="15"/>
-                        <TextBlock Text="{x:Bind ViewModel.Backlog.Units}" Margin="0,5,10,0" FontSize="15" />
-                    </StackPanel>
-                    <muxc:ProgressBar x:Name="backlogProgressBar" Value="{x:Bind ViewModel.Backlog.Progress, Mode=TwoWay}" Minimum="0" Maximum="{x:Bind ViewModel.Backlog.Length}" 
+                            <TextBlock Text="of"  Margin="10,5,10,0" FontSize="15"/>
+                            <TextBlock Text="{x:Bind ViewModel.Backlog.Length}" Margin="0,5,10,0" FontSize="15"/>
+                            <TextBlock Text="{x:Bind ViewModel.Backlog.Units}" Margin="0,5,10,0" FontSize="15" />
+                        </StackPanel>
+                        <muxc:ProgressBar x:Name="backlogProgressBar" Value="{x:Bind ViewModel.Backlog.Progress, Mode=TwoWay}" Minimum="0" Maximum="{x:Bind ViewModel.Backlog.Length}" 
                                       IsIndeterminate="False" Margin="20"/>
-                </StackPanel>
+                    </StackPanel>
 
-                <ToggleSwitch Grid.Row="2" x:Name="ProgressSwitch" Visibility="{x:Bind ViewModel.ShowProgressSwitch, Mode=OneWay}" OnContent="Yes" OffContent="No" Header="In Progress"
+                    <ToggleSwitch Grid.Row="1" x:Name="ProgressSwitch" Visibility="{x:Bind ViewModel.ShowProgressSwitch, Mode=OneWay}" OnContent="Yes" OffContent="No" Header="In Progress"
                               IsOn="{x:Bind ViewModel.InProgress, Mode=TwoWay}" Margin="30"/>
 
-                <StackPanel x:Name="CompletePanel" Grid.Row="3" Margin="30" Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}">
-                    <TextBlock Text="Have you finished checking this out?" Margin="0,20,0,10" />
-                    <Button x:Name="FinishButton" Content="Mark As Complete" Background="Green" Command="{x:Bind ViewModel.LaunchRatingDialog}" />
-                </StackPanel>
+                    <StackPanel x:Name="CompletePanel" Grid.Row="2" Margin="30" 
+                            Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}">
+                        <TextBlock Text="Have you finished checking this out?" Margin="0,20,0,10" />
+                        <Button x:Name="FinishButton" Content="Mark As Complete" Background="Green" Command="{x:Bind ViewModel.MarkAsCompleted}" />
+                    </StackPanel>
 
-                <StackPanel x:Name="NotifPanel" Grid.Row="3" Margin="30" Visibility="{x:Bind ViewModel.ShowEditControls, Mode=OneWay}">
-                    <TextBlock Text="When do you want to check this out?" Margin="10,0,0,20" />
-                    <CalendarDatePicker x:Name="DatePicker" Margin="10,0,0,20" Date="{x:Bind ViewModel.CalendarDate, Mode=TwoWay}"
+                    <StackPanel x:Name="NotifPanel" Grid.Row="2" Margin="30" Visibility="{x:Bind ViewModel.ShowEditControls, Mode=OneWay}">
+                        <TextBlock Text="When do you want to check this out?" Margin="10,0,0,20" />
+                        <CalendarDatePicker x:Name="DatePicker" Margin="10,0,0,20" Date="{x:Bind ViewModel.CalendarDate, Mode=TwoWay}"
                                         MinDate="{x:Bind ViewModel.Today}"/>
-                    <ToggleSwitch x:Name="NotifyToggle" OffContent="No" OnContent="Yes" Header="Notify me on this date"
+                        <ToggleSwitch x:Name="NotifyToggle" OffContent="No" OnContent="Yes" Header="Notify me on this date"
                                   IsEnabled="{x:Bind ViewModel.EnableNotificationToggle, Mode=OneWay}" IsOn="{x:Bind ViewModel.ShowNotificationOptions, Mode=TwoWay}" Margin="10,0,0,20" />
-                    <TimePicker x:Name="TimePicker" Header="When do you want to be notified?" Margin="10,0,0,20"
+                        <TimePicker x:Name="TimePicker" Header="When do you want to be notified?" Margin="10,0,0,20"
                                 Visibility="{x:Bind ViewModel.ShowNotificationOptions, Mode=OneWay}" Time="{x:Bind ViewModel.NotifTime, Mode=TwoWay}" />
-                </StackPanel>
+                    </StackPanel>
+                </Grid>
 
-                <ContentDialog x:Name="RatingDialog" Title="Are you done?">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
 
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="What did you think of" Margin="0,0,5,0" TextWrapping="Wrap" />
-                            <TextBlock Text="{x:Bind ViewModel.Backlog.Name}" TextWrapping="Wrap"/>
-                            <TextBlock Text="?" />
-                        </StackPanel>
+                <Grid Grid.Row="2" Visibility="{x:Bind ViewModel.ShowRatingContent, Mode=OneWay}"
+                      Margin="40">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                        <muxc:RatingControl Grid.Row="1" Value="{x:Bind ViewModel.UserRating, Mode=OneWay}" IsClearEnabled="True"
+                    <muxc:RatingControl Value="{x:Bind ViewModel.Backlog.UserRating, Mode=OneWay}" IsClearEnabled="True"
                                         Margin="0,20,0,10" HorizontalAlignment="Center" IsReadOnly="True"/>
 
-                        <StackPanel Grid.Row="2">
-                            <Slider x:Name="RatingSlider" Value="{x:Bind ViewModel.UserRating, Mode=TwoWay}"
+                    <StackPanel Grid.Row="1">
+                        <Slider x:Name="RatingSlider" Value="{x:Bind ViewModel.Backlog.UserRating, Mode=TwoWay}"
                                     Maximum="5" Minimum="-1" StepFrequency="0.5" Margin="10" />
-                            <TextBlock Text="Move the slider to update the rating" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-                        </StackPanel>
+                        <TextBlock Text="Move the slider to update the rating" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
 
-                        <StackPanel Orientation="Horizontal" Grid.Row="3">
-                            <Button x:Name="CompleteButton" Content="Done" Background="Green" Command="{x:Bind ViewModel.CompleteBacklog}" Margin="10" />
-                            <Button x:Name="CancelButton" Content="Cancel" Background="Red" Command="{x:Bind ViewModel.HideRatingDialog}" />
-                        </StackPanel>
-                    </Grid>
-                </ContentDialog>
-
-                <RelativePanel Grid.Row="4" Margin="30">
+                <RelativePanel Grid.Row="3" Margin="30">
                     <TextBlock x:Name="SourceText" Text="Metadata obtained from" Margin="0,0,5,0"/>
                     <HyperlinkButton Content="{x:Bind ViewModel.SourceName, Mode=OneWay}" NavigateUri="{x:Bind ViewModel.SourceLink, Mode=OneWay}" RelativePanel.RightOf="SourceText" Padding="0,0,0,8"/>
                 </RelativePanel>

@@ -1,5 +1,7 @@
-﻿using backlog.Models;
-using backlog.ViewModels;
+﻿using Backlogs.Models;
+using Backlogs.Services;
+using Backlogs.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace backlog.Views
+namespace Backlogs.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -29,7 +31,8 @@ namespace backlog.Views
         public BacklogsPage()
         {
             this.InitializeComponent();
-            ViewModel = new BacklogsViewModel(App.GetNavigationService());
+            ViewModel = new BacklogsViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
+                App.Services.GetRequiredService<IFileHandler>(), App.Services.GetService<IUserSettings>());
             IsNetwordAvailable = NetworkInterface.GetIsNetworkAvailable();
         }
 
@@ -51,7 +54,13 @@ namespace backlog.Views
             await ViewModel.SyncBacklogs(sync);
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            view.BackRequested += ViewModel.GoBack;
+            view.BackRequested += View_BackRequested;
+        }
+
+        private void View_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            ViewModel.GoBack();
+            e.Handled = true;
         }
 
 

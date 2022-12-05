@@ -1,36 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using backlog.Views;
-using backlog.Utils;
+using Backlogs.Views;
 using System.Reflection;
-using Microsoft.Identity.Client;
 using Windows.Storage;
 using System.Threading.Tasks;
-using backlog.Saving;
-using backlog.ViewModels;
+using Backlogs.ViewModels;
+using Backlogs.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Backlogs.Utils.UWP;
+using Settings = Backlogs.Utils.UWP.Settings;
+using Backlogs.Constants;
+using FileIO = Windows.Storage.FileIO;
+using Backlogs.Utils;
+using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
+using System.Diagnostics;
 
-namespace backlog
+namespace Backlogs
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
     sealed partial class App : Application
     {
-        private static NavigationService m_navigationService = new NavigationService();
+        private IServiceProvider m_serviceProvider;
+        private IUserSettings m_userSettings;
+        private INavigation m_navigationService;
+        private IFileHandler m_fileHander;
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
@@ -39,13 +38,20 @@ namespace backlog
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             App.Current.UnhandledException += OnUnHandledException;
-            m_navigationService.RegisterViewForViewModel(typeof(MainViewModel), typeof(MainPage));
-            m_navigationService.RegisterViewForViewModel(typeof(BacklogsViewModel), typeof(BacklogsPage));
-            m_navigationService.RegisterViewForViewModel(typeof(BacklogViewModel), typeof(BacklogPage));
-            m_navigationService.RegisterViewForViewModel(typeof(CompletedBacklogsViewModel), typeof(CompletedBacklogsPage));
-            m_navigationService.RegisterViewForViewModel(typeof(CreateBacklogViewModel), typeof(CreatePage));
-            m_navigationService.RegisterViewForViewModel(typeof(ImportBacklogViewModel), typeof(ImportBacklog));
-            m_navigationService.RegisterViewForViewModel(typeof(SettingsViewModel), typeof(SettingsPage));
+            m_serviceProvider = ConfigureServices();
+        }
+
+        public static IServiceProvider Services
+        {
+            get
+            {
+                IServiceProvider serviceProvider = ((App)Current).m_serviceProvider;
+                if (serviceProvider == null)
+                {
+                    throw new InvalidOperationException("Service is not initialized");
+                }
+                return serviceProvider;
+            }
         }
 
         public static TEnum GetEnum<TEnum>(string text) where TEnum : struct
@@ -55,11 +61,6 @@ namespace backlog
                 throw new InvalidOperationException("Generic parameter 'TEnum' must be an enum.");
             }
             return (TEnum)Enum.Parse(typeof(TEnum), text);
-        }
-
-        public static NavigationService GetNavigationService()
-        {
-            return m_navigationService;
         }
 
         /// <summary>
@@ -87,6 +88,18 @@ namespace backlog
 
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
+                m_serviceProvider = ConfigureServices();
+                m_userSettings = Services.GetRequiredService<IUserSettings>();
+                m_userSettings.UserSettingsChanged += M_userSettings_UserSettingsChanged;
+                m_fileHander = Services.GetRequiredService<IFileHandler>();
+                m_navigationService = Services.GetRequiredService<INavigation>();
+                m_navigationService.RegisterViewForViewModel(typeof(MainViewModel), typeof(MainPage));
+                m_navigationService.RegisterViewForViewModel(typeof(BacklogsViewModel), typeof(BacklogsPage));
+                m_navigationService.RegisterViewForViewModel(typeof(BacklogViewModel), typeof(BacklogPage));
+                m_navigationService.RegisterViewForViewModel(typeof(CompletedBacklogsViewModel), typeof(CompletedBacklogsPage));
+                m_navigationService.RegisterViewForViewModel(typeof(CreateBacklogViewModel), typeof(CreatePage));
+                m_navigationService.RegisterViewForViewModel(typeof(ImportBacklogViewModel), typeof(ImportBacklog));
+                m_navigationService.RegisterViewForViewModel(typeof(SettingsViewModel), typeof(SettingsPage));
             }
 
             if (e.PrelaunchActivated == false)
@@ -100,19 +113,48 @@ namespace backlog
 
                     var version = Package.Current.Id.Version;
                     string currVer = string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
-                    if(Settings.Version == null || Settings.Version != currVer)
+                    var settingsService = Services.GetRequiredService<IUserSettings>();
+                    var settingsVersion = settingsService.Get<string>(SettingsConstants.Version);
+                    if (settingsVersion == null || settingsVersion != currVer)
                     {
-                        Settings.ShowWhatsNew = true;
+                        settingsService.Set(SettingsConstants.ShowWhatsNew, true);
                     }
-                    Settings.Version = currVer;
-
-                    Task.Run(async () => { await SaveData.GetInstance().ReadDataAsync(); }).Wait();
-                    SaveData.GetInstance().ResetHelperBacklogs();
+                    settingsService.Set(SettingsConstants.Version, currVer);
+                    BacklogsManager.GetInstance().InitBacklogsManager(m_fileHander);
+                    Task.Run(async () => { await BacklogsManager.GetInstance().ReadDataAsync(); }).Wait();
+                    BacklogsManager.GetInstance().ResetHelperBacklogs();
                     rootFrame.Navigate(typeof(MainPage), "sync");
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+            SetAppTheme();
+        }
+
+        private void M_userSettings_UserSettingsChanged(object sender, string e)
+        {
+            if(e == SettingsConstants.AppTheme)
+            {
+                SetAppTheme();
+            }
+        }
+
+        private static IServiceProvider ConfigureServices()
+        {
+            var provider = new ServiceCollection()
+                .AddSingleton<IUserSettings, Settings>()
+                .AddSingleton<IMsal, MSAL>()
+                .AddSingleton<IDialogHandler, DialogHandler>()
+                .AddSingleton<IEmailService, EmailHandler>()
+                .AddSingleton<IFileHandler, Backlogs.Utils.UWP.FileIO>()
+                .AddSingleton<IFilePicker, FilePickerService>()
+                .AddSingleton<ILiveTileService, LiveTileManager>()
+                .AddSingleton<IShareDialogService, ShareDialogService>()
+                .AddSingleton<IToastNotificationService, ToastNotificationService>()
+                .AddSingleton<INavigation, Navigator>()
+                .AddSingleton<ISystemLauncher, SystemLauncher>()
+                .BuildServiceProvider();
+            return provider;
         }
 
         /// <summary>
@@ -150,17 +192,30 @@ namespace backlog
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
             base.OnBackgroundActivated(args);
+        }
 
-            var deferral = args.TaskInstance.GetDeferral();
-
-            switch (args.TaskInstance.Task.Name)
+        private void SetAppTheme()
+        {
+            object themeObject = ApplicationData.Current.LocalSettings.Values[SettingsConstants.AppTheme];
+            if(themeObject != null && GetRootFrame() != null)
             {
-                case "ToastTask":
-                    new ToastBackgroundTask().Run(args.TaskInstance);
-                    break;
+                string theme = themeObject.ToString();
+                switch(theme)
+                {
+                    case "Light":
+                        GetRootFrame().RequestedTheme = ElementTheme.Light;
+                        break;
+                    case "Dark":
+                        GetRootFrame().RequestedTheme = ElementTheme.Dark;
+                        break;
+                    case "System":
+                        GetRootFrame().RequestedTheme = ElementTheme.Default;
+                        break;
+                    default:
+                        GetRootFrame().RequestedTheme = ElementTheme.Default;
+                        break;
+                }
             }
-
-            deferral.Complete();
         }
 
         /// <summary>
@@ -170,7 +225,6 @@ namespace backlog
         private void InitFrame(IActivatedEventArgs args)
         {
             Frame rootFrame = GetRootFrame();
-            ThemeHelper.Initialize();
 
             rootFrame.Navigate(typeof(MainPage), "sync");
         }
