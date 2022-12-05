@@ -1,10 +1,12 @@
 ﻿using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using backlog.ViewModels;
+using Backlogs.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using Backlogs.Services;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace backlog.Views
+namespace Backlogs.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -17,8 +19,10 @@ namespace backlog.Views
         public CreatePage()
         {
             this.InitializeComponent();
-            var _navService = App.GetNavigationService();
-            ViewModel = new CreateBacklogViewModel(resultsDialog, _navService);
+            ViewModel = new CreateBacklogViewModel(App.Services.GetRequiredService<INavigation>(), 
+                App.Services.GetRequiredService<IDialogHandler>(),
+                App.Services.GetRequiredService<IToastNotificationService>(), App.Services.GetService<IUserSettings>(),
+                App.Services.GetRequiredService<IFileHandler>());
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)

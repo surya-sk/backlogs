@@ -3,11 +3,13 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Core;
-using backlog.ViewModels;
+using Backlogs.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using Backlogs.Services;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace backlog.Views
+namespace Backlogs.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -27,7 +29,10 @@ namespace backlog.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Guid selectedId = (Guid)e.Parameter;
-            ViewModel = new BacklogViewModel(selectedId, ratingDialog:RatingDialog, trailerDialog:trailerDialog, webView:webView, App.GetNavigationService());
+            ViewModel = new BacklogViewModel(selectedId, App.Services.GetRequiredService<INavigation>(), 
+                App.Services.GetRequiredService<IDialogHandler>(), App.Services.GetRequiredService<IToastNotificationService>(), 
+                App.Services.GetRequiredService<IShareDialogService>(), App.Services.GetRequiredService<IUserSettings>(),
+                App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<ISystemLauncher>());
             base.OnNavigatedTo(e);
             ConnectedAnimation imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("cover");
             imageAnimation?.TryStart(img);
