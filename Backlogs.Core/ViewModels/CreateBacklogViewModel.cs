@@ -20,7 +20,7 @@ namespace Backlogs.ViewModels
     public class CreateBacklogViewModel: INotifyPropertyChanged
     {
         private string m_selectedType;
-        private int m_selectedIndex;
+        private int m_selectedIndex = -1;
         private string m_placeholderText = "Enter name";
         private string m_nameInput;
         private DateTimeOffset m_dateInput;
@@ -402,6 +402,7 @@ namespace Backlogs.ViewModels
                     {
                         try
                         {
+                            if (String.IsNullOrEmpty(result.image)) continue;
                             SearchResults.Add(new SearchResult
                             {
                                 Id = result.id,
@@ -627,6 +628,7 @@ namespace Backlogs.ViewModels
                     {
                         try
                         {
+                            if (String.IsNullOrEmpty(result.image)) continue;
                             SearchResults.Add(new SearchResult
                             {
                                 Id = result.id,
