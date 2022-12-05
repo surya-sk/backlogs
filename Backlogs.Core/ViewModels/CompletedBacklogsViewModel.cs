@@ -74,7 +74,7 @@ namespace Backlogs.ViewModels
         {
             get
             {
-                m_sortOrder = "Name";
+                m_sortOrder = m_settings.Get<string>(SettingsConstants.CompletedSortOrder);
                 return m_sortOrder;
             }
             set
@@ -163,10 +163,10 @@ namespace Backlogs.ViewModels
             OpenSettings = new Command(NavigateToSettingsPage);
 
             m_navigationService = navigationService;
+            m_settings = settings;
 
             Backlogs = BacklogsManager.GetInstance().GetBacklogs();
             PopulateBacklogs();
-            m_settings = settings;
         }
 
         /// <summary>

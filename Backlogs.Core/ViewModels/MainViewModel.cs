@@ -6,6 +6,7 @@ using MvvmHelpers.Commands;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -279,7 +280,6 @@ namespace Backlogs.ViewModels
             InProgress = new ObservableCollection<Backlog>();
             Upcoming = new ObservableCollection<Backlog>();
 
-            LoadBacklogs();
             m_navigationService = navigationService;
             m_dialogHandler = dialogHandler;
             m_shareService = shareService;
@@ -290,6 +290,7 @@ namespace Backlogs.ViewModels
             m_emailService = emailService;
             m_msal = msal;
 
+            LoadBacklogs();
             m_liveTileService.EnableLiveTileQueue();
         }
 
@@ -621,7 +622,7 @@ namespace Backlogs.ViewModels
 
         private async Task ShowErrorMessage(string message)
         {
-            //await m_dialogHandler.ShowErrorDialogAsync("Not enough backlogs", message, "OK");
+            await m_dialogHandler.ShowErrorDialogAsync("Not enough backlogs", message, "OK");
         }
 
         /// <summary>

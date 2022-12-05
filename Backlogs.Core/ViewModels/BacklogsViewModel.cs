@@ -64,7 +64,7 @@ namespace Backlogs.ViewModels
         {
             get
             {
-                m_sortOrder = "Name";
+                m_sortOrder = m_settings.Get<string>(SettingsConstants.SortOrder);
                 return m_sortOrder;
             }
             set
@@ -178,10 +178,10 @@ namespace Backlogs.ViewModels
             m_navigationService = navigationService;
             m_dialogHandler = dialogHandler;
             m_fileHandler = fileHandler;
+            m_settings = settings;
 
             InitBacklogs();
             PopulateBacklogs();
-            m_settings = settings;
         }
 
         public async Task SyncBacklogs(bool sync)

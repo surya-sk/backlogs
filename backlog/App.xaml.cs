@@ -17,6 +17,7 @@ using Backlogs.Constants;
 using FileIO = Windows.Storage.FileIO;
 using Backlogs.Utils;
 using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
+using System.Diagnostics;
 
 namespace Backlogs
 {
@@ -37,6 +38,7 @@ namespace Backlogs
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             App.Current.UnhandledException += OnUnHandledException;
+            m_serviceProvider = ConfigureServices();
         }
 
         public static IServiceProvider Services
@@ -69,6 +71,7 @@ namespace Backlogs
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
+            m_serviceProvider = ConfigureServices();
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -86,7 +89,6 @@ namespace Backlogs
 
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
-                m_serviceProvider = ConfigureServices();
                 m_userSettings = Services.GetRequiredService<IUserSettings>();
                 m_userSettings.UserSettingsChanged += M_userSettings_UserSettingsChanged;
                 m_fileHander = Services.GetRequiredService<IFileHandler>();
