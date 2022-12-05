@@ -134,16 +134,16 @@
       <DependentUpon>SearchResultsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logging\Logger.cs" />
-    <Compile Include="UtilsUWP\DialogHandler.cs" />
-    <Compile Include="UtilsUWP\EmailHandler.cs" />
-    <Compile Include="UtilsUWP\FileIO.cs" />
-    <Compile Include="UtilsUWP\FilePickerService.cs" />
-    <Compile Include="UtilsUWP\LiveTileManager.cs" />
-    <Compile Include="UtilsUWP\MSAL.cs" />
-    <Compile Include="UtilsUWP\Navigator.cs" />
-    <Compile Include="UtilsUWP\Settings.cs" />
-    <Compile Include="UtilsUWP\ShareDialogService.cs" />
-    <Compile Include="UtilsUWP\ToastNotificationService.cs" />
+    <Compile Include="Utils\DialogHandler.cs" />
+    <Compile Include="Utils\EmailHandler.cs" />
+    <Compile Include="Utils\FileIO.cs" />
+    <Compile Include="Utils\FilePickerService.cs" />
+    <Compile Include="Utils\LiveTileManager.cs" />
+    <Compile Include="Utils\MSAL.cs" />
+    <Compile Include="Utils\Navigator.cs" />
+    <Compile Include="Utils\Settings.cs" />
+    <Compile Include="Utils\ShareDialogService.cs" />
+    <Compile Include="Utils\ToastNotificationService.cs" />
     <Compile Include="Views\BacklogPage.xaml.cs">
       <DependentUpon>BacklogPage.xaml</DependentUpon>
     </Compile>
