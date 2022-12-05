@@ -1,4 +1,4 @@
-<img src="backlog/Assets/app-icon.png" width="100" height="100" />
+<img src="Backlogs.UWP/Assets/app-icon.png" width="100" height="100" />
 <h2>Backlogs</h2>
 
 Backlogs is a native Windows application that lets you manage your film, TV, music, game and book backlogs all in one place. The app supports cross-device syncing across devices signed in with your Microsoft account.
