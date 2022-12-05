@@ -533,6 +533,7 @@ namespace Backlogs.ViewModels
                     {
                         try
                         {
+                            if (String.IsNullOrEmpty(item.volumeInfo.imageLinks.thumbnail)) continue;
                             SearchResults.Add(new SearchResult
                             {
                                 Id = item.id,
@@ -719,6 +720,7 @@ namespace Backlogs.ViewModels
                                 releaseDate = releaseDate.ToString("D"),
                                 image = "https:" + gameCover[0].url
                             };
+                            if (String.IsNullOrEmpty(game.image)) continue;
                             SearchResults.Add(new SearchResult
                             {
                                 Id = res.id.ToString(),
