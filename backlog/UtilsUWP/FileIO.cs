@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Backlogs.Utils.UWP
 {
@@ -92,7 +93,7 @@ namespace Backlogs.Utils.UWP
         {
             string json = JsonConvert.SerializeObject(backlogs);
             StorageFile storageFile = await m_localFolder.CreateFileAsync(m_fileName, CreationCollisionOption.ReplaceExisting);
-            await WriteTextAsync(m_fileName, json);
+            await Windows.Storage.FileIO.WriteTextAsync(storageFile, json);
             var graphServiceClient = await App.Services.GetRequiredService<IMsal>().GetGraphServiceClient();
             if (sync)
             {
