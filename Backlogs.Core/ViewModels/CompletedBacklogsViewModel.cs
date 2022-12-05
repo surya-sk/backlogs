@@ -166,6 +166,12 @@ namespace Backlogs.ViewModels
             m_settings = settings;
 
             Backlogs = BacklogsManager.GetInstance().GetBacklogs();
+            FinishedBacklogs = BacklogsManager.GetInstance().GetCompletedBacklogs();
+            FinishedBookBacklogs = new ObservableCollection<Backlog>();
+            FinishedFilmBacklogs = new ObservableCollection<Backlog>();
+            FinishedTVBacklogs = new ObservableCollection<Backlog>();
+            FinishedMusicBacklogs = new ObservableCollection<Backlog>();
+            FinishedGameBacklogs = new ObservableCollection<Backlog>();
             PopulateBacklogs();
         }
 
