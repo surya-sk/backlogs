@@ -16,6 +16,7 @@ namespace Backlogs.Core.ViewModels
         private bool m_isLoading;
         private readonly INavigation m_navigator;
         private readonly IUserSettings m_settings;
+        private readonly IShareDialogService m_shareDialog;
         private int m_backlogIndex;
 
         public ObservableCollection<Backlog> Backlogs;
@@ -23,6 +24,7 @@ namespace Backlogs.Core.ViewModels
 
         public ICommand SaveChanges { get; }
         public ICommand MarkAsIncomplete { get; }
+        public ICommand ShareBacklog { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -38,13 +40,15 @@ namespace Backlogs.Core.ViewModels
         }
         #endregion
 
-        public CompletedBacklogViewModel(Guid id, INavigation navigator, IUserSettings settings)
+        public CompletedBacklogViewModel(Guid id, INavigation navigator, IUserSettings settings, IShareDialogService shareDialog)
         {
             m_navigator= navigator;
             m_settings = settings;
+            m_shareDialog = shareDialog;
 
             SaveChanges = new AsyncCommand(SaveAndCloseAsync);
             MarkAsIncomplete= new AsyncCommand(MarkAsIncompleteAsync);
+            ShareBacklog = new AsyncCommand(ShareBacklogAsync);
 
             Backlogs = BacklogsManager.GetInstance().GetBacklogs();
 
@@ -81,6 +85,17 @@ namespace Backlogs.Core.ViewModels
             Backlog.IsComplete = false;
             Backlog.CompletedDate = null;
             await SaveAndCloseAsync();
+        }
+
+        /// <summary>
+        /// Open Windows share window to share backlog
+        /// </summary>
+        /// <returns></returns>
+        private async Task ShareBacklogAsync()
+        {
+            IsLoading = true;
+            await m_shareDialog.ShowSearchDialog(Backlog);
+            IsLoading = false;
         }
 
         private void GoToPrevPage()

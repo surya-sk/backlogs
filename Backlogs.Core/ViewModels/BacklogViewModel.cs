@@ -29,7 +29,6 @@ namespace Backlogs.ViewModels
         private bool m_showNotificationOptions;
         private DateTimeOffset m_calendarDate;
         private TimeSpan m_notifTime;
-        private double m_userRating;
         private string m_sourceName;
         private Uri m_sourceLink;
         private int m_backlogIndex;
@@ -180,16 +179,6 @@ namespace Backlogs.ViewModels
             {
                 m_isLoading = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));
-            }
-        }
-
-        public double UserRating
-        {
-            get => m_userRating;
-            set
-            {
-                m_userRating = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserRating)));
             }
         }
 
@@ -417,7 +406,6 @@ namespace Backlogs.ViewModels
             }
             catch { }
             Backlog.IsComplete = true;
-            Backlog.UserRating = UserRating;
             Backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
             await SaveBacklogAsync();
         }
