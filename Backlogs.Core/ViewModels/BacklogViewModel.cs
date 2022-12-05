@@ -364,7 +364,15 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task CloseBacklogAsync()
         {
-            await SaveBacklogAsync();
+            if(ShowRatingContent)
+            {
+                await CompleteBacklogAsync();
+            }
+            else
+            {
+
+                await SaveBacklogAsync();
+            }
             NavigateToPreviousPage();
         }
 
@@ -412,7 +420,6 @@ namespace Backlogs.ViewModels
             Backlog.UserRating = UserRating;
             Backlog.CompletedDate = DateTimeOffset.Now.Date.ToString("d", CultureInfo.InvariantCulture);
             await SaveBacklogAsync();
-            NavigateToPreviousPage();
         }
 
         /// <summary>
