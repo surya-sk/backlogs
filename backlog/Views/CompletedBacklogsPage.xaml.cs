@@ -53,30 +53,33 @@ namespace Backlogs.Views
             //await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
         }
 
-        private async void MainGrid_ItemClick(object sender, ItemClickEventArgs e)
+        private void MainGrid_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var selectedBacklog = e.ClickedItem as Backlog;
-            SelectedBacklog = selectedBacklog;
-            ViewModel.SelectedBacklog = selectedBacklog;
-            try
+            var selectedBacklog = (Backlog)e.ClickedItem;
+            PivotItem pivotItem = (PivotItem)mainPivot.SelectedItem;
+            // Prepare connected animation based on which section the user is on
+            switch (pivotItem.Header.ToString())
             {
-                ConnectedAnimation connectedAnimation = MainGrid.PrepareConnectedAnimation("forwardAnimation", SelectedBacklog, "connectedElement");
-                connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
-                //connectedAnimation.TryStart(destinationGrid);
+                default:
+                    BacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break;
+                case "films":
+                    FilmsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break;
+                case "tv":
+                    TVGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break;
+                case "books":
+                    BooksGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break;
+                case "games":
+                    GamesGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break;
+                case "albums":
+                    AlbumsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
+                    break;
             }
-            catch (Exception ex)
-            {
-                await Logger.Error("Error with connected animation", ex);
-                // ; )
-            }
-
-            //PopupImage.Source = new BitmapImage(new Uri(selectedBacklog.ImageURL));
-            //PopupTitle.Text = selectedBacklog.Name;
-            //PopupDirector.Text = selectedBacklog.Director;
-            //ViewModel.UserRating = selectedBacklog.UserRating;
-            //ViewModel.UserRating = selectedBacklog.UserRating;
-
-            //await PopupOverlay.ShowAsync();
+            Frame.Navigate(typeof(CompletedBacklogPage), selectedBacklog.id, new SuppressNavigationTransitionInfo());
         }
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -136,8 +139,8 @@ namespace Backlogs.Views
             mainPivot.SelectedIndex = 0;
             SearchDialog.Hide();
             var selectedBacklog = ViewModel.FinishedBacklogs.FirstOrDefault(b => b.Name == args.ChosenSuggestion.ToString());
-            MainGrid.SelectedItem = selectedBacklog;
-            MainGrid.ScrollIntoView(selectedBacklog);
+            BacklogsGrid.SelectedItem = selectedBacklog;
+            BacklogsGrid.ScrollIntoView(selectedBacklog);
         }
     }
 }

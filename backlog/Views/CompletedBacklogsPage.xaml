@@ -19,7 +19,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Image Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch"  Margin="0,10,0,0"/>
+                <Image x:Name="coverImage" Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch"  Margin="0,10,0,0"/>
                 <RelativePanel x:Name="DetailsPanel" Grid.Row="1" Margin="16,6,0,0" HorizontalAlignment="Left">
                     <TextBlock
                         x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
@@ -74,7 +74,7 @@
                         </Grid.RowDefinitions>
                         <TextBlock Text="You haven't completed any backlogs yet :(. Get on it!" Visibility="{x:Bind ViewModel.BacklogsEmpty, Mode=OneWay}"
                                     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <controls:AdaptiveGridView x:Name="MainGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" 
+                        <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" 
                                                    DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                                    SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" 
                                                    ItemsSource="{x:Bind ViewModel.FinishedBacklogs, Mode=OneWay}" Margin="20" 
@@ -93,7 +93,7 @@
                         </Grid.RowDefinitions>
                         <TextBlock Text="You haven't completed any films yet :(." Visibility="{x:Bind ViewModel.FilmsEmpty, Mode=OneWay}"
                                     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <controls:AdaptiveGridView x:Name="FilmGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" 
+                        <controls:AdaptiveGridView x:Name="FilmsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" 
                                                    DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                                    SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" 
                                                    ItemsSource="{x:Bind ViewModel.FinishedFilmBacklogs, Mode=OneWay}" Margin="20"
@@ -112,7 +112,7 @@
                         </Grid.RowDefinitions>
                         <TextBlock Text="You haven't completed any albums yet :(." Visibility="{x:Bind ViewModel.AlbumsEmpty, Mode=OneWay}"
                                     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
-                        <controls:AdaptiveGridView x:Name="MusicGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" 
+                        <controls:AdaptiveGridView x:Name="AlbumsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" 
                                                    DesiredWidth="180" ItemHeight="280" ItemTemplate="{StaticResource CompletedBacklogTemplate}"
                                                    SelectionMode="Single" IsItemClickEnabled="True" ItemClick="MainGrid_ItemClick" 
                                                    ItemsSource="{x:Bind ViewModel.FinishedMusicBacklogs, Mode=OneWay}" Margin="20"
