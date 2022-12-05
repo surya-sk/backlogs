@@ -1,0 +1,303 @@
+﻿<Page
+    x:Class="Backlogs.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Backlogs.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="900" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters />
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RelatedPanel.(Grid.Row)" Value="1" />
+                        <Setter Target="RelatedPanel.HorizontalAlignment" Value="Left" />
+                        <Setter Target="RefLinks.(Grid.Row)" Value="1" />
+                        <Setter Target="RefLinks.HorizontalAlignment" Value="Left" />
+                        <Setter Target="StoreLink.(Grid.Row)" Value="1" />
+                        <Setter Target="StoreLink.HorizontalAlignment" Value="Left" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <ProgressRing x:Name="ProgRing" IsActive="{x:Bind ViewModel.ShowProgress, Mode=OneWay}" />
+        <Pivot x:Name="mainPivot">
+            <PivotItem Header="settings">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" MaxWidth="700">
+                            <ComboBox x:Name="ThemeInput"  Header="Application Theme" Margin="0,20,0,20"
+                                  MinWidth="30" FontSize="15" SelectedValue="{x:Bind ViewModel.SelectedTheme, Mode=TwoWay}">
+                                <x:String>System</x:String>
+                                <x:String>Dark</x:String>
+                                <x:String>Light</x:String>
+                            </ComboBox>
+
+                            <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                                <TextBlock Text="Live tile" Margin="0,20,0,0" FontSize="18"/>
+                                <TextBlock Text="Pin the app to start to see a live tile. Available on Windows 10 only." FontStyle="Italic" 
+                                       FontWeight="ExtraLight" TextWrapping="Wrap"/>
+                                <ComboBox x:Name="TileContentButtons" SelectedValue="{x:Bind ViewModel.SelectedTileContent, Mode=TwoWay}"
+                                          Header="Live tile content" Margin="0,20,0,0">
+                                    <x:String>Recently Created</x:String>
+                                    <x:String>Recently Completed</x:String>
+                                    <x:String>In Progress</x:String>
+                                    <x:String>Upcoming</x:String>
+                                </ComboBox>
+                                <muxc:RadioButtons x:Name="TileStyleRadioButtons" MaxColumns="2"
+                                                   Header="Live tile style" Margin="0,20,0,0" SelectedIndex="{x:Bind ViewModel.SelectedTileStyleIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <x:String>Peek Image</x:String>
+                                    <x:String>Background Image</x:String>
+                                </muxc:RadioButtons>
+                                <Image x:Name="TileStyleImage" Source="{x:Bind ViewModel.TileStylePreviewImage, Mode=OneWay}" MaxHeight="100" 
+                                       Stretch="Uniform" HorizontalAlignment="Left" />
+                            </StackPanel>
+
+                            <StackPanel Margin="0,20,0,0">
+                                <TextBlock Text="Video playback" Margin="0,20,0,0" FontSize="18"/>
+                                <TextBlock Text="Settings for playing trailers for films, series and games." FontStyle="Italic"
+                                           FontWeight="ExtraLight" TextWrapping="Wrap" />
+                                <ToggleSwitch x:Name="AutoplaySwitch" Header="Autoplay videos" IsOn="{x:Bind ViewModel.AutoplayVideos, Mode=TwoWay}" Margin="0,20,0,0" />
+                            </StackPanel>
+
+                            <StackPanel x:Name="AccountPanel" Visibility="{x:Bind ViewModel.SignedIn, Mode=OneWay}" Margin="0,20,0,0">
+                                <TextBlock Text="Account" Margin="0,20,0,0" FontSize="18" />
+                                <TextBlock x:Name="UserNameText" Margin="0,10,0,20" FontStyle="Italic" Text="{x:Bind ViewModel.UserGreeting}" />
+                                <!--<muxc:PersonPicture x:Name="AccountPic" Margin="0,10,0,20" HorizontalAlignment="Left" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}" />-->
+                                <Button x:Name="SignOutButton" Content="Sign out" Background="Red" Command="{x:Bind ViewModel.SignOut}" />
+                            </StackPanel>
+
+                            <TextBlock x:Name="SignInText" Text="For the best experience, sign-in with your Microsoft Account. This will sync backlogs using OneDrive so you can access them on all of your Windows devices."
+                                   FontStyle="Italic" Margin="0,20,0,0" TextWrapping="Wrap" Visibility="{x:Bind ViewModel.ShowSignInPrompt}" />
+
+                            <TextBlock x:Name="WarningText" Text="Backlogs are stored in your root OneDrive folder in a file named backlogs.txt. DO NOT modify or delete the file, as it can lead to your backlogs being lost forever."
+                                   Foreground="Red" Margin="0,20,0,0" TextWrapping="Wrap" FontSize="15" Visibility="{x:Bind ViewModel.SignedIn}" />
+                        </StackPanel>
+
+                        <StackPanel x:Name="RelatedPanel" HorizontalAlignment="Right" Margin="0,20,20,0" >
+                            <TextBlock Text="Related Settings" FontSize="20" Margin="0,20,0,20"/>
+                            <TextBlock TextWrapping="Wrap">
+                            <Hyperlink NavigateUri="ms-settings:colors">
+                                <Run Text="Windows colour settings"/>
+                            </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </PivotItem>
+
+            <PivotItem Header="about">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" MaxWidth="700" >
+                            <Image Source="ms-appx:///Assets/app-icon.png" Height="100" Width="100"/>
+                            <TextBlock Text="Backlogs" FontSize="40" Margin="0,10,0,0" HorizontalAlignment="Center"/>
+                            <TextBlock FontWeight="ExtraLight" IsTextSelectionEnabled="True" HorizontalAlignment="Center">
+                        Version:
+                        <Run Text="{x:Bind ViewModel.Version}" FontWeight="Bold"/>
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap" Margin="0,20,0,20" FontSize="15">
+                            This app is and will always be free. The app is also open-source, and the source code is available 
+                            on Github. 
+                            This app does not collect any usage or personal information.
+                             This app is licensed under GNU General Public License 3.0.
+                            </TextBlock>
+
+                            <TextBlock Margin="0,20,0,10" Text="{x:Bind ViewModel.ChangelogTitle}" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
+                            <TextBlock Margin="0,10,0,10" TextWrapping="Wrap" FontSize="15" Text="{x:Bind ViewModel.Changelog}" />
+
+                            <TextBlock Text="Useful Links" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://github.com/surya-sk/backlogs">
+                            <Run Text="Github repository for this app" />
+                        </Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://github.com/surya-sk/backlogs/blob/master/LICENSE.md">
+                            <Run Text="GNU General Public License v3.0" />
+                        </Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://discord.com/invite/eBHZSKG">
+                            <Run Text="UWP Community Discord server" />
+                        </Hyperlink>
+                            </TextBlock>
+
+                            <TextBlock Text="About Me" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
+                            <TextBlock Margin="0,10,0,10" Style="{StaticResource BodyTextBlockStyle}" FontSize="15" TextWrapping="Wrap">
+                            Hi, I'm Surya. I am a Computer Science student. I live in Canada. I like making apps and video games.
+                            Check out my profiles and other projects below, if you like :).
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://www.linkedin.com/in/surya-kashyap/">
+                            <Run Text="Connect with me on LinkedIn" />
+                        </Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://twitter.com/Surya89962336">
+                            <Run Text="Follow me on Twitter" />
+                        </Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://github.com/surya-sk">
+                            <Run Text="My GitHub profile" />
+                        </Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://www.microsoft.com/en-us/p/theseus-the-descent/9nwzzffbw70t?activetab=pivot:overviewtab">
+                            <Run Text="Check out my first game on PC or Xbox" />
+                        </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel x:Name="RefLinks" HorizontalAlignment="Right" Margin="0,20,20,0" >
+                            <TextBlock Text="References and Dependencies" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                            <Hyperlink NavigateUri="https://aka.ms/winui">
+                                <Run Text="Windows UI Library" />
+                            </Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                                <Hyperlink NavigateUri="https://github.com/microsoft/Xaml-Controls-Gallery">
+                                    <Run Text="XAML Controls Library" />
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                                <Hyperlink NavigateUri="https://developer.microsoft.com/en-us/graph">
+                                    <Run Text="Microsoft Graph API" />
+                                </Hyperlink>
+                            </TextBlock>
+
+                            <TextBlock Text="Third-party APIs" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                                <Hyperlink NavigateUri="https://www.imdb.com/">
+                                    <Run Text="IMdB" />
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                                <Hyperlink NavigateUri="https://www.twitch.tv/twitch">
+                                    <Run Text="Twitch" />
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                                <Hyperlink NavigateUri="https://books.google.com/">
+                                    <Run Text="Google Books" />
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                                <Hyperlink NavigateUri="https://www.last.fm/">
+                                    <Run Text="LastFM" />
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                                <Hyperlink NavigateUri="https://developers.google.com/api-client-library/dotnet/">
+                                    <Run Text="Google APIs" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </PivotItem>
+
+            <PivotItem Header="help and feedback">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel MaxWidth="600" HorizontalAlignment="Left" >
+                            <TextBlock Text="If the app is crashing or you're unable to create Backlogs, or if anything odd is happening, sending me the logs will help me identify and fix the issue." 
+                                   Margin="0,10,0,10" TextWrapping="Wrap" FontSize="15" />
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="OpenLogsButton" Content="View logs" Command="{x:Bind ViewModel.OpenLogs}" Margin="0,10,0,10" />
+                                <Button x:Name="SendLogsButton" Content="Send logs" Command="{x:Bind ViewModel.SendLogs}" Margin="10,10,0,10" />
+                            </StackPanel>
+                            <TextBlock Text="Have feedback? Want to report bugs or request a new feature? That's brilliant!" Margin="0,10,0,10" TextWrapping="Wrap" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10" >
+                            <Hyperlink NavigateUri="https://github.com/surya-sk/backlogs/issues/new/choose">
+                                <Run Text="Create an issue on Github (preferred)" />
+                            </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Text="OR"  Margin="20,20,0,20" />
+                            <TextBlock Text="Send me an email" Margin="0,10,0,10" />
+                            <ComboBox x:Name="IssueTypeComboBox" Margin="0,10,0,10" Header="Type" PlaceholderText="Pick a type"
+                                      SelectedValue="{x:Bind ViewModel.SelectedFeedbackType, Mode=TwoWay}">
+                                <x:String>Bug</x:String>
+                                <x:String>Feature Request</x:String>
+                                <x:String>Feedback</x:String>
+                            </ComboBox>
+                            <TextBox x:Name="MessageBox" PlaceholderText="Enter a description of your issue/feature" TextWrapping="Wrap"
+                                     MinHeight="80" Margin="0,10,0,10" Text="{x:Bind ViewModel.FeedbackText, Mode=TwoWay}" />
+                            <Button x:Name="SendButton" Content="Send" Command="{x:Bind ViewModel.SendFeedback}" />
+                        </StackPanel>
+
+                        <StackPanel x:Name="StoreLink" HorizontalAlignment="Right" Margin="0,20,20,0" >
+                            <TextBlock Text="Additional links" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
+                            <Hyperlink NavigateUri="ms-windows-store://review/?ProductId=	9N2H8CM2KWVZ">
+                                <Run Text="Rate and Review on the Store" />
+                            </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </PivotItem>
+
+            <PivotItem Header="licenses">
+                <ScrollViewer>
+                    <StackPanel>
+                        <StackPanel Margin="20">
+                            <TextBlock Text="Backlogs" FontSize="20" FontWeight="Bold" />
+                            <TextBlock Text="Copyright (C) 2022 Surya K" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <TextBlock Text="GNU General Public License 3" FontSize="17" FontWeight="SemiBold" Margin="0,10,0,0" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,0" Text="{x:Bind ViewModel.GPL}" />
+                        </StackPanel>
+                        <StackPanel Margin="20">
+                            <TextBlock Text="Windows Community Toolkit" FontSize="20" FontWeight="Bold" />
+                            <TextBlock Text="Copyright © .NET Foundation and Contributors. All rights reserved." TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <TextBlock Text="The MIT License (MIT)" FontSize="17" FontWeight="SemiBold" Margin="0,10,0,0" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,0" Text="{x:Bind ViewModel.MIT}" />
+                        </StackPanel>
+                        <StackPanel Margin="20">
+                            <TextBlock Text="WinUI" FontSize="20" FontWeight="Bold" />
+                            <TextBlock Text="Copyright (c) Microsoft Corporation. All rights reserved." TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <TextBlock Text="The MIT License (MIT)" FontSize="17" FontWeight="SemiBold" Margin="0,10,0,0" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,0" Text="{x:Bind ViewModel.MIT}" />
+                        </StackPanel>
+                        <StackPanel Margin="20">
+                            <TextBlock Text="Newtonsoft.Json" FontSize="20" FontWeight="Bold" />
+                            <TextBlock Text="Copyright (c) 2007 James Newton-King" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <TextBlock Text="The MIT License (MIT)" FontSize="17" FontWeight="SemiBold" Margin="0,10,0,0" />
+                            <TextBlock TextWrapping="Wrap" Margin="0,10,0,0" Text="{x:Bind ViewModel.MIT}" />
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>
