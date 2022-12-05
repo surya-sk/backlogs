@@ -7,11 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Backlogs.Utils.UWP
 {
@@ -82,6 +79,20 @@ namespace Backlogs.Utils.UWP
             return image.Name;
         }
 
+        public async Task<List<string>> ReadLogsAync()
+        {
+            var folder = await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync("Logs", CreationCollisionOption.OpenIfExists);
+            var path = Path.Combine(folder.Path, "backlogs.log");
+            var logFile = await StorageFile.GetFileFromPathAsync(path);
+            var lines = await Windows.Storage.FileIO.ReadLinesAsync(logFile);
+            var logList = new List<string>();
+            foreach (var line in lines)
+            {
+                logList.Add(line);
+            }
+            return logList;
+        }
+
         public async Task<string> ReadTextAsync(string fileName)
         {
             var storageFile = await m_localFolder.GetFileAsync(fileName);
@@ -111,6 +122,25 @@ namespace Backlogs.Utils.UWP
         public Task WriteBitmapAsync(Stream stream, string fileName)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task WriteLogsAsync(string message, Exception ex = null)
+        {
+            StorageFolder logsFolder = await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync("Logs", CreationCollisionOption.OpenIfExists);
+            try
+            {
+                var logFile = await logsFolder.GetFileAsync("backlogs.log");
+                if (ex != null)
+                    await Windows.Storage.FileIO.AppendTextAsync(logFile, $"[{DateTime.Now}] - {message}\nException: {ex.Message}\n\n");
+                else
+                    await Windows.Storage.FileIO.AppendTextAsync(logFile, $"[{DateTime.Now}] - {message}\n\n");
+            }
+            catch
+            {
+                await logsFolder.CreateFileAsync("backlogs.log", CreationCollisionOption.ReplaceExisting);
+                await WriteLogsAsync(message, ex);
+            }
+
         }
 
         public async Task WriteTextAsync(string text, string fileName)

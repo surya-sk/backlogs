@@ -302,8 +302,8 @@ namespace Backlogs.ViewModels
             {
                 try
                 {
-                    //await Logger.Info("Internet access");
-                    //await Logger.Info("Signing in user....");
+                    await m_fileHandler.WriteLogsAsync("Internet access");
+                    await m_fileHandler.WriteLogsAsync("Signing in user....");
                 }
                 catch { }
                 await SetUserPhotoAsync();
@@ -441,7 +441,7 @@ namespace Backlogs.ViewModels
                 {
                     try
                     {
-                        //await Logger.Info("Signing in...");
+                        await m_fileHandler.WriteLogsAsync("Signing in...");
                     }
                     catch { }
                     //await BacklogsManager.GetInstance().DeleteLocalFileAsync();
@@ -526,7 +526,7 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                //await Logger.Info("Opening Paypal link...");
+                await m_fileHandler.WriteLogsAsync("Opening Paypal link...");
             }
             catch { }
             var paypalUri = new Uri(@"https://paypal.me/surya4822?locale.x=en_US");
@@ -546,7 +546,7 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                //await Logger.Info("Generating random backlog...");
+                await m_fileHandler.WriteLogsAsync("Generating random backlog...");
             }
             catch { }
             Random _random = new Random();

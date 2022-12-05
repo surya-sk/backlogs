@@ -40,6 +40,7 @@ namespace Backlogs.ViewModels
         private readonly IToastNotificationService m_notificationService;
         private readonly IShareDialogService m_shareDialogService;
         private readonly IUserSettings m_settings;
+        private readonly IFileHandler m_fileHandler;
 
         public ObservableCollection<Backlog> Backlogs;
         public Backlog Backlog;
@@ -235,7 +236,8 @@ namespace Backlogs.ViewModels
         #endregion
 
         public BacklogViewModel(Guid id, INavigation navigationService, IDialogHandler dialogHandler, 
-            IToastNotificationService notificationService, IShareDialogService shareDialogService, IUserSettings settings)
+            IToastNotificationService notificationService, IShareDialogService shareDialogService,
+            IUserSettings settings, IFileHandler fileHandler)
         {
             LaunchBingSearchResults = new AsyncCommand(LaunchBingSearchResultsAsync);
             OpenWebViewTrailer = new AsyncCommand(PlayTrailerAsync);
@@ -257,6 +259,7 @@ namespace Backlogs.ViewModels
             m_shareDialogService = shareDialogService;
             m_notificationService = notificationService;
             m_settings = settings;
+            m_fileHandler = fileHandler;
 
             CalendarDate = DateTimeOffset.MinValue;
             NotifTime = TimeSpan.Zero;
@@ -317,7 +320,7 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                //await Logger.Info("Deleting backlog.....");
+                await m_fileHandler.WriteLogsAsync("Deleting backlog.....");
             }
             catch { }
             var result = await m_dialogHandler.ShowDeleteConfirmationDialogAsync();
@@ -327,7 +330,7 @@ namespace Backlogs.ViewModels
             }
             try
             {
-                //await Logger.Info("Deleted backlog");
+                await m_fileHandler.WriteLogsAsync("Deleted backlog");
             }
             catch { }
         }
@@ -386,7 +389,7 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                //await Logger.Info("Saving backlog....");
+                await m_fileHandler.WriteLogsAsync("Saving backlog....");
             }
             catch { }
             Backlogs[m_backlogIndex] = Backlog;

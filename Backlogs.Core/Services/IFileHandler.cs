@@ -1,4 +1,6 @@
 ﻿using Backlogs.Models;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -16,5 +18,7 @@ namespace Backlogs.Services
         Task<string> ReadTextAsync(string fileName);
         Task<string> ReadImageAsync(string fileName);
         Task<string> ReadBacklogJsonAsync(string fileName);
+        Task WriteLogsAsync(string message, Exception ex = null);
+        Task<List<string>> ReadLogsAync();
     }
 }

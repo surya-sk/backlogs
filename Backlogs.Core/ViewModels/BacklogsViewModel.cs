@@ -194,7 +194,7 @@ namespace Backlogs.ViewModels
                     await SetUserPhotoAsync();
                     try
                     {
-                        //await Logger.Info("Syncing backlogs....");
+                        await m_fileHandler.WriteLogsAsync("Syncing backlogs....");
                     }
                     catch { }
                 }

@@ -45,6 +45,7 @@ namespace Backlogs.ViewModels
         public ICommand SendFeedback { get; }
         public ICommand SignOut { get; }
 
+        #region Properties
         public string SelectedTheme
         {
             get
@@ -140,6 +141,7 @@ namespace Backlogs.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AccountPic)));
             }
         }
+        #endregion
 
         public string UserGreeting { get => $"Hey there, {m_settings.Get<string>(SettingsConstants.UserName)}! You are all synced."; }
 
@@ -212,8 +214,8 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task ShowLogsAsync()
         {
-            //var logs = await Logger.GetLogsAsync();
-            //await m_dialogHander.ShowLogsDialogAsyncAsync(logs);
+            var logs = await m_fileHandler.ReadLogsAync();
+            await m_dialogHander.ShowLogsDialogAsyncAsync(logs);
         }
 
         /// <summary>
