@@ -278,7 +278,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Apis.YouTube.v3">
-      <Version>1.57.0.2756</Version>
+      <Version>1.57.0.2827</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client">
       <Version>5.2.7</Version>
