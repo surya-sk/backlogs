@@ -12,7 +12,7 @@ namespace Backlogs.ViewModels
     public class SettingsViewModel : INotifyPropertyChanged
     {
         private bool m_showProgress;
-        private string m_accountPic;
+        private string m_accountPic = "https://github.com/surya-sk/backlogs/blob/master/backlog/Assets/app-icon.png";
         private readonly INavigation m_navigationService;
         private readonly IDialogHandler m_dialogHander;
         private readonly IFileHandler m_fileHandler;
@@ -33,8 +33,6 @@ namespace Backlogs.ViewModels
             "\u2022 The app can now show upcoming backlogs in the live tile.\n";
         public string ChangelogTitle { get; } = "New this version - 30 July, 2022";
         public string Version { get; } 
-
-        public bool SignedIn { get; } 
 
         public bool ShowSignInPrompt { get; } 
 
@@ -141,6 +139,11 @@ namespace Backlogs.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AccountPic)));
             }
         }
+
+        public bool SignedIn
+        {
+            get => m_settings.Get<bool>(SettingsConstants.IsSignedIn);
+        }
         #endregion
 
         public string UserGreeting { get => $"Hey there, {m_settings.Get<string>(SettingsConstants.UserName)}! You are all synced."; }
@@ -169,6 +172,7 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         public async Task SetUserPhotoAsync()
         {
+            if (!SignedIn) return;
             try
             {
                 AccountPic = await m_fileHandler.ReadImageAsync("profile.png");
