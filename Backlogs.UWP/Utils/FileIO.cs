@@ -26,7 +26,7 @@ namespace Backlogs.Utils.UWP
             }
             catch (FileNotFoundException ex)
             {
-                await Logging.Logger.Error("Error deleting local backlogs", ex);
+                await WriteLogsAsync("Error deleting local backlogs", ex);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Backlogs.Utils.UWP
                 if (jsonDownload != null)
                 {
                     StorageFile file = await m_localFolder.CreateFileAsync(m_fileName, CreationCollisionOption.ReplaceExisting);
-                    await WriteTextAsync(m_fileName, jsonDownload);
+                    await Windows.Storage.FileIO.WriteTextAsync(file, jsonDownload);
                 }
             }
             StorageFile storageFile = await m_localFolder.GetFileAsync(m_fileName);

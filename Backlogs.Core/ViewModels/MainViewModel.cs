@@ -381,7 +381,6 @@ namespace Backlogs.ViewModels
             {
                 CompletedBacklogsPercent = (Convert.ToDouble(CompletedBacklogsCount) / BacklogsCount) * 100.0;
             }
-
             await GenerateRandomBacklogAsync();
         }
 
@@ -446,9 +445,9 @@ namespace Backlogs.ViewModels
                         await m_fileHandler.WriteLogsAsync("Signing in...");
                     }
                     catch { }
-                    //await BacklogsManager.GetInstance().DeleteLocalFileAsync();
+                    //await m_fileHandler.DeleteLocalFilesAsync();
                     m_settings.Set(SettingsConstants.IsSignedIn, true);
-                    await BacklogsManager.GetInstance().ReadDataAsync(true);
+                    //await BacklogsManager.GetInstance().ReadDataAsync(true);
                     SyncBacklogs();
                 }
             }
@@ -624,6 +623,7 @@ namespace Backlogs.ViewModels
 
         private async Task ShowErrorMessage(string message)
         {
+            if (m_crashLog == null) return;
             await m_dialogHandler.ShowErrorDialogAsync("Not enough backlogs", message, "OK");
         }
 
