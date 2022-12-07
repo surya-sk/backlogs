@@ -25,7 +25,6 @@ namespace Backlogs.Views
     /// </summary>
     public sealed partial class CompletedBacklogsPage : Page
     {
-        private Backlog SelectedBacklog;
         public CompletedBacklogsViewModel ViewModel { get; set; }
 
         public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedBacklogs;
