@@ -1,5 +1,4 @@
-﻿using Backlogs.Logging;
-using Backlogs.Models;
+﻿using Backlogs.Models;
 using Backlogs.Services;
 using Backlogs.Utils.UWP;
 using Backlogs.ViewModels;

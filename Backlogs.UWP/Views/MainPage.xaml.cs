@@ -5,7 +5,6 @@ using Windows.UI.Xaml.Navigation;
 using Backlogs.Models;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Animation;
-using Backlogs.Logging;
 using Backlogs.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Backlogs.Services;

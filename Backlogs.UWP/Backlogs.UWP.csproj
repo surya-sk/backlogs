@@ -8,7 +8,7 @@
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Backlogs</RootNamespace>
-    <AssemblyName>Backlogs</AssemblyName>
+    <AssemblyName>Backlogs.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22000.0</TargetPlatformVersion>
@@ -133,7 +133,6 @@
     <Compile Include="Controls\SearchResultsDialog.xaml.cs">
       <DependentUpon>SearchResultsDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Logging\Logger.cs" />
     <Compile Include="Utils\BacklogSource.cs" />
     <Compile Include="Utils\DialogHandler.cs" />
     <Compile Include="Utils\EmailHandler.cs" />
