@@ -394,9 +394,9 @@ namespace Backlogs.ViewModels
             {
                 AccountPic = await m_fileHandler.ReadImageAsync("profile.png");
             }
-            catch
+            catch(Exception ex) 
             {
-                // No image set
+                await m_fileHandler.WriteLogsAsync("Account pic not found", ex);
             }
         }
 

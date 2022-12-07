@@ -32,7 +32,7 @@ namespace Backlogs.ViewModels
             "\u2022 From this version onwards, the app only supports Windows 10 1709 and up.\n" +
             "\u2022 Removed page transition animation for this release.\n";
         public string ChangelogTitle { get; } = "New this version - 07 December, 2022";
-        public string Version { get; } 
+        public string Version { get => m_settings.Get<string>(SettingsConstants.Version); } 
 
         public bool ShowSignInPrompt { get; } 
 
