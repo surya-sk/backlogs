@@ -40,10 +40,7 @@ namespace Backlogs.Views
             {
                 mainPivot.SelectedIndex = (int)e.Parameter;
             }
-            if(ViewModel.SignedIn)
-            {
-                await ViewModel.SetUserPhotoAsync();
-            }
+            await ViewModel.SetUserPhotoAsync();
             base.OnNavigatedTo(e);
         }
     }

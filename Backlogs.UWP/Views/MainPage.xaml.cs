@@ -46,11 +46,6 @@ namespace Backlogs.Views
                 if (e.Parameter.ToString() == "sync")
                 {
                     ViewModel.Sync = true;
-                    try
-                    {
-                        await Logger.Info("Syncing backlogs");
-                    }
-                    catch { }
                 }
                 else
                 {

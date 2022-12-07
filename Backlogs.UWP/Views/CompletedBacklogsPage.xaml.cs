@@ -1,8 +1,10 @@
 ﻿using Backlogs.Logging;
 using Backlogs.Models;
 using Backlogs.Services;
+using Backlogs.Utils.UWP;
 using Backlogs.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Uwp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,13 +25,27 @@ namespace Backlogs.Views
     /// </summary>
     public sealed partial class CompletedBacklogsPage : Page
     {
-        private Backlog SelectedBacklog;
         public CompletedBacklogsViewModel ViewModel { get; set; }
+
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedBacklogs;
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedFilmBacklogs;
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedTVBacklogs;
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedMusicBacklogs;
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedGameBacklogs;
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FinishedBookBacklogs;
 
         public CompletedBacklogsPage()
         {
             this.InitializeComponent();
-            ViewModel = new CompletedBacklogsViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetService<IUserSettings>());
+            ViewModel = new CompletedBacklogsViewModel(App.Services.GetRequiredService<INavigation>(),
+                App.Services.GetService<IUserSettings>());
+
+            FinishedBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.FinishedBacklogs));
+            FinishedFilmBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.FinishedFilmBacklogs));
+            FinishedGameBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.FinishedGameBacklogs));
+            FinishedBookBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.FinishedBookBacklogs));
+            FinishedTVBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.FinishedTVBacklogs));
+            FinishedMusicBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.FinishedMusicBacklogs));
 
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
@@ -42,16 +58,6 @@ namespace Backlogs.Views
             e.Handled = true;
         }
 
-        /// <summary>
-        /// Plays connected animation
-        /// </summary>
-        /// <returns></returns>
-        private void PlayConnectedAnimation()
-        {
-            //ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationGrid);
-            //connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
-            //await MainGrid.TryStartConnectedAnimationAsync(connectedAnimation, SelectedBacklog, "connectedElement");
-        }
 
         private void MainGrid_ItemClick(object sender, ItemClickEventArgs e)
         {

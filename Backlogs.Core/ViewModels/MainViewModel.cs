@@ -30,7 +30,7 @@ namespace Backlogs.ViewModels
         private bool m_showBottomTeachingTip;
         private bool m_showProfileButtons;
         private bool m_showSignInButton = true;
-        private string m_accountPic;
+        private string m_accountPic = "https://github.com/surya-sk/backlogs/blob/master/backlog/Assets/app-icon.png";
         private string m_randomBacklogType = "Any";
         private int m_backlogsCount = 0;
         private int m_completedBacklogsCount = 0;
@@ -381,7 +381,6 @@ namespace Backlogs.ViewModels
             {
                 CompletedBacklogsPercent = (Convert.ToDouble(CompletedBacklogsCount) / BacklogsCount) * 100.0;
             }
-
             await GenerateRandomBacklogAsync();
         }
 
@@ -395,9 +394,9 @@ namespace Backlogs.ViewModels
             {
                 AccountPic = await m_fileHandler.ReadImageAsync("profile.png");
             }
-            catch
+            catch(Exception ex) 
             {
-                // No image set
+                await m_fileHandler.WriteLogsAsync("Account pic not found", ex);
             }
         }
 
@@ -446,9 +445,9 @@ namespace Backlogs.ViewModels
                         await m_fileHandler.WriteLogsAsync("Signing in...");
                     }
                     catch { }
-                    //await BacklogsManager.GetInstance().DeleteLocalFileAsync();
+                    //await m_fileHandler.DeleteLocalFilesAsync();
                     m_settings.Set(SettingsConstants.IsSignedIn, true);
-                    await BacklogsManager.GetInstance().ReadDataAsync(true);
+                    //await BacklogsManager.GetInstance().ReadDataAsync(true);
                     SyncBacklogs();
                 }
             }
@@ -624,6 +623,7 @@ namespace Backlogs.ViewModels
 
         private async Task ShowErrorMessage(string message)
         {
+            if (m_crashLog == null) return;
             await m_dialogHandler.ShowErrorDialogAsync("Not enough backlogs", message, "OK");
         }
 
@@ -634,6 +634,8 @@ namespace Backlogs.ViewModels
         private async Task ImportBacklogAsync()
         {
             var name = await m_filePicker.LaunchFilePickerAsync();
+            if (string.IsNullOrEmpty(name))
+                return;
             m_navigationService.NavigateTo<ImportBacklogViewModel>(name);
         }
 

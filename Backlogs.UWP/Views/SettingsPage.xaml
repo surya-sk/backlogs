@@ -82,7 +82,7 @@
                             <StackPanel x:Name="AccountPanel" Visibility="{x:Bind ViewModel.SignedIn, Mode=OneWay}" Margin="0,20,0,0">
                                 <TextBlock Text="Account" Margin="0,20,0,0" FontSize="18" />
                                 <TextBlock x:Name="UserNameText" Margin="0,10,0,20" FontStyle="Italic" Text="{x:Bind ViewModel.UserGreeting}" />
-                                <!--<muxc:PersonPicture x:Name="AccountPic" Margin="0,10,0,20" HorizontalAlignment="Left" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}" />-->
+                                <muxc:PersonPicture x:Name="AccountPic" Margin="0,10,0,20" HorizontalAlignment="Left" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}" />
                                 <Button x:Name="SignOutButton" Content="Sign out" Background="Red" Command="{x:Bind ViewModel.SignOut}" />
                             </StackPanel>
 
@@ -149,7 +149,7 @@
 
                             <TextBlock Text="About Me" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
                             <TextBlock Margin="0,10,0,10" Style="{StaticResource BodyTextBlockStyle}" FontSize="15" TextWrapping="Wrap">
-                            Hi, I'm Surya. I am a Computer Science student. I live in Canada. I like making apps and video games.
+                            Hi, I'm Surya. I am a game and UWP developer. I live in Canada. Please consider supporting me by donating to my Paypal.
                             Check out my profiles and other projects below, if you like :).
                             </TextBlock>
                             <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">

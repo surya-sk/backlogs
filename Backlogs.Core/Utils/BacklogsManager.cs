@@ -3,6 +3,7 @@ using Backlogs.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,9 +54,11 @@ namespace Backlogs.Utils
             {
                 string json = await m_fileHandler.ReadBacklogsAsync(sync);
                 Backlogs = JsonConvert.DeserializeObject<ObservableCollection<Backlog>>(json);
+                Debug.WriteLine(json);
             }
             catch
             {
+                Debug.WriteLine("Backlogs null");
                 Backlogs = new ObservableCollection<Backlog>();
             }
         }

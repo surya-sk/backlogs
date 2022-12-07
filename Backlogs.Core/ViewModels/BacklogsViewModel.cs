@@ -28,8 +28,6 @@ namespace Backlogs.ViewModels
         private readonly IFileHandler m_fileHandler;
         private IUserSettings m_settings;
 
-        private string m_accountPic;
-
         private bool m_isLoading;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -139,16 +137,6 @@ namespace Backlogs.ViewModels
             }
         }
 
-        public string AccountPic
-        {
-            get => m_accountPic;
-            set
-            {
-                m_accountPic = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AccountPic)));
-            }
-        }
-
         public bool IsLoading
         {
             get => m_isLoading;
@@ -191,7 +179,6 @@ namespace Backlogs.ViewModels
             {
                 if (sync)
                 {
-                    await SetUserPhotoAsync();
                     try
                     {
                         await m_fileHandler.WriteLogsAsync("Syncing backlogs....");
@@ -293,22 +280,6 @@ namespace Backlogs.ViewModels
             TVEmpty = TvBacklogs.Count <= 0;
             GamesEmpty = GameBacklogs.Count <= 0;
             AlbumsEmpty = MusicBacklogs.Count <= 0;
-        }
-
-        /// <summary>
-        /// Set the user photo in the command bar
-        /// </summary>
-        /// <returns></returns>
-        public async Task SetUserPhotoAsync()
-        {
-            try
-            {
-                AccountPic = await m_fileHandler.ReadImageAsync("profile.png");
-            }
-            catch
-            {
-                // No image set
-            }
         }
 
         /// <summary>

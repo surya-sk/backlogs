@@ -72,7 +72,7 @@
                                        Visibility="{x:Bind ViewModel.BacklogsEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                         <controls:AdaptiveGridView x:Name="BacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.IncompleteBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind IncompleteBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                        ItemTemplate="{StaticResource BacklogTemplate}" Loaded="BacklogsGrid_Loaded"
                                                        animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
                                                        ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"
@@ -89,7 +89,7 @@
                         <TextBlock x:Name="EmptyFilmsText" Text="No films yet. Add some by clicking +." Visibility="{x:Bind ViewModel.FilmsEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                         <controls:AdaptiveGridView x:Name="FilmsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.FilmBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind FilmBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                     ItemTemplate="{StaticResource BacklogTemplate}"
                                                     animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
                                                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"
@@ -107,7 +107,7 @@
                         <TextBlock x:Name="EmptyMusicText" Text="No albums yet. Add some by clicking +" Visibility="{x:Bind ViewModel.AlbumsEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                         <controls:AdaptiveGridView x:Name="AlbumsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.MusicBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind MusicBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                     ItemTemplate="{StaticResource BacklogTemplate}"
                                                     animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
                                                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"
@@ -124,7 +124,7 @@
                         <TextBlock x:Name="EmptyTVText" Text="No series yet. Add some by clicking +" Visibility="{x:Bind ViewModel.TVEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                         <controls:AdaptiveGridView x:Name="TVGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.TvBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind TvBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                     ItemTemplate="{StaticResource BacklogTemplate}"
                                                     animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
                                                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"
@@ -141,7 +141,7 @@
                         <TextBlock x:Name="EmptyGamesText" Text="No games yet. Add some by clicking +" Visibility="{x:Bind ViewModel.GamesEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                         <controls:AdaptiveGridView x:Name="GamesGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.GameBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind GameBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                     ItemTemplate="{StaticResource BacklogTemplate}"
                                                     animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
                                                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"
@@ -158,7 +158,7 @@
                         <TextBlock x:Name="EmptyBooksText" Text="No books yet. Add some by clicking +" Visibility="{x:Bind ViewModel.BooksEmpty, Mode=OneWay}"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,200,0,0" FontSize="30" TextWrapping="Wrap"/>
                         <controls:AdaptiveGridView x:Name="BooksGrid" StretchContentForSingleRow="False" OneRowModeEnabled="False" DesiredWidth="180" ItemHeight="230"
-                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.BookBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
+                                                    SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind BookBacklogs, Mode=OneWay}" ItemClick="BacklogView_ItemClick"
                                                     ItemTemplate="{StaticResource BacklogTemplate}" 
                                                     animations:ReorderGridAnimation.Duration="200" IncrementalLoadingTrigger="Edge" IncrementalLoadingThreshold="1"
                                                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto"

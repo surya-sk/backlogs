@@ -25,8 +25,8 @@ namespace Backlogs.Views
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             string fileName = e.Parameter as string;
-            await ViewModel.LoadBacklogFromFileAsync(fileName);
             base.OnNavigatedTo(e);
+            await ViewModel.LoadBacklogFromFileAsync(fileName);
         }
     }
 }
