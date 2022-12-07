@@ -634,6 +634,8 @@ namespace Backlogs.ViewModels
         private async Task ImportBacklogAsync()
         {
             var name = await m_filePicker.LaunchFilePickerAsync();
+            if (string.IsNullOrEmpty(name))
+                return;
             m_navigationService.NavigateTo<ImportBacklogViewModel>(name);
         }
 
