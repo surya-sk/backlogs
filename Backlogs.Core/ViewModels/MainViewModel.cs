@@ -30,7 +30,7 @@ namespace Backlogs.ViewModels
         private bool m_showBottomTeachingTip;
         private bool m_showProfileButtons;
         private bool m_showSignInButton = true;
-        private string m_accountPic;
+        private string m_accountPic = "https://github.com/surya-sk/backlogs/blob/master/backlog/Assets/app-icon.png";
         private string m_randomBacklogType = "Any";
         private int m_backlogsCount = 0;
         private int m_completedBacklogsCount = 0;

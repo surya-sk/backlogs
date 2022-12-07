@@ -24,9 +24,6 @@ namespace Backlogs.Utils.UWP
         private IFileHandler m_fileHandler = App.Services.GetRequiredService<IFileHandler>();
 
         private string[] scopes = MSALConstants.Scopes;
-
-        static StorageFolder s_cacheFolder = ApplicationData.Current.LocalCacheFolder;
-        static string m_accountPicFile = "profile.png";
         
         public async Task<GraphServiceClient> GetGraphServiceClient()
         {

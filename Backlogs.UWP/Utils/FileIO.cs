@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
@@ -78,7 +79,7 @@ namespace Backlogs.Utils.UWP
         {
             var cacheFolder = ApplicationData.Current.LocalCacheFolder;
             var image = await cacheFolder.GetFileAsync(fileName);
-            return image.Name;
+            return image.Path;
         }
 
         public async Task<List<string>> ReadLogsAync()
