@@ -4,17 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Graph;
 using Microsoft.Identity.Client;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.Graphics.Imaging;
 using Windows.Security.Authentication.Web;
 using Windows.Storage;
-using Windows.UI.Xaml.Media.Imaging;
-using Logger = Backlogs.Logging.Logger;
 
 namespace Backlogs.Utils.UWP
 {
@@ -26,6 +21,7 @@ namespace Backlogs.Utils.UWP
         private IPublicClientApplication s_PublicClientApplication;
 
         private IUserSettings m_settings = App.Services.GetRequiredService<IUserSettings>();
+        private IFileHandler m_fileHandler = App.Services.GetRequiredService<IFileHandler>();
 
         private string[] scopes = MSALConstants.Scopes;
 
@@ -39,7 +35,7 @@ namespace Backlogs.Utils.UWP
                 s_graphServiceClient = await SignInAndInitializeGraphServiceClient().ConfigureAwait(false);
                 try
                 {
-                    await Logger.Info("Fetching graph service client.....");
+                    await m_fileHandler.WriteLogsAsync("Fetching graph service client.....");
                     var user = await s_graphServiceClient.Me.Request().GetAsync();
                     m_settings.Set(SettingsConstants.UserName, user.GivenName);
                     try
@@ -47,29 +43,17 @@ namespace Backlogs.Utils.UWP
                         Stream photoresponse = await s_graphServiceClient.Me.Photo.Content.Request().GetAsync();
                         if (photoresponse != null)
                         {
-                            using (var randomAccessStream = photoresponse.AsRandomAccessStream())
-                            {
-                                BitmapImage image = new BitmapImage();
-                                randomAccessStream.Seek(0);
-                                await image.SetSourceAsync(randomAccessStream);
-
-                                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
-                                SoftwareBitmap softwareBitmap = await decoder.GetSoftwareBitmapAsync();
-                                var storageFile = await s_cacheFolder.CreateFileAsync(m_accountPicFile, CreationCollisionOption.ReplaceExisting);
-                                BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, await storageFile.OpenAsync(FileAccessMode.ReadWrite));
-                                encoder.SetSoftwareBitmap(softwareBitmap);
-                                await encoder.FlushAsync();
-                            }
+                            await m_fileHandler.WriteBitmapAsync(photoresponse, "profile.png");
                         }
                     }
                     catch (ServiceException ex)
                     {
-                        await Logger.Error("Failed to fetch user photo", ex);
+                        await m_fileHandler.WriteLogsAsync("Failed to fetch user photo", ex);
                     }
                 }
                 catch (Exception ex)
                 {
-                    await Logger.Error("Failed to sign-in user or get user photo and name", ex);
+                    await m_fileHandler.WriteLogsAsync("Failed to sign-in user or get user photo and name", ex);
                 }
             }
             return s_graphServiceClient;
@@ -125,7 +109,7 @@ namespace Backlogs.Utils.UWP
             IAccount firstAccount = accounts.FirstOrDefault();
             try
             {
-                await Logger.Info("Signing out user...");
+                await m_fileHandler.WriteLogsAsync("Signing out user...");
                 await s_PublicClientApplication.RemoveAsync(firstAccount).ConfigureAwait(false);
                 m_settings.Set(SettingsConstants.IsSignedIn, false);
                 try
@@ -139,7 +123,7 @@ namespace Backlogs.Utils.UWP
             }
             catch (Exception ex)
             {
-                await Logger.Error("Failed to sign out user.", ex);
+                await m_fileHandler.WriteLogsAsync("Failed to sign out user.", ex);
             }
         }
     }

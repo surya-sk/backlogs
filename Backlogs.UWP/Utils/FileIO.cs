@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using Windows.Graphics.Imaging;
 using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Backlogs.Utils.UWP
 {
@@ -119,9 +121,21 @@ namespace Backlogs.Utils.UWP
             }
         }
 
-        public Task WriteBitmapAsync(Stream stream, string fileName)
+        public async Task WriteBitmapAsync(Stream stream, string fileName)
         {
-            throw new NotImplementedException();
+            using (var randomAccessStream = stream.AsRandomAccessStream())
+            {
+                BitmapImage image = new BitmapImage();
+                randomAccessStream.Seek(0);
+                await image.SetSourceAsync(randomAccessStream);
+
+                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
+                SoftwareBitmap softwareBitmap = await decoder.GetSoftwareBitmapAsync();
+                var storageFile = await ApplicationData.Current.LocalCacheFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+                BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, await storageFile.OpenAsync(FileAccessMode.ReadWrite));
+                encoder.SetSoftwareBitmap(softwareBitmap);
+                await encoder.FlushAsync();
+            }
         }
 
         public async Task WriteLogsAsync(string message, Exception ex = null)
