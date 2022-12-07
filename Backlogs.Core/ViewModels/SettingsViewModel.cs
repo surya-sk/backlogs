@@ -28,10 +28,10 @@ namespace Backlogs.ViewModels
         public string GPL { get; } = "This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. \n\nYou should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/";
         public string Changelog { get; } = "\u2022 Completed backlogs now open in their own page\n" +
             "\u2022 The UI for rating a backlog and marking it as complete is now improved.\n" +
-            "\u2022 The application's architecture is now MVVM.\n" +
+            "\u2022 Loading backlogs should be much quicker now thanks to incremental loading.\n" +
             "\u2022 From this version onwards, the app only supports Windows 10 1709 and up.\n" +
-            "\u2022 The app can now show upcoming backlogs in the live tile.\n";
-        public string ChangelogTitle { get; } = "New this version - 30 July, 2022";
+            "\u2022 Removed page transition animation for this release.\n";
+        public string ChangelogTitle { get; } = "New this version - 07 December, 2022";
         public string Version { get; } 
 
         public bool ShowSignInPrompt { get; } 
