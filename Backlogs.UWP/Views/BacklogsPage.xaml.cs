@@ -1,7 +1,9 @@
 ﻿using Backlogs.Models;
 using Backlogs.Services;
+using Backlogs.Utils.UWP;
 using Backlogs.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Uwp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,9 +24,15 @@ namespace Backlogs.Views
     /// </summary>
     public sealed partial class BacklogsPage : Page
     {
-        public bool IsNetwordAvailable = false;
         int backlogIndex = -1;
         bool sync = false;
+
+        public IncrementalLoadingCollection<BacklogSource, Backlog> IncompleteBacklogs { get; set; }
+        public IncrementalLoadingCollection<BacklogSource, Backlog> FilmBacklogs { get; set; }
+        public IncrementalLoadingCollection<BacklogSource, Backlog> TvBacklogs { get; set; }
+        public IncrementalLoadingCollection<BacklogSource, Backlog> GameBacklogs { get; set; }
+        public IncrementalLoadingCollection<BacklogSource, Backlog> MusicBacklogs { get; set; }
+        public IncrementalLoadingCollection<BacklogSource, Backlog> BookBacklogs { get; set; }
 
         public BacklogsViewModel ViewModel { get; set; } 
 
@@ -33,7 +41,6 @@ namespace Backlogs.Views
             this.InitializeComponent();
             ViewModel = new BacklogsViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
                 App.Services.GetRequiredService<IFileHandler>(), App.Services.GetService<IUserSettings>());
-            IsNetwordAvailable = NetworkInterface.GetIsNetworkAvailable();
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -52,6 +59,12 @@ namespace Backlogs.Views
                 }
             }
             await ViewModel.SyncBacklogs(sync);
+            IncompleteBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.IncompleteBacklogs));
+            FilmBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.FilmBacklogs));
+            TvBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.TvBacklogs));
+            MusicBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.MusicBacklogs));
+            GameBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.GameBacklogs));
+            BookBacklogs = new IncrementalLoadingCollection<BacklogSource, Backlog>(new BacklogSource(ViewModel.BookBacklogs));
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += View_BackRequested;
