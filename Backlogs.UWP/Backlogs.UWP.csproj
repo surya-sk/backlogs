@@ -323,9 +323,9 @@
     <None Include="backlog_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Backlogs.Core\Backlogs.Core.csproj">
+    <ProjectReference Include="..\Backlogs\Backlogs.csproj">
       <Project>{e4072e19-3e87-455b-a608-7c2cca0db943}</Project>
-      <Name>Backlogs.Core</Name>
+      <Name>Backlogs</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

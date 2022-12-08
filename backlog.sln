@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backlogs.UWP", "Backlogs.UWP\Backlogs.UWP.csproj", "{147688A8-D934-41C9-8620-D0A9B392856C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backlogs.Core", "Backlogs.Core\Backlogs.Core.csproj", "{E4072E19-3E87-455B-A608-7C2CCA0DB943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backlogs", "Backlogs\Backlogs.csproj", "{E4072E19-3E87-455B-A608-7C2CCA0DB943}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
