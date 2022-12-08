@@ -445,7 +445,7 @@ namespace Backlogs.ViewModels
                         await m_fileHandler.WriteLogsAsync("Signing in...");
                     }
                     catch { }
-                    //await m_fileHandler.DeleteLocalFilesAsync();
+                    await m_fileHandler.DeleteLocalFilesAsync();
                     m_settings.Set(SettingsConstants.IsSignedIn, true);
                     //await BacklogsManager.GetInstance().ReadDataAsync(true);
                     SyncBacklogs();
@@ -658,6 +658,7 @@ namespace Backlogs.ViewModels
             if (await m_dialogHandler.ShowSignOutDialogAsync())
             {
                 await m_msal.SignOut();
+                await m_fileHandler.DeleteLocalFilesAsync();
                 m_settings.Set(SettingsConstants.IsSignedIn, false);
                 SyncBacklogs();
             }
