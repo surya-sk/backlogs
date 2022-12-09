@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Backlogs.Core.ViewModels
+namespace Backlogs.ViewModels
 {
     public class CompletedBacklogViewModel : INotifyPropertyChanged
     {

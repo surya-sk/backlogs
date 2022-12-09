@@ -260,7 +260,7 @@ namespace Backlogs.ViewModels
             get => m_selectedBacklog;
             set
             {
-                if (m_selectedBacklog == value) return;
+                if (m_selectedBacklog == value || value == null) return;
                 m_selectedBacklog = value;
                 OpenSelectedBacklog(m_selectedBacklog.id);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedBacklog)));
@@ -272,7 +272,7 @@ namespace Backlogs.ViewModels
             get => m_selectedCompletedBacklog;
             set
             {
-                if (m_selectedCompletedBacklog == value) return;
+                if (m_selectedCompletedBacklog == value || value == null) return;
                 m_selectedCompletedBacklog = value;
                 OpenCompletedSelectedBacklog(m_selectedCompletedBacklog.id);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCompletedBacklog)));
@@ -733,7 +733,7 @@ namespace Backlogs.ViewModels
 
         private void OpenCompletedSelectedBacklog(Guid id)
         {
-            m_navigationService.NavigateTo<CompletedBacklogsViewModel>(id);
+            m_navigationService.NavigateTo<CompletedBacklogViewModel>(id);
         }
     }
 }
