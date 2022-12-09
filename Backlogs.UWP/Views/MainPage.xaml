@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:data="using:Backlogs.Models"
+    xmlns:vm="using:Backlogs.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -87,7 +88,74 @@
                     <TextBlock x:Name="WelcomeText" Margin="30" FontSize="30" Text="{x:Bind ViewModel.WelcomeText}" />
 
                     <Hub Grid.Row="1">
-                        
+                        <HubSection Header="Recently added" IsHeaderInteractive="True" Width="300">
+                            <DataTemplate x:DataType="vm:MainViewModel">
+                                <ListView ItemsSource="{x:Bind RecentlyAdded}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="data:Backlog">
+                                            <RelativePanel Margin="10">
+                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
+                                                <StackPanel RelativePanel.RightOf="cover">
+                                                    <TextBlock x:Name="director" Text="{x:Bind Name, Mode=OneWay}" Margin="5" FontWeight="SemiBold" FontSize="15" />
+                                                    <TextBlock Text="{x:Bind Type, Mode=OneWay}" Margin="5"/>
+                                                </StackPanel>
+                                            </RelativePanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </DataTemplate>
+                        </HubSection>
+                        <HubSection Header="In progress" Width="300">
+                            <DataTemplate x:DataType="vm:MainViewModel">
+                                <ListView ItemsSource="{x:Bind InProgress}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="data:Backlog">
+                                            <RelativePanel Margin="10">
+                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
+                                                <StackPanel RelativePanel.RightOf="cover">
+                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" FontWeight="SemiBold" FontSize="15" />
+                                                    <muxc:ProgressBar Value="{x:Bind Progress, Mode=OneWay}" Margin="5"/>
+                                                </StackPanel>
+                                            </RelativePanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </DataTemplate>
+                        </HubSection>
+                        <HubSection Header="Coming up" Width="350">
+                            <DataTemplate x:DataType="vm:MainViewModel">
+                                <ListView ItemsSource="{x:Bind RecentlyAdded}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="data:Backlog">
+                                            <RelativePanel Margin="10">
+                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
+                                                <StackPanel RelativePanel.RightOf="cover">
+                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" FontWeight="SemiBold" FontSize="15" />
+                                                    <TextBlock Text="{x:Bind TargetDate, Mode=OneWay}" Margin="5"/>
+                                                </StackPanel>
+                                            </RelativePanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </DataTemplate>
+                        </HubSection>
+                        <HubSection Header="Recently completed" IsHeaderInteractive="True" Width="300">
+                            <DataTemplate x:DataType="vm:MainViewModel">
+                                <ListView ItemsSource="{x:Bind RecentlyCompleted}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="data:Backlog">
+                                            <RelativePanel Margin="10">
+                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
+                                                <StackPanel RelativePanel.RightOf="cover">
+                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" FontWeight="SemiBold" FontSize="15" />
+                                                    <TextBlock Text="{x:Bind CompletedDate, Mode=OneWay}" Margin="5"/>
+                                                </StackPanel>
+                                            </RelativePanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </DataTemplate>
+                        </HubSection>
                     </Hub>
                 </Grid>
             </ScrollViewer>
