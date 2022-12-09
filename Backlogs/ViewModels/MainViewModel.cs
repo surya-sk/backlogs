@@ -2,6 +2,7 @@
 using Backlogs.Models;
 using Backlogs.Services;
 using Backlogs.Utils;
+using Microsoft.Graph;
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.ObjectModel;
@@ -46,6 +47,8 @@ namespace Backlogs.ViewModels
         private readonly IEmailService m_emailService;
         private readonly IMsal m_msal;
         private readonly ISystemLauncher m_systemLauncher;
+        private Backlog m_selectedBacklog;
+        private Backlog m_selectedCompletedBacklog;
 
         public ObservableCollection<Backlog> RecentlyAdded { get; set; }
         public ObservableCollection<Backlog> RecentlyCompleted { get; set; }
@@ -250,6 +253,34 @@ namespace Backlogs.ViewModels
             {
                 m_completedPercent = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CompletedBacklogsPercent)));
+            }
+        }
+
+        public Backlog SelectedBacklog
+        {
+            get => m_selectedBacklog;
+            set
+            {
+                if(m_selectedBacklog != value)
+                {
+                    m_selectedBacklog = value;
+                    OpenSelectedBacklog(m_selectedBacklog.id);
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedBacklog)));
+            }
+        }
+
+        public Backlog SelectedCompletedBacklog
+        {
+            get => m_selectedCompletedBacklog;
+            set
+            {
+                if(m_selectedCompletedBacklog!= value)
+                {
+                    m_selectedCompletedBacklog = value;
+                    OpenCompletedSelectedBacklog(m_selectedCompletedBacklog.id);
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCompletedBacklog)));
             }
         }
         #endregion
@@ -698,6 +729,16 @@ namespace Backlogs.ViewModels
         private void NavigateToBacklogsPage()
         {
             m_navigationService.NavigateTo<BacklogsViewModel>();
+        }
+
+        private void OpenSelectedBacklog(Guid id)
+        {
+            m_navigationService.NavigateTo<BacklogViewModel>(id);
+        }
+
+        private void OpenCompletedSelectedBacklog(Guid id)
+        {
+            m_navigationService.NavigateTo<CompletedBacklogsViewModel>(id);
         }
     }
 }

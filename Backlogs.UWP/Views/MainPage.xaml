@@ -90,7 +90,7 @@
                     <Hub Grid.Row="1">
                         <HubSection Header="Recently added" IsHeaderInteractive="True" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <ListView ItemsSource="{x:Bind RecentlyAdded}">
+                                <ListView ItemsSource="{x:Bind RecentlyAdded}" ItemClick="{x:Bind OpenBacklog}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
                                             <RelativePanel Margin="10">
