@@ -93,10 +93,11 @@
                                 <ListView ItemsSource="{x:Bind RecentlyAdded}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
-                                            <RelativePanel Margin="0,10,10,10" Background="{StaticResource CardBackgroundBrush}">
+                                            <RelativePanel Margin="0,10,10,10">
                                                 <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
                                                 <StackPanel RelativePanel.RightOf="cover">
-                                                    <TextBlock x:Name="director" Text="{x:Bind Name, Mode=OneWay}" Margin="5" FontWeight="SemiBold" FontSize="15" />
+                                                    <TextBlock x:Name="director" Text="{x:Bind Name, Mode=OneWay}" Margin="5" 
+                                                               FontWeight="SemiBold" FontSize="15" TextWrapping="Wrap" />
                                                     <TextBlock Text="{x:Bind Type, Mode=OneWay}" Margin="5"/>
                                                 </StackPanel>
                                             </RelativePanel>
@@ -110,10 +111,11 @@
                                 <ListView ItemsSource="{x:Bind InProgress}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
-                                            <RelativePanel Margin="0,10,10,10" Background="{StaticResource CardBackgroundBrush}">
+                                            <RelativePanel Margin="0,10,10,10">
                                                 <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
                                                 <StackPanel RelativePanel.RightOf="cover">
-                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" FontWeight="SemiBold" FontSize="15" />
+                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" 
+                                                               FontWeight="SemiBold" FontSize="15" TextWrapping="Wrap" />
                                                     <muxc:ProgressBar Value="{x:Bind Progress, Mode=OneWay}" Margin="5"/>
                                                 </StackPanel>
                                             </RelativePanel>
@@ -127,10 +129,11 @@
                                 <ListView ItemsSource="{x:Bind RecentlyAdded}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
-                                            <RelativePanel Margin="0,10,10,10" Background="{StaticResource CardBackgroundBrush}">
+                                            <RelativePanel Margin="0,10,10,10">
                                                 <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
                                                 <StackPanel RelativePanel.RightOf="cover">
-                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" FontWeight="SemiBold" FontSize="15" />
+                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" 
+                                                               FontWeight="SemiBold" FontSize="15" TextWrapping="Wrap" />
                                                     <TextBlock Text="{x:Bind TargetDate, Mode=OneWay}" Margin="5"/>
                                                 </StackPanel>
                                             </RelativePanel>
@@ -144,10 +147,11 @@
                                 <ListView ItemsSource="{x:Bind RecentlyCompleted}" SelectedItem="{x:Bind SelectedCompletedBacklog, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
-                                            <RelativePanel Margin="0,10,10,10" Background="{StaticResource CardBackgroundBrush}">
+                                            <RelativePanel Margin="0,10,10,10">
                                                 <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
                                                 <StackPanel RelativePanel.RightOf="cover">
-                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" FontWeight="SemiBold" FontSize="15" />
+                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" 
+                                                               FontWeight="SemiBold" FontSize="15" TextWrapping="Wrap" />
                                                     <TextBlock Text="{x:Bind CompletedDate, Mode=OneWay}" Margin="5"/>
                                                 </StackPanel>
                                             </RelativePanel>
