@@ -716,12 +716,12 @@ namespace Backlogs.ViewModels
             m_navigationService.NavigateTo<SettingsViewModel>(args);
         }
 
-        private void NavigateToCompletedPage()
+        public void NavigateToCompletedPage()
         {
             m_navigationService.NavigateTo<CompletedBacklogsViewModel>();
         }
 
-        private void NavigateToBacklogsPage()
+        public void NavigateToBacklogsPage()
         {
             m_navigationService.NavigateTo<BacklogsViewModel>();
         }

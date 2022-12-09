@@ -87,8 +87,8 @@
 
                     <TextBlock x:Name="WelcomeText" Margin="30" FontSize="30" Text="{x:Bind ViewModel.WelcomeText}" />
 
-                    <Hub Grid.Row="1">
-                        <HubSection Header="Recently added" IsHeaderInteractive="True" Width="300">
+                    <Hub Grid.Row="1" SectionHeaderClick="Hub_SectionHeaderClick">
+                        <HubSection x:Name="recentlyAddedSection" Header="Recently added" IsHeaderInteractive="True" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
                                 <ListView ItemsSource="{x:Bind RecentlyAdded}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
