@@ -6,6 +6,7 @@ using Windows.UI.Core;
 using Backlogs.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Backlogs.Services;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 

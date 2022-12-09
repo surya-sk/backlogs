@@ -90,7 +90,7 @@
                     <Hub Grid.Row="1">
                         <HubSection Header="Recently added" IsHeaderInteractive="True" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <ListView ItemsSource="{x:Bind RecentlyAdded}" ItemClick="{x:Bind OpenBacklog}">
+                                <ListView ItemsSource="{x:Bind RecentlyAdded}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
                                             <RelativePanel Margin="10">
@@ -107,7 +107,7 @@
                         </HubSection>
                         <HubSection Header="In progress" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <ListView ItemsSource="{x:Bind InProgress}">
+                                <ListView ItemsSource="{x:Bind InProgress}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
                                             <RelativePanel Margin="10">
@@ -124,7 +124,7 @@
                         </HubSection>
                         <HubSection Header="Coming up" Width="350">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <ListView ItemsSource="{x:Bind RecentlyAdded}">
+                                <ListView ItemsSource="{x:Bind RecentlyAdded}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
                                             <RelativePanel Margin="10">
@@ -141,7 +141,7 @@
                         </HubSection>
                         <HubSection Header="Recently completed" IsHeaderInteractive="True" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <ListView ItemsSource="{x:Bind RecentlyCompleted}">
+                                <ListView ItemsSource="{x:Bind RecentlyCompleted}" SelectedItem="{x:Bind SelectedCompletedBacklog, Mode=TwoWay}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
                                             <RelativePanel Margin="10">

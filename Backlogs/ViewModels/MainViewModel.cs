@@ -2,7 +2,6 @@
 using Backlogs.Models;
 using Backlogs.Services;
 using Backlogs.Utils;
-using Microsoft.Graph;
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.ObjectModel;
@@ -261,11 +260,9 @@ namespace Backlogs.ViewModels
             get => m_selectedBacklog;
             set
             {
-                if(m_selectedBacklog != value)
-                {
-                    m_selectedBacklog = value;
-                    OpenSelectedBacklog(m_selectedBacklog.id);
-                }
+                if (m_selectedBacklog == value) return;
+                m_selectedBacklog = value;
+                OpenSelectedBacklog(m_selectedBacklog.id);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedBacklog)));
             }
         }
@@ -275,11 +272,9 @@ namespace Backlogs.ViewModels
             get => m_selectedCompletedBacklog;
             set
             {
-                if(m_selectedCompletedBacklog!= value)
-                {
-                    m_selectedCompletedBacklog = value;
-                    OpenCompletedSelectedBacklog(m_selectedCompletedBacklog.id);
-                }
+                if (m_selectedCompletedBacklog == value) return;
+                m_selectedCompletedBacklog = value;
+                OpenCompletedSelectedBacklog(m_selectedCompletedBacklog.id);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCompletedBacklog)));
             }
         }
