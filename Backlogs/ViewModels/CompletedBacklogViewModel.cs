@@ -100,7 +100,7 @@ namespace Backlogs.ViewModels
 
         private void GoToPrevPage()
         {
-            m_navigator.GoBack();
+            m_navigator.GoBack<CompletedBacklogViewModel>();
         }
     }
 }

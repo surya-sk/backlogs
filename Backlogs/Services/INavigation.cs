@@ -7,6 +7,6 @@ namespace Backlogs.Services
         void RegisterViewForViewModel(Type viewModel, Type view);
         void NavigateTo<T>(object args = null);
         void GoBack<T>();
-        void GoBack();
+        void SetAnimations();
     }
 }

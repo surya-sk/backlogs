@@ -809,7 +809,7 @@ namespace Backlogs.ViewModels
 
         private void NavToPrevPage()
         {
-            m_navigationService.GoBack();
+            m_navigationService.GoBack<CreateBacklogViewModel>();
         }
 
         /// <summary>

@@ -375,7 +375,7 @@ namespace Backlogs.ViewModels
         /// </summary>
         private void NavigateToPreviousPage()
         {
-            m_navigationService.GoBack();
+            m_navigationService.GoBack<BacklogViewModel>();
         }
 
         private void OpenSettingsPage()

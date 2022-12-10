@@ -10,6 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Backlogs.Services;
 using Backlogs.Utils;
 using System.Diagnostics;
+using Windows.UI.Composition;
+using System.Numerics;
+using Microsoft.Graph;
+using Windows.Foundation.Metadata;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -21,6 +25,8 @@ namespace Backlogs.Views
     public sealed partial class MainPage : Page
     {
         int backlogIndex = -1;
+        Compositor m_compositor = Window.Current.Compositor;
+        SpringVector3NaturalMotionAnimation m_springAnimation;
 
         public MainViewModel ViewModel { get; set; }
 

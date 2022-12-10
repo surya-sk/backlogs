@@ -292,7 +292,7 @@ namespace Backlogs.ViewModels
         /// <param name="e"></param>
         public void GoBack()
         {
-            m_navigationService.GoBack();
+            m_navigationService.GoBack<SettingsViewModel>();
         }
     }
 }

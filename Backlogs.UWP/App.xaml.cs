@@ -97,9 +97,12 @@ namespace Backlogs
                 m_navigationService.RegisterViewForViewModel(typeof(BacklogsViewModel), typeof(BacklogsPage));
                 m_navigationService.RegisterViewForViewModel(typeof(BacklogViewModel), typeof(BacklogPage));
                 m_navigationService.RegisterViewForViewModel(typeof(CompletedBacklogsViewModel), typeof(CompletedBacklogsPage));
+                m_navigationService.RegisterViewForViewModel(typeof(CompletedBacklogViewModel), typeof(CompletedBacklogPage));
                 m_navigationService.RegisterViewForViewModel(typeof(CreateBacklogViewModel), typeof(CreatePage));
                 m_navigationService.RegisterViewForViewModel(typeof(ImportBacklogViewModel), typeof(ImportBacklog));
                 m_navigationService.RegisterViewForViewModel(typeof(SettingsViewModel), typeof(SettingsPage));
+
+                m_navigationService.SetAnimations();
             }
 
             if (e.PrelaunchActivated == false)
