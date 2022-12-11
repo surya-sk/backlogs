@@ -94,7 +94,7 @@ namespace Backlogs.ViewModels
         private async Task ShareBacklogAsync()
         {
             IsLoading = true;
-            await m_shareDialog.ShowSearchDialog(Backlog);
+            await m_shareDialog.ShowShareBacklogDialogAsync(Backlog);
             IsLoading = false;
         }
 
