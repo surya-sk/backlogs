@@ -61,7 +61,7 @@
 
     </Grid>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}" DefaultLabelPosition="Right" >
+        <CommandBar x:Name="TopBar" Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" DefaultLabelPosition="Right" >
             <AppBarButton Icon="Accept" Label="Import" Command="{x:Bind ViewModel.Import}" />
             <AppBarButton Icon="Cancel" Label="Cancel" Command="{x:Bind ViewModel.Cancel}" />
         </CommandBar>

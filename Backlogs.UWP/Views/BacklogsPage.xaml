@@ -174,7 +174,7 @@
         </Grid>
     </Frame>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar"  Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}" DefaultLabelPosition="Right" >
+        <CommandBar x:Name="TopBar"  Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" DefaultLabelPosition="Right" >
             <AppBarButton x:Name="TopSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
             <AppBarButton x:Name="TopSortButton" Label="{x:Bind ViewModel.SortOrder, Mode=OneWay}" Icon="Sort">
                 <AppBarButton.Flyout>
