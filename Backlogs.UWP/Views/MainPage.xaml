@@ -87,77 +87,61 @@
 
                     <TextBlock x:Name="WelcomeText" Margin="30" FontSize="30" Text="{x:Bind ViewModel.WelcomeText}" />
 
-                    <Hub Grid.Row="1" SectionHeaderClick="Hub_SectionHeaderClick">
-                        <HubSection x:Name="recentlyAddedSection" Header="Recently added" IsHeaderInteractive="True" Width="300">
+                    <Hub Grid.Row="1">
+                        <HubSection x:Name="recentlyAddedSection" Header="Recently added" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <ListView ItemsSource="{x:Bind RecentlyAdded}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
-                                    <ListView.ItemTemplate>
+                                <controls:AdaptiveGridView ItemsSource="{x:Bind RecentlyAdded, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
+                                    <controls:AdaptiveGridView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
                                             <RelativePanel Margin="0,10,10,10">
-                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
-                                                <StackPanel RelativePanel.RightOf="cover">
-                                                    <TextBlock x:Name="director" Text="{x:Bind Name, Mode=OneWay}" Margin="5" 
-                                                               FontWeight="SemiBold" FontSize="15" TextWrapping="Wrap" />
-                                                    <TextBlock Text="{x:Bind Type, Mode=OneWay}" Margin="5"/>
-                                                </StackPanel>
+                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="120" Height="120" />
                                             </RelativePanel>
                                         </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+                                    </controls:AdaptiveGridView.ItemTemplate>
+                                </controls:AdaptiveGridView>
                             </DataTemplate>
                         </HubSection>
                         <HubSection Header="In progress" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <ListView ItemsSource="{x:Bind InProgress}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
-                                    <ListView.ItemTemplate>
+                                <controls:AdaptiveGridView ItemsSource="{x:Bind InProgress, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
+                                    <controls:AdaptiveGridView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
-                                            <RelativePanel Margin="0,10,10,10">
-                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
-                                                <StackPanel RelativePanel.RightOf="cover">
-                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" 
-                                                               FontWeight="SemiBold" FontSize="15" TextWrapping="Wrap" />
-                                                    <muxc:ProgressBar Value="{x:Bind Progress, Mode=OneWay}" Margin="5"/>
-                                                </StackPanel>
-                                            </RelativePanel>
+                                            <StackPanel Margin="0,10,10,10">
+                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="120" Height="120" />
+                                                <muxc:ProgressBar Value="{x:Bind Progress, Mode=OneWay}" Margin="5" Width="80"/>
+                                            </StackPanel>
                                         </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+                                    </controls:AdaptiveGridView.ItemTemplate>
+                                </controls:AdaptiveGridView>
                             </DataTemplate>
                         </HubSection>
                         <HubSection Header="Coming up" Width="350">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <ListView ItemsSource="{x:Bind RecentlyAdded}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
-                                    <ListView.ItemTemplate>
+                                <controls:AdaptiveGridView ItemsSource="{x:Bind Upcoming, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
+                                    <controls:AdaptiveGridView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
-                                            <RelativePanel Margin="0,10,10,10">
-                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
-                                                <StackPanel RelativePanel.RightOf="cover">
-                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" 
-                                                               FontWeight="SemiBold" FontSize="15" TextWrapping="Wrap" />
-                                                    <TextBlock Text="{x:Bind TargetDate, Mode=OneWay}" Margin="5"/>
-                                                </StackPanel>
-                                            </RelativePanel>
+                                            <StackPanel Margin="0,10,10,10">
+                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="120" Height="120" />
+                                                <TextBlock Text="{x:Bind TargetDate, Mode=OneWay}" Margin="5"/>
+                                            </StackPanel>
                                         </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+                                    </controls:AdaptiveGridView.ItemTemplate>
+                                </controls:AdaptiveGridView>
                             </DataTemplate>
                         </HubSection>
-                        <HubSection Header="Recently completed" IsHeaderInteractive="True" Width="300">
+                        <HubSection Header="Recently completed" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <ListView ItemsSource="{x:Bind RecentlyCompleted}" SelectedItem="{x:Bind SelectedCompletedBacklog, Mode=TwoWay}">
-                                    <ListView.ItemTemplate>
+                                <GridView ItemsSource="{x:Bind RecentlyCompleted, Mode=OneWay}" SelectedItem="{x:Bind SelectedCompletedBacklog, Mode=TwoWay}">
+                                    <GridView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
-                                            <RelativePanel Margin="0,10,10,10">
-                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="80" Height="80" />
-                                                <StackPanel RelativePanel.RightOf="cover">
-                                                    <TextBlock x:Name="title" Text="{x:Bind Name, Mode=OneWay}" Margin="5" 
-                                                               FontWeight="SemiBold" FontSize="15" TextWrapping="Wrap" />
-                                                    <TextBlock Text="{x:Bind CompletedDate, Mode=OneWay}" Margin="5"/>
-                                                </StackPanel>
-                                            </RelativePanel>
+                                            <StackPanel Margin="0,10,10,10">
+                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="120" Height="120" />
+                                                <muxc:RatingControl x:Name="RatingControl" Value="{x:Bind UserRating, Mode=TwoWay}" Margin="5" Width="50" 
+                                        IsReadOnly="True"/>
+                                            </StackPanel>
                                         </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+                                    </GridView.ItemTemplate>
+                                </GridView>
                             </DataTemplate>
                         </HubSection>
                     </Hub>

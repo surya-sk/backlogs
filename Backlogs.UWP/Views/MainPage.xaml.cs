@@ -60,14 +60,5 @@ namespace Backlogs.Views
             }
             await ViewModel.SetupProfile();
         }
-
-        private void Hub_SectionHeaderClick(object sender, HubSectionHeaderClickEventArgs e)
-        {
-            if (e.Section.Name == recentlyAddedSection.Name)
-                ViewModel.NavigateToBacklogsPage();
-            else
-                ViewModel.NavigateToCompletedPage();
-            
-        }
     }
 }
