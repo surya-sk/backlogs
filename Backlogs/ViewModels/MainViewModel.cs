@@ -317,7 +317,7 @@ namespace Backlogs.ViewModels
             m_emailService = emailService;
             m_msal = msal;
             m_systemLauncher = systemLauncher;
-
+ 
             LoadBacklogs();
             m_liveTileService.EnableLiveTileQueue();
         }

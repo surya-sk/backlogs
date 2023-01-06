@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Backlogs.Services;
 using Backlogs.Constants;
+using System.Diagnostics;
 
 namespace Backlogs.ViewModels
 {
@@ -56,8 +57,8 @@ namespace Backlogs.ViewModels
                 if(m_selectedTheme != value)
                 {
                     m_selectedTheme = value;
+                    m_settings.Set(SettingsConstants.AppTheme, value);
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTheme)));
-                    ChangeAppTheme();
                 }
             }
         }
@@ -89,8 +90,8 @@ namespace Backlogs.ViewModels
                 if(m_tileContent != value)
                 {
                     m_tileContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileContent)));
                     m_settings.Set<string>(SettingsConstants.TileContent, value);
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileContent)));
                 }
             }
         }
@@ -181,14 +182,6 @@ namespace Backlogs.ViewModels
             {
                 // No image set
             }
-        }
-
-        /// <summary>
-        /// Change app theme on the fly and save it
-        /// </summary>
-        private void ChangeAppTheme()
-        {
-            m_settings.Set(SettingsConstants.AppTheme, SelectedTheme);
         }
 
         /// <summary>
