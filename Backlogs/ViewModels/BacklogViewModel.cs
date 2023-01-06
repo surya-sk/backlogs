@@ -4,6 +4,7 @@ using Backlogs.Services;
 using Backlogs.Utils;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
+using Microsoft.Graph;
 using MvvmHelpers.Commands;
 using System;
 using System.Collections.Generic;
@@ -101,8 +102,7 @@ namespace Backlogs.ViewModels
             {
                 m_showEditControls = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowEditControls)));
-                HideEditControls = !m_showEditControls;
-                ShowRatingContent = !m_showRatingContent;
+                //HideEditControls = !m_showEditControls;
             }
         }
 
@@ -111,8 +111,13 @@ namespace Backlogs.ViewModels
             get => m_hideEditControls;
             set
             {
-                m_hideEditControls = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HideEditControls)));
+               if(m_hideEditControls != value)
+                {
+                    m_hideEditControls = value;
+                    Debug.WriteLine(value);
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HideEditControls)));
+                    //HideRatingContent = true;
+                }
             }
         }
 
@@ -221,7 +226,6 @@ namespace Backlogs.ViewModels
             {
                 m_showRatingContent = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowRatingContent)));
-                HideRatingContent = !m_showRatingContent;
             }
         }
 
@@ -421,6 +425,9 @@ namespace Backlogs.ViewModels
         private void MarkBacklogAsComplete()
         {
             ShowRatingContent = true;
+            ShowEditControls = false;
+            HideRatingContent = false;
+            HideEditControls = true;
         }
 
         /// <summary>
@@ -429,6 +436,9 @@ namespace Backlogs.ViewModels
         private void HideRatingGrid()
         {
             ShowRatingContent = false;
+            HideRatingContent = true;
+            ShowEditControls = false;
+            HideEditControls = true;
         }
 
         /// <summary>
@@ -437,6 +447,9 @@ namespace Backlogs.ViewModels
         private void EnableEditing()
         {
             ShowEditControls = true;
+            HideEditControls = false;
+            ShowRatingContent = false;
+            HideRatingContent = true;
         }
 
         /// <summary>
@@ -494,7 +507,10 @@ namespace Backlogs.ViewModels
         /// </summary>
         private void FinishEditing()
         {
+            HideRatingContent = true;
+            HideEditControls = true;
             ShowEditControls = false;
+            ShowRatingContent = false;
         }
 
         /// <summary>
