@@ -9,7 +9,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:data="using:Backlogs.Models"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource BackgroundThemeBrush}">
 
     <Page.Resources>
         <DataTemplate x:DataType="data:Backlog" x:Key="CompletedBacklogTemplate">

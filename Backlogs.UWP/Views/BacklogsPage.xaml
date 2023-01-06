@@ -10,7 +10,7 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     mc:Ignorable="d"
     xmlns:data="using:Backlogs.Models"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource BackgroundThemeBrush}">
 
     <Page.Resources>
         <DataTemplate x:DataType="data:Backlog" x:Key="BacklogTemplate">

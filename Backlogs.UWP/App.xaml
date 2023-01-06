@@ -20,6 +20,8 @@
                     <Color x:Key="SystemAccentColorDark2">#FFB85300</Color>
                     <Color x:Key="SystemAccentColorDark3">#FFA34100</Color>
 
+                    <SolidColorBrush x:Key="BackgroundThemeBrush" Color="WhiteSmoke" />
+
                     <LinearGradientBrush x:Key="BlueGradientBrush" StartPoint="0,0.5" EndPoint="1,0.5">
                         <GradientStop Offset="0" Color="#539AFF" />
                         <GradientStop Offset="1" Color="#53BEFF" />
@@ -39,6 +41,9 @@
                     <Color x:Key="SystemAccentColorDark1">#FFE6A400</Color>
                     <Color x:Key="SystemAccentColorDark2">#FFCD8F00</Color>
                     <Color x:Key="SystemAccentColorDark3">#FFB47900</Color>
+
+                    <SolidColorBrush x:Key="BackgroundThemeBrush" Color="Black" />
+
                     <LinearGradientBrush x:Key="BlueGradientBrush" StartPoint="0,0.5" EndPoint="1,0.5">
                         <GradientStop Offset="0" Color="#427BCC" />
                         <GradientStop Offset="1" Color="#539AFF" />
@@ -51,6 +56,7 @@
                     <SolidColorBrush x:Key="ContentBackgroundBrush" Color="#111111" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="HighContrast">
+                    <SolidColorBrush x:Key="BackgroundThemeBrush" Color="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
                     <SolidColorBrush x:Key="BlueGradientBrush" Color="{StaticResource SystemColorWindowColor}" />
                     <SolidColorBrush x:Key="FallbackBackgroundBrush" Color="{StaticResource SystemColorWindowColor}" />
                     <SolidColorBrush x:Key="FallbackBackgroundOppositeBrush" Color="{StaticResource SystemColorWindowColor}" />

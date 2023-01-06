@@ -10,7 +10,7 @@
     xmlns:data="using:Backlogs.Models"
     xmlns:vm="using:Backlogs.ViewModels"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource BackgroundThemeBrush}">
 
     <Frame x:Name="rootFrame">
         <VisualStateManager.VisualStateGroups>
