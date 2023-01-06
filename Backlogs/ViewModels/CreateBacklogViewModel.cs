@@ -23,7 +23,7 @@ namespace Backlogs.ViewModels
         private int m_selectedIndex = -1;
         private string m_placeholderText = "Enter name";
         private string m_nameInput;
-        private DateTimeOffset m_dateInput;
+        private DateTimeOffset m_dateInput = DateTimeOffset.MinValue;
         private TimeSpan m_notifTime;
         private bool m_enableNotificationToggle;
         private bool m_showNotificationToggle;
@@ -821,7 +821,7 @@ namespace Backlogs.ViewModels
             IsBusy = true;
             if (SelectedSearchResult != null)
             {
-                string date = DateInput != null ? DateInput.ToString("D", CultureInfo.InvariantCulture) : "None";
+                string date = DateInput != DateTimeOffset.MinValue ? DateInput.ToString("D", CultureInfo.InvariantCulture) : "None";
                 switch (SelectedType)
                 {
                     case "Film":
