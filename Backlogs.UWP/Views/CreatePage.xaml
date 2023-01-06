@@ -48,7 +48,7 @@
                 </ComboBox>
                 <TextBlock Text="Name" Margin="10,0,0,20" />
                 <TextBox PlaceholderText="{x:Bind ViewModel.PlaceholderText, Mode=OneWay}" Margin="10,0,0,20" KeyDown="NameInput_KeyDown"
-                         Text="{x:Bind ViewModel.NameInput, Mode=TwoWay}"/>
+                         Text="{x:Bind ViewModel.NameInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Text="When do you want to check this out? (optional)" Margin="10,0,0,20" />
                 <CalendarDatePicker Margin="10,0,0,20" Date="{x:Bind ViewModel.DateInput, Mode=TwoWay}" MinDate="{x:Bind ViewModel.Today}" />
                 <ToggleSwitch Header="Notify me on this date" Margin="10,0,0,20"
