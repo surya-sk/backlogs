@@ -89,7 +89,7 @@
                     <Hub Grid.Row="1">
                         <HubSection x:Name="recentlyAddedSection" Header="recently added" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <controls:AdaptiveGridView ItemsSource="{x:Bind RecentlyAdded, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}" >
+                                <controls:AdaptiveGridView ItemsSource="{x:Bind RecentlyAdded, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <controls:AdaptiveGridView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
                                             <RelativePanel Margin="0,10,10,10">
@@ -114,7 +114,7 @@
                                 </controls:AdaptiveGridView>
                             </DataTemplate>
                         </HubSection>
-                        <HubSection Header="coming up" Width="350">
+                        <HubSection Header="coming up" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
                                 <controls:AdaptiveGridView ItemsSource="{x:Bind Upcoming, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <controls:AdaptiveGridView.ItemTemplate>

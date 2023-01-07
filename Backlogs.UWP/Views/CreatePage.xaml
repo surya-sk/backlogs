@@ -62,7 +62,7 @@
 
     </Grid>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" DefaultLabelPosition="Right" >
+        <CommandBar x:Name="TopBar" Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" DefaultLabelPosition="Right" Style="{ThemeResource CommandBarRevealStyle}" >
             <AppBarButton Icon="Find" Label="Search" Command="{x:Bind ViewModel.SearchBacklog}" />
             <AppBarButton Icon="Cancel" Label="Cancel" Command="{x:Bind ViewModel.Cancel}" />
             <CommandBar.SecondaryCommands>

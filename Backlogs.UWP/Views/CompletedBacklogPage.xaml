@@ -97,7 +97,7 @@
         <muxc:ProgressBar IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
     </Grid>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" DefaultLabelPosition="Right" >
+        <CommandBar x:Name="TopBar" Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" DefaultLabelPosition="Right" Style="{ThemeResource CommandBarRevealStyle}" >
             <AppBarButton Label="Done" Icon="Accept" Command="{x:Bind ViewModel.SaveChanges}" />
             <AppBarButton Label="Mark As Incomplete" Icon="Back" Command="{x:Bind ViewModel.MarkAsIncomplete}" />
             <AppBarButton Label="Share" Command="{x:Bind ViewModel.ShareBacklog}">
