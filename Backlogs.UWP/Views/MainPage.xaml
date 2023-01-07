@@ -59,7 +59,7 @@
                               Visibility="{x:Bind ViewModel.ShowBottomTeachingTip, Mode=OneWay}"/>
 
             <muxc:TeachingTip x:Name="WhatsNewTip" Title="New this version" 
-                              Subtitle="Trailers, upcoming backlogs, Bing search and more"
+                              Subtitle="{x:Bind ViewModel.WhatsNew}"
                               PreferredPlacement="BottomRight"
                               PlacementMargin="20"
                               IsLightDismissEnabled="False"

@@ -26,6 +26,9 @@
                     <VisualState.Setters>
                         <Setter Target="BottomBar.Visibility" Value="Visible" />
                         <Setter Target="TopBar.Visibility" Value="Collapsed" />
+                        <Setter Target="detailsGrid.(RelativePanel.Below)" Value="img" />
+                        <Setter Target="detailsGrid.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="detailsGrid.(RelativePanel.AlignRightWithPanel)" Value="True" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -77,7 +80,7 @@
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Row="1" Margin="40">
+                <Grid Grid.Row="2" Margin="40">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />

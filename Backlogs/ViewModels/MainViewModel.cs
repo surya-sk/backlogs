@@ -54,12 +54,13 @@ namespace Backlogs.ViewModels
         public ObservableCollection<Backlog> InProgress { get; set; }
         public ObservableCollection<Backlog> Upcoming { get; set; }
         
-        public bool IsFirstRun { get => m_settings.Get<bool>(SettingsConstants.IsFirstRun); }
-        public bool ShowWhatsNew { get => m_settings.Get<bool>(SettingsConstants.ShowWhatsNew); }
-        public string WelcomeText { get => m_settings.Get<bool>(SettingsConstants.IsSignedIn) ? $"Welcome to Backlogs, {m_settings.Get<string>(SettingsConstants.UserName)}!" : "Welcome to Backlogs, stranger!"; }
-        public string UserName { get => m_settings.Get<string>(SettingsConstants.UserName); } 
-        public bool SignedIn { get => m_settings.Get<bool>(SettingsConstants.IsSignedIn); }
+        public bool IsFirstRun { get; set; }
+        public bool ShowWhatsNew { get; set; }
+        public string WelcomeText { get; set; }
+        public string UserName { get; set; } 
+        public bool SignedIn { get; set; }
         public bool Sync { get; set; }
+        public string WhatsNew = "Modern UI, new homepage, bug fixes and more";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -317,7 +318,13 @@ namespace Backlogs.ViewModels
             m_emailService = emailService;
             m_msal = msal;
             m_systemLauncher = systemLauncher;
- 
+
+            IsFirstRun = m_settings.Get<bool>(SettingsConstants.IsFirstRun);
+            ShowWhatsNew = m_settings.Get<bool>(SettingsConstants.ShowWhatsNew); 
+            WelcomeText = m_settings.Get<bool>(SettingsConstants.IsSignedIn) ? $"Welcome to Backlogs, {m_settings.Get<string>(SettingsConstants.UserName)}!" : "Welcome to Backlogs, stranger!";
+            UserName = m_settings.Get<string>(SettingsConstants.UserName);
+            SignedIn = m_settings.Get<bool>(SettingsConstants.IsSignedIn);
+
             LoadBacklogs();
             m_liveTileService.EnableLiveTileQueue();
         }
