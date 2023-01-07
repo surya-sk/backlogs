@@ -37,7 +37,7 @@
                 <TextBlock Text="The app will search various sources such as IMDB and Twitch for metadata, and will fail to create a Backlog if not found. Except for music backlogs, search results will be shown."
                        Margin="10,0,0,20" TextWrapping="Wrap" />
                 <TextBlock Text="Please follow the hints given in the textbox when entering the name. Do NOT use special characters."
-                       Foreground="Yellow" FontStyle="Italic" Margin="10,0,0,20" TextWrapping="Wrap" />
+                       Foreground="{ThemeResource SystemAccentColor}" FontStyle="Italic" Margin="10,0,0,20" TextWrapping="Wrap" />
                 <ComboBox Header="Type" PlaceholderText="Choose type" Margin="10,0,0,20" SelectedValue="{x:Bind ViewModel.SelectedType, Mode=TwoWay}"
                           SelectedIndex="{x:Bind ViewModel.SelectedIndex, Mode=TwoWay}"> 
                     <x:String>Film</x:String>
