@@ -74,7 +74,9 @@ namespace Backlogs.ViewModels
             {
                 m_selectedTileStyleIndex = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTileStyleIndex)));
-                ChangeTileStyle();
+                m_settings.Set<string>(SettingsConstants.TileStyle, value == 0 ? "Peeking" : "Background");
+                TileStylePreviewImage = value == 0 ? "ms-appx:///Assets/peeking-tile.png" :
+    "ms-appx:///Assets/background-tile.png";
             }
         }
 
