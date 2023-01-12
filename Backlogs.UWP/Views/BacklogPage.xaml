@@ -153,7 +153,7 @@
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" VerticalAlignment="Top" />
     </Grid>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" DefaultLabelPosition="Right" Style="{ThemeResource CommandBarRevealStyle}" >
+        <CommandBar x:Name="TopBar" DefaultLabelPosition="Right" Background="{ThemeResource SystemControlAcrylicWindowBrush}" Style="{ThemeResource CommandBarRevealStyle}" >
             <AppBarButton Label="Done" Icon="Accept" Command="{x:Bind ViewModel.CloseBacklog}" Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}" />
             <AppBarButton Label="Edit" Icon="Edit" Command="{x:Bind ViewModel.StartEditing}"  Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}" />
             <AppBarButton Label="More info" Icon="Help" Command="{x:Bind ViewModel.LaunchBingSearchResults}"  Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}" />

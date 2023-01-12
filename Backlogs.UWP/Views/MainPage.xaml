@@ -84,7 +84,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock x:Name="WelcomeText" Margin="30" FontSize="30" Text="{x:Bind ViewModel.WelcomeText}" />
+                    <TextBlock x:Name="WelcomeText" Margin="30" FontSize="28" Text="{x:Bind ViewModel.WelcomeText}" />
 
                     <Hub Grid.Row="1">
                         <HubSection x:Name="recentlyAddedSection" Header="recently added" Width="300">
@@ -149,7 +149,7 @@
         </Grid>
     </Frame>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}" DefaultLabelPosition="Right" Style="{ThemeResource CommandBarRevealStyle}">
+        <CommandBar x:Name="TopBar" Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" Style="{ThemeResource CommandBarRevealStyle}">
             <AppBarButton Label="All Backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
             <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedPage}" >
                 <FontIcon Glyph="" />

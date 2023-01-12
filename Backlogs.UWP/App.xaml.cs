@@ -95,7 +95,7 @@ namespace Backlogs
                 m_serviceProvider = ConfigureServices();
                 m_userSettings = Services.GetRequiredService<IUserSettings>();
                 m_userSettings.UserSettingsChanged += M_userSettings_UserSettingsChanged;
-                rootFrame.ActualThemeChanged += RootFrame_ActualThemeChanged;
+                //rootFrame.ActualThemeChanged += RootFrame_ActualThemeChanged;
                 m_fileHander = Services.GetRequiredService<IFileHandler>();
                 m_navigationService = Services.GetRequiredService<INavigation>();
                 m_navigationService.RegisterViewForViewModel(typeof(MainViewModel), typeof(MainPage));

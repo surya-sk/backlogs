@@ -39,7 +39,7 @@ namespace Backlogs.ViewModels
             "\u2022 Fixed live tile style not changing\n" +
             "\u2022 Fixed share feature not working\n" +
             "\u2022 Fixed app theme not changing and persisting on re-launches\n";
-        public string ChangelogTitle { get; } = "New this version - 07 January, 2023";
+        public string ChangelogTitle { get; } = "New this version - 11 January, 2023";
         public string Version { get => m_settings.Get<string>(SettingsConstants.Version); } 
 
         public bool ShowSignInPrompt { get; } 

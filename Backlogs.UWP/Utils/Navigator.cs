@@ -6,6 +6,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Animation;
 using Backlogs.ViewModels;
 using Backlogs.Views;
+using Windows.Foundation.Metadata;
 
 namespace Backlogs.Utils.UWP
 {
@@ -23,24 +24,26 @@ namespace Backlogs.Utils.UWP
 
         public void SetAnimations()
         {
-            m_transitions[typeof(BacklogsViewModel)] = new SlideNavigationTransitionInfo()
-            { Effect = SlideNavigationTransitionEffect.FromRight };
-            m_backTransitions[typeof(BacklogsViewModel)] = new SlideNavigationTransitionInfo()
-            { Effect = SlideNavigationTransitionEffect.FromLeft };
+            if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5))
+            {
+                m_transitions[typeof(BacklogsViewModel)] = new SlideNavigationTransitionInfo()
+                { Effect = SlideNavigationTransitionEffect.FromRight };
+                m_backTransitions[typeof(BacklogsViewModel)] = new SlideNavigationTransitionInfo()
+                { Effect = SlideNavigationTransitionEffect.FromLeft };
 
-            m_transitions[typeof(CompletedBacklogsViewModel)] = new SlideNavigationTransitionInfo()
-            { Effect = SlideNavigationTransitionEffect.FromLeft };
-            m_backTransitions[typeof(CompletedBacklogsPage)] = new SlideNavigationTransitionInfo()
-            { Effect = SlideNavigationTransitionEffect.FromRight };
+                m_transitions[typeof(CompletedBacklogsViewModel)] = new SlideNavigationTransitionInfo()
+                { Effect = SlideNavigationTransitionEffect.FromLeft };
+                m_backTransitions[typeof(CompletedBacklogsPage)] = new SlideNavigationTransitionInfo()
+                { Effect = SlideNavigationTransitionEffect.FromRight };
 
-            m_transitions[typeof(CreateBacklogViewModel)] = new DrillInNavigationTransitionInfo();
-            m_backTransitions[typeof(CreateBacklogViewModel)] = new DrillInNavigationTransitionInfo();
+                m_transitions[typeof(CreateBacklogViewModel)] = new DrillInNavigationTransitionInfo();
+                m_backTransitions[typeof(CreateBacklogViewModel)] = new DrillInNavigationTransitionInfo();
 
-            m_transitions[typeof(SettingsPage)] = new SlideNavigationTransitionInfo()
-            { Effect= SlideNavigationTransitionEffect.FromBottom };
-            m_backTransitions[typeof(SettingsPage)] = new SlideNavigationTransitionInfo()
-            { Effect = SlideNavigationTransitionEffect.FromBottom };
-
+                m_transitions[typeof(SettingsPage)] = new SlideNavigationTransitionInfo()
+                { Effect = SlideNavigationTransitionEffect.FromBottom };
+                m_backTransitions[typeof(SettingsPage)] = new SlideNavigationTransitionInfo()
+                { Effect = SlideNavigationTransitionEffect.FromBottom };
+            }
         }
 
         public void GoBack<T>()
