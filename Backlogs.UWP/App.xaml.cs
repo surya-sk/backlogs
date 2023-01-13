@@ -18,6 +18,9 @@ using FileIO = Windows.Storage.FileIO;
 using Backlogs.Utils;
 using UnhandledExceptionEventArgs = Windows.UI.Xaml.UnhandledExceptionEventArgs;
 using System.Diagnostics;
+using Windows.ApplicationModel.Core;
+using Windows.UI.ViewManagement;
+using Windows.UI;
 
 namespace Backlogs
 {
@@ -30,6 +33,7 @@ namespace Backlogs
         private IUserSettings m_userSettings;
         private INavigation m_navigationService;
         private IFileHandler m_fileHander;
+        private static Frame AppFrame;
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
@@ -91,15 +95,19 @@ namespace Backlogs
                 m_serviceProvider = ConfigureServices();
                 m_userSettings = Services.GetRequiredService<IUserSettings>();
                 m_userSettings.UserSettingsChanged += M_userSettings_UserSettingsChanged;
+                //rootFrame.ActualThemeChanged += RootFrame_ActualThemeChanged;
                 m_fileHander = Services.GetRequiredService<IFileHandler>();
                 m_navigationService = Services.GetRequiredService<INavigation>();
                 m_navigationService.RegisterViewForViewModel(typeof(MainViewModel), typeof(MainPage));
                 m_navigationService.RegisterViewForViewModel(typeof(BacklogsViewModel), typeof(BacklogsPage));
                 m_navigationService.RegisterViewForViewModel(typeof(BacklogViewModel), typeof(BacklogPage));
                 m_navigationService.RegisterViewForViewModel(typeof(CompletedBacklogsViewModel), typeof(CompletedBacklogsPage));
+                m_navigationService.RegisterViewForViewModel(typeof(CompletedBacklogViewModel), typeof(CompletedBacklogPage));
                 m_navigationService.RegisterViewForViewModel(typeof(CreateBacklogViewModel), typeof(CreatePage));
                 m_navigationService.RegisterViewForViewModel(typeof(ImportBacklogViewModel), typeof(ImportBacklog));
                 m_navigationService.RegisterViewForViewModel(typeof(SettingsViewModel), typeof(SettingsPage));
+
+                m_navigationService.SetAnimations();
             }
 
             if (e.PrelaunchActivated == false)
@@ -128,7 +136,17 @@ namespace Backlogs
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+
+            AppFrame = rootFrame;
             SetAppTheme();
+        }
+
+        private void RootFrame_ActualThemeChanged(FrameworkElement sender, object args)
+        {
+            var viewTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+            viewTitleBar.ButtonBackgroundColor = Colors.Transparent;
+            viewTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            viewTitleBar.ButtonForegroundColor = AppFrame.ActualTheme == ElementTheme.Dark ? Colors.White : Colors.Black;
         }
 
         private void M_userSettings_UserSettingsChanged(object sender, string e)
@@ -196,25 +214,26 @@ namespace Backlogs
 
         private void SetAppTheme()
         {
-            object themeObject = ApplicationData.Current.LocalSettings.Values[SettingsConstants.AppTheme];
-            if(themeObject != null && GetRootFrame() != null)
+            object themeObject = m_userSettings.Get<string>(SettingsConstants.AppTheme);
+            if (themeObject != null && AppFrame != null)
             {
                 string theme = themeObject.ToString();
                 switch(theme)
                 {
                     case "Light":
-                        GetRootFrame().RequestedTheme = ElementTheme.Light;
+                        AppFrame.RequestedTheme = ElementTheme.Light;
                         break;
                     case "Dark":
-                        GetRootFrame().RequestedTheme = ElementTheme.Dark;
-                        break;
-                    case "System":
-                        GetRootFrame().RequestedTheme = ElementTheme.Default;
+                        AppFrame.RequestedTheme = ElementTheme.Dark;
                         break;
                     default:
-                        GetRootFrame().RequestedTheme = ElementTheme.Default;
+                        AppFrame.RequestedTheme = ElementTheme.Default;
                         break;
                 }
+            }
+            else
+            {
+                m_userSettings.Set<string>(SettingsConstants.AppTheme, "System");
             }
         }
 

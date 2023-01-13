@@ -10,7 +10,7 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     mc:Ignorable="d"
     xmlns:data="using:Backlogs.Models"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource BackgroundThemeBrush}">
 
     <Page.Resources>
         <DataTemplate x:DataType="data:Backlog" x:Key="BacklogTemplate">
@@ -174,7 +174,7 @@
         </Grid>
     </Frame>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar"  Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" >
+        <CommandBar x:Name="TopBar" DefaultLabelPosition="Right" Background="{ThemeResource SystemControlAcrylicWindowBrush}" Style="{ThemeResource CommandBarRevealStyle}" >
             <AppBarButton x:Name="TopSearchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
             <AppBarButton x:Name="TopSortButton" Label="{x:Bind ViewModel.SortOrder, Mode=OneWay}" Icon="Sort">
                 <AppBarButton.Flyout>

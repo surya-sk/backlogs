@@ -35,7 +35,7 @@ namespace Backlogs.Utils.UWP
             _request.Data.Properties.Description = "Share this app with your contacts";
         }
 
-        public async Task ShowSearchDialog(Backlog backlog)
+        public async Task ShowShareBacklogDialogAsync(Backlog backlog)
         {
             m_backlog = backlog;
             StorageFile backlogFile = await m_tempFolder.CreateFileAsync($"{m_backlog.Name}.bklg", CreationCollisionOption.ReplaceExisting);

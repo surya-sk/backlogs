@@ -16,7 +16,7 @@ namespace Backlogs.Utils.UWP
             m_backlogs = backlogs;
         }
 
-        public async Task<IEnumerable<Backlog>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Backlog>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken)
         {
             var result = (from b in m_backlogs select b).Skip(pageIndex * pageSize).Take(pageSize);
             await Task.Delay(100);

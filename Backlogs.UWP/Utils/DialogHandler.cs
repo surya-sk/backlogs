@@ -20,20 +20,11 @@ namespace Backlogs.Utils.UWP
     {
         private ContentDialog m_trailerDialog;
         private WebView m_trailerWebView;
-        public Task CloseBacklogPopupAsycn()
-        {
-            throw new NotImplementedException();
-        }
 
         public void CloseTrailerDialog()
         {
             m_trailerWebView.Navigate(new Uri("about:blank"));
             m_trailerDialog?.Hide();
-        }
-
-        public Task OpenBacklogPopupAsync()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task OpenTrailerDialogAsync(string video)
@@ -109,11 +100,6 @@ namespace Backlogs.Utils.UWP
                 CloseButtonText = closeText
             };
             await content.ShowAsync();
-        }
-
-        public Task ShowInvalidDateTimeDialogAsycn(string title, string message)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task ShowLogsDialogAsyncAsync(List<string> logs)
