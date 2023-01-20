@@ -9,8 +9,7 @@
 *.sln.docstates
 
 # API Keys
-backlog/Utils/Keys.cs
-Backlogs.Core/Utils/Keys.cs
+Backlogs/Utils/Keys.cs
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
