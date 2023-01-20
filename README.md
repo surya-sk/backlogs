@@ -13,10 +13,10 @@ This app is built using the Universal Windows Platform framework using C# and XA
 
 ## Screenshots
 <table><tr>
-<td> <img src="backlog/Screenshots/Mobile.png" alt="Drawing" style="width: 250px;"/> </td>
-<td> <img src="backlog/Screenshots/Desktop.png" alt="Drawing" style="width: 550px;"/> </td>
-<td> <img src="backlog/Screenshots/Desktop-light.png" alt="Drawing" style="width: 550px;"/> </td>
-<td> <img src="backlog/Screenshots/Desktop-all.png" alt="Drawing" style="width: 550px;"/> </td>
+<td> <img src="Backlogs.UWP/Screenshots/Mobile.png" alt="Drawing" style="width: 250px;"/> </td>
+<td> <img src="Backlogs.UWP/Screenshots/Desktop.png" alt="Drawing" style="width: 550px;"/> </td>
+<td> <img src="Backlogs.UWP/Screenshots/Desktop-light.png" alt="Drawing" style="width: 550px;"/> </td>
+<td> <img src="Backlogs.UWP/Screenshots/Desktop-all.png" alt="Drawing" style="width: 550px;"/> </td>
 </tr></table>
 
 ## Building
