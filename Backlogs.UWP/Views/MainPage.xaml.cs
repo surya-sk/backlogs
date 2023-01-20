@@ -10,6 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Backlogs.Services;
 using Backlogs.Utils;
 using System.Diagnostics;
+using Windows.UI.Composition;
+using System.Numerics;
+using Microsoft.Graph;
+using Windows.Foundation.Metadata;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -21,6 +25,8 @@ namespace Backlogs.Views
     public sealed partial class MainPage : Page
     {
         int backlogIndex = -1;
+        Compositor m_compositor = Window.Current.Compositor;
+        SpringVector3NaturalMotionAnimation m_springAnimation;
 
         public MainViewModel ViewModel { get; set; }
 
@@ -32,7 +38,7 @@ namespace Backlogs.Views
                 App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<ILiveTileService>(),
                 App.Services.GetRequiredService<IFilePicker>(), App.Services.GetRequiredService<IEmailService>(),
                 App.Services.GetService<IMsal>(), App.Services.GetRequiredService<ISystemLauncher>());
-            
+            this.DataContext = ViewModel;
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
         }
@@ -53,75 +59,6 @@ namespace Backlogs.Views
                 }
             }
             await ViewModel.SetupProfile();
-        }
-
-        private void AddedBacklogsGrid_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var selectedBacklog = (Backlog)e.ClickedItem;
-            AddedBacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
-            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, new SuppressNavigationTransitionInfo());
-        }
-
-        private async void AddedBacklogsGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (backlogIndex != -1)
-            {
-                ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
-                try
-                {
-                    await AddedBacklogsGrid.TryStartConnectedAnimationAsync(animation, BacklogsManager.GetInstance().GetBacklogs()[backlogIndex], "coverImage");
-                }
-                catch
-                {
-                    // : )
-                }
-            }
-        }
-
-        private void UpcomingBacklogsGrid_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var selectedBacklog = (Backlog)e.ClickedItem;
-            UpcomingBacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
-            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, new SuppressNavigationTransitionInfo());
-        }
-
-        private async void UpcomingBacklogsGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            if(backlogIndex != -1)
-            {
-                ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
-                try
-                {
-                    await UpcomingBacklogsGrid.TryStartConnectedAnimationAsync(animation, BacklogsManager.GetInstance().GetBacklogs()[backlogIndex], "coveerImage");
-                }
-                catch
-                {
-                    // : )
-                }
-            }
-        }
-
-        private void InProgressBacklogsGrid_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var selectedBacklog = (Backlog)e.ClickedItem;
-            InProgressBacklogsGrid.PrepareConnectedAnimation("cover", selectedBacklog, "coverImage");
-            Frame.Navigate(typeof(BacklogPage), selectedBacklog.id, new SuppressNavigationTransitionInfo());
-        }
-
-        private async void InProgressBacklogsGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (backlogIndex != -1)
-            {
-                ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().GetAnimation("backAnimation");
-                try
-                {
-                    await InProgressBacklogsGrid.TryStartConnectedAnimationAsync(animation, BacklogsManager.GetInstance().GetBacklogs()[backlogIndex], "coverImage");
-                }
-                catch
-                {
-                    // : )
-                }
-            }
         }
     }
 }

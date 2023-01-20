@@ -7,7 +7,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource BackgroundThemeBrush}">
 
     <Grid x:Name="mainGrid">
         <VisualStateManager.VisualStateGroups>
@@ -25,7 +25,7 @@
                     <VisualState.Setters>
                         <Setter Target="BottomBar.Visibility" Value="Visible" />
                         <Setter Target="TopBar.Visibility" Value="Collapsed" />
-                        <Setter Target="detailsGrid.(RelativePanel.Below)" Value="PlayTrailerButton" />
+                        <Setter Target="detailsGrid.(RelativePanel.Below)" Value="img" />
                         <Setter Target="detailsGrid.(RelativePanel.AlignLeftWithPanel)" Value="True" />
                         <Setter Target="detailsGrid.(RelativePanel.AlignRightWithPanel)" Value="True" />
                     </VisualState.Setters>
@@ -48,29 +48,28 @@
                     </Grid.Background>
                     <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <Border.Background>
-                            <media:BackdropBlurBrush Amount="50" />
+                            <media:BackdropBlurBrush Amount="90" />
                         </Border.Background>
                     </Border>
                     
                     <RelativePanel>
                         <Image x:Name="img" Source="{x:Bind ViewModel.Backlog.ImageURL}" Height="200" Width="200" HorizontalAlignment="Center" Margin="30,30,30,0"/>
-                        <Button x:Name="PlayTrailerButton" Command="{x:Bind ViewModel.OpenWebViewTrailer}" Margin="80,10,0,10" Content="Play trailer" RelativePanel.Below="img"
-                                Visibility="{x:Bind ViewModel.ShowTrailerButton, Mode=OneWay}" Width="100" HorizontalAlignment="Center" Background="{ThemeResource SystemAccentColor}"  />
                         <Grid x:Name="detailsGrid" RelativePanel.RightOf="img" Height="200" Margin="30">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <TextBlock Text="{x:Bind ViewModel.Backlog.Name}" FontSize="25" Margin="0,0,0,10" TextWrapping="Wrap" />
                             <TextBlock x:Name="ArtistText" Text="{x:Bind ViewModel.Backlog.Director}" FontSize="20" Margin="0,0,0,10" Grid.Row="1"/>
-                            <RelativePanel Margin="0,0,0,20" Grid.Row="2">
-                                <TextBlock x:Name="descText" Text="{x:Bind ViewModel.Backlog.Description}" TextTrimming="WordEllipsis" MaxLines="4" TextWrapping="Wrap" FontSize="15"
-                                                    Margin="0,0,0,10"/>
-                                <Button x:Name="ReadMoreButton" Margin="0,0,0,0" Command="{x:Bind ViewModel.ReadMore}" Content="Read full" RelativePanel.Below="descText" />
-                                <Button x:Name="bingSearchButton" RelativePanel.RightOf="ReadMoreButton" Margin="10,0,0,0" Command="{x:Bind ViewModel.LaunchBingSearchResults}"
-                                        Content="More info"  RelativePanel.Below="descText" Background="{ThemeResource SystemAccentColor}" />
-                            </RelativePanel>
+                            <TextBlock x:Name="descText" Text="{x:Bind ViewModel.Backlog.Description}" TextTrimming="WordEllipsis" MaxLines="3" TextWrapping="Wrap" FontSize="15"
+                                                    Margin="0,0,0,20" Grid.Row="2"/>
+                                
+                            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                                <Button Content="Play trailer" Margin="0,0,0,0" Command="{x:Bind ViewModel.OpenWebViewTrailer}" Visibility="{x:Bind ViewModel.ShowTrailerButton}" Background="{ThemeResource SystemAccentColor}" />
+                                <Button x:Name="ReadMoreButton" Margin="10,0,0,0" Command="{x:Bind ViewModel.ReadMore}" Content="Read full" />
+                            </StackPanel>
                         </Grid>
                     </RelativePanel>
                 </Grid>
@@ -154,9 +153,10 @@
         <muxc:ProgressBar x:Name="ProgBar" IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" VerticalAlignment="Top" />
     </Grid>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
+        <CommandBar x:Name="TopBar" DefaultLabelPosition="Right" Background="{ThemeResource SystemControlAcrylicWindowBrush}" Style="{ThemeResource CommandBarRevealStyle}" >
             <AppBarButton Label="Done" Icon="Accept" Command="{x:Bind ViewModel.CloseBacklog}" Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}" />
             <AppBarButton Label="Edit" Icon="Edit" Command="{x:Bind ViewModel.StartEditing}"  Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}" />
+            <AppBarButton Label="More info" Icon="Help" Command="{x:Bind ViewModel.LaunchBingSearchResults}"  Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}" />
             <AppBarButton Label="Save" Icon="Save" Command="{x:Bind ViewModel.SaveChanges}" Visibility="{x:Bind ViewModel.ShowEditControls, Mode=OneWay}" />
             <AppBarButton Label="Cancel" Icon="Cancel" Command="{x:Bind ViewModel.StopEditing}" Visibility="{x:Bind ViewModel.ShowEditControls, Mode=OneWay}" />
             <AppBarButton Label="Share" Command="{x:Bind ViewModel.ShareBacklog}">
@@ -172,6 +172,7 @@
         <CommandBar x:Name="BottomBar" Visibility="Collapsed">
             <AppBarButton Label="Done" Icon="Accept" Command="{x:Bind ViewModel.CloseBacklog}" Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}" />
             <AppBarButton Label="Edit" Icon="Edit" Command="{x:Bind ViewModel.StartEditing}"  Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}" />
+            <AppBarButton Label="More info" Icon="Help" Command="{x:Bind ViewModel.LaunchBingSearchResults}"  Visibility="{x:Bind ViewModel.HideEditControls, Mode=OneWay}" />
             <AppBarButton Label="Save" Icon="Save" Command="{x:Bind ViewModel.SaveChanges}" Visibility="{x:Bind ViewModel.ShowEditControls, Mode=OneWay}" />
             <AppBarButton Label="Cancel" Icon="Cancel" Command="{x:Bind ViewModel.StopEditing}" Visibility="{x:Bind ViewModel.ShowEditControls, Mode=OneWay}" />
             <AppBarButton Label="Share" Command="{x:Bind ViewModel.ShareBacklog}">

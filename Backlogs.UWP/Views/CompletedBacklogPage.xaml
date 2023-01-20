@@ -8,7 +8,7 @@
         xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource BackgroundThemeBrush}">
 
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -26,6 +26,9 @@
                     <VisualState.Setters>
                         <Setter Target="BottomBar.Visibility" Value="Visible" />
                         <Setter Target="TopBar.Visibility" Value="Collapsed" />
+                        <Setter Target="detailsGrid.(RelativePanel.Below)" Value="img" />
+                        <Setter Target="detailsGrid.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="detailsGrid.(RelativePanel.AlignRightWithPanel)" Value="True" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -44,7 +47,7 @@
                     </Grid.Background>
                     <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <Border.Background>
-                            <media:BackdropBlurBrush Amount="50" />
+                            <media:BackdropBlurBrush Amount="90" />
                         </Border.Background>
                     </Border>
 
@@ -77,7 +80,7 @@
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Row="1" Margin="40">
+                <Grid Grid.Row="2" Margin="40">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -97,7 +100,7 @@
         <muxc:ProgressBar IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
     </Grid>
     <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="Transparent" DefaultLabelPosition="Right" >
+        <CommandBar x:Name="TopBar" Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" Style="{ThemeResource CommandBarRevealStyle}" >
             <AppBarButton Label="Done" Icon="Accept" Command="{x:Bind ViewModel.SaveChanges}" />
             <AppBarButton Label="Mark As Incomplete" Icon="Back" Command="{x:Bind ViewModel.MarkAsIncomplete}" />
             <AppBarButton Label="Share" Command="{x:Bind ViewModel.ShareBacklog}">

@@ -258,7 +258,7 @@ namespace Backlogs.ViewModels
 
         public void GoBack()
         {
-            m_navigationService.GoBack();
+            m_navigationService.GoBack<CompletedBacklogsViewModel>();
         }
 
         #region Sorting

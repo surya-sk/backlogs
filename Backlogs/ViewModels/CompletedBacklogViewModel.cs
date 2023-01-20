@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Backlogs.Core.ViewModels
+namespace Backlogs.ViewModels
 {
     public class CompletedBacklogViewModel : INotifyPropertyChanged
     {
@@ -94,13 +94,13 @@ namespace Backlogs.Core.ViewModels
         private async Task ShareBacklogAsync()
         {
             IsLoading = true;
-            await m_shareDialog.ShowSearchDialog(Backlog);
+            await m_shareDialog.ShowShareBacklogDialogAsync(Backlog);
             IsLoading = false;
         }
 
         private void GoToPrevPage()
         {
-            m_navigator.GoBack();
+            m_navigator.GoBack<CompletedBacklogViewModel>();
         }
     }
 }

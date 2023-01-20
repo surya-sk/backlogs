@@ -23,7 +23,7 @@ namespace Backlogs.ViewModels
         private int m_selectedIndex = -1;
         private string m_placeholderText = "Enter name";
         private string m_nameInput;
-        private DateTimeOffset m_dateInput;
+        private DateTimeOffset m_dateInput = DateTimeOffset.MinValue;
         private TimeSpan m_notifTime;
         private bool m_enableNotificationToggle;
         private bool m_showNotificationToggle;
@@ -286,7 +286,7 @@ namespace Backlogs.ViewModels
 
             try
             {
-                if (NameInput == "" || SelectedIndex < 0)
+                if (m_nameInput == "" || SelectedIndex < 0)
                 {
                     await m_dialogHandler.ShowErrorDialogAsync("Missing fields", "Please fill in all the values", "Ok");
                 }
@@ -321,7 +321,7 @@ namespace Backlogs.ViewModels
                             }
                         }
                     }
-                    SearchResultTitle = $"Showing results for \"{NameInput}\". Click the one you'd like to add";
+                    SearchResultTitle = $"Showing results for \"{m_nameInput}\". Click the one you'd like to add";
                     await SearchBacklogAsync();
                 }
             }
@@ -394,8 +394,8 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                string response = await RestClient.GetFilmResponse(NameInput);
-                await m_fileHandler.WriteLogsAsync($"Trying to find film {NameInput}. Response: {response}");
+                string response = await RestClient.GetFilmResponse(m_nameInput);
+                await m_fileHandler.WriteLogsAsync($"Trying to find film {m_nameInput}. Response: {response}");
                 FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
                 if (filmResult.results.Length > 0)
                 {
@@ -418,7 +418,7 @@ namespace Backlogs.ViewModels
                             continue;
                         }
                     }
-                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
+                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(m_nameInput, SearchResults);
                     await SearchResultSelectedAsync();
                     await m_fileHandler.WriteLogsAsync("Succesfully created backlog");
                 }
@@ -472,8 +472,8 @@ namespace Backlogs.ViewModels
             try
             {
                 string _date = DateInput != null ? DateInput.ToString("D", CultureInfo.InvariantCulture) : "None";
-                string response = await RestClient.GetMusicResponse(NameInput);
-                await m_fileHandler.WriteLogsAsync($"Searching for album {NameInput}. Response: {response}");
+                string response = await RestClient.GetMusicResponse(m_nameInput);
+                await m_fileHandler.WriteLogsAsync($"Searching for album {m_nameInput}. Response: {response}");
                 var musicData = JsonConvert.DeserializeObject<MusicData>(response);
                 if (musicData != null)
                 {
@@ -525,8 +525,8 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                string response = await RestClient.GetBookResponse(NameInput);
-                await m_fileHandler.WriteLogsAsync($"Trying to find book {NameInput}. Response {response}");
+                string response = await RestClient.GetBookResponse(m_nameInput);
+                await m_fileHandler.WriteLogsAsync($"Trying to find book {m_nameInput}. Response {response}");
                 var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
                 if (bookData.items.Count > 0)
                 {
@@ -549,7 +549,7 @@ namespace Backlogs.ViewModels
                             continue;
                         }
                     }
-                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
+                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(m_nameInput, SearchResults);
                     await SearchResultSelectedAsync();
                     await m_fileHandler.WriteLogsAsync("Succesfully created backlog");
                 }
@@ -571,7 +571,7 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task CreateBookBacklogAsync(string date)
         {
-            var title = NameInput;
+            var title = m_nameInput;
             string response = await RestClient.GetBookResponse(title);
             await m_fileHandler.WriteLogsAsync($"Trying to find book {title}. Response {response}");
             var bookData = JsonConvert.DeserializeObject<BookInfo>(response);
@@ -621,8 +621,8 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                string response = await RestClient.GetSeriesResponse(NameInput);
-                await m_fileHandler.WriteLogsAsync($"Trying to find series {NameInput}. Response: {response}");
+                string response = await RestClient.GetSeriesResponse(m_nameInput);
+                await m_fileHandler.WriteLogsAsync($"Trying to find series {m_nameInput}. Response: {response}");
                 SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
                 if (seriesResult.results.Length > 0)
                 {
@@ -645,7 +645,7 @@ namespace Backlogs.ViewModels
                             continue;
                         }
                     }
-                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
+                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(m_nameInput, SearchResults);
                     await SearchResultSelectedAsync();
                     await m_fileHandler.WriteLogsAsync("Succesfully created backlog");
                 }
@@ -698,8 +698,8 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                string response = await RestClient.GetGameResponse(NameInput);
-                await m_fileHandler.WriteLogsAsync($"Trying to find game {NameInput}. Response: {response}");
+                string response = await RestClient.GetGameResponse(m_nameInput);
+                await m_fileHandler.WriteLogsAsync($"Trying to find game {m_nameInput}. Response: {response}");
                 var result = JsonConvert.DeserializeObject<GameResponse[]>(response);
                 if (result.Length > 0)
                 {
@@ -736,7 +736,7 @@ namespace Backlogs.ViewModels
                             continue;
                         }
                     }
-                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(NameInput, SearchResults);
+                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(m_nameInput, SearchResults);
                     await SearchResultSelectedAsync();
                     await m_fileHandler.WriteLogsAsync("Succesfully created backlog");
                 }
@@ -799,17 +799,17 @@ namespace Backlogs.ViewModels
 
         private async Task ShowNotFoundDialogAsync()
         {
-            await m_dialogHandler.ShowErrorDialogAsync($"Couldn't find any results for {NameInput}", $"Check if you've picked the right type or try entering the full title if you haven't done so. If that doesn't work, please go to \'Settings + more\' and send me the logs", "Ok");
+            await m_dialogHandler.ShowErrorDialogAsync($"Couldn't find any results for {m_nameInput}", $"Check if you've picked the right type or try entering the full title if you haven't done so. If that doesn't work, please go to \'Settings + more\' and send me the logs", "Ok");
         }
 
         private async Task ShowErrorDialogAsync()
         {
-            await m_dialogHandler.ShowErrorDialogAsync($"Couldn't find any results for {NameInput}", $"Could not create Backlog. Please go to \'Settings + more\' and send me the logs", "Ok");
+            await m_dialogHandler.ShowErrorDialogAsync($"Couldn't find any results for {m_nameInput}", $"Could not create Backlog. Please go to \'Settings + more\' and send me the logs", "Ok");
         }
 
         private void NavToPrevPage()
         {
-            m_navigationService.GoBack();
+            m_navigationService.GoBack<CreateBacklogViewModel>();
         }
 
         /// <summary>
@@ -821,7 +821,7 @@ namespace Backlogs.ViewModels
             IsBusy = true;
             if (SelectedSearchResult != null)
             {
-                string date = DateInput != null ? DateInput.ToString("D", CultureInfo.InvariantCulture) : "None";
+                string date = DateInput != DateTimeOffset.MinValue ? DateInput.ToString("D", CultureInfo.InvariantCulture) : "None";
                 switch (SelectedType)
                 {
                     case "Film":

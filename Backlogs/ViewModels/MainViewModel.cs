@@ -46,18 +46,21 @@ namespace Backlogs.ViewModels
         private readonly IEmailService m_emailService;
         private readonly IMsal m_msal;
         private readonly ISystemLauncher m_systemLauncher;
+        private Backlog m_selectedBacklog;
+        private Backlog m_selectedCompletedBacklog;
 
         public ObservableCollection<Backlog> RecentlyAdded { get; set; }
         public ObservableCollection<Backlog> RecentlyCompleted { get; set; }
         public ObservableCollection<Backlog> InProgress { get; set; }
         public ObservableCollection<Backlog> Upcoming { get; set; }
         
-        public bool IsFirstRun { get => m_settings.Get<bool>(SettingsConstants.IsFirstRun); }
-        public bool ShowWhatsNew { get => m_settings.Get<bool>(SettingsConstants.ShowWhatsNew); }
-        public string WelcomeText { get => m_settings.Get<bool>(SettingsConstants.IsSignedIn) ? $"Welcome to Backlogs, {m_settings.Get<string>(SettingsConstants.UserName)}!" : "Welcome to Backlogs, stranger!"; }
-        public string UserName { get => m_settings.Get<string>(SettingsConstants.UserName); } 
-        public bool SignedIn { get => m_settings.Get<bool>(SettingsConstants.IsSignedIn); }
+        public bool IsFirstRun { get; set; }
+        public bool ShowWhatsNew { get; set; }
+        public string WelcomeText { get; set; }
+        public string UserName { get; set; } 
+        public bool SignedIn { get; set; }
         public bool Sync { get; set; }
+        public string WhatsNew = "Modern UI, new homepage, bug fixes and more";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -252,6 +255,30 @@ namespace Backlogs.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CompletedBacklogsPercent)));
             }
         }
+
+        public Backlog SelectedBacklog
+        {
+            get => m_selectedBacklog;
+            set
+            {
+                if (m_selectedBacklog == value || value == null) return;
+                m_selectedBacklog = value;
+                OpenSelectedBacklog(m_selectedBacklog.id);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedBacklog)));
+            }
+        }
+
+        public Backlog SelectedCompletedBacklog
+        {
+            get => m_selectedCompletedBacklog;
+            set
+            {
+                if (m_selectedCompletedBacklog == value || value == null) return;
+                m_selectedCompletedBacklog = value;
+                OpenCompletedSelectedBacklog(m_selectedCompletedBacklog.id);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCompletedBacklog)));
+            }
+        }
         #endregion
 
         public MainViewModel(INavigation navigationService, 
@@ -291,6 +318,12 @@ namespace Backlogs.ViewModels
             m_emailService = emailService;
             m_msal = msal;
             m_systemLauncher = systemLauncher;
+
+            IsFirstRun = m_settings.Get<bool>(SettingsConstants.IsFirstRun);
+            ShowWhatsNew = m_settings.Get<bool>(SettingsConstants.ShowWhatsNew); 
+            WelcomeText = m_settings.Get<bool>(SettingsConstants.IsSignedIn) ? $"Welcome to Backlogs, {m_settings.Get<string>(SettingsConstants.UserName)}!" : "Welcome to Backlogs, stranger!";
+            UserName = m_settings.Get<string>(SettingsConstants.UserName);
+            SignedIn = m_settings.Get<bool>(SettingsConstants.IsSignedIn);
 
             LoadBacklogs();
             m_liveTileService.EnableLiveTileQueue();
@@ -445,7 +478,7 @@ namespace Backlogs.ViewModels
                         await m_fileHandler.WriteLogsAsync("Signing in...");
                     }
                     catch { }
-                    //await m_fileHandler.DeleteLocalFilesAsync();
+                    await m_fileHandler.DeleteLocalFilesAsync();
                     m_settings.Set(SettingsConstants.IsSignedIn, true);
                     //await BacklogsManager.GetInstance().ReadDataAsync(true);
                     SyncBacklogs();
@@ -658,6 +691,7 @@ namespace Backlogs.ViewModels
             if (await m_dialogHandler.ShowSignOutDialogAsync())
             {
                 await m_msal.SignOut();
+                await m_fileHandler.DeleteLocalFilesAsync();
                 m_settings.Set(SettingsConstants.IsSignedIn, false);
                 SyncBacklogs();
             }
@@ -689,14 +723,24 @@ namespace Backlogs.ViewModels
             m_navigationService.NavigateTo<SettingsViewModel>(args);
         }
 
-        private void NavigateToCompletedPage()
+        public void NavigateToCompletedPage()
         {
             m_navigationService.NavigateTo<CompletedBacklogsViewModel>();
         }
 
-        private void NavigateToBacklogsPage()
+        public void NavigateToBacklogsPage()
         {
             m_navigationService.NavigateTo<BacklogsViewModel>();
+        }
+
+        private void OpenSelectedBacklog(Guid id)
+        {
+            m_navigationService.NavigateTo<BacklogViewModel>(id);
+        }
+
+        private void OpenCompletedSelectedBacklog(Guid id)
+        {
+            m_navigationService.NavigateTo<CompletedBacklogViewModel>(id);
         }
     }
 }
