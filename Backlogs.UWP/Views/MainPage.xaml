@@ -139,8 +139,8 @@
                                             <RelativePanel Margin="0">
                                                 <Grid CornerRadius="8">
                                                     <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="130" />
-                                                    <Grid Background="{StaticResource BackgroundAcrylicBrush}" VerticalAlignment="Bottom" Width="130" HorizontalAlignment="Stretch" Padding="5">
-                                                        <muxc:RatingControl x:Name="RatingControl" Value="{x:Bind UserRating, Mode=TwoWay}" Margin="5" Width="50" IsReadOnly="True"/>
+                                                    <Grid Background="{StaticResource BackgroundAcrylicBrush}" VerticalAlignment="Bottom" Width="130" HorizontalAlignment="Stretch" Padding="0" Margin="0">
+                                                        <muxc:RatingControl x:Name="RatingControl" Value="{x:Bind UserRating, Mode=TwoWay}" Margin="-2,5,0,0" Width="50" IsReadOnly="True"/>
                                                     </Grid>
                                                 </Grid>
                                             </RelativePanel>
