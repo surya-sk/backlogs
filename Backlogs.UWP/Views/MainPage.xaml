@@ -10,7 +10,7 @@
     xmlns:data="using:Backlogs.Models"
     xmlns:vm="using:Backlogs.ViewModels"
     mc:Ignorable="d"
-    Background="{ThemeResource BackgroundThemeBrush}">
+    Background="{ThemeResource ContentBackgroundBrush}">
 
     <Frame x:Name="rootFrame">
         <VisualStateManager.VisualStateGroups>
@@ -26,32 +26,20 @@
                         <Setter Target="StatsAndSuggestionsGrid.(Grid.Row)" Value="1" />
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="WideLayout">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters />
-                </VisualState>
-                <VisualState x:Name="NarrowLayout">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="BottomBar.Visibility" Value="Visible" />
-                        <Setter Target="TopBar.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <Grid>
+        <Grid VerticalAlignment="Stretch" Margin="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Grid VerticalAlignment="Top" Grid.Row="1" Padding="15,0,15,0" Height="32" HorizontalAlignment="Stretch" x:Name="AppTitleBar" Margin="0,-32,0,0">
+                <TextBlock Text="BACKLOGS" Style="{ThemeResource PageHeaderTextStyle}" FontSize="12"></TextBlock>
+            </Grid>
 
-            <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
-            <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind TopSigninButton}"
+
+            <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind BottomSigninButton}"
                               Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!"
                               Visibility="{x:Bind ViewModel.ShowTopTeachingTip, Mode=OneWay}"/>
             <muxc:TeachingTip x:Name="BottomSigninTeachingTip" Target="{x:Bind BottomSigninButton}"
@@ -70,121 +58,109 @@
                               Visibility="{x:Bind ViewModel.ShowWhatsNew, Mode=OneWay}"/>
 
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                <Grid x:Name="mainGrid">
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
+                <Grid x:Name="mainGrid" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock x:Name="WelcomeText" Margin="30" FontSize="28" Text="{x:Bind ViewModel.WelcomeText}" />
-
-                    <Hub Grid.Row="1">
-                        <HubSection x:Name="recentlyAddedSection" Header="recently added" Width="300">
+                    <!-- this welcome thing is giving me the ick fr <TextBlock HorizontalAlignment="Center" Style="{ThemeResource SubheaderTextBlockStyle}" FontWeight="Normal" x:Name="WelcomeText" Margin="30" FontSize="28" Text="{x:Bind ViewModel.WelcomeText}" /> -->
+                    <Hub VerticalAlignment="Stretch" Margin="0,10,0,0">
+                        <HubSection Margin="10,0,0,0" x:Name="recentlyAddedSection" Header="recently added">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <controls:AdaptiveGridView ItemsSource="{x:Bind RecentlyAdded, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
-                                    <controls:AdaptiveGridView.ItemTemplate>
+                                <GridView Width="260" ItemsSource="{x:Bind RecentlyAdded, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
+                                    <GridView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
-                                            <RelativePanel Margin="0,10,10,10">
-                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="120" Height="120" />
+                                            <RelativePanel Margin="0" CornerRadius="8">
+                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="130" />
                                             </RelativePanel>
                                         </DataTemplate>
-                                    </controls:AdaptiveGridView.ItemTemplate>
-                                </controls:AdaptiveGridView>
+                                    </GridView.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <controls:StaggeredPanel DesiredColumnWidth="130"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </GridView>
                             </DataTemplate>
                         </HubSection>
                         <HubSection Header="in progress" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <controls:AdaptiveGridView ItemsSource="{x:Bind InProgress, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
-                                    <controls:AdaptiveGridView.ItemTemplate>
+                                <GridView Width="260" ItemsSource="{x:Bind InProgress, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
+                                    <GridView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
-                                            <StackPanel Margin="0,10,10,10">
-                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="120" Height="120" />
-                                                <muxc:ProgressBar Value="{x:Bind Progress, Mode=OneWay}" Margin="5" Width="80"/>
-                                            </StackPanel>
+                                            <RelativePanel Margin="0" CornerRadius="8">
+                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="130" />
+                                                <muxc:ProgressBar Value="{x:Bind Progress, Mode=OneWay}" Margin="0" Width="130"/>
+                                            </RelativePanel>
                                         </DataTemplate>
-                                    </controls:AdaptiveGridView.ItemTemplate>
-                                </controls:AdaptiveGridView>
+                                    </GridView.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <controls:StaggeredPanel DesiredColumnWidth="130"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </GridView>
                             </DataTemplate>
                         </HubSection>
                         <HubSection Header="coming up" Width="300">
                             <DataTemplate x:DataType="vm:MainViewModel">
-                                <controls:AdaptiveGridView ItemsSource="{x:Bind Upcoming, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
-                                    <controls:AdaptiveGridView.ItemTemplate>
-                                        <DataTemplate x:DataType="data:Backlog">
-                                            <StackPanel Margin="0,10,10,10">
-                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="120" Height="120" />
-                                                <TextBlock Text="{x:Bind TargetDate, Mode=OneWay}" Margin="5"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </controls:AdaptiveGridView.ItemTemplate>
-                                </controls:AdaptiveGridView>
-                            </DataTemplate>
-                        </HubSection>
-                        <HubSection Header="recently completed" Width="300">
-                            <DataTemplate x:DataType="vm:MainViewModel">
-                                <GridView ItemsSource="{x:Bind RecentlyCompleted, Mode=OneWay}" SelectedItem="{x:Bind SelectedCompletedBacklog, Mode=TwoWay}">
+                                <GridView Width="260" ItemsSource="{x:Bind Upcoming, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <GridView.ItemTemplate>
                                         <DataTemplate x:DataType="data:Backlog">
-                                            <StackPanel Margin="0,10,10,10">
-                                                <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="120" Height="120" />
-                                                <muxc:RatingControl x:Name="RatingControl" Value="{x:Bind UserRating, Mode=TwoWay}" Margin="5" Width="50" 
-                                        IsReadOnly="True"/>
-                                            </StackPanel>
+                                            <RelativePanel Margin="0">
+                                                <Grid CornerRadius="8">
+                                                    <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="130" />
+                                                    <Grid Background="{StaticResource BackgroundAcrylicBrush}" VerticalAlignment="Bottom" Width="130" HorizontalAlignment="Stretch" Padding="5">
+                                                        <TextBlock HorizontalTextAlignment="Center" VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{x:Bind TargetDate, Mode=OneWay}"/>
+                                                    </Grid>
+                                                </Grid>
+                                            </RelativePanel>
                                         </DataTemplate>
                                     </GridView.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <controls:StaggeredPanel DesiredColumnWidth="130"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </GridView>
+                            </DataTemplate>
+                        </HubSection>
+                        <HubSection Header="recently completed" Margin="0,0,10,0" Width="300">
+                            <DataTemplate x:DataType="vm:MainViewModel">
+                                <GridView Width="260" ItemsSource="{x:Bind RecentlyCompleted, Mode=OneWay}" SelectedItem="{x:Bind SelectedCompletedBacklog, Mode=TwoWay}">
+                                    <GridView.ItemTemplate>
+                                        <DataTemplate x:DataType="data:Backlog">
+                                            <RelativePanel Margin="0">
+                                                <Grid CornerRadius="8">
+                                                    <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="130" />
+                                                    <Grid Background="{StaticResource BackgroundAcrylicBrush}" VerticalAlignment="Bottom" Width="130" HorizontalAlignment="Stretch" Padding="0" Margin="0">
+                                                        <muxc:RatingControl x:Name="RatingControl" Value="{x:Bind UserRating, Mode=TwoWay}" Margin="-2,5,0,0" Width="50" IsReadOnly="True"/>
+                                                    </Grid>
+                                                </Grid>
+                                            </RelativePanel>
+                                        </DataTemplate>
+                                    </GridView.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <controls:StaggeredPanel DesiredColumnWidth="130"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
                                 </GridView>
                             </DataTemplate>
                         </HubSection>
                     </Hub>
                 </Grid>
             </ScrollViewer>
+            <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Bottom" Grid.Row="2" IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
         </Grid>
     </Frame>
-    <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" Style="{ThemeResource CommandBarRevealStyle}">
-            <AppBarButton Label="All Backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
-            <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedPage}" >
-                <FontIcon Glyph="" />
-            </AppBarButton>
-            <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.SyncAllBacklogs}" />
-            <AppBarButton Label="Create" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" />
-            <AppBarButton x:Name="TopSigninButton" Label="Sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />
-            <AppBarButton Label="{x:Bind ViewModel.UserName}" Visibility="{x:Bind ViewModel.ShowProfileButton, Mode=OneWay}">
-                <AppBarButton.Flyout>
-                    <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem Text="Sign Out" Command="{x:Bind ViewModel.SignOut}">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph="" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                    </MenuFlyout>
-                </AppBarButton.Flyout>
-                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
-            </AppBarButton>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettingsPage}" />
-                <AppBarButton Label="Import backlog" Icon="Import" Command="{x:Bind ViewModel.ImportBacklog}" />
-                <AppBarButton Label="Rate and Review on the Store" Icon="Like" Command="{x:Bind ViewModel.RateAppOnMSStore}" />
-                <AppBarButton Label="Support developer"  Command="{x:Bind ViewModel.OpenPaypal}" >
-                    <FontIcon Glyph="" />
-                </AppBarButton>
-                <AppBarButton Label="Share this app" Command="{x:Bind ViewModel.ShareApp}" >
-                    <FontIcon Glyph="" />
-                </AppBarButton>
-                <AppBarButton Label="Open web app" Icon="Link" Command="{x:Bind ViewModel.OpenWebApp}" />
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
-    </Page.TopAppBar>
     <Page.BottomAppBar>
-        <CommandBar x:Name="BottomBar" Visibility="Collapsed">
+        <CommandBar x:Name="BottomBar" DefaultLabelPosition="Right">
             <AppBarButton Label="All Backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
             <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.SyncAllBacklogs}" />
             <AppBarButton Label="Create" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" />
