@@ -100,7 +100,7 @@
                                         <DataTemplate x:DataType="data:Backlog">
                                             <RelativePanel Margin="0" CornerRadius="8">
                                                 <Image x:Name="cover" Source="{x:Bind ImageURL,Mode=OneWay}" Width="130" />
-                                                <muxc:ProgressBar Value="{x:Bind Progress, Mode=OneWay}" Margin="0" Width="130"/>
+                                                <muxc:ProgressBar Value="{x:Bind Progress, Mode=OneWay}" Minimum="0" Maximum="{x:Bind Length, Mode=OneWay}" Margin="0" Width="130"/>
                                             </RelativePanel>
                                         </DataTemplate>
                                     </GridView.ItemTemplate>
