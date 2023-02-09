@@ -76,12 +76,12 @@ namespace Backlogs.ViewModels
             }
             set
             {
-                if (value != m_sortOrder)
+                if (m_sortOrder != value)
                 {
                     m_sortOrder = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SortOrder)));
                     m_settings.Set(SettingsConstants.CompletedSortOrder, value);
-                    PopulateBacklogs();
+                    m_navigationService.NavigateTo<CompletedBacklogsViewModel>();
                 }
             }
         }
