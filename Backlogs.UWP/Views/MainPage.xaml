@@ -26,19 +26,25 @@
                         <Setter Target="StatsAndSuggestionsGrid.(Grid.Row)" Value="1" />
                     </VisualState.Setters>
                 </VisualState>
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters />
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BottomBar.Visibility" Value="Visible" />
+                        <Setter Target="TopBar.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
         <Grid VerticalAlignment="Stretch" Margin="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="32"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid VerticalAlignment="Top" Grid.Row="1" Padding="15,0,15,0" Height="32" HorizontalAlignment="Stretch" x:Name="AppTitleBar" Margin="0,-32,0,0">
-                <TextBlock Text="BACKLOGS" Style="{ThemeResource PageHeaderTextStyle}" FontSize="12"></TextBlock>
-            </Grid>
-
-
             <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind BottomSigninButton}"
                               Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!"
                               Visibility="{x:Bind ViewModel.ShowTopTeachingTip, Mode=OneWay}"/>
@@ -58,7 +64,7 @@
                               Visibility="{x:Bind ViewModel.ShowWhatsNew, Mode=OneWay}"/>
 
 
-            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
                 <Grid x:Name="mainGrid" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -67,8 +73,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-
-                    <!-- this welcome thing is giving me the ick fr <TextBlock HorizontalAlignment="Center" Style="{ThemeResource SubheaderTextBlockStyle}" FontWeight="Normal" x:Name="WelcomeText" Margin="30" FontSize="28" Text="{x:Bind ViewModel.WelcomeText}" /> -->
+                    
                     <Hub VerticalAlignment="Stretch" Margin="0,10,0,0">
                         <HubSection Margin="10,0,0,0" x:Name="recentlyAddedSection" Header="recently added">
                             <DataTemplate x:DataType="vm:MainViewModel">
@@ -159,8 +164,43 @@
             <muxc:ProgressBar Name="ProgBar" VerticalAlignment="Bottom" Grid.Row="2" IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
         </Grid>
     </Frame>
+    <Page.TopAppBar>
+        <CommandBar x:Name="TopBar" DefaultLabelPosition="Right">
+            <AppBarButton Label="All Backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
+            <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.SyncAllBacklogs}" />
+            <AppBarButton Label="Create" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" />
+            <AppBarButton x:Name="SigninButton" Label="Sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />
+            <AppBarButton Label="{x:Bind ViewModel.UserName}" Visibility="{x:Bind ViewModel.ShowProfileButton, Mode=OneWay}">
+                <AppBarButton.Flyout>
+                    <MenuFlyout Placement="Bottom">
+                        <MenuFlyoutItem Text="Sign Out" Command="{x:Bind ViewModel.SignOut}">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+                <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
+            </AppBarButton>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedPage}">
+                    <FontIcon Glyph="" />
+                </AppBarButton>
+                <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettingsPage}" />
+                <AppBarButton Label="Import backlog" Icon="Import" Command="{x:Bind ViewModel.ImportBacklog}" />
+                <AppBarButton Label="Rate and Review on the Store" Icon="Like" Command="{x:Bind ViewModel.RateAppOnMSStore}" />
+                <AppBarButton Label="Support developer"  Command="{x:Bind ViewModel.OpenPaypal}" >
+                    <FontIcon Glyph="" />
+                </AppBarButton>
+                <AppBarButton Label="Share this app" Command="{x:Bind ViewModel.ShareApp}" >
+                    <FontIcon Glyph="" />
+                </AppBarButton>
+                <AppBarButton Label="Open web app" Icon="Link" Command="{x:Bind ViewModel.OpenWebApp}" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.TopAppBar>
     <Page.BottomAppBar>
-        <CommandBar x:Name="BottomBar" DefaultLabelPosition="Right">
+        <CommandBar x:Name="BottomBar" DefaultLabelPosition="Collapsed" Visibility="Collapsed">
             <AppBarButton Label="All Backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
             <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.SyncAllBacklogs}" />
             <AppBarButton Label="Create" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" />

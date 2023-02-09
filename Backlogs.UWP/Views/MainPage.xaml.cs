@@ -11,12 +11,6 @@ using Backlogs.Services;
 using Backlogs.Utils;
 using System.Diagnostics;
 using Windows.UI.Composition;
-using System.Numerics;
-using Microsoft.Graph;
-using Windows.Foundation.Metadata;
-using Windows.ApplicationModel.Core;
-using Windows.UI.ViewManagement;
-
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Backlogs.Views
@@ -35,12 +29,12 @@ namespace Backlogs.Views
         public MainPage()
         {
             this.InitializeComponent();
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            coreTitleBar.ExtendViewIntoTitleBar = true;
-            ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
-            ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
-            ApplicationView.GetForCurrentView().TitleBar.ButtonInactiveBackgroundColor = Windows.UI.Colors.Transparent;
-            Window.Current.SetTitleBar(AppTitleBar);
+            //var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            //coreTitleBar.ExtendViewIntoTitleBar = true;
+            //ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
+            //ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
+            //ApplicationView.GetForCurrentView().TitleBar.ButtonInactiveBackgroundColor = Windows.UI.Colors.Transparent;
+            //Window.Current.SetTitleBar(AppTitleBar);
             ViewModel = new MainViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
                 App.Services.GetRequiredService<IShareDialogService>(), App.Services.GetRequiredService<IUserSettings>(),
                 App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<ILiveTileService>(),
