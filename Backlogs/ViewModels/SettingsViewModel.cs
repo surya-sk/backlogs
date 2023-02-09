@@ -28,18 +28,11 @@ namespace Backlogs.ViewModels
         public string MIT { get; } = "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n\nTHE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
         public string GPL { get; } = "This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. \n\nYou should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/";
         public string Changelog { get; } = 
-            "\u2022 The homepage has been completely redesigned\n" +
-            "\u2022 Statistics are not shown anymore and will be added back in a future update\n" +
-            "\u2022 Descriptions in the Backlog page should now be more readable\n" +
-            "\u2022 Page transition animations have been added back\n" +
-            "\u2022 Fixed a bug causing search results not showing up on the first try\n" +
-            "\u2022 Fixed editing controls not showing up\n" +
-            "\u2022 Fixed backlogs having a default target date\n" +
-            "\u2022 Fixed completed backlog page not scaling on mobile\n" +
-            "\u2022 Fixed live tile style not changing\n" +
-            "\u2022 Fixed share feature not working\n" +
-            "\u2022 Fixed app theme not changing and persisting on re-launches\n";
-        public string ChangelogTitle { get; } = "New this version - 12 January, 2023";
+            "\u2022 Improved Homepage design thanks to Shefer from the UWP Community\n" +
+            "\u2022 The app should now follow system accent colour\n" +
+            "\u2022 Fixed a bug causing sorting to not work correctly\n" +
+            "\u2022 Fixed a bug displaying progress on the homepage incorrectly\n";
+        public string ChangelogTitle { get; } = "New this version - 08 February, 2023";
         public string Version { get => m_settings.Get<string>(SettingsConstants.Version); } 
 
         public bool ShowSignInPrompt { get; } 
