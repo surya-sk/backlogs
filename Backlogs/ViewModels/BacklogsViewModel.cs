@@ -11,6 +11,7 @@ using System.Net.NetworkInformation;
 using Backlogs.Services;
 using Backlogs.Utils;
 using Backlogs.Constants;
+using System.Diagnostics;
 
 namespace Backlogs.ViewModels
 {
@@ -67,12 +68,12 @@ namespace Backlogs.ViewModels
             }
             set
             {
-                if (value != m_sortOrder)
+                if(m_sortOrder != value)
                 {
                     m_sortOrder = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SortOrder)));
                     m_settings.Set(SettingsConstants.SortOrder, value);
-                    PopulateBacklogs();
+                    ReloadAndSync();
                 }
             }
         }
@@ -208,6 +209,7 @@ namespace Backlogs.ViewModels
         /// </summary>
         public void PopulateBacklogs()
         {
+            Debug.WriteLine("Hello");
             IncompleteBacklogs = BacklogsManager.GetInstance().GetIncompleteBacklogs();
             ObservableCollection<Backlog> _backlogs = null;
             switch (SortOrder)
@@ -397,7 +399,7 @@ namespace Backlogs.ViewModels
 
         private void ReloadAndSync()
         {
-            m_navigationService.NavigateTo<BacklogsViewModel>("sync");
+            m_navigationService.NavigateTo<BacklogsViewModel>();
         }
 
         private void NavigateToCreatePage(object typeIndex)
