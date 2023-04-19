@@ -62,7 +62,10 @@
             <muxc:ProgressBar VerticalAlignment="Top" IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
             <Pivot x:Name="mainPivot">
-                <PivotItem Header="all">
+                <PivotItem>
+                    <PivotItem.Header>
+                        <TextBlock Text="ALL" FontWeight="SemiBold" />
+                    </PivotItem.Header>
                     <Grid Margin="0,20,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -80,7 +83,10 @@
                     </Grid>
                 </PivotItem>
 
-                <PivotItem Header="films">
+                <PivotItem>
+                    <PivotItem.Header>
+                        <TextBlock Text="FILMS" FontWeight="SemiBold" />
+                    </PivotItem.Header>
                     <Grid Margin="0,20,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -98,7 +104,10 @@
                     </Grid>
                 </PivotItem>
 
-                <PivotItem Header="albums">
+                <PivotItem>
+                    <PivotItem.Header>
+                        <TextBlock Text="ALBUMS" FontWeight="SemiBold" />
+                    </PivotItem.Header>
                     <Grid Margin="0,20,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -115,7 +124,10 @@
                     </Grid>
                 </PivotItem>
 
-                <PivotItem Header="tv">
+                <PivotItem>
+                    <PivotItem.Header>
+                        <TextBlock Text="TV" FontWeight="SemiBold" />
+                    </PivotItem.Header>
                     <Grid Margin="0,20,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -132,7 +144,10 @@
                     </Grid>
                 </PivotItem>
 
-                <PivotItem Header="games">
+                <PivotItem>
+                    <PivotItem.Header>
+                        <TextBlock Text="GAMES" FontWeight="SemiBold" />
+                    </PivotItem.Header>
                     <Grid Margin="0,20,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -149,7 +164,10 @@
                     </Grid>
                 </PivotItem>
 
-                <PivotItem Header="books">
+                <PivotItem>
+                    <PivotItem.Header>
+                        <TextBlock Text="BOOKS" FontWeight="SemiBold" />
+                    </PivotItem.Header>
                     <Grid Margin="0,20,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -167,7 +185,7 @@
                 </PivotItem>
             </Pivot>
 
-            <ContentDialog x:Name="SearchDialog" CloseButtonText="Close">
+            <ContentDialog x:Name="SearchDialog" CloseButtonText="Close" Title="SEARCH BACKLOGS">
                 <AutoSuggestBox x:Name="SearchBox" TextChanged="SearchBox_TextChanged" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" />
             </ContentDialog>
 
