@@ -19,10 +19,12 @@ namespace Backlogs.Views
         public SettingsPage()
         {
             this.InitializeComponent();
+
             ViewModel = new SettingsViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
                 App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<IEmailService>(),
                 App.Services.GetRequiredService<IUserSettings>(), App.Services.GetService<IMsal>());
             // show back button
+            this.DataContext = ViewModel;
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             view.BackRequested += View_BackRequested;
@@ -38,7 +40,7 @@ namespace Backlogs.Views
         {
             if(e.Parameter != null)
             {
-                mainPivot.SelectedIndex = (int)e.Parameter;
+                mainHub.DefaultSectionIndex = (int)e.Parameter;
             }
             await ViewModel.SetUserPhotoAsync();
             base.OnNavigatedTo(e);
