@@ -166,17 +166,17 @@
     </Frame>
     <Page.TopAppBar>
         <CommandBar x:Name="TopBar" DefaultLabelPosition="Right">
-            <AppBarButton Label="All Backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
-            <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedPage}">
+            <AppBarButton Label="all backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
+            <AppBarButton Label="completed backlogs" Command="{x:Bind ViewModel.OpenCompletedPage}">
                 <FontIcon Glyph="" />
             </AppBarButton>
-            <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.SyncAllBacklogs}" />
-            <AppBarButton Label="Create" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" />
-            <AppBarButton x:Name="SigninButton" Label="Sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />
+            <AppBarButton Label="sync" Icon="Sync" Command="{x:Bind ViewModel.SyncAllBacklogs}" />
+            <AppBarButton Label="create" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" />
+            <AppBarButton x:Name="SigninButton" Label="sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />
             <AppBarButton Label="{x:Bind ViewModel.UserName}" Visibility="{x:Bind ViewModel.ShowProfileButton, Mode=OneWay}">
                 <AppBarButton.Flyout>
                     <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem Text="Sign Out" Command="{x:Bind ViewModel.SignOut}">
+                        <MenuFlyoutItem Text="sign out" Command="{x:Bind ViewModel.SignOut}">
                             <MenuFlyoutItem.Icon>
                                 <FontIcon Glyph="" />
                             </MenuFlyoutItem.Icon>
@@ -186,29 +186,29 @@
                 <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettingsPage}" />
-                <AppBarButton Label="Import backlog" Icon="Import" Command="{x:Bind ViewModel.ImportBacklog}" />
-                <AppBarButton Label="Rate and Review on the Store" Icon="Like" Command="{x:Bind ViewModel.RateAppOnMSStore}" />
-                <AppBarButton Label="Support developer"  Command="{x:Bind ViewModel.OpenPaypal}" >
+                <AppBarButton Label="settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettingsPage}" />
+                <AppBarButton Label="import backlog" Icon="Import" Command="{x:Bind ViewModel.ImportBacklog}" />
+                <AppBarButton Label="rate and Review on the Store" Icon="Like" Command="{x:Bind ViewModel.RateAppOnMSStore}" />
+                <AppBarButton Label="support developer"  Command="{x:Bind ViewModel.OpenPaypal}" >
                     <FontIcon Glyph="" />
                 </AppBarButton>
-                <AppBarButton Label="Share this app" Command="{x:Bind ViewModel.ShareApp}" >
+                <AppBarButton Label="share this app" Command="{x:Bind ViewModel.ShareApp}" >
                     <FontIcon Glyph="" />
                 </AppBarButton>
-                <AppBarButton Label="Open web app" Icon="Link" Command="{x:Bind ViewModel.OpenWebApp}" />
+                <AppBarButton Label="open web app" Icon="Link" Command="{x:Bind ViewModel.OpenWebApp}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomBar" DefaultLabelPosition="Collapsed" Visibility="Collapsed">
-            <AppBarButton Label="All Backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
-            <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.SyncAllBacklogs}" />
-            <AppBarButton Label="Create" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" />
-            <AppBarButton x:Name="BottomSigninButton" Label="Sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />
+            <AppBarButton Label="all backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
+            <AppBarButton Label="sync" Icon="Sync" Command="{x:Bind ViewModel.SyncAllBacklogs}" />
+            <AppBarButton Label="create" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" />
+            <AppBarButton x:Name="BottomSigninButton" Label="sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />
             <AppBarButton Label="{x:Bind ViewModel.UserName}" Visibility="{x:Bind ViewModel.ShowProfileButton, Mode=OneWay}">
                 <AppBarButton.Flyout>
                     <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem Text="Sign Out" Command="{x:Bind ViewModel.SignOut}">
+                        <MenuFlyoutItem Text="sign out" Command="{x:Bind ViewModel.SignOut}">
                             <MenuFlyoutItem.Icon>
                                 <FontIcon Glyph="" />
                             </MenuFlyoutItem.Icon>
@@ -218,19 +218,19 @@
                 <muxc:PersonPicture Height="30" Width="30" ProfilePicture="{x:Bind ViewModel.AccountPic, Mode=OneWay}"/>
             </AppBarButton>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="Completed backlogs" Command="{x:Bind ViewModel.OpenCompletedPage}">
+                <AppBarButton Label="completed backlogs" Command="{x:Bind ViewModel.OpenCompletedPage}">
                     <FontIcon Glyph="" />
                 </AppBarButton>
-                <AppBarButton Label="Settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettingsPage}" />
-                <AppBarButton Label="Import backlog" Icon="Import" Command="{x:Bind ViewModel.ImportBacklog}" />
-                <AppBarButton Label="Rate and Review on the Store" Icon="Like" Command="{x:Bind ViewModel.RateAppOnMSStore}" />
+                <AppBarButton Label="settings + more" Icon="Setting" Command="{x:Bind ViewModel.OpenSettingsPage}" />
+                <AppBarButton Label="import backlog" Icon="Import" Command="{x:Bind ViewModel.ImportBacklog}" />
+                <AppBarButton Label="rate and review on the store" Icon="Like" Command="{x:Bind ViewModel.RateAppOnMSStore}" />
                 <AppBarButton Label="Support developer"  Command="{x:Bind ViewModel.OpenPaypal}" >
                     <FontIcon Glyph="" />
                 </AppBarButton>
-                <AppBarButton Label="Share this app" Command="{x:Bind ViewModel.ShareApp}" >
+                <AppBarButton Label="share this app" Command="{x:Bind ViewModel.ShareApp}" >
                     <FontIcon Glyph="" />
                 </AppBarButton>
-                <AppBarButton Label="Open web app" Icon="Link" Command="{x:Bind ViewModel.OpenWebApp}" />
+                <AppBarButton Label="open web app" Icon="Link" Command="{x:Bind ViewModel.OpenWebApp}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
