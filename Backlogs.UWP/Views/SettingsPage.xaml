@@ -31,7 +31,10 @@
         <ProgressRing x:Name="ProgRing" IsActive="{x:Bind ViewModel.ShowProgress, Mode=OneWay}" />
 
         <Hub Name="mainHub" Header="settings + more">
-            <HubSection Header="SETTINGS">
+            <HubSection>
+                <HubSection.Header>
+                    <TextBlock Text="SETTINGS" FontWeight="SemiBold" />
+                </HubSection.Header>
                 <DataTemplate x:DataType="data:SettingsViewModel">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid>
@@ -100,7 +103,10 @@
                     </ScrollViewer>
                 </DataTemplate>
             </HubSection>
-            <HubSection Header="ABOUT">
+            <HubSection>
+                <HubSection.Header>
+                    <TextBlock Text="ABOUT" FontWeight="SemiBold" />
+                </HubSection.Header>
                 <DataTemplate x:DataType="data:SettingsViewModel">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid>
@@ -219,7 +225,10 @@
                     </ScrollViewer>
                 </DataTemplate>
             </HubSection>
-            <HubSection Header="HELP AND FEEDBACK">
+            <HubSection>
+                <HubSection.Header>
+                    <TextBlock Text="HELP AND FEEDBACK" FontWeight="SemiBold" />
+                </HubSection.Header>
                 <DataTemplate x:DataType="data:SettingsViewModel">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid>
@@ -265,7 +274,10 @@
                     </ScrollViewer>
                 </DataTemplate>
             </HubSection>
-            <HubSection Header="LICENSES" MaxWidth="600">
+            <HubSection MaxWidth="600">
+                <HubSection.Header>
+                    <TextBlock Text="LICENCES" FontWeight="SemiBold" />
+                </HubSection.Header>
                 <DataTemplate x:DataType="data:SettingsViewModel">
                     <ScrollViewer>
                         <StackPanel>
