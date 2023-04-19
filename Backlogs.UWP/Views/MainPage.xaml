@@ -75,7 +75,10 @@
                     </Grid.ColumnDefinitions>
                     
                     <Hub VerticalAlignment="Stretch" Margin="0,10,0,0" Header="backlogs">
-                        <HubSection Margin="10,0,0,0" x:Name="recentlyAddedSection" Header="RECENTLY ADDED">
+                        <HubSection Margin="10,0,0,0" x:Name="recentlyAddedSection" >
+                            <HubSection.Header>
+                                <TextBlock Text="RECENTLY ADDED" FontWeight="SemiBold" />
+                            </HubSection.Header>
                             <DataTemplate x:DataType="vm:MainViewModel">
                                 <GridView Width="260" ItemsSource="{x:Bind RecentlyAdded, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <GridView.ItemTemplate>
@@ -93,7 +96,10 @@
                                 </GridView>
                             </DataTemplate>
                         </HubSection>
-                        <HubSection Header="IN PROGRESS" Width="300">
+                        <HubSection Width="300">
+                            <HubSection.Header>
+                                <TextBlock Text="IN PROGRESS" FontWeight="SemiBold" />
+                            </HubSection.Header>
                             <DataTemplate x:DataType="vm:MainViewModel">
                                 <GridView Width="260" ItemsSource="{x:Bind InProgress, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <GridView.ItemTemplate>
@@ -112,7 +118,10 @@
                                 </GridView>
                             </DataTemplate>
                         </HubSection>
-                        <HubSection Header="RECENTLY COMPLETED" Margin="0,0,10,0" Width="300">
+                        <HubSection Margin="0,0,10,0" Width="300">
+                            <HubSection.Header>
+                                <TextBlock Text="RECENTLY COMPLETED" FontWeight="SemiBold" />
+                            </HubSection.Header>
                             <DataTemplate x:DataType="vm:MainViewModel">
                                 <GridView Width="260" ItemsSource="{x:Bind RecentlyCompleted, Mode=OneWay}" SelectedItem="{x:Bind SelectedCompletedBacklog, Mode=TwoWay}">
                                     <GridView.ItemTemplate>
@@ -135,7 +144,10 @@
                                 </GridView>
                             </DataTemplate>
                         </HubSection>
-                        <HubSection Header="COMING UP" Width="300">
+                        <HubSection Width="300">
+                            <HubSection.Header>
+                                <TextBlock Text="COMING UP" FontWeight="SemiBold" />
+                            </HubSection.Header>
                             <DataTemplate x:DataType="vm:MainViewModel">
                                 <GridView Width="260" ItemsSource="{x:Bind Upcoming, Mode=OneWay}" SelectedItem="{x:Bind SelectedBacklog, Mode=TwoWay}">
                                     <GridView.ItemTemplate>
