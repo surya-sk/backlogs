@@ -381,6 +381,7 @@ namespace Backlogs.ViewModels
             {
                 RecentlyAdded.Add(b);
             }
+            await m_fileHandler.WriteLogsAsync($"Loaded recently added backlogs: {RecentlyAdded.Count}");
             RecentlyCreatedEmpty = RecentlyAdded.Count <= 0;
             
             var _recentlyCompleted = BacklogsManager.GetInstance().GetRecentlyCompletedBacklogs();
@@ -389,6 +390,7 @@ namespace Backlogs.ViewModels
             {
                 RecentlyCompleted.Add(b);
             }
+            await m_fileHandler.WriteLogsAsync($"Loaded recently completed backlogs: {RecentlyCompleted.Count}");
             RecentlyCompletedEmpty = RecentlyCompleted.Count <= 0;
 
             var _inProgress = BacklogsManager.GetInstance().GetInProgressBacklogs();
@@ -396,7 +398,8 @@ namespace Backlogs.ViewModels
             foreach(var b in _inProgress)
             {
                 InProgress.Add(b);
-            }    
+            }
+            await m_fileHandler.WriteLogsAsync($"Loaded in progress backlogs: {InProgress.Count}");
             InProgressEmpty = InProgress.Count <= 0;
 
             var _upcoming = BacklogsManager.GetInstance().GetUpcomingBacklogs();
@@ -405,6 +408,7 @@ namespace Backlogs.ViewModels
             {
                 Upcoming.Add(b);
             }
+            await m_fileHandler.WriteLogsAsync($"Loaded upcoming backlogs: {Upcoming.Count}");
             UpcomingEmpty = Upcoming.Count <= 0;
 
             CompletedBacklogsCount = BacklogsManager.GetInstance().GetCompletedBacklogs().Count;
@@ -452,10 +456,11 @@ namespace Backlogs.ViewModels
                 //{
                 //    ShowBottomTeachingTip = true;
                 //}
-                ShowBottomTeachingTip = true;
+                //ShowBottomTeachingTip = true;
             }
             if (m_settings.Get<bool>(SettingsConstants.ShowWhatsNew))
             {
+                ShowWhatsNew = true;
                 m_settings.Set(SettingsConstants.ShowWhatsNew, false);
             }
         }
