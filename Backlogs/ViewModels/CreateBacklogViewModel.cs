@@ -43,7 +43,6 @@ namespace Backlogs.ViewModels
         public ObservableCollection<SearchResult> SearchResults;
 
         public ICommand SearchBacklog { get; }
-        public ICommand Cancel { get; }
         public ICommand OpenSettings { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -203,7 +202,6 @@ namespace Backlogs.ViewModels
         {
             SearchResults = new ObservableCollection<SearchResult>();
             SearchBacklog = new AsyncCommand(TrySearchBacklogAsync);
-            Cancel = new Command(NavToPrevPage);
             OpenSettings = new Command(NavigateToSettingsPage);
 
             m_navigationService = navigationService;
@@ -810,6 +808,11 @@ namespace Backlogs.ViewModels
         private void NavToPrevPage()
         {
             m_navigationService.GoBack<CreateBacklogViewModel>();
+        }
+
+        public void GoBack()
+        {
+            NavToPrevPage();
         }
 
         /// <summary>

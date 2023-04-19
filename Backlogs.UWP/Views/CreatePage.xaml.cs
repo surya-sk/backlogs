@@ -3,6 +3,7 @@ using Windows.UI.Xaml.Navigation;
 using Backlogs.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Backlogs.Services;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,6 +24,16 @@ namespace Backlogs.Views
                 App.Services.GetRequiredService<IDialogHandler>(),
                 App.Services.GetRequiredService<IToastNotificationService>(), App.Services.GetService<IUserSettings>(),
                 App.Services.GetRequiredService<IFileHandler>());
+
+            var view = SystemNavigationManager.GetForCurrentView();
+            view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            view.BackRequested += View_BackRequested;
+        }
+
+        private void View_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            ViewModel.GoBack();
+            e.Handled = true;
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)

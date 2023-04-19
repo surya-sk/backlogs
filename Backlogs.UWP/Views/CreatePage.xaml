@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource BackgroundThemeBrush}">
+    Background="{ThemeResource BacklogsAcrylicBrush}">
 
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -33,13 +33,13 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <TextBlock Text="Create a new Backlog" FontSize="30" Margin="10,0,0,20" />
+                <TextBlock Text="create" FontSize="40" Margin="10,0,0,20" FontWeight="Light"/>
                 <TextBlock Text="The app will search various sources such as IMDB and Twitch for metadata, and will fail to create a Backlog if not found. Except for music backlogs, search results will be shown."
                        Margin="10,0,0,20" TextWrapping="Wrap" />
                 <TextBlock Text="Please follow the hints given in the textbox when entering the name. Do NOT use special characters."
                        Foreground="{ThemeResource SystemAccentColor}" FontStyle="Italic" Margin="10,0,0,20" TextWrapping="Wrap" />
                 <ComboBox Header="Type" PlaceholderText="Choose type" Margin="10,0,0,20" SelectedValue="{x:Bind ViewModel.SelectedType, Mode=TwoWay}"
-                          SelectedIndex="{x:Bind ViewModel.SelectedIndex, Mode=TwoWay}"> 
+                          SelectedIndex="{x:Bind ViewModel.SelectedIndex, Mode=TwoWay}">
                     <x:String>Film</x:String>
                     <x:String>Album</x:String>
                     <x:String>TV</x:String>
@@ -55,28 +55,11 @@
                               OffContent="No" OnContent="Yes" IsEnabled="{x:Bind ViewModel.EnableNotificationToggle, Mode=OneWay}" IsOn="{x:Bind ViewModel.ShowNotificationOptions, Mode=TwoWay}" />
                 <TimePicker Header="When do you want to be notified?" 
                             Margin="10,0,0,20" Visibility="{x:Bind ViewModel.ShowNotificationOptions, Mode=OneWay}" Time="{x:Bind ViewModel.NotifTime, Mode=TwoWay}" />
+                <Button Content="Search" Command="{x:Bind ViewModel.SearchBacklog}" Background="{ThemeResource SystemAccentColor}" Margin="10"/>
             </StackPanel>
         </ScrollViewer>
 
         <muxc:ProgressBar x:Name="progBar" IsIndeterminate="True" Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
 
     </Grid>
-    <Page.TopAppBar>
-        <CommandBar x:Name="TopBar" Background="{ThemeResource SystemControlAcrylicWindowBrush}" DefaultLabelPosition="Right" Style="{ThemeResource CommandBarRevealStyle}" >
-            <AppBarButton Icon="Find" Label="Search" Command="{x:Bind ViewModel.SearchBacklog}" />
-            <AppBarButton Icon="Cancel" Label="Cancel" Command="{x:Bind ViewModel.Cancel}" />
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="Setting" Label="Settings + more" Command="{x:Bind ViewModel.OpenSettings}" />
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
-    </Page.TopAppBar>
-    <Page.BottomAppBar>
-        <CommandBar x:Name="BottomBar" Visibility="Collapsed" >
-            <AppBarButton Icon="Find" Label="Search" Command="{x:Bind ViewModel.SearchBacklog}" />
-            <AppBarButton Icon="Cancel" Label="Cancel" Command="{x:Bind ViewModel.Cancel}" />
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="Setting" Label="Settings + more" Command="{x:Bind ViewModel.OpenSettings}" />
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
-    </Page.BottomAppBar>
 </Page>
