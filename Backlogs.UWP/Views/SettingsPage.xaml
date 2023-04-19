@@ -8,7 +8,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
     xmlns:data="using:Backlogs.ViewModels"
     mc:Ignorable="d"
-    Background="{ThemeResource BackgroundThemeBrush}">
+    Background="{ThemeResource BacklogsAcrylicBrush}">
 
 
     <Grid>
@@ -92,8 +92,8 @@
                             </StackPanel>
 
                             <StackPanel x:Name="RelatedPanel" HorizontalAlignment="Left" Grid.Row="1" Margin="0,20,20,0" >
-                                <TextBlock Text="Related Settings" FontSize="20" Margin="0,20,0,20"/>
-                                <TextBlock TextWrapping="Wrap">
+                                <TextBlock Text="Related Settings" FontSize="20" Margin="0,20,20,0"/>
+                                <TextBlock TextWrapping="Wrap" Margin="0,20,0,20">
                             <Hyperlink NavigateUri="ms-settings:colors">
                                 <Run Text="Windows colour settings"/>
                             </Hyperlink>

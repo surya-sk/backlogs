@@ -12,6 +12,11 @@
 
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
+                    <AcrylicBrush x:Key="BacklogsAcrylicBrush"
+                          BackgroundSource="HostBackdrop"
+                          TintColor="White"
+                          TintOpacity="0.6"
+                          FallbackColor="WhiteSmoke"/>
                     <SolidColorBrush x:Key="BackgroundThemeBrush" Color="WhiteSmoke" />
 
                     <LinearGradientBrush x:Key="BlueGradientBrush" StartPoint="0,0.5" EndPoint="1,0.5">
@@ -26,6 +31,11 @@
                     <SolidColorBrush x:Key="ContentBackgroundBrush" Color="White" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
+                    <AcrylicBrush x:Key="BacklogsAcrylicBrush"
+                          BackgroundSource="HostBackdrop"
+                          TintColor="Black"
+                          TintOpacity="0.6"
+                          FallbackColor="Black"/>
                     <SolidColorBrush x:Key="BackgroundThemeBrush" Color="Black" />
 
                     <LinearGradientBrush x:Key="BlueGradientBrush" StartPoint="0,0.5" EndPoint="1,0.5">
