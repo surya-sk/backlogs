@@ -110,7 +110,8 @@ namespace Backlogs.Utils.UWP
                 Content = new ListView()
                 {
                     ItemsSource = logs,
-                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                    
+                    HorizontalContentAlignment = HorizontalAlignment.Center,
                     IsItemClickEnabled = false,
                     SelectionMode = ListViewSelectionMode.None
                 },
