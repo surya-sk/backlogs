@@ -45,13 +45,17 @@ namespace Backlogs.Utils.UWP
             {
                 m_trailerDialog.CornerRadius = new CornerRadius(0); // Without this, for some fucking reason, buttons inside the WebView do not work
             }
-            catch
-            {
-
-            }
+            catch { }
             string width = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "600" : "500";
             string height = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" ? "100%" : "400";
-            m_trailerWebView.NavigateToString($"<iframe width=\"{width}\" height=\"{height}\" src=\"https://www.youtube.com/embed/{video}?autoplay={App.Services.GetRequiredService<IUserSettings>().Get<bool>(SettingsConstants.AutoplayVideos)}\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
+            try
+            {
+                m_trailerWebView.NavigateToString($"<iframe width=\"{width}\" height=\"{height}\" src=\"https://www.youtube.com/embed/{video}?autoplay={App.Services.GetRequiredService<IUserSettings>().Get<bool>(SettingsConstants.AutoplayVideos)}\" title=\"YouTube video player\"  allow=\"accelerometer; autoplay; encrypted-media; gyroscope;\"></iframe>");
+            }
+            catch(Exception ex)
+            {
+                await ShowErrorDialogAsync("CANNOT PLAY TRAILER", ex.Message, "Close");
+            }
         }
 
         public async Task ReadMoreDialogAsync(Backlog backlog)

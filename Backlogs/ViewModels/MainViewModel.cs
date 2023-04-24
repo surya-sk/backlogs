@@ -458,9 +458,8 @@ namespace Backlogs.ViewModels
                 //}
                 //ShowBottomTeachingTip = true;
             }
-            if (m_settings.Get<bool>(SettingsConstants.ShowWhatsNew))
+            if (ShowWhatsNew)
             {
-                ShowWhatsNew = true;
                 m_settings.Set(SettingsConstants.ShowWhatsNew, false);
             }
         }

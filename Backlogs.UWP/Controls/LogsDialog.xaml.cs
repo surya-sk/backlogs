@@ -16,7 +16,6 @@ namespace Backlogs.Controls
         public LogsDialog(List<Log> logs)
         {
             this.InitializeComponent();
-            Debug.WriteLine(logs.Count);
             m_logs = logs;
         }
     }
