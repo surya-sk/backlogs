@@ -58,7 +58,7 @@ namespace Backlogs.Utils.UWP
         {
             ContentDialog contentDialog = new ContentDialog
             {
-                Title = backlog.Name,
+                Title = backlog.Name.ToUpper(),
                 Content = backlog.Description,
                 CloseButtonText = "Close"
             };
@@ -69,7 +69,7 @@ namespace Backlogs.Utils.UWP
         {
             ContentDialog contentDialog = new ContentDialog()
             {
-                Title = "Oops...",
+                Title = "OOOPS...CRASH!",
                 Content = $"It seems the application crashed the last time, with the following error: {log}",
                 PrimaryButtonText = "Send to developer",
                 CloseButtonText = "Close"
@@ -82,7 +82,7 @@ namespace Backlogs.Utils.UWP
         {
             ContentDialog deleteDialog = new ContentDialog
             {
-                Title = "Delete backlog?",
+                Title = "Delete backlog?".ToUpper(),
                 Content = "Deletion is permanent. This backlog cannot be recovered, and will be gone forever.",
                 PrimaryButtonText = "Delete",
                 CloseButtonText = "Cancel"
@@ -95,7 +95,7 @@ namespace Backlogs.Utils.UWP
         {
             ContentDialog content = new ContentDialog()
             {
-                Title = title,
+                Title = title.ToUpper(),
                 Content = message,
                 CloseButtonText = closeText
             };
@@ -112,7 +112,7 @@ namespace Backlogs.Utils.UWP
         {
             ContentDialog contentDialog = new ContentDialog()
             {
-                Title = "Your Pick",
+                Title = "Your Pick".ToUpper(),
                 Content = $"Your current pick is {backlog.Name} by {backlog.Director}",
                 CloseButtonText = "Ok",
                 PrimaryButtonText = "Go again",
@@ -139,7 +139,7 @@ namespace Backlogs.Utils.UWP
         {
             ContentDialog contentDialog = new ContentDialog
             {
-                Title = "Sign out?",
+                Title = "Sign out?".ToUpper(),
                 Content = "You will no longer have access to your backlogs, and new ones will no longer be synced",
                 PrimaryButtonText = "Yes",
                 CloseButtonText = "No"
