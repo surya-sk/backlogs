@@ -10,7 +10,10 @@
     xmlns:data="using:Backlogs.Models"
     xmlns:vm="using:Backlogs.ViewModels"
     mc:Ignorable="d"
-    Background="{ThemeResource BacklogsAcrylicBrush}">
+    xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
+    contract5Present:Background="{ThemeResource BacklogsAcrylicBrush}"
+    contract5NotPresent:Background="{ThemeResource BackgroundThemeBrush}">
 
     <Frame x:Name="rootFrame">
         <VisualStateManager.VisualStateGroups>
