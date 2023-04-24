@@ -77,7 +77,10 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     
-                    <Hub VerticalAlignment="Stretch" Margin="0,10,0,0" Header="backlogs">
+                    <Hub VerticalAlignment="Stretch" Margin="0,10,0,0">
+                        <Hub.Header>
+                            <TextBlock Text="backlogs" FontSize="60" FontStretch="UltraExpanded" FontWeight="SemiLight" />
+                        </Hub.Header>
                         <HubSection Margin="10,0,0,0" x:Name="recentlyAddedSection" >
                             <HubSection.Header>
                                 <TextBlock Text="RECENTLY ADDED" FontWeight="SemiBold" />

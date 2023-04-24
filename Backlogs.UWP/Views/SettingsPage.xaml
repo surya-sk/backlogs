@@ -33,7 +33,10 @@
 
         <ProgressRing x:Name="ProgRing" IsActive="{x:Bind ViewModel.ShowProgress, Mode=OneWay}" />
 
-        <Hub Name="mainHub" Header="settings + more">
+        <Hub Name="mainHub">
+            <Hub.Header>
+                <TextBlock Text="settings + more" FontSize="60" FontStretch="UltraExpanded" FontWeight="SemiLight" />
+            </Hub.Header>
             <HubSection>
                 <HubSection.Header>
                     <TextBlock Text="SETTINGS" FontWeight="SemiBold" />
