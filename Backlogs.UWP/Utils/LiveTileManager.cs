@@ -89,11 +89,6 @@ namespace Backlogs.Utils.UWP
                                     {
                                         Text = b.Type,
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle
-                                    },
-                                    new AdaptiveText()
-                                    {
-                                        Text = b.TargetDate,
-                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
                                     }
                                 }
                             }
@@ -112,19 +107,20 @@ namespace Backlogs.Utils.UWP
                                 {
                                     new AdaptiveText()
                                     {
-                                        Text = b.Name
+                                        Text = b.Name,
+                                        HintWrap = true,
+                                        HintStyle = AdaptiveTextStyle.Caption
                                     },
                                     new AdaptiveText()
                                     {
-                                        Text = $"{b.Type} - {b.Director}",
+                                        Text = $"{b.Director}",
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                         HintWrap = true
                                     },
                                     new AdaptiveText()
                                     {
-                                        Text = b.Description,
+                                        Text = $"{b.Type}",
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle,
-                                        HintWrap = true
                                     }
                                 }
                             }
@@ -143,7 +139,9 @@ namespace Backlogs.Utils.UWP
                             {
                                 new AdaptiveText()
                                 {
-                                    Text = b.Name
+                                    Text = b.Name,
+                                    HintWrap = true,
+                                    HintStyle= AdaptiveTextStyle.Caption,
                                 },
                                 new AdaptiveText()
                                 {
@@ -198,11 +196,6 @@ namespace Backlogs.Utils.UWP
                                     {
                                         Text = b.Type,
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle
-                                    },
-                                    new AdaptiveText()
-                                    {
-                                        Text = b.TargetDate,
-                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
                                     }
                                 }
                             }
@@ -222,19 +215,20 @@ namespace Backlogs.Utils.UWP
                                 {
                                     new AdaptiveText()
                                     {
-                                        Text = b.Name
+                                        Text = b.Name,
+                                        HintWrap = true,
+                                        HintStyle = AdaptiveTextStyle.Caption
                                     },
                                     new AdaptiveText()
                                     {
-                                        Text = $"{b.Type} - {b.Director}",
+                                        Text = $"{b.Director}",
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                         HintWrap = true
                                     },
                                     new AdaptiveText()
                                     {
-                                        Text = b.Description,
+                                        Text = $"{b.Type}",
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle,
-                                        HintWrap = true
                                     }
                                 }
                             }
