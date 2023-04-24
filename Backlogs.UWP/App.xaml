@@ -15,7 +15,7 @@
                     <AcrylicBrush x:Key="BacklogsAcrylicBrush"
                           BackgroundSource="HostBackdrop"
                           TintColor="White"
-                          TintOpacity="0.6"
+                          TintOpacity="0.7"
                           FallbackColor="WhiteSmoke"/>
                     <SolidColorBrush x:Key="BackgroundThemeBrush" Color="WhiteSmoke" />
 
@@ -34,7 +34,7 @@
                     <AcrylicBrush x:Key="BacklogsAcrylicBrush"
                           BackgroundSource="HostBackdrop"
                           TintColor="Black"
-                          TintOpacity="0.6"
+                          TintOpacity="0.7"
                           FallbackColor="Black"/>
                     <SolidColorBrush x:Key="BackgroundThemeBrush" Color="Black" />
 

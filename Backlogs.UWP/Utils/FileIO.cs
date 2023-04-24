@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
@@ -19,6 +20,7 @@ namespace Backlogs.Utils.UWP
     {
         StorageFolder m_localFolder = ApplicationData.Current.LocalFolder;
         string m_fileName = "backlogs.txt";
+        SemaphoreSlim m_semaphore = new SemaphoreSlim(1);
 
         public async Task DeleteLocalFilesAsync()
         {
@@ -146,9 +148,10 @@ namespace Backlogs.Utils.UWP
         public async Task WriteLogsAsync(string message, Exception ex = null)
         {
             StorageFolder logsFolder = await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync("Logs", CreationCollisionOption.OpenIfExists);
+            await m_semaphore.WaitAsync();
             try
             {
-                var logFile = await logsFolder.GetFileAsync("backlogs.log");
+                var logFile = await logsFolder.CreateFileAsync("backlogs.log", CreationCollisionOption.ReplaceExisting);
                 Log log = new Log();
                 log.Date = $"{DateTime.Now}";
                 if (ex != null)
@@ -160,8 +163,11 @@ namespace Backlogs.Utils.UWP
             }
             catch
             {
-                await logsFolder.CreateFileAsync("backlogs.log", CreationCollisionOption.ReplaceExisting);
-                await WriteLogsAsync(message, ex);
+                Debug.WriteLine("File busy!!!!");
+            }
+            finally
+            {
+                m_semaphore.Release();
             }
 
         }
@@ -169,7 +175,15 @@ namespace Backlogs.Utils.UWP
         public async Task WriteTextAsync(string text, string fileName)
         {
             var storageFile = await m_localFolder.GetFileAsync(fileName);
-            await Windows.Storage.FileIO.WriteTextAsync(storageFile, text);
+            await m_semaphore.WaitAsync();
+            try
+            {
+                await Windows.Storage.FileIO.WriteTextAsync(storageFile, text);
+            }
+            finally
+            {
+                m_semaphore.Release();
+            }
         }
     }
 }
