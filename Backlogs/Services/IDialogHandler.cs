@@ -77,6 +77,6 @@ namespace Backlogs.Services
         /// </summary>
         /// <param name="logs"></param>
         /// <returns></returns>
-        Task ShowLogsDialogAsyncAsync(List<string> logs);
+        Task ShowLogsDialogAsyncAsync(List<Log> logs);
     }
 }

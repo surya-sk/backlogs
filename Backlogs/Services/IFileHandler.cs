@@ -88,6 +88,6 @@ namespace Backlogs.Services
         /// Reads logs written to the log folder
         /// </summary>
         /// <returns>a list of logs </returns>
-        Task<List<string>> ReadLogsAync();
+        Task<List<Log>> ReadLogsAync();
     }
 }

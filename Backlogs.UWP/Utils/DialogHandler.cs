@@ -102,22 +102,10 @@ namespace Backlogs.Utils.UWP
             await content.ShowAsync();
         }
 
-        public async Task ShowLogsDialogAsyncAsync(List<string> logs)
+        public async Task ShowLogsDialogAsyncAsync(List<Log> logs)
         {
-            ContentDialog contentDialog = new ContentDialog()
-            {
-                Title = "Logs",
-                Content = new ListView()
-                {
-                    ItemsSource = logs,
-                    
-                    HorizontalContentAlignment = HorizontalAlignment.Center,
-                    IsItemClickEnabled = false,
-                    SelectionMode = ListViewSelectionMode.None
-                },
-                CloseButtonText = "Close"
-            };
-            await contentDialog.ShowAsync();
+            LogsDialog logsDialog = new LogsDialog(logs);
+            await logsDialog.ShowAsync();
         }
 
         public async Task<int> ShowRandomBacklogDialogAsync(Backlog backlog)

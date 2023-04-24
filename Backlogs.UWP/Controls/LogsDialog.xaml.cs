@@ -1,4 +1,7 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using Backlogs.Models;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -9,14 +12,12 @@ namespace Backlogs.Controls
     /// </summary>
     public sealed partial class LogsDialog : ContentDialog
     {
-        public LogsDialog()
+        List<Log> m_logs;
+        public LogsDialog(List<Log> logs)
         {
             this.InitializeComponent();
-        }
-
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-
+            Debug.WriteLine(logs.Count);
+            m_logs = logs;
         }
     }
 }

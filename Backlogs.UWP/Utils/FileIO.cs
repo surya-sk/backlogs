@@ -82,16 +82,20 @@ namespace Backlogs.Utils.UWP
             return image.Path;
         }
 
-        public async Task<List<string>> ReadLogsAync()
+        public async Task<List<Log>> ReadLogsAync()
         {
             var folder = await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync("Logs", CreationCollisionOption.OpenIfExists);
             var path = Path.Combine(folder.Path, "backlogs.log");
             var logFile = await StorageFile.GetFileFromPathAsync(path);
             var lines = await Windows.Storage.FileIO.ReadLinesAsync(logFile);
-            var logList = new List<string>();
+            var logList = new List<Log>();
             foreach (var line in lines)
             {
-                logList.Add(line);
+                if (line == "\n" || line == "") continue;
+                var currLine = line.Split("---");
+                Debug.WriteLine("Printing.." + line);
+                Log _ = new Log() { Date = currLine[0], Message = currLine[1] };
+                logList.Add(_);
             }
             return logList;
         }
@@ -145,10 +149,14 @@ namespace Backlogs.Utils.UWP
             try
             {
                 var logFile = await logsFolder.GetFileAsync("backlogs.log");
+                Log log = new Log();
+                log.Date = $"{DateTime.Now}";
                 if (ex != null)
-                    await Windows.Storage.FileIO.AppendTextAsync(logFile, $"[{DateTime.Now}] - {message}\nException: {ex.Message}\n\n");
+                    log.Message = $"{message}. Exception: {ex.Message}";
                 else
-                    await Windows.Storage.FileIO.AppendTextAsync(logFile, $"[{DateTime.Now}] - {message}\n\n");
+                    log.Message = message;
+
+                await Windows.Storage.FileIO.AppendTextAsync(logFile, log.ToString());
             }
             catch
             {
