@@ -60,7 +60,7 @@ namespace Backlogs.ViewModels
         public string UserName { get; set; } 
         public bool SignedIn { get; set; }
         public bool Sync { get; set; }
-        public string WhatsNew = "Modern UI, new homepage, bug fixes and more";
+        public string WhatsNew = "New visual, simplified live tiles and more";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
