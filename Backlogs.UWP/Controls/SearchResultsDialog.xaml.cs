@@ -13,7 +13,7 @@ namespace Backlogs.Controls
         {
             this.InitializeComponent();
             this.IsPrimaryButtonEnabled = false;
-            resultTitle.Text = $"Showing results for {name}";
+            resultTitle.Text = $"results for {name}".ToUpper();
             resultsList.ItemsSource = searchResults;
         }
 
