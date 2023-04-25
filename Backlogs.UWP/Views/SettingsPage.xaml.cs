@@ -4,6 +4,7 @@ using Windows.UI.Xaml.Navigation;
 using Backlogs.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Backlogs.Services;
+using System;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -40,7 +41,9 @@ namespace Backlogs.Views
         {
             if(e.Parameter != null)
             {
-                mainHub.DefaultSectionIndex = (int)e.Parameter;
+                var _ = (string)e.Parameter;
+                int sectionIndex = int.Parse(_);
+                mainHub.ScrollToSection(mainHub.Sections[sectionIndex]);
             }
             await ViewModel.SetUserPhotoAsync();
             base.OnNavigatedTo(e);

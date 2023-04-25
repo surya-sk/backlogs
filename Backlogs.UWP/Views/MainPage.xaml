@@ -48,13 +48,6 @@
         </VisualStateManager.VisualStateGroups>
 
         <Grid VerticalAlignment="Stretch" Margin="0">
-            <muxc:TeachingTip x:Name="TopSigninTeachingTip" Title="Sign-in using your MS account" Target="{x:Bind BottomSigninButton}"
-                              Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!"
-                              Visibility="{x:Bind ViewModel.ShowTopTeachingTip, Mode=OneWay}"/>
-            <muxc:TeachingTip x:Name="BottomSigninTeachingTip" Target="{x:Bind BottomSigninButton}"
-                              Title="Sign-in using your MS account" Subtitle="Signing-in with your Microsoft account enables you to sync backlogs across all of your Windows devices!"
-                              Visibility="{x:Bind ViewModel.ShowBottomTeachingTip, Mode=OneWay}"/>
-
             <muxc:TeachingTip x:Name="WhatsNewTip" Title="New this version" 
                               Subtitle="{x:Bind ViewModel.WhatsNew}"
                               PreferredPlacement="BottomRight"
@@ -64,8 +57,7 @@
                               ActionButtonCommandParameter="1"
                               ActionButtonContent="See all"
                               CloseButtonContent="Got it"
-                              Visibility="{x:Bind ViewModel.ShowWhatsNew, Mode=OneWay}"/>
-
+                              IsOpen="{x:Bind ViewModel.ShowWhatsNew, Mode=OneWay}"/>
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
                 <Grid x:Name="mainGrid" VerticalAlignment="Stretch">
@@ -222,7 +214,7 @@
             <AppBarButton Label="All backlogs" Icon="List" Command="{x:Bind ViewModel.OpenBacklogsPage}" />
             <AppBarButton Label="Sync" Icon="Sync" Command="{x:Bind ViewModel.SyncAllBacklogs}" />
             <AppBarButton Label="Create" Icon="Add" Command="{x:Bind ViewModel.OpenCreatePage}" />
-            <AppBarButton x:Name="BottomSigninButton" Label="Sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />
+            <AppBarButton x:Name="BottomSigninButton" Label="Sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}"/>
             <AppBarButton Label="{x:Bind ViewModel.UserName}" Visibility="{x:Bind ViewModel.ShowProfileButton, Mode=OneWay}">
                 <AppBarButton.Flyout>
                     <MenuFlyout Placement="Bottom">

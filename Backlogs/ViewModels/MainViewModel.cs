@@ -26,8 +26,6 @@ namespace Backlogs.ViewModels
         private bool m_recentlyCompletedEmtpy;
         private bool m_inProgressEmpty;
         private bool m_upcomingEmpty;
-        private bool m_showTopTeachingTip;
-        private bool m_showBottomTeachingTip;
         private bool m_showProfileButtons;
         private bool m_showSignInButton = true;
         private string m_accountPic = "https://github.com/surya-sk/backlogs/blob/master/backlog/Assets/app-icon.png";
@@ -151,26 +149,6 @@ namespace Backlogs.ViewModels
             }
         }
 
-        public bool ShowTopTeachingTip
-        {
-            get => m_showTopTeachingTip;
-            set
-            {
-                m_showTopTeachingTip = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowTopTeachingTip)));
-            }
-        }
-
-        public bool ShowBottomTeachingTip
-        {
-            get => m_showBottomTeachingTip;
-            set
-            {
-                m_showBottomTeachingTip = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowBottomTeachingTip)));
-
-            }
-        }
 
         public string AccountPic
         {
@@ -446,18 +424,7 @@ namespace Backlogs.ViewModels
             {
                 m_settings.Set(SettingsConstants.IsFirstRun, false);
             }
-            if (!m_settings.Get<bool>(SettingsConstants.IsSignedIn))
-            {
-                //if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
-                //{
-                //    ShowTopTeachingTip = true;
-                //}
-                //else
-                //{
-                //    ShowBottomTeachingTip = true;
-                //}
-                //ShowBottomTeachingTip = true;
-            }
+            
             if (ShowWhatsNew)
             {
                 m_settings.Set(SettingsConstants.ShowWhatsNew, false);
@@ -471,8 +438,6 @@ namespace Backlogs.ViewModels
         private async Task SignInAsync()
         {
             IsBusy = true;
-            ShowTopTeachingTip = false;
-            ShowBottomTeachingTip = false;
             if (m_networkAvailable)
             {
                 if (!m_settings.Get<bool>(SettingsConstants.IsSignedIn))
