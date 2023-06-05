@@ -1,0 +1,10 @@
+{
+  "background_color": "#ffffff",
+  "description": "Backlogs.Uno",
+  "display": "standalone",
+  "name": "Backlogs.Uno",
+  "short_name": "Backlogs.Uno",
+  "start_url": "/index.html",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}
