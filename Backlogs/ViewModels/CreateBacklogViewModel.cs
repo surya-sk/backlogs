@@ -343,7 +343,7 @@ namespace Backlogs.ViewModels
                     await SearchFilmBacklogAsync();
                     break;
                 case "TV":
-                    await SearchSeriesBacklogAsync();
+                    //await SearchSeriesBacklogAsync();
                     break;
                 case "Game":
                     await SearchGameBacklogAsync();
@@ -393,22 +393,23 @@ namespace Backlogs.ViewModels
             try
             {
                 string response = await RestClient.GetFilmResponse(m_nameInput);
+                Debug.WriteLine(response);
                 await m_fileHandler.WriteLogsAsync($"Trying to find film {m_nameInput}. Response: {response}");
                 FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
-                if (filmResult.results.Length > 0)
+                if (filmResult.total_results > 0)
                 {
                     SearchResults.Clear();
                     foreach (var result in filmResult.results)
                     {
                         try
                         {
-                            if (String.IsNullOrEmpty(result.image)) continue;
+                            if (String.IsNullOrEmpty(result.poster_path)) continue;
                             SearchResults.Add(new SearchResult
                             {
-                                Id = result.id,
+                                Id = result.id.ToString(),
                                 Name = result.title,
-                                Description = result.description,
-                                ImageURL = result.image
+                                Description = result.overview,
+                                ImageURL = $"https://www.themoviedb.org/t/p/w300_and_h450_bestv2{result.poster_path}"
                             });
                         }
                         catch
@@ -443,14 +444,14 @@ namespace Backlogs.ViewModels
             Backlog backlog = new Backlog
             {
                 id = Guid.NewGuid(),
-                Name = film.fullTitle,
+                Name = film.original_title,
                 Type = "Film",
-                ReleaseDate = film.releaseDate,
-                ImageURL = film.image,
+                ReleaseDate = film.release_date,
+                ImageURL = film.poster_path,
                 TargetDate = date,
-                Description = film.plot,
-                Length = film.runtimeMins,
-                Director = film.directors,
+                Description = film.overview,
+                Length = 0,
+                Director = "Me",
                 Progress = 0,
                 Units = "Minutes",
                 ShowProgress = true,
@@ -615,78 +616,78 @@ namespace Backlogs.ViewModels
         /// Search for TV series and show results
         /// </summary>
         /// <returns></returns>
-        private async Task SearchSeriesBacklogAsync()
-        {
-            try
-            {
-                string response = await RestClient.GetSeriesResponse(m_nameInput);
-                await m_fileHandler.WriteLogsAsync($"Trying to find series {m_nameInput}. Response: {response}");
-                SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
-                if (seriesResult.results.Length > 0)
-                {
-                    SearchResults.Clear();
-                    foreach (var result in seriesResult.results)
-                    {
-                        try
-                        {
-                            if (String.IsNullOrEmpty(result.image)) continue;
-                            SearchResults.Add(new SearchResult
-                            {
-                                Id = result.id,
-                                Name = result.title,
-                                Description = result.description,
-                                ImageURL = result.image,
-                            });
-                        }
-                        catch
-                        {
-                            continue;
-                        }
-                    }
-                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(m_nameInput, SearchResults);
-                    await SearchResultSelectedAsync();
-                    await m_fileHandler.WriteLogsAsync("Succesfully created backlog");
-                }
-                else
-                {
-                    await ShowNotFoundDialogAsync();
-                }
-            }
-            catch (Exception e)
-            {
-                await m_fileHandler.WriteLogsAsync("Failed to create backlog", e);
-            }
-        }
+        //private async Task SearchSeriesBacklogAsync()
+        //{
+        //    try
+        //    {
+        //        string response = await RestClient.GetSeriesResponse(m_nameInput);
+        //        await m_fileHandler.WriteLogsAsync($"Trying to find series {m_nameInput}. Response: {response}");
+        //        SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
+        //        if (seriesResult.results.Length > 0)
+        //        {
+        //            SearchResults.Clear();
+        //            foreach (var result in seriesResult.results)
+        //            {
+        //                try
+        //                {
+        //                    if (String.IsNullOrEmpty(result.image)) continue;
+        //                    SearchResults.Add(new SearchResult
+        //                    {
+        //                        Id = result.id,
+        //                        Name = result.title,
+        //                        Description = result.description,
+        //                        ImageURL = result.image,
+        //                    });
+        //                }
+        //                catch
+        //                {
+        //                    continue;
+        //                }
+        //            }
+        //            SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(m_nameInput, SearchResults);
+        //            await SearchResultSelectedAsync();
+        //            await m_fileHandler.WriteLogsAsync("Succesfully created backlog");
+        //        }
+        //        else
+        //        {
+        //            await ShowNotFoundDialogAsync();
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        await m_fileHandler.WriteLogsAsync("Failed to create backlog", e);
+        //    }
+        //}
 
         /// <summary>
         /// Create a TV series backlog
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        private async Task CreateSeriesBacklogAsync(string date)
-        {
-            string seriesData = await RestClient.GetSeriesDataResponse(SelectedSearchResult.Id);
-            Series series = JsonConvert.DeserializeObject<Series>(seriesData);
-            Backlog backlog = new Backlog
-            {
-                id = Guid.NewGuid(),
-                Name = series.fullTitle,
-                Type = "TV",
-                ReleaseDate = series.releaseDate,
-                ImageURL = series.image,
-                TargetDate = date,
-                Description = series.plot,
-                Length = series.TvSeriesInfo.Seasons.Count,
-                Director = series.TvSeriesInfo.Creators,
-                Progress = 0,
-                Units = "Season(s)",
-                ShowProgress = true,
-                NotifTime = NotifTime,
-                UserRating = -1,
-                CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
-            };
-            await CreateBacklogItemAsync(backlog);
-        }
+        //private async Task CreateSeriesBacklogAsync(string date)
+        //{
+        //    string seriesData = await RestClient.GetSeriesDataResponse(SelectedSearchResult.Id);
+        //    Series series = JsonConvert.DeserializeObject<Series>(seriesData);
+        //    Backlog backlog = new Backlog
+        //    {
+        //        id = Guid.NewGuid(),
+        //        Name = series.fullTitle,
+        //        Type = "TV",
+        //        ReleaseDate = series.releaseDate,
+        //        ImageURL = series.image,
+        //        TargetDate = date,
+        //        Description = series.plot,
+        //        Length = series.TvSeriesInfo.Seasons.Count,
+        //        Director = series.TvSeriesInfo.Creators,
+        //        Progress = 0,
+        //        Units = "Season(s)",
+        //        ShowProgress = true,
+        //        NotifTime = NotifTime,
+        //        UserRating = -1,
+        //        CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
+        //    };
+        //    await CreateBacklogItemAsync(backlog);
+        //}
 
         /// <summary>
         /// Search for a game and show results
@@ -831,7 +832,7 @@ namespace Backlogs.ViewModels
                         await CreateFilmBacklogAsync(date);
                         break;
                     case "TV":
-                        await CreateSeriesBacklogAsync(date);
+                        //await CreateSeriesBacklogAsync(date);
                         break;
                     case "Game":
                         await CreateGameBacklogAsync(date);

@@ -5,9 +5,8 @@ namespace Backlogs.Utils
 {
     public class FilmResult
     {
-        public string searchType { get; set; }
-        public string expression { get; set; }
-        public FilmResponse[] results { get; set; }
+        public List<Film> results { get; set; }
+        public int total_results { get; set; }
     }
 
     public class FilmResponse
@@ -21,22 +20,26 @@ namespace Backlogs.Utils
 
     public class Film
     {
-        public string id { get; set; }
-        public string originalTitle { get; set; }
-        public string image { get; set; }
-        public string fullTitle { get; set; }
-        public string plot { get; set; }
-        public string releaseDate { get; set; }
-        public string runtimeStr { get; set; }
-        public int runtimeMins { get; set; }
-        public string directors { get; set; }
+        public bool adult { get; set; }
+        public string backdrop_path { get; set; }
+        public List<int> genre_ids { get; set; }
+        public int id { get; set; }
+        public string original_language { get; set; }
+        public string original_title { get; set; }
+        public string overview { get; set; }
+        public double popularity { get; set; }
+        public string poster_path { get; set; }
+        public string release_date { get; set; }
+        public string title { get; set; }
+        public bool video { get; set; }
+        public double vote_average { get; set; }
+        public int vote_count { get; set; }
     }
 
     public class SeriesResult
     {
-        public string searchType { get; set; }
-        public string expression { get; set; }
-        public SeriesResponse[] results { get; set; }
+        public List<Series> results { get; set; }
+        public int total_results { get; set; }
     }
 
     public class SeriesResponse
@@ -50,16 +53,20 @@ namespace Backlogs.Utils
 
     public class Series
     {
-        public string id { get; set; }
-        public string originalTitle { get; set; }
-        public string image { get; set; }
-        public string fullTitle { get; set; }
-        public string plot { get; set; }
-        public string releaseDate { get; set; }
-        public string runtimeStr { get; set; }
-        public TvSeriesInfo TvSeriesInfo { get; set; }
-        public int runtimeMin { get; set; }
-        public string directors { get; set; }
+        public bool adult { get; set; }
+        public string backdrop_path { get; set; }
+        public List<int> genre_ids { get; set; }
+        public int id { get; set; }
+        public List<string> origin_country { get; set; }
+        public string original_language { get; set; }
+        public string original_name { get; set; }
+        public string overview { get; set; }
+        public double popularity { get; set; }
+        public string poster_path { get; set; }
+        public string first_air_date { get; set; }
+        public string name { get; set; }
+        public double vote_average { get; set; }
+        public int vote_count { get; set; }
     }
 
     public class TvSeriesInfo

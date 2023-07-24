@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,8 +15,8 @@ namespace Backlogs.Utils
 
         public static async Task<string> GetFilmResponse(string query)
         {
-            string key = Keys.IMDB_KEY;
-            Uri imdbURL = new Uri($"https://imdb-api.com/en/API/SearchMovie/{key}/{query}"); 
+            string key = Keys.TMDB_KEY;
+            Uri imdbURL = new Uri($"https://api.themoviedb.org/3/search/movie?query={query}&api_key={key}"); 
             HttpResponseMessage response = await client.GetAsync(imdbURL);
             if(response.IsSuccessStatusCode)
             {
@@ -26,7 +27,7 @@ namespace Backlogs.Utils
 
         public static async Task<string> GetFilmDataResponse(string query)
         {
-            string key = Keys.IMDB_KEY;
+            string key = Keys.TMDB_KEY;
             Uri imdbURL = new Uri($"https://imdb-api.com/en/API/Title/{key}/{query}");
             HttpResponseMessage response = await client.GetAsync(imdbURL);
             if (response.IsSuccessStatusCode)
@@ -38,7 +39,7 @@ namespace Backlogs.Utils
 
         public static async Task<string> GetSeriesResponse(string query)
         {
-            string key = Keys.IMDB_KEY;
+            string key = Keys.TMDB_KEY;
             Uri imdbURL = new Uri($"https://imdb-api.com/en/API/SearchSeries/{key}/{query}");
             HttpResponseMessage response = await client.GetAsync(imdbURL);
             if (response.IsSuccessStatusCode)
@@ -50,7 +51,7 @@ namespace Backlogs.Utils
 
         public static async Task<string> GetSeriesDataResponse(string query)
         {
-            string key = Keys.IMDB_KEY;
+            string key = Keys.TMDB_KEY;
             Uri imdbURL = new Uri($"https://imdb-api.com/en/API/Title/{key}/{query}");
             HttpResponseMessage response = await client.GetAsync(imdbURL);
             if (response.IsSuccessStatusCode)
