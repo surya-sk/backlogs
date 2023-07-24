@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Graph;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,212 +12,257 @@ namespace Backlogs.Models
     public class Backlog : INotifyPropertyChanged
     {
         public Guid id { get; set; }
-        private string name;
-        private string type;
-        private string description;
-        private string releaseDate;
-        private string targetDate;
-        private bool isComplete;
-        private string imageURL;
-        private string trailerURL;
-        public int progress;
-        private int length; 
-        private string searchURL;
-        private string units;
-        private string director;
-        private bool showProgress;
-        private TimeSpan notifTime;
-        private bool remindEveryday;
-        private double userRating;
-        private string createdDate;
-        private string completedDate;
+        public string API_ID { get; set; }
+        private string m_name;
+        private string m_type;
+        private string m_description;
+        private string m_releaseDate;
+        private string m_targetDate;
+        private bool m_isComplete;
+        private string m_imageURL;
+        private string m_trailerURL;
+        public int m_progress;
+        private int m_length; 
+        private string m_searchURL;
+        private string m_units;
+        private string m_director;
+        private string m_ratings;
+        private List<SearchResult> m_similar;
+        private Dictionary<string, string> m_links;
+        private List<string> m_genres;
+        private bool m_showProgress;
+        private TimeSpan m_notifTime;
+        private bool m_remindEveryday;
+        private double m_userRating;
+        private string m_createdDate;
+        private string m_completedDate;
 
         public string Name
         {
-            get => name;
+            get => m_name;
             set
             {
-                name = value;
+                m_name = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Name)));
             }
         }
 
         public string Type
         {
-            get => type;
+            get => m_type;
             set
             {
-                type = value;
+                m_type = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Type)));
             }
         }
 
         public string Description
         {
-            get => description;
+            get => m_description;
             set
             {
-                description = value;
+                m_description = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Description)));
             }
         }
 
         public string ReleaseDate
         {
-            get => releaseDate;
+            get => m_releaseDate;
             set
             {
-                releaseDate = value;
+                m_releaseDate = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReleaseDate)));
+            }
+        }
+
+        public string Ratings
+        {
+            get => m_ratings;
+            set
+            {
+                m_ratings = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof (Ratings)));
             }
         }
 
         public string TargetDate
         {
-            get => targetDate;
+            get => m_targetDate;
             set
             {
-                targetDate = value;
+                m_targetDate = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TargetDate)));
             }
         }
 
         public string Units
         {
-            get => units;
+            get => m_units;
             set
             {
-                units = value;
+                m_units = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Units)));
+            }
+        }
+
+        public Dictionary<string, string> Links
+        {
+            get => m_links;
+            set
+            {
+                m_links = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Links)));
+            }
+        }
+
+        public List<string> Genres
+        {
+            get => m_genres;
+            set
+            {
+                m_genres = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Genres)));
             }
         }
 
         public TimeSpan NotifTime
         {
-            get => notifTime;
+            get => m_notifTime;
             set
             {
-                notifTime = value;
+                m_notifTime = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotifTime)));
+            }
+        }
+
+        public List<SearchResult> Similar
+        {
+            get => m_similar;
+            set
+            {
+                m_similar = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Similar)));
             }
         }
 
         public bool IsComplete
         {
-            get => isComplete;
+            get => m_isComplete;
             set
             {
-                isComplete = value;
+                m_isComplete = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsComplete)));
             }
         }
 
         public bool ShowProgress
         {
-            get => showProgress;
+            get => m_showProgress;
             set
             {
-                showProgress = value;
+                m_showProgress = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowProgress)));
             }
         }
 
         public bool RemindEveryday
         {
-            get => remindEveryday;
+            get => m_remindEveryday;
             set
             {
-                remindEveryday = value;
+                m_remindEveryday = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RemindEveryday)));
             }
         }
 
         public string ImageURL
         {
-            get => imageURL;
+            get => m_imageURL;
             set
             {
-                imageURL = value;
+                m_imageURL = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ImageURL)));
             }
         }
 
         public int Progress
         {
-            get => progress;
+            get => m_progress;
             set
             {
-                progress = value;
+                m_progress = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
             }
         }
 
         public int Length
         {
-            get => length;
+            get => m_length;
             set
             {
-                length = value;
+                m_length = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Length)));
             }
         }
 
         public string TrailerURL
         {
-            get => trailerURL;
+            get => m_trailerURL;
             set
             {
-                trailerURL = value;
+                m_trailerURL = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TrailerURL)));
             }
         }
 
         public string SearchURL
         {
-            get => searchURL;
+            get => m_searchURL;
             set
             {
-                searchURL = value;
+                m_searchURL = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchURL)));
             }
         }
 
         public string Director
         {
-            get => director;
+            get => m_director;
             set
             {
-                director = value;
+                m_director = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Director)));
             }
         }
 
         public double UserRating
         {
-            get => userRating;
+            get => m_userRating;
             set
             {
-                userRating = value;
+                m_userRating = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserRating)));
             }
         }
 
         public string CreatedDate
         {
-            get => createdDate;
+            get => m_createdDate;
             set
             {
-                createdDate = value;
+                m_createdDate = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CreatedDate)));
             }
         }
 
         public string CompletedDate
         {
-            get => completedDate;
+            get => m_completedDate;
             set
             {
-                completedDate = value;
+                m_completedDate = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CompletedDate)));
             }
         }
