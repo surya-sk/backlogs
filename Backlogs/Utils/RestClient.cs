@@ -5,6 +5,9 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using TMDbLib.Client;
+using TMDbLib.Objects.General;
+using TMDbLib.Objects.Search;
 
 namespace Backlogs.Utils
 {
@@ -12,54 +15,6 @@ namespace Backlogs.Utils
     {
         static readonly HttpClient client = new HttpClient();
         static string S_TWITCH_ACCESS_TOKEN = "";
-
-        public static async Task<string> GetFilmResponse(string query)
-        {
-            string key = Keys.TMDB_KEY;
-            Uri imdbURL = new Uri($"https://api.themoviedb.org/3/search/movie?query={query}&api_key={key}"); 
-            HttpResponseMessage response = await client.GetAsync(imdbURL);
-            if(response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadAsStringAsync();
-            }
-            return null;
-        }
-
-        public static async Task<string> GetFilmDataResponse(string query)
-        {
-            string key = Keys.TMDB_KEY;
-            Uri imdbURL = new Uri($"https://imdb-api.com/en/API/Title/{key}/{query}");
-            HttpResponseMessage response = await client.GetAsync(imdbURL);
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadAsStringAsync();
-            }
-            return null;
-        }
-
-        public static async Task<string> GetSeriesResponse(string query)
-        {
-            string key = Keys.TMDB_KEY;
-            Uri imdbURL = new Uri($"https://imdb-api.com/en/API/SearchSeries/{key}/{query}");
-            HttpResponseMessage response = await client.GetAsync(imdbURL);
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadAsStringAsync();
-            }
-            return null;
-        }
-
-        public static async Task<string> GetSeriesDataResponse(string query)
-        {
-            string key = Keys.TMDB_KEY;
-            Uri imdbURL = new Uri($"https://imdb-api.com/en/API/Title/{key}/{query}");
-            HttpResponseMessage response = await client.GetAsync(imdbURL);
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadAsStringAsync();
-            }
-            return null;
-        }
 
         public static async Task<string> GetGameResponse(string query)
         {
