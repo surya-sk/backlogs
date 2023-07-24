@@ -13,6 +13,10 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TMDbLib.Client;
+using TMDbLib.Objects.General;
+using TMDbLib.Objects.Movies;
+using TMDbLib.Objects.Search;
 using SearchResult = Backlogs.Models.SearchResult;
 
 namespace Backlogs.ViewModels
@@ -392,24 +396,22 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                string response = await RestClient.GetFilmResponse(m_nameInput);
-                Debug.WriteLine(response);
-                await m_fileHandler.WriteLogsAsync($"Trying to find film {m_nameInput}. Response: {response}");
-                FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
-                if (filmResult.total_results > 0)
+                TMDbClient client = new TMDbClient(Keys.TMDB_KEY);
+                SearchContainer<SearchMovie> results = client.SearchMovieAsync(m_nameInput).Result;
+                if (results.Results.Count > 0)
                 {
                     SearchResults.Clear();
-                    foreach (var result in filmResult.results)
+                    foreach (var result in results.Results)
                     {
                         try
                         {
-                            if (String.IsNullOrEmpty(result.poster_path)) continue;
+                            if (String.IsNullOrEmpty(result.PosterPath)) continue;
                             SearchResults.Add(new SearchResult
                             {
-                                Id = result.id.ToString(),
-                                Name = result.title,
-                                Description = result.overview,
-                                ImageURL = $"https://www.themoviedb.org/t/p/w300_and_h450_bestv2{result.poster_path}"
+                                Id = result.Id.ToString(),
+                                Name = result.Title,
+                                Description = result.Overview,
+                                ImageURL = $"https://www.themoviedb.org/t/p/w300_and_h450_bestv2{result.PosterPath}"
                             });
                         }
                         catch
@@ -439,19 +441,19 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task CreateFilmBacklogAsync(string date)
         {
-            string filmData = await RestClient.GetFilmDataResponse(SelectedSearchResult.Id);
-            Film film = JsonConvert.DeserializeObject<Film>(filmData);
+            TMDbClient client = new TMDbClient(Keys.TMDB_KEY);
+            Movie movie = await client.GetMovieAsync(int.Parse(SelectedSearchResult.Id));
             Backlog backlog = new Backlog
             {
                 id = Guid.NewGuid(),
-                Name = film.original_title,
+                Name = movie.Title,
                 Type = "Film",
-                ReleaseDate = film.release_date,
-                ImageURL = film.poster_path,
+                ReleaseDate = movie.ReleaseDate.ToString(),
+                ImageURL = $"https://www.themoviedb.org/t/p/{movie.PosterPath}",
                 TargetDate = date,
-                Description = film.overview,
+                Description = movie.Overview,
                 Length = 0,
-                Director = "Me",
+                Director = "Some Guy",
                 Progress = 0,
                 Units = "Minutes",
                 ShowProgress = true,

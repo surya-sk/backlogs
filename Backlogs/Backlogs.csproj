@@ -10,6 +10,7 @@
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.57.0.2827" />
     <PackageReference Include="Microsoft.Graph" Version="1.15.0" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+    <PackageReference Include="TMDbLib" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
