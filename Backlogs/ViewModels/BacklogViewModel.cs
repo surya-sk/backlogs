@@ -280,7 +280,7 @@ namespace Backlogs.ViewModels
                     switch (Backlog.Type)
                     {
                         case "Film":
-                            SourceName = "IMdB";
+                            SourceName = "TMDB";
                             SourceLink = new Uri("https://www.imdb.com/");
                             break;
                         case "Album":
@@ -289,7 +289,7 @@ namespace Backlogs.ViewModels
                             ShowTrailerButton = false;
                             break;
                         case "TV":
-                            SourceName = "IMdB";
+                            SourceName = "TMDB";
                             SourceLink = new Uri("https://www.imbd.com");
                             break;
                         case "Game":
