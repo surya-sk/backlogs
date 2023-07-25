@@ -298,7 +298,7 @@ namespace Backlogs.ViewModels
                     {
                         case "Film":
                             SourceName = "TMDB";
-                            SourceLink = new Uri("https://www.imdb.com/");
+                            SourceLink = new Uri("https://www.themoviedb.org/");
                             break;
                         case "Album":
                             SourceName = "LastFM";
@@ -307,7 +307,7 @@ namespace Backlogs.ViewModels
                             break;
                         case "TV":
                             SourceName = "TMDB";
-                            SourceLink = new Uri("https://www.imbd.com");
+                            SourceLink = new Uri("https://www.themoviedb.org/");
                             break;
                         case "Game":
                             SourceName = "IGDB";
