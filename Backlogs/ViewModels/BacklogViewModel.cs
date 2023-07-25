@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TMDbLib.Client;
 using TMDbLib.Objects.Movies;
+using TMDbLib.Objects.TvShows;
 
 namespace Backlogs.ViewModels
 {
@@ -336,9 +337,11 @@ namespace Backlogs.ViewModels
                 case "Film":
                     await GetFilmDetailsAsync();
                     break;
+                case "TV":
+                    await GetSeriesDetailsAsync();
+                    break;
                 default:
                     break;
-
             }
         }
 
@@ -359,6 +362,22 @@ namespace Backlogs.ViewModels
             }
             Backlog.Director = sb.ToString();
             BackdropURL = $"https://www.themoviedb.org/t/p/original{film.BackdropPath}";
+        }
+
+        private async Task GetSeriesDetailsAsync()
+        {
+            if (string.IsNullOrEmpty(Backlog.API_ID))
+                return;
+            TvShow series = await m_TMDBClient.GetTvShowAsync(int.Parse(Backlog.API_ID));
+            StringBuilder sb = new StringBuilder();
+            foreach(var c in series.CreatedBy)
+            {
+                if (sb.Length > 0)
+                    sb.Append(", ");
+                sb.Append(c.Name);
+            }
+            Backlog.Director = sb.ToString();
+            BackdropURL = $"https://www.themoviedb.org/t/p/original{series.BackdropPath}";
         }
 
         private async Task ReadMoreAsync()

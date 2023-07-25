@@ -455,7 +455,7 @@ namespace Backlogs.ViewModels
                 ImageURL = $"https://www.themoviedb.org/t/p/original{movie.PosterPath}",
                 TargetDate = date,
                 Description = movie.Overview,
-                Length = 0,
+                Length = (int)movie.Runtime,
                 Director = "Some Guy",
                 Progress = 0,
                 Units = "Minutes",
@@ -522,18 +522,18 @@ namespace Backlogs.ViewModels
         private async Task CreateSeriesBacklogAsync(string date)
         {
             TMDbClient client = new TMDbClient(Keys.TMDB_KEY);
-            TvShow movie = await client.GetTvShowAsync(int.Parse(SelectedSearchResult.Id));
+            TvShow series = await client.GetTvShowAsync(int.Parse(SelectedSearchResult.Id));
             Backlog backlog = new Backlog
             {
                 id = Guid.NewGuid(),
                 API_ID = SelectedSearchResult.Id,
-                Name = movie.Name,
+                Name = series.Name,
                 Type = "TV",
-                ReleaseDate = movie.FirstAirDate.ToString(),
-                ImageURL = $"https://www.themoviedb.org/t/p/original{movie.PosterPath}",
+                ReleaseDate = series.FirstAirDate.ToString(),
+                ImageURL = $"https://www.themoviedb.org/t/p/original{series.PosterPath}",
                 TargetDate = date,
-                Description = movie.Overview,
-                Length = 0,
+                Description = series.Overview,
+                Length = series.NumberOfSeasons,
                 Director = "Some Guy",
                 Progress = 0,
                 Units = "Seasons",
