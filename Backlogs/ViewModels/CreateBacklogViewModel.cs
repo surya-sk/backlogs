@@ -413,7 +413,7 @@ namespace Backlogs.ViewModels
                                 Id = result.Id.ToString(),
                                 Name = result.Title,
                                 Description = result.Overview,
-                                ImageURL = $"https://www.themoviedb.org/t/p/w300_and_h450_bestv2{result.PosterPath}"
+                                ImageURL = $"https://www.themoviedb.org/t/p/original{result.PosterPath}"
                             });
                         }
                         catch
@@ -452,7 +452,7 @@ namespace Backlogs.ViewModels
                 Name = movie.Title,
                 Type = "Film",
                 ReleaseDate = movie.ReleaseDate.ToString(),
-                ImageURL = $"https://www.themoviedb.org/t/p/{movie.PosterPath}",
+                ImageURL = $"https://www.themoviedb.org/t/p/original{movie.PosterPath}",
                 TargetDate = date,
                 Description = movie.Overview,
                 Length = 0,
@@ -491,7 +491,7 @@ namespace Backlogs.ViewModels
                                 Id = result.Id.ToString(),
                                 Name = result.Name,
                                 Description = result.Overview,
-                                ImageURL = $"https://www.themoviedb.org/t/p/w300_and_h450_bestv2{result.PosterPath}"
+                                ImageURL = $"https://www.themoviedb.org/t/p/original{result.PosterPath}"
                             });
                         }
                         catch
@@ -530,7 +530,7 @@ namespace Backlogs.ViewModels
                 Name = movie.Name,
                 Type = "TV",
                 ReleaseDate = movie.FirstAirDate.ToString(),
-                ImageURL = $"https://www.themoviedb.org/t/p/{movie.PosterPath}",
+                ImageURL = $"https://www.themoviedb.org/t/p/original{movie.PosterPath}",
                 TargetDate = date,
                 Description = movie.Overview,
                 Length = 0,
