@@ -41,7 +41,7 @@
 
         <ProgressRing x:Name="ProgRing" IsActive="{x:Bind ViewModel.ShowProgress, Mode=OneWay}" />
 
-        <Hub Name="mainHub" Visibility="Collapsed">
+        <Hub Name="mainHub" Visibility="{x:Bind ViewModel.HubStyle, Mode=OneWay}">
             <Hub.Header>
                 <TextBlock Text="settings + more" FontSize="60" FontStretch="UltraExpanded" FontWeight="SemiLight" />
             </Hub.Header>
@@ -62,6 +62,12 @@
                                     <x:String>System</x:String>
                                     <x:String>Dark</x:String>
                                     <x:String>Light</x:String>
+                                </ComboBox>
+
+                                <ComboBox x:Name="UIStyle" Header="UI Style" Margin="0,20,0,20"
+                                          MinWidth="30" FontSize="15" SelectedValue="{x:Bind UIStyle, Mode=TwoWay}">
+                                    <x:String>Pivot</x:String>
+                                    <x:String>Hub</x:String>
                                 </ComboBox>
 
                                 <StackPanel Orientation="Vertical" Margin="0,10,0,0">
@@ -160,32 +166,6 @@
                                 <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
                         <Hyperlink NavigateUri="https://discord.com/invite/eBHZSKG">
                             <Run Text="UWP Community Discord server" />
-                        </Hyperlink>
-                                </TextBlock>
-
-                                <TextBlock Text="About Me" Margin="0,20,0,10" Style="{StaticResource BaseTextBlockStyle}" FontSize="20" FontWeight="SemiBold" />
-                                <TextBlock Margin="0,10,0,10" Style="{StaticResource BodyTextBlockStyle}" FontSize="15" TextWrapping="Wrap">
-                            Hi, I'm Surya. I am a game and UWP developer. I live in Canada. Please consider supporting me by donating to my Paypal.
-                            Check out my profiles and other projects below, if you like :).
-                                </TextBlock>
-                                <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
-                        <Hyperlink NavigateUri="https://www.linkedin.com/in/surya-kashyap/">
-                            <Run Text="Connect with me on LinkedIn" />
-                        </Hyperlink>
-                                </TextBlock>
-                                <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
-                        <Hyperlink NavigateUri="https://twitter.com/Surya89962336">
-                            <Run Text="Follow me on Twitter" />
-                        </Hyperlink>
-                                </TextBlock>
-                                <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
-                        <Hyperlink NavigateUri="https://github.com/surya-sk">
-                            <Run Text="My GitHub profile" />
-                        </Hyperlink>
-                                </TextBlock>
-                                <TextBlock TextWrapping="Wrap" Margin="0,10,0,10">
-                        <Hyperlink NavigateUri="https://www.microsoft.com/en-us/p/theseus-the-descent/9nwzzffbw70t?activetab=pivot:overviewtab">
-                            <Run Text="Check out my first game on PC or Xbox" />
                         </Hyperlink>
                                 </TextBlock>
                             </StackPanel>
@@ -335,7 +315,7 @@
                 </DataTemplate>
             </HubSection>
         </Hub>
-        <Pivot x:Name="mainPivot">
+        <Pivot x:Name="mainPivot" Visibility="{x:Bind ViewModel.PivotStyle, Mode=OneWay}">
             <PivotItem Header="settings">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
@@ -349,6 +329,12 @@
                                 <x:String>System</x:String>
                                 <x:String>Dark</x:String>
                                 <x:String>Light</x:String>
+                            </ComboBox>
+
+                            <ComboBox x:Name="UIStyle" Header="UI Style" Margin="0,20,0,20"
+                                          MinWidth="30" FontSize="15" SelectedValue="{x:Bind ViewModel.UIStyle, Mode=TwoWay}">
+                                <x:String>Pivot</x:String>
+                                <x:String>Hub</x:String>
                             </ComboBox>
 
                             <StackPanel Orientation="Vertical" Margin="0,10,0,0">
