@@ -44,11 +44,11 @@
 
                 <Grid x:Name="metadataGrid">
                     <Grid.Background>
-                        <ImageBrush ImageSource="{x:Bind ViewModel.Backlog.ImageURL}" Stretch="UniformToFill" />
+                        <ImageBrush ImageSource="{x:Bind ViewModel.BackdropURL, Mode=OneWay}" Stretch="UniformToFill" />
                     </Grid.Background>
                     <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <Border.Background>
-                            <media:BackdropBlurBrush Amount="90" />
+                            <media:BackdropBlurBrush Amount="10" />
                         </Border.Background>
                     </Border>
                     
@@ -62,7 +62,7 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <TextBlock Text="{x:Bind ViewModel.Backlog.Name}" FontSize="25" Margin="0,0,0,10" TextWrapping="Wrap" />
-                            <TextBlock x:Name="ArtistText" Text="{x:Bind ViewModel.Backlog.Director}" FontSize="20" Margin="0,0,0,10" Grid.Row="1"/>
+                            <TextBlock x:Name="ArtistText" Text="{x:Bind ViewModel.Backlog.Director, Mode=OneWay}" FontSize="20" Margin="0,0,0,10" Grid.Row="1"/>
                             <TextBlock x:Name="descText" Text="{x:Bind ViewModel.Backlog.Description}" TextTrimming="WordEllipsis" MaxLines="3" TextWrapping="Wrap" FontSize="15"
                                                     Margin="0,0,0,20" Grid.Row="2"/>
                                 
@@ -96,9 +96,9 @@
                         <TextBlock Text="Enter how much progress you've made" FontStyle="Oblique" Margin="0,0,0,10" />
                         <StackPanel Orientation="Horizontal" Margin="10">
                             <muxc:NumberBox x:Name="ProgressNumBox" Value="{x:Bind ViewModel.Backlog.Progress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpinButtonPlacementMode="Inline" 
-                                         Minimum="0" Maximum="{x:Bind ViewModel.Backlog.Length}"/>
+                                         Minimum="0" Maximum="{x:Bind ViewModel.Backlog.Length, Mode=OneWay}"/>
                             <TextBlock Text="of"  Margin="10,5,10,0" FontSize="15"/>
-                            <TextBlock Text="{x:Bind ViewModel.Backlog.Length}" Margin="0,5,10,0" FontSize="15"/>
+                            <TextBlock Text="{x:Bind ViewModel.Backlog.Length, Mode=OneWay}" Margin="0,5,10,0" FontSize="15"/>
                             <TextBlock Text="{x:Bind ViewModel.Backlog.Units}" Margin="0,5,10,0" FontSize="15" />
                         </StackPanel>
                         <muxc:ProgressBar x:Name="backlogProgressBar" Value="{x:Bind ViewModel.Backlog.Progress, Mode=TwoWay}" Minimum="0" Maximum="{x:Bind ViewModel.Backlog.Length}" 

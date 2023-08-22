@@ -7,6 +7,7 @@ using Backlogs.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Backlogs.Services;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,9 +23,15 @@ namespace Backlogs.Views
         public BacklogPage()
         {
             this.InitializeComponent();
+            this.Loading += BacklogPage_Loading;
 
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
+        }
+
+        private async void BacklogPage_Loading(Windows.UI.Xaml.FrameworkElement sender, object args)
+        {
+            await ViewModel.GetDetailsAsync();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
