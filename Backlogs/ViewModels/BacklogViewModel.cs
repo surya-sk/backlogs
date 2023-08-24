@@ -12,9 +12,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
+using TMDbLib.Client;
+using TMDbLib.Objects.Movies;
+using TMDbLib.Objects.TvShows;
 
 namespace Backlogs.ViewModels
 {
@@ -43,6 +47,8 @@ namespace Backlogs.ViewModels
         private readonly IUserSettings m_settings;
         private readonly IFileHandler m_fileHandler;
         private readonly ISystemLauncher m_systemLauncher;
+        private TMDbClient m_TMDBClient;
+        private string m_backdropURL = "https://www.themoviedb.org/t/p/original/ctMserH8g2SeOAnCw5gFjdQF8mo.jpg";
 
         public ObservableCollection<Backlog> Backlogs;
         public Backlog Backlog;
@@ -82,6 +88,16 @@ namespace Backlogs.ViewModels
                 {
                     Backlog.Progress = Backlog.Length = 0;
                 }
+            }
+        }
+
+        public string BackdropURL
+        {
+            get => m_backdropURL;
+            set
+            {
+                m_backdropURL = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BackdropURL)));
             }
         }
 
@@ -266,6 +282,7 @@ namespace Backlogs.ViewModels
             m_settings = settings;
             m_fileHandler = fileHandler;
             m_systemLauncher = systemLauncher;
+            m_TMDBClient = new TMDbClient(Keys.TMDB_KEY);
 
             CalendarDate = DateTimeOffset.MinValue;
             NotifTime = TimeSpan.Zero;
@@ -280,8 +297,8 @@ namespace Backlogs.ViewModels
                     switch (Backlog.Type)
                     {
                         case "Film":
-                            SourceName = "IMdB";
-                            SourceLink = new Uri("https://www.imdb.com/");
+                            SourceName = "TMDB";
+                            SourceLink = new Uri("https://www.themoviedb.org/");
                             break;
                         case "Album":
                             SourceName = "LastFM";
@@ -289,8 +306,8 @@ namespace Backlogs.ViewModels
                             ShowTrailerButton = false;
                             break;
                         case "TV":
-                            SourceName = "IMdB";
-                            SourceLink = new Uri("https://www.imbd.com");
+                            SourceName = "TMDB";
+                            SourceLink = new Uri("https://www.themoviedb.org/");
                             break;
                         case "Game":
                             SourceName = "IGDB";
@@ -310,6 +327,57 @@ namespace Backlogs.ViewModels
             {
                 InProgress = Backlog.Progress > 0;
             }
+        }
+
+        public async Task GetDetailsAsync()
+        {
+            BackdropURL = Backlog.ImageURL;
+            switch(Backlog.Type)
+            {
+                case "Film":
+                    await GetFilmDetailsAsync();
+                    break;
+                case "TV":
+                    await GetSeriesDetailsAsync();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private async Task GetFilmDetailsAsync()
+        {
+            if (string.IsNullOrEmpty(Backlog.API_ID))
+                return;
+            Movie film = await m_TMDBClient.GetMovieAsync(int.Parse(Backlog.API_ID),
+                MovieMethods.Credits | MovieMethods.Similar |MovieMethods.Reviews 
+                 | MovieMethods.WatchProviders);
+            var directors = film.Credits.Crew.Where(Job => Job.Job == "Director").ToList();
+            StringBuilder sb = new StringBuilder();
+            foreach(var d in directors)
+            {
+                if(sb.Length > 0)
+                    sb.Append(", ");
+                sb.Append(d.Name);   
+            }
+            Backlog.Director = sb.ToString();
+            BackdropURL = $"https://www.themoviedb.org/t/p/original{film.BackdropPath}";
+        }
+
+        private async Task GetSeriesDetailsAsync()
+        {
+            if (string.IsNullOrEmpty(Backlog.API_ID))
+                return;
+            TvShow series = await m_TMDBClient.GetTvShowAsync(int.Parse(Backlog.API_ID));
+            StringBuilder sb = new StringBuilder();
+            foreach(var c in series.CreatedBy)
+            {
+                if (sb.Length > 0)
+                    sb.Append(", ");
+                sb.Append(c.Name);
+            }
+            Backlog.Director = sb.ToString();
+            BackdropURL = $"https://www.themoviedb.org/t/p/original{series.BackdropPath}";
         }
 
         private async Task ReadMoreAsync()

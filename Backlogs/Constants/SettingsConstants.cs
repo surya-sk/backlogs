@@ -21,6 +21,7 @@ namespace Backlogs.Constants
         public const string AutoplayVideos = nameof(AutoplayVideos);
         public const string AppTheme = nameof(AppTheme);
         public const string LastCrashLog = nameof(LastCrashLog);
+        public const string UIStyle = nameof(UIStyle);
 
         public static IReadOnlyDictionary<string, object> Defaults { get; } = new Dictionary<string, object>()
         {
@@ -36,7 +37,8 @@ namespace Backlogs.Constants
             {TileContent, "Recently Created" },
             {AutoplayVideos, false },
             {AppTheme, "System" },
-            {LastCrashLog, null }
+            {LastCrashLog, null },
+            {UIStyle, "Pivot" }
         };
     }
 }

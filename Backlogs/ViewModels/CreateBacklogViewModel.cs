@@ -13,6 +13,11 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TMDbLib.Client;
+using TMDbLib.Objects.General;
+using TMDbLib.Objects.Movies;
+using TMDbLib.Objects.Search;
+using TMDbLib.Objects.TvShows;
 using SearchResult = Backlogs.Models.SearchResult;
 
 namespace Backlogs.ViewModels
@@ -392,23 +397,23 @@ namespace Backlogs.ViewModels
         {
             try
             {
-                string response = await RestClient.GetFilmResponse(m_nameInput);
-                await m_fileHandler.WriteLogsAsync($"Trying to find film {m_nameInput}. Response: {response}");
-                FilmResult filmResult = JsonConvert.DeserializeObject<FilmResult>(response);
-                if (filmResult.results.Length > 0)
+                TMDbClient client = new TMDbClient(Keys.TMDB_KEY);
+                await m_fileHandler.WriteLogsAsync($"Trying to find series {m_nameInput}.");
+                SearchContainer<SearchMovie> results = await client.SearchMovieAsync(m_nameInput);
+                if (results.Results.Count > 0)
                 {
                     SearchResults.Clear();
-                    foreach (var result in filmResult.results)
+                    foreach (var result in results.Results)
                     {
                         try
                         {
-                            if (String.IsNullOrEmpty(result.image)) continue;
+                            if (String.IsNullOrEmpty(result.PosterPath)) continue;
                             SearchResults.Add(new SearchResult
                             {
-                                Id = result.id,
-                                Name = result.title,
-                                Description = result.description,
-                                ImageURL = result.image
+                                Id = result.Id.ToString(),
+                                Name = result.Title,
+                                Description = result.Overview,
+                                ImageURL = $"https://www.themoviedb.org/t/p/original{result.PosterPath}"
                             });
                         }
                         catch
@@ -438,21 +443,100 @@ namespace Backlogs.ViewModels
         /// <returns></returns>
         private async Task CreateFilmBacklogAsync(string date)
         {
-            string filmData = await RestClient.GetFilmDataResponse(SelectedSearchResult.Id);
-            Film film = JsonConvert.DeserializeObject<Film>(filmData);
+            TMDbClient client = new TMDbClient(Keys.TMDB_KEY);
+            Movie movie = await client.GetMovieAsync(int.Parse(SelectedSearchResult.Id));
             Backlog backlog = new Backlog
             {
                 id = Guid.NewGuid(),
-                Name = film.fullTitle,
+                API_ID = SelectedSearchResult.Id,
+                Name = movie.Title,
                 Type = "Film",
-                ReleaseDate = film.releaseDate,
-                ImageURL = film.image,
+                ReleaseDate = movie.ReleaseDate.ToString(),
+                ImageURL = $"https://www.themoviedb.org/t/p/original{movie.PosterPath}",
                 TargetDate = date,
-                Description = film.plot,
-                Length = film.runtimeMins,
-                Director = film.directors,
+                Description = movie.Overview,
+                Length = (int)movie.Runtime,
+                Director = "Some Guy",
                 Progress = 0,
                 Units = "Minutes",
+                ShowProgress = true,
+                NotifTime = NotifTime == null ? TimeSpan.Zero : NotifTime,
+                UserRating = -1,
+                CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
+            };
+            await CreateBacklogItemAsync(backlog);
+        }
+
+        /// <summary>
+        /// Search for TV series and show results
+        /// </summary>
+        /// <returns></returns>
+        private async Task SearchSeriesBacklogAsync()
+        {
+            try
+            {
+                TMDbClient client = new TMDbClient(Keys.TMDB_KEY);
+                await m_fileHandler.WriteLogsAsync($"Trying to find series {m_nameInput}.");
+                SearchContainer<SearchTv> results = await client.SearchTvShowAsync(m_nameInput);
+                if (results.Results.Count > 0)
+                {
+                    SearchResults.Clear();
+                    foreach (var result in results.Results)
+                    {
+                        try
+                        {
+                            if (String.IsNullOrEmpty(result.PosterPath)) continue;
+                            SearchResults.Add(new SearchResult
+                            {
+                                Id = result.Id.ToString(),
+                                Name = result.Name,
+                                Description = result.Overview,
+                                ImageURL = $"https://www.themoviedb.org/t/p/original{result.PosterPath}"
+                            });
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(m_nameInput, SearchResults);
+                    await SearchResultSelectedAsync();
+                    await m_fileHandler.WriteLogsAsync("Succesfully created backlog");
+                }
+                else
+                {
+                    await ShowNotFoundDialogAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                await m_fileHandler.WriteLogsAsync("Failed to create backlog", e);
+            }
+        }
+
+        /// <summary>
+        /// Create a TV series backlog
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        private async Task CreateSeriesBacklogAsync(string date)
+        {
+            TMDbClient client = new TMDbClient(Keys.TMDB_KEY);
+            TvShow series = await client.GetTvShowAsync(int.Parse(SelectedSearchResult.Id));
+            Backlog backlog = new Backlog
+            {
+                id = Guid.NewGuid(),
+                API_ID = SelectedSearchResult.Id,
+                Name = series.Name,
+                Type = "TV",
+                ReleaseDate = series.FirstAirDate.ToString(),
+                ImageURL = $"https://www.themoviedb.org/t/p/original{series.PosterPath}",
+                TargetDate = date,
+                Description = series.Overview,
+                Length = series.NumberOfSeasons,
+                Director = "Some Guy",
+                Progress = 0,
+                Units = "Seasons",
                 ShowProgress = true,
                 NotifTime = NotifTime == null ? TimeSpan.Zero : NotifTime,
                 UserRating = -1,
@@ -603,83 +687,6 @@ namespace Backlogs.ViewModels
                 Length = book.length,
                 Progress = 0,
                 Units = "Pages",
-                ShowProgress = true,
-                NotifTime = NotifTime,
-                UserRating = -1,
-                CreatedDate = DateTimeOffset.Now.Date.ToString("D", CultureInfo.InvariantCulture)
-            };
-            await CreateBacklogItemAsync(backlog);
-        }
-
-        /// <summary>
-        /// Search for TV series and show results
-        /// </summary>
-        /// <returns></returns>
-        private async Task SearchSeriesBacklogAsync()
-        {
-            try
-            {
-                string response = await RestClient.GetSeriesResponse(m_nameInput);
-                await m_fileHandler.WriteLogsAsync($"Trying to find series {m_nameInput}. Response: {response}");
-                SeriesResult seriesResult = JsonConvert.DeserializeObject<SeriesResult>(response);
-                if (seriesResult.results.Length > 0)
-                {
-                    SearchResults.Clear();
-                    foreach (var result in seriesResult.results)
-                    {
-                        try
-                        {
-                            if (String.IsNullOrEmpty(result.image)) continue;
-                            SearchResults.Add(new SearchResult
-                            {
-                                Id = result.id,
-                                Name = result.title,
-                                Description = result.description,
-                                ImageURL = result.image,
-                            });
-                        }
-                        catch
-                        {
-                            continue;
-                        }
-                    }
-                    SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(m_nameInput, SearchResults);
-                    await SearchResultSelectedAsync();
-                    await m_fileHandler.WriteLogsAsync("Succesfully created backlog");
-                }
-                else
-                {
-                    await ShowNotFoundDialogAsync();
-                }
-            }
-            catch (Exception e)
-            {
-                await m_fileHandler.WriteLogsAsync("Failed to create backlog", e);
-            }
-        }
-
-        /// <summary>
-        /// Create a TV series backlog
-        /// </summary>
-        /// <param name="date"></param>
-        /// <returns></returns>
-        private async Task CreateSeriesBacklogAsync(string date)
-        {
-            string seriesData = await RestClient.GetSeriesDataResponse(SelectedSearchResult.Id);
-            Series series = JsonConvert.DeserializeObject<Series>(seriesData);
-            Backlog backlog = new Backlog
-            {
-                id = Guid.NewGuid(),
-                Name = series.fullTitle,
-                Type = "TV",
-                ReleaseDate = series.releaseDate,
-                ImageURL = series.image,
-                TargetDate = date,
-                Description = series.plot,
-                Length = series.TvSeriesInfo.Seasons.Count,
-                Director = series.TvSeriesInfo.Creators,
-                Progress = 0,
-                Units = "Season(s)",
                 ShowProgress = true,
                 NotifTime = NotifTime,
                 UserRating = -1,

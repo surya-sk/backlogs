@@ -58,7 +58,7 @@ namespace Backlogs.ViewModels
         public string UserName { get; set; } 
         public bool SignedIn { get; set; }
         public bool Sync { get; set; }
-        public string WhatsNew = "New visual, simplified live tiles and more";
+        public string WhatsNew = "Hotfix for film and TV backlogs";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
