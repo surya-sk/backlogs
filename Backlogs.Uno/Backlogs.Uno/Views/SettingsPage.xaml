@@ -1,0 +1,72 @@
+<Page x:Class="Backlogs.Uno.Views.SettingsPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:Backlogs.Uno"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+    xmlns:muxc="using:Uno.UI.Xaml.Controls"
+    xmlns:android="http://uno.ui/android"
+    xmlns:uen="using:Uno.Extensions.Navigation.UI"
+	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Pivot Title="EMAIL" x:Name="MyPivot">
+        <PivotItem Header="All">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" >
+
+                        <ComboBox x:Name="ThemeInput"  Header="Application Theme" Margin="0,20,0,20" MinWidth="30" FontSize="15" >
+                            <x:String>System</x:String>
+                            <x:String>Dark</x:String>
+                            <x:String>Light</x:String>
+                        </ComboBox>
+
+                        <ComboBox x:Name="UIStyle" Header="UI Style" Margin="0,20,0,20" MinWidth="30" FontSize="15" >
+                            <x:String>Pivot</x:String>
+                            <x:String>Hub</x:String>
+                        </ComboBox>
+
+
+                        <StackPanel Margin="0,20,0,0">
+                            <TextBlock Text="Video playback" Margin="0,20,0,0" FontSize="18"/>
+                            <TextBlock Text="Settings for playing trailers for films, series and games." FontStyle="Italic"
+                                           FontWeight="ExtraLight" TextWrapping="Wrap" />
+                            <ToggleSwitch x:Name="AutoplaySwitch" Header="Autoplay videos" Margin="0,20,0,0" />
+                        </StackPanel>
+
+                        <StackPanel x:Name="AccountPanel"  Margin="0,20,0,0">
+                            <TextBlock Text="Account" Margin="0,20,0,0" FontSize="18" />
+                            <TextBlock x:Name="UserNameText" Margin="0,10,0,20" FontStyle="Italic" />
+                            <muxc:PersonPicture x:Name="AccountPic" Margin="0,10,0,20" HorizontalAlignment="Left"/>
+                            <Button x:Name="SignOutButton" Content="Sign out" Background="Red"  />
+                        </StackPanel>
+
+                        <TextBlock x:Name="SignInText" Text="For the best experience, sign-in with your Microsoft Account. This will sync backlogs using OneDrive so you can access them on all of your Windows devices."
+                                FontStyle="Italic" Margin="0,20,0,0" TextWrapping="Wrap" />
+
+                        <TextBlock x:Name="WarningText" Text="Backlogs are stored in your root OneDrive folder in a file named backlogs.txt. DO NOT modify or delete the file, as it can lead to your backlogs being lost forever."
+                                Foreground="Red" Margin="0,20,0,0" TextWrapping="Wrap" FontSize="15"  />
+
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </PivotItem>
+        <PivotItem Header="Unread">
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <Button Content="Show Prompt" Click="ShowPrompt_Click"/>
+            </Grid>
+        </PivotItem>
+        <PivotItem Header="Flagged">
+            <TextBlock Text="flagged emails go here." />
+        </PivotItem>
+        <PivotItem Header="Urgent">
+            <TextBlock Text="urgent emails go here." />
+        </PivotItem>
+    </Pivot>
+    
+</Page>

@@ -7,10 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Uno.WinUI" Version="4.8.33" />
+		<PackageReference Include="CommunityToolkit.Common" Version="8.2.1" />
+		<PackageReference Include="Uno.WinUI" Version="4.9.45" />
 		<PackageReference Include="Uno.Resizetizer" Version="1.0.4" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+		<PackageReference Include="Uno.WinUI.MSAL" Version="4.9.45" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -19,13 +21,66 @@
 		<Compile Update="**\*.xaml.cs">
 			<DependentUpon>%(Filename)</DependentUpon>
 		</Compile>
-		<PRIResource Include ="**\*.resw" />
+		<PRIResource Include="**\*.resw" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<UnoImage Include="Assets\**\*.svg" />
-		<Compile Include="..\Backlogs.Uno.Base\IsExternalInit.cs"
-						 Visible="false" />
+		<Compile Include="..\Backlogs.Uno.Base\IsExternalInit.cs" Visible="false" />
 		<UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Controls\LogsDialog.xaml" />
+	  <None Remove="Controls\SearchResultsDialog.xaml" />
+	  <None Remove="Views\CreatePage.xaml" />
+	  <None Remove="Views\SettingsPage.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Controls\LogsDialog.xaml" />
+	  <UpToDateCheckInput Remove="Controls\SearchResultsDialog.xaml" />
+	  <UpToDateCheckInput Remove="Views\CreatePage.xaml" />
+	  <UpToDateCheckInput Remove="Views\SettingsPage.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Backlogs\Backlogs.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Views\CreatePage.xaml.cs">
+	    <DependentUpon>CreatePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SettingsPage.xaml.cs">
+	    <DependentUpon>SettingsPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Controls\LogsDialog.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	  <Page Update="Controls\SearchResultsDialog.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	  <Page Update="Views\CreatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	  <Page Update="Views\SettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Backlogs\Uno\" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
+	  <PackageReference Include="Plugin.CurrentActivity">
+	    <Version>2.1.0.4</Version>
+	  </PackageReference>
 	</ItemGroup>
 </Project>

@@ -261,8 +261,8 @@ namespace Backlogs.ViewModels
 
         public MainViewModel(INavigation navigationService, 
             IDialogHandler dialogHandler, IShareDialogService shareService, 
-            IUserSettings settings, IFileHandler fileHandler, ILiveTileService liveTileService,
-            IFilePicker filePicker, IEmailService emailService, IMsal msal, ISystemLauncher systemLauncher)
+            IUserSettings settings, IFileHandler fileHandler,
+            IFilePicker filePicker, IEmailService emailService, IMsal msal, ISystemLauncher systemLauncher, ILiveTileService liveTileService = null)
         {
             m_networkAvailable = NetworkInterface.GetIsNetworkAvailable();
 
@@ -304,7 +304,8 @@ namespace Backlogs.ViewModels
             SignedIn = m_settings.Get<bool>(SettingsConstants.IsSignedIn);
 
             LoadBacklogs();
-            m_liveTileService.EnableLiveTileQueue();
+            if(m_liveTileService != null)
+                m_liveTileService.EnableLiveTileQueue();
         }
 
         public async Task SetupProfile()
@@ -440,6 +441,7 @@ namespace Backlogs.ViewModels
             IsBusy = true;
             if (m_networkAvailable)
             {
+                Debug.WriteLine(m_settings.Get<bool>(SettingsConstants.IsSignedIn));
                 if (!m_settings.Get<bool>(SettingsConstants.IsSignedIn))
                 {
                     try

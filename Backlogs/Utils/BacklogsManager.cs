@@ -35,6 +35,7 @@ namespace Backlogs.Utils
 
         public async Task WriteDataAsync(bool sync = false)
         {
+            Debug.WriteLine(m_fileHandler);
             await m_fileHandler.WriteBacklogsAsync(Backlogs, sync);
         }
 

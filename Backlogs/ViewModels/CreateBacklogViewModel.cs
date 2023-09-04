@@ -49,6 +49,7 @@ namespace Backlogs.ViewModels
 
         public ICommand SearchBacklog { get; }
         public ICommand OpenSettings { get; }
+        public ICommand CreateBacklog { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -208,6 +209,7 @@ namespace Backlogs.ViewModels
             SearchResults = new ObservableCollection<SearchResult>();
             SearchBacklog = new AsyncCommand(TrySearchBacklogAsync);
             OpenSettings = new Command(NavigateToSettingsPage);
+            CreateBacklog = new AsyncCommand(SearchResultSelectedAsync);
 
             m_navigationService = navigationService;
             m_dialogHandler = dialogHandler;
@@ -422,7 +424,7 @@ namespace Backlogs.ViewModels
                         }
                     }
                     SelectedSearchResult = await m_dialogHandler.ShowSearchResultsDialogAsync(m_nameInput, SearchResults);
-                    await SearchResultSelectedAsync();
+                    //await SearchResultSelectedAsync(); commented for research purposes(Srujana)
                     await m_fileHandler.WriteLogsAsync("Succesfully created backlog");
                 }
                 else

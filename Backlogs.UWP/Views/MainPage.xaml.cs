@@ -37,9 +37,9 @@ namespace Backlogs.Views
             //Window.Current.SetTitleBar(AppTitleBar);
             ViewModel = new MainViewModel(App.Services.GetRequiredService<INavigation>(), App.Services.GetRequiredService<IDialogHandler>(),
                 App.Services.GetRequiredService<IShareDialogService>(), App.Services.GetRequiredService<IUserSettings>(),
-                App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<ILiveTileService>(),
+                App.Services.GetRequiredService<IFileHandler>(),
                 App.Services.GetRequiredService<IFilePicker>(), App.Services.GetRequiredService<IEmailService>(),
-                App.Services.GetService<IMsal>(), App.Services.GetRequiredService<ISystemLauncher>());
+                App.Services.GetService<IMsal>(), App.Services.GetRequiredService<ISystemLauncher>(), App.Services.GetRequiredService<ILiveTileService>());
             this.DataContext = ViewModel;
             var view = SystemNavigationManager.GetForCurrentView();
             view.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Disabled;
