@@ -1,6 +1,5 @@
 using Backlogs.Services;
 using Backlogs.ViewModels;
-using Windows.UI.Core;
 
 namespace Backlogs.Uno.Views
 {
@@ -14,13 +13,10 @@ namespace Backlogs.Uno.Views
             this.Loading += BacklogPage_Loading;
 
         }
-
         private async void BacklogPage_Loading(FrameworkElement sender, object args)
         {
             await ViewModel!.GetDetailsAsync();
         }
-
-
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             Guid selectedId = (Guid)e.Parameter;
@@ -29,12 +25,6 @@ namespace Backlogs.Uno.Views
                 App.Services.GetRequiredService<IShareDialogService>(), App.Services.GetRequiredService<IUserSettings>(),
                 App.Services.GetRequiredService<IFileHandler>(), App.Services.GetRequiredService<ISystemLauncher>());
             base.OnNavigatedTo(e);
-
-
-
-
-
-
         }
 
     }

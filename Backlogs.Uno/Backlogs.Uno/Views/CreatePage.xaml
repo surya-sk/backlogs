@@ -5,35 +5,38 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
-    xmlns:muxc="using:Uno.UI.Xaml.Controls"
-    Background="DarkGray">
-    
+    xmlns:muxc="using:Uno.UI.Xaml.Controls">
+
     <Frame>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Spacing="25">
-                <TextBlock Text="Create" FontSize="36" />
-                <TextBlock Text="The app will search various sources such as IMDB and Twitch for metadata, and will fail to create a Backlog if not found. Except for music backlogs, search results will be shown."
-                           TextWrapping="WrapWholeWords" />
-                <!--PopUP-->
-                <ComboBox Header="Type" PlaceholderText="Choose a type" Width="200" SelectedIndex="{x:Bind viewModel.SelectedIndex, Mode=TwoWay}" SelectedValue="{x:Bind viewModel.SelectedType, Mode=TwoWay}">
-                    <x:String>Film</x:String>
-                    <x:String>Album</x:String>
-                    <x:String>TV</x:String>
-                    <x:String>Game</x:String>
-                    <x:String>Book</x:String>
-                </ComboBox>
-                <TextBox PlaceholderText="Type a movie name" Text="{x:Bind viewModel.NameInput, Mode=TwoWay}" />
-                <Button Content="Search" Command="{x:Bind viewModel.SearchBacklog}"/>
-                <CalendarDatePicker PlaceholderText="Pick a date" Header="When do you want to check this out(optional)" Date="{x:Bind viewModel.DateInput, Mode=TwoWay}" />
-                <ToggleSwitch Header="Notify me on this date" OffContent="No" OnContent="Yes" IsEnabled="{x:Bind viewModel.EnableNotificationToggle, Mode=OneWay}" IsOn="{x:Bind viewModel.ShowNotificationOptions, Mode=TwoWay}"/>
-                <TimePicker Header="When do you want to be notified" MinuteIncrement="30" Visibility="{x:Bind viewModel.ShowNotificationOptions, Mode=OneWay}"  Time="{x:Bind viewModel.NotifTime, Mode=TwoWay}" />
-                <Button Content="Create" Command="{x:Bind viewModel.CreateBacklog}"/>
-                <ProgressBar IsIndeterminate="True" Visibility="{x:Bind viewModel.IsBusy, Mode= OneWay}"/>
-            </StackPanel>
-        
-        </ScrollViewer>
-        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Spacing="25" Margin="15">
+                    <TextBlock Text="Create Backlog" FontSize="36"  Margin ="0,25,0,0" />
+                    <TextBlock Text="Type" Margin ="0,10,0,0" FontSize="19"/>
+                    <ComboBox PlaceholderText="Choose a type" SelectedIndex="{x:Bind viewModel.SelectedIndex, Mode=TwoWay}" SelectedValue="{x:Bind viewModel.SelectedType, Mode=TwoWay}">
+                        <x:String>Film</x:String>
+                        <x:String>Album</x:String>
+                        <x:String>TV</x:String>
+                        <x:String>Game</x:String>
+                        <x:String>Book</x:String>
+                    </ComboBox>
+                    <TextBlock Text="Title" Margin ="0,10,0,0" FontSize="19"/>
+                    <TextBox PlaceholderText="Type a movie name" Text="{x:Bind viewModel.NameInput, Mode=TwoWay}" />
+                    <Button Content="Search" Command="{x:Bind viewModel.SearchBacklog}"/>
+                    <TextBlock Text="When do you want to check this out(optional)" Margin ="0,10,0,0" FontSize="19"/>
+                    <CalendarDatePicker PlaceholderText="Pick a date" Date="{x:Bind viewModel.DateInput, Mode=TwoWay}" />
+                    <TextBlock Text="Notify me on this date" Margin ="0,10,0,0" FontSize="19"/>
+                    <ToggleSwitch OffContent="No" OnContent="Yes" IsEnabled="{x:Bind viewModel.EnableNotificationToggle, Mode=OneWay}" IsOn="{x:Bind viewModel.ShowNotificationOptions, Mode=TwoWay}"/>
+                    <TextBlock Text="When do you want to be notified" Margin ="0,10,0,0" FontSize="19" Visibility="{x:Bind viewModel.ShowNotificationOptions, Mode=OneWay}"/>
+                    <TimePicker MinuteIncrement="30" Visibility="{x:Bind viewModel.ShowNotificationOptions, Mode=OneWay}"  Time="{x:Bind viewModel.NotifTime, Mode=TwoWay}" />
+                    <ProgressBar IsIndeterminate="True" Visibility="{x:Bind viewModel.IsBusy, Mode= OneWay}"/>
+                </StackPanel>
+            </ScrollViewer>
+            <Button Grid.Row="1" Content="CREATE" FontSize="30" Command="{x:Bind viewModel.CreateBacklog}" Background="{ThemeResource SystemAccentColor}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+        </Grid>
     </Frame>
-
-
 </Page>

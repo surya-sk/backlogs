@@ -1,6 +1,7 @@
 using Backlogs.Services;
 using Backlogs.ViewModels;
 
+
 namespace Backlogs.Uno.Views
 {
     public sealed partial class CreatePage : Page
@@ -10,10 +11,10 @@ namespace Backlogs.Uno.Views
         public CreatePage()
         {
             this.InitializeComponent();
-            viewModel=new CreateBacklogViewModel(App.Services.GetRequiredService<INavigation>(),
-                App.Services.GetRequiredService<IDialogHandler>(), 
-                App.Services.GetRequiredService<IToastNotificationService>(), 
-                App.Services.GetRequiredService<IUserSettings>(), 
+            viewModel = new CreateBacklogViewModel(App.Services.GetRequiredService<INavigation>(),
+                App.Services.GetRequiredService<IDialogHandler>(),
+                App.Services.GetRequiredService<IToastNotificationService>(),
+                App.Services.GetRequiredService<IUserSettings>(),
                 App.Services.GetRequiredService<IFileHandler>());
 
 
@@ -26,6 +27,4 @@ namespace Backlogs.Uno.Views
         }
 
     }
-
-
 }

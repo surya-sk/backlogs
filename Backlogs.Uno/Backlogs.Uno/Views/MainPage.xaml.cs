@@ -1,9 +1,5 @@
 using Backlogs.Services;
 using Backlogs.ViewModels;
-using Microsoft.Identity.Client;
-using static Google.Apis.Auth.OAuth2.Web.AuthorizationCodeWebApp;
-using Uno.UI.MSAL;
-using System.Diagnostics;
 
 namespace Backlogs.Uno.Views
 {
