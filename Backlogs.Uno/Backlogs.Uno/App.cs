@@ -45,7 +45,7 @@ namespace Backlogs.Uno
                 // configuring the new page by passing required information as a navigation
                 // parameter
 
-                rootFrame.Navigate(typeof(MainPage), args.Arguments);
+                
 
                 m_serviceProvider = ConfigureServices();
                 m_userSettings = Services.GetRequiredService<IUserSettings>();
@@ -66,6 +66,7 @@ namespace Backlogs.Uno
                 Task.Run(async () => { await BacklogsManager.GetInstance().ReadDataAsync(); }).Wait();
                 BacklogsManager.GetInstance().ResetHelperBacklogs();
 
+                rootFrame.Navigate(typeof(MainPage), args.Arguments);
 
 
             }

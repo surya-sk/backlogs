@@ -1,0 +1,54 @@
+<Page x:Class="Backlogs.Uno.Views.BacklogPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:Backlogs.Uno"
+    xmlns:data="clr-namespace:Backlogs.Models;assembly=Backlogs"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+    xmlns:muxc="using:Uno.UI.Xaml.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" >
+
+    <Frame>
+        <Grid>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid x:Name="rootGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid x:Name="metadataGrid">
+                        <RelativePanel>
+                            <Image x:Name="img" Source="{x:Bind ViewModel.Backlog.ImageURL, Mode=OneWay}" />
+                            <Grid x:Name="detailsGrid" RelativePanel.RightOf="img" Height="200" Margin="30">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{x:Bind ViewModel.Backlog.Name, Mode=OneWay}" FontSize="25" TextWrapping="Wrap" />
+                                <TextBlock Grid.Row="1" x:Name="ArtistText" Text="{x:Bind ViewModel.Backlog.Director, Mode=OneWay}" FontSize="20" />
+                                <TextBlock Grid.Row="2" x:Name="descText" Text="{x:Bind ViewModel.Backlog.Description, Mode=OneWay}" TextTrimming="WordEllipsis" MaxLines="3" TextWrapping="Wrap" FontSize="15"
+                                            Margin="0,0,0,20" />
+
+                                <StackPanel Grid.Row="3" Orientation="Horizontal">
+                                    <Button Content="Play trailer" Margin="0,0,0,0" Command="{x:Bind ViewModel.OpenWebViewTrailer}" Visibility="{x:Bind ViewModel.ShowTrailerButton}" />
+                                    <Button x:Name="ReadMoreButton" Margin="10,0,0,0" Command="{x:Bind ViewModel.ReadMore}" Content="Read full" />
+                                </StackPanel>
+                            </Grid>
+                        </RelativePanel>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Frame>
+
+</Page>
+
+
+
+

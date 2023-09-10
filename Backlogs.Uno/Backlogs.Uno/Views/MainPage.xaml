@@ -2,17 +2,39 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:local="using:Backlogs.Uno"
+    xmlns:data="clr-namespace:Backlogs.Models;assembly=Backlogs"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
     xmlns:muxc="using:Uno.UI.Xaml.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-	<!--<StackPanel HorizontalAlignment="Center"
-				VerticalAlignment="Center">
-		<TextBlock Text="Hello Srujana" />
-        <Button Content="Click me" Click="Button_Click" />
-    </StackPanel>-->
+    <Page.Resources>
+        <DataTemplate x:DataType="data:Backlog" x:Key="BacklogTemplate">
+            <Grid x:Name="rootGrid" Margin="0,0,10,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Image x:Name="coverImage" Source="{x:Bind ImageURL}" Height="150" Width="200" HorizontalAlignment="Stretch" Margin="0,10,0,0"/>
+                <RelativePanel x:Name="DetailsPanel" Grid.Row="2" Margin="16,6,0,0" HorizontalAlignment="Left">
+                    <TextBlock
+                        x:Name="TitleText" MaxLines="2" TextTrimming="CharacterEllipsis"
+                                    Style="{StaticResource BaseTextBlockStyle}"
+                                    Text="{x:Bind Name}"
+                                    TextLineBounds="TrimToCapHeight"
+                                    TextWrapping="Wrap" />
+                    <TextBlock x:Name="TypeText" Style="{StaticResource CaptionTextBlockStyle}"
+                                                Margin="0,2,8,0"
+                                                RelativePanel.Below="TitleText"
+                                                Text="{x:Bind Type}" TextWrapping="Wrap" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                </RelativePanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
     <Frame>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <Grid>
@@ -20,26 +42,44 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <!--<AppBarButton x:Name="SigninButton" Label="Sign-in" Icon="AddFriend" Command="{x:Bind ViewModel.SignIn}" Visibility="{x:Bind ViewModel.ShowSignInButton, Mode=OneWay}" />-->
+                <RelativePanel>
+                    <TextBlock Name="RecentlyAdded" Text="Recently Added"></TextBlock>
+                    <Button Content="See All" RelativePanel.RightOf="RecentlyAdded" Click="GotoCreatePage"/>
 
-                <Button Content="Sign In with Microsoft" Click="SignInButton_Click"/>
-
-                <StackPanel Grid.Row="1">
-                    <TextBlock Text="Create" />
-                    <Button Content="Create" Click="GotoCreatePage" />
-                </StackPanel>
-
-                <!--<TextBlock Grid.Row="1" x:Name="WelcomeText" Text="{x:Bind ViewModel.UserName, Mode=OneWay}" Margin="30" FontSize="30" />-->
-
-                <RelativePanel Grid.Row="2"  Margin="10,0,0,30">
-                    <TextBlock x:Name="HeadingText" Text="Recently Added" FontSize="20" Margin="20,20,20,20"/>
-                    <Button x:Name="AllAddedButton" Content="See all"  RelativePanel.RightOf="HeadingText" Margin="0,20,20,20" />
-                    <TextBlock x:Name="EmptyBackogsText" Text="You haven't added any Backlogs yet" Visibility="Collapsed" RelativePanel.Below="HeadingText" Margin="20" TextWrapping="Wrap"/>
-                    <!--<controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
-                                                                   SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind recentlyAdded}" ItemClick="AddedBacklogsGrid_ItemClick"
-                                                                   ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="HeadingText" Loaded="AddedBacklogsGrid_Loaded"/>-->
+                    <controls:AdaptiveGridView x:Name="AddedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.RecentlyAdded, Mode=OneWay}"
+                                                       ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="RecentlyAdded" />
                 </RelativePanel>
+
+                <RelativePanel Grid.Row="1">
+                    <TextBlock Name="InProgress" Text="In Progress"></TextBlock>
+                    <Button Content="See All" RelativePanel.RightOf="InProgress" Click="GotoCreatePage"/>
+
+                    <controls:AdaptiveGridView x:Name="ProgressBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.InProgress, Mode=OneWay}"
+                                                       ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="InProgress"/>
+                </RelativePanel>
+
+                <RelativePanel Grid.Row="2">
+                    <TextBlock Name="RecentlyCompleted" Text="Recently Completed"></TextBlock>
+                    <Button Content="See All" RelativePanel.RightOf="RecentlyCompleted" Click="GotoCreatePage"/>
+
+                    <controls:AdaptiveGridView x:Name="CompletedBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.RecentlyCompleted, Mode=OneWay}"
+                                                       ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="RecentlyCompleted"/>
+                </RelativePanel>
+
+                <RelativePanel Grid.Row="3">
+                    <TextBlock Name="ComingUp" Text="Coming Up"></TextBlock>
+                    <Button Content="See All" RelativePanel.RightOf="ComingUp" Click="GotoCreatePage"/>
+
+                    <controls:AdaptiveGridView x:Name="ComingUpBacklogsGrid" StretchContentForSingleRow="False" OneRowModeEnabled="True" DesiredWidth="180" ItemHeight="230"
+                                                       SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{x:Bind ViewModel.Upcoming, Mode=OneWay}"
+                                                       ItemTemplate="{StaticResource BacklogTemplate}" RelativePanel.Below="ComingUp"/>
+                </RelativePanel>
+
             </Grid>
         </ScrollViewer>
     </Frame>
